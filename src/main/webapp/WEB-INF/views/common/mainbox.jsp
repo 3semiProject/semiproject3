@@ -17,7 +17,7 @@
         }
 
         #mainContain {
-            background-color: gray;
+ 	
             width: 1200px;
             height: 1200px;
         }
@@ -27,6 +27,7 @@
         }
 
         #userBox #userBox_intro {
+        	border: 1px solid #D1D1D1;
             position: relative;
             float: left;
             margin-top: 5px;
@@ -40,6 +41,7 @@
         }
 
         #userBox #userBox_loginBox {
+        	border: 1px solid #D1D1D1;
             position: relative;
             float: right;
             margin-top: 5px;
