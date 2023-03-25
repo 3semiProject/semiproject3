@@ -1,4 +1,4 @@
 package org.sixpack.semi.kakao.model.service;
 
-public interface SocialLoginKakaoService {
+public interface KakaoService {
 }

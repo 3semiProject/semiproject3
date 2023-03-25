@@ -161,7 +161,7 @@ public class MemberController {
 	public String findpwEmailMethod(HttpServletResponse response, Member member, Model model) {
 		return null;
 	}
-	@RequestMapping("findPwEmail.do")
+	@RequestMapping("findPwE.do")
 	public String findpwEMethod(HttpServletResponse response, Member member, Model model) {
 		return null;
 	}

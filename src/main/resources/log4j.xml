@@ -13,7 +13,7 @@
 	<!-- 파일에 로그 메세지 저장하는 appender -->
 	<appender name="fileLogger" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="file" 
-		value="/Users/lav/IdeaProjects1/logs/system.log" />
+		value="C:\\Users\\hjm01\\git\\semi2\\semiproject3\\src\\main\\resources\\logs\\system.log" />
 		<param name="Append" value="true" />
 		<param name="DatePattern" value="yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -64,12 +64,12 @@
 	 -->
 	
 	<!-- Application Loggers -->
-	<logger name="org.ict.first">
+	<logger name="org.sixpack.semi">
 		<level value="info" />
 	</logger>
 	
 	<!-- interceptor 패키지 logger 등록함 -->
-	<logger name="org.ict.first.common.intercepter.LoggerInterceptor">
+	<logger name="org.sixpack.semi.common.intercepter.LoggerInterceptor">
 		<level value="debug" />
 	</logger>
 	

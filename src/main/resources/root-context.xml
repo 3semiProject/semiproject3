@@ -69,7 +69,7 @@
 
 	<aop:config proxy-target-class="true">
 		<aop:pointcut
-			expression="execution(* org.ict.first..*Impl.*(..))"
+			expression="execution(* org.sixpack.semi..*Impl.*(..))"
 			id="serviceMethod" />
 		<aop:advisor advice-ref="txAdvice" id="transactionAdvisor"
 			pointcut-ref="serviceMethod" />

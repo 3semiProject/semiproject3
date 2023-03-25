@@ -4,5 +4,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository("socialLoginNaverDao")
 
-public class SocialLoginNaverDao {
+public class NaverDao {
+	
 }

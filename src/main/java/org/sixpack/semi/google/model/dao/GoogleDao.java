@@ -4,5 +4,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository("socialLoginGoogleDao")
 
-public class SocialLoginGoogleDao {
+public class GoogleDao {
 }
