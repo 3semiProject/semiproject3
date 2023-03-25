@@ -1,4 +1,4 @@
-package org.sixpack.semi.goalinfo.controller;
+package org.sixpack.semi.goal.controller;
 
 import org.springframework.stereotype.Controller;
 
