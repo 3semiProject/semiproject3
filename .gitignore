@@ -1,10 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,java,intellij,eclipse
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,java,intellij,eclipse
 
-*.xml
+
 target/
 *.iml
-
+*.xml
 ### Eclipse ###
 .metadata
 bin/
