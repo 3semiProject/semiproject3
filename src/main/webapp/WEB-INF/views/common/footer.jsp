@@ -6,17 +6,39 @@
 <meta charset="UTF-8">
 <title></title>
 <style type="text/css">
+.footer_box{
+        width: 1200px;
+        height: 100px;	
+}
 footer {
 	text-align: center;
-	background-color: navy;
 	color: white;
+
+}
+
+.footer_list {
+
+	text-align: center;
+}
+
+.footer_list li {
+	list-style: none;
+	display: inline-block;;
+	padding: 10px;
 }
 </style>
 </head>
 <body>
 <footer>
-copyright@first 스프링 래거시 MVC 템플릿 적용 프로젝트<br>
-2023-03-15 개발, developer : admin<br>
+<br>
+<div class="footer_box">
+<ul class="footer_list" >
+    <li>ⓒDAMUNITY</li>
+	<li><a href="${ pageContext.servletContext.contextPath }/info.do">다뮤니티 이용안내</a></li>
+	<li><a href="${ pageContext.servletContext.contextPath }/tos.do">이용약관</a></li>
+	<li><a href="${ pageContext.servletContext.contextPath }/mp.do">운영정책</a></li>
+</ul>
+</div>
 </footer>
 </body>
 </html>
