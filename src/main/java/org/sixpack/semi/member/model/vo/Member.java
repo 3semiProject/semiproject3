@@ -2,132 +2,114 @@ package org.sixpack.semi.member.model.vo;
 
 import java.sql.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+public class Member {
 
-public class Member implements java.io.Serializable {
-    private static final long serialVersionUID = -7412802581401323354L;
-
-    //스프링에서 데이터베이스 테이블 컬럼명과 vo 클래스의 필드명을
-    //일치시키면 마이바티스 매퍼의 resultMap 이 자동 작동됨
-    //member.setUserId(rset.getString("userid"));
-
-    private String userid;    //회원 아이디
-    private String userpwd;    //회원 패스워드
-    private String username;    //회원 이름
-    private String gender;        //회원 성별
-    private int age;            //회원 나이
-    private String phone;        //회원 전화번호
-    private String email;        //회원 이메일
-    private java.sql.Date enroll_date;    //회원 가입날짜
-    private java.sql.Date lastmodified;    //회원 정보 마지막 수정날짜
-    private String signtype;
-    private String admin;        //관리자 여부
-    private String login_ok;        //로그인 가능 여부
+	private String user_id;			//회원아이디
+	private String user_pw;			//회원패스워드
+	private String user_name;		//회원이름
+	private String user_nickname;	//회원닉네임
+	private String phone;			//회원전화번호
+	private Date birth;				//회원생일
+	private String gender;			//회원성별
+	private String email;			//회원이메일
+	private String admin_ck;		//관리자여부
+	
 	public Member() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-	public Member(String userid, String userpwd, String username, String gender, int age, String phone, String email,
-			Date enroll_date, Date lastmodified, String signtype, String admin, String login_ok) {
+
+	public Member(String user_id, String user_pw, String user_name, String user_nickname, String phone,
+			Date birth, String gender, String email, String admin_ck) {
 		super();
-		this.userid = userid;
-		this.userpwd = userpwd;
-		this.username = username;
-		this.gender = gender;
-		this.age = age;
+		this.user_id = user_id;
+		this.user_pw = user_pw;
+		this.user_name = user_name;
+		this.user_nickname = user_nickname;
 		this.phone = phone;
-		this.email = email;
-		this.enroll_date = enroll_date;
-		this.lastmodified = lastmodified;
-		this.signtype = signtype;
-		this.admin = admin;
-		this.login_ok = login_ok;
-	}
-	public String getUserid() {
-		return userid;
-	}
-	public void setUserid(String userid) {
-		this.userid = userid;
-	}
-	public String getUserpwd() {
-		return userpwd;
-	}
-	public void setUserpwd(String userpwd) {
-		this.userpwd = userpwd;
-	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
+		this.birth = birth;
 		this.gender = gender;
+		this.email = email;
+		this.admin_ck = admin_ck;
 	}
-	public int getAge() {
-		return age;
+
+	public String getUser_id() {
+		return user_id;
 	}
-	public void setAge(int age) {
-		this.age = age;
+
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
+
+	public String getUser_pw() {
+		return user_pw;
+	}
+
+	public void setUser_pw(String user_pw) {
+		this.user_pw = user_pw;
+	}
+
+	public String getUser_name() {
+		return user_name;
+	}
+
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
+
+	public String getUser_nickname() {
+		return user_nickname;
+	}
+
+	public void setUser_nickname(String user_nickname) {
+		this.user_nickname = user_nickname;
+	}
+
 	public String getPhone() {
 		return phone;
 	}
+
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
+	public Date getBirth() {
+		return birth;
+	}
+
+	public void setBirth(Date birth) {
+		this.birth = birth;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public java.sql.Date getEnroll_date() {
-		return enroll_date;
+
+	public String getAdmin_ck() {
+		return admin_ck;
 	}
-	public void setEnroll_date(java.sql.Date enroll_date) {
-		this.enroll_date = enroll_date;
+
+	public void setAdmin_ck(String admin_ck) {
+		this.admin_ck = admin_ck;
 	}
-	public java.sql.Date getLastmodified() {
-		return lastmodified;
-	}
-	public void setLastmodified(java.sql.Date lastmodified) {
-		this.lastmodified = lastmodified;
-	}
-	public String getSigntype() {
-		return signtype;
-	}
-	public void setSigntype(String signtype) {
-		this.signtype = signtype;
-	}
-	public String getAdmin() {
-		return admin;
-	}
-	public void setAdmin(String admin) {
-		this.admin = admin;
-	}
-	public String getLogin_ok() {
-		return login_ok;
-	}
-	public void setLogin_ok(String login_ok) {
-		this.login_ok = login_ok;
-	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
+
 	@Override
 	public String toString() {
-		return "Member [userid=" + userid + ", userpwd=" + userpwd + ", username=" + username + ", gender=" + gender
-				+ ", age=" + age + ", phone=" + phone + ", email=" + email + ", enroll_date=" + enroll_date
-				+ ", lastmodified=" + lastmodified + ", signtype=" + signtype + ", admin=" + admin + ", login_ok="
-				+ login_ok + "]";
+		return "Default_Member [user_id=" + user_id + ", user_pw=" + user_pw + ", user_name=" + user_name
+				+ ", user_nickname=" + user_nickname + ", phone=" + phone + ", birth=" + birth + ", gender=" + gender
+				+ ", email=" + email + ", admin_ck=" + admin_ck + "]";
 	}
-    
+	
+	
 }
