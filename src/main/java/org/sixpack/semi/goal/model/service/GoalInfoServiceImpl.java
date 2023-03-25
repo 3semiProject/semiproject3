@@ -1,4 +1,4 @@
-package org.sixpack.semi.goalinfo.model.service;
+package org.sixpack.semi.goal.model.service;
 
 import org.springframework.stereotype.Service;
 
