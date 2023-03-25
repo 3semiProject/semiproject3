@@ -2,83 +2,105 @@ package org.sixpack.semi.member.model.service;
 
 import java.util.ArrayList;
 
-import org.sixpack.semi.common.SearchDate;
 import org.sixpack.semi.member.model.dao.MemberDao;
 import org.sixpack.semi.member.model.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-//스프링에서는 서비스 모델 클래스는 서비스 인터페이스를 상속받아서
-//만들도록 되어 있음
-@Service("memberService")  //xml 자동 등록 처리됨
-public class MemberServiceImpl implements MemberService {
+@Service("memberService")
+public class MemberServiceImpl implements MemberService{
+	@Autowired
+	private MemberDao memberDao;
 
-    //DAO 와 연결 처리
-    @Autowired  //자동 DI 처리됨 : 자동 객체 생성됨
-            MemberDao memberDao;
+	@Override
+	public Member selectLogin(Member member) {
+		return memberDao.selectLogin(member);
+	}
 
-    @Override
-    public Member selectLogin(Member member) {
-        return memberDao.selectLogin(member);
-    }
+	@Override
+	public Member selectFindIdPhone(Member member) {
+		return memberDao.selectFindIdPhone(member);
+	}
 
-    @Override
-    public ArrayList<Member> selectList() {
-        return memberDao.selectList();
-    }
+	@Override
+	public Member selectFindIdEmail(Member member) {
+		return memberDao.selectFindIdEmail(member);
+	}
 
-    @Override
-    public int insertMember(Member member) {
-        return memberDao.insertMember(member);
-    }
+	@Override
+	public Member selectFindPwId(Member member) {
+		return memberDao.selectFindPwId(member);
+	}
 
-    @Override
-    public int updateMember(Member member) {
-        return memberDao.updateMember(member);
-    }
+	@Override
+	public Member selectFindPwEmail(Member member) {
+		return memberDao.selectFindPwEmail(member);
+	}
 
-    @Override
-    public int deleteMember(String userid) {
-     return memberDao.deleteMember(userid);
-    }
+	@Override
+	public Member selectProfile(Member member) {
+		return memberDao.selectProfile(member);
+	}
 
-    @Override
-    public int selectDupCheckId(String userid) {
-        return memberDao.selectDupCheckId(userid);
-    }
+	@Override
+	public Member selectNickname(Member member) {
+		return memberDao.selectNickname(member);
+	}
 
-    @Override
-    public Member selectMember(String userid) {
-        return memberDao.selectMember(userid);
-    }
+	@Override
+	public Member selectMember(String user_id) {
+		return memberDao.selectMember(user_id);
+	}
 
-    @Override
-    public int updateLoginok(Member member) {
-        return memberDao.updateLoginok(member);
-    }
+	@Override
+	public int updateFindpwE(Member member) {
+		return memberDao.updateFindpwE(member);
+	}
 
-    @Override
-    public ArrayList<Member> selectSearchUserid(String keyword) {
-        return memberDao.selectSearchUserid(keyword);
-    }
+	@Override
+	public String SendEmail(Member member) {
+		return memberDao.SendEmail(member);
+	}
 
-    @Override
-    public ArrayList<Member> selectSearchGender(String keyword) {
-        return memberDao.selectSearchGender(keyword);
-    }
+	@Override
+	public int insertMember(Member member) {
+		return memberDao.insertMember(member);
+	}
 
-    @Override
-    public ArrayList<Member> selectSearchAge(int age) {
-        return memberDao.selectSearchAge(age);
-    }
+	@Override
+	public int updatePw(Member member) {
+		return memberDao.updatePw(member);
+	}
 
-    @Override
-    public ArrayList<Member> selectSearchEnrollDate(SearchDate searchDate) {
-        return memberDao.selectSearchEnrollDate(searchDate);
-    }
+	@Override
+	public int updateMember(Member member) {
+		return memberDao.updateMember(member);
+	}
 
-    @Override
-    public ArrayList<Member> selectSearchLoginOK(String keyword) {
-        return memberDao.selectSearchLoginOK(keyword);
-    }
+	@Override
+	public int deleteMember(String user_id) {
+		return memberDao.updateMember(user_id);
+	}
+
+	@Override
+	public int selectDupCheckId(String user_id) {
+		return memberDao.selectDupCheckId(user_id);
+	}
+
+	@Override
+	public int selectDupCheckNick(String user_nickname) {
+		return memberDao.selectDupCheckNick(user_nickname);
+	}
+
+	@Override
+	public int selectDupCheckPhone(String phone) {
+		return memberDao.selectDupCheckPhone(phone);
+	}
+
+	@Override  //수정필요
+	public ArrayList<Member> selectMemberList() {
+		return memberDao.selectMemberList();
+	}
+	
+	
 }
