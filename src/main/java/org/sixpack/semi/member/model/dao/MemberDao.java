@@ -9,7 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository("memberDao")  //xml 에 자동 등록됨
+@Repository("memberDao")
 public class MemberDao {
     //마이바티스 매퍼 파일에 쿼리문 별도로 작성함
     //root-context.xml 에 생성된 마이바티스 매퍼 연결 객체를 사용함

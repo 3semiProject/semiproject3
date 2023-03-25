@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boardMapper">
+
+    <resultMap id="resultBoard" type="Board">
+        <id property="board_num" column="board_num"/>
+        <result property="board_writer" column="board_writer"/>
+        <result property="board_title" column="board_title"/>
+        <result property="board_content" column="board_content"/>
+        <result property="board_original_filename" column="board_original_filename"/>
+        <result property="board_rename_filename" column="board_rename_filename"/>
+        <result property="board_ref" column="board_ref"/>
+        <result property="board_reply_ref" column="board_reply_ref"/>
+        <result property="board_lev" column="board_lev"/>
+        <result property="board_reply_seq" column="board_reply_seq"/>
+        <result property="board_readcount" column="board_readcount"/>
+        <result property="board_date" column="board_date"/>
+    </resultMap>
+
+
+    <resultMap id="resultTop5" type="Board">
+        <id property="board_num" column="board_num"/>
+        <result property="board_title" column="board_title"/>
+        <result property="board_readcount" column="board_readcount"/>
+    </resultMap>
+
+    <select id="selectTop5" resultMap="resultTop5">
+        <![CDATA[
+        select *
+        from (select ROWNUM rnum, BOARD_NUM, BOARD_TITLE, BOARD_READCOUNT
+              from (select *
+                    from BOARD
+                    WHERE BOARD_LEV = 1
+                    order by BOARD_READCOUNT desc, BOARD_DATE desc))
+        where rnum <= 5
+        ]]>
+    </select>
+
+    <select id="selectListCount" resultType="_int">
+        select count(*)
+        from BOARD
+    </select>
+
+    <select id="selectList" parameterType="Paging" resultMap="resultBoard">
+       <![CDATA[
+        select *
+        from (select ROWNUM rnum,
+                     BOARD_NUM,
+                     BOARD_WRITER,
+                     BOARD_TITLE,
+                     BOARD_CONTENT,
+                     BOARD_ORIGINAL_FILENAME,
+                     BOARD_RENAME_FILENAME,
+                     BOARD_REF,
+                     BOARD_REPLY_REF,
+                     BOARD_LEV,
+                     BOARD_REPLY_SEQ,
+                     BOARD_READCOUNT,
+                     BOARD_DATE
+              from (select *
+                    from BOARD
+                    order by BOARD_REF desc, BOARD_REPLY_REF desc, board_lev, BOARD_REPLY_SEQ))
+        where rnum >= #{startRow}
+          and rnum <= #{endRow}
+        ]]>
+    </select>
+
+    <select id="selectBoard" parameterType="_int" resultType="Board">
+        select *
+        from BOARD
+        where BOARD_NUM = #{board_num}
+    </select>
+
+    <insert id="insertReply" parameterType="Board">
+        insert into board (board_num, board_title, board_writer,
+        board_content, BOARD_DATE, board_lev, BOARD_REF,
+        BOARD_REPLY_SEQ, BOARD_REPLY_REF)
+        values ( (select max(board_num) + 1 from board), #{board_title}
+        , #{board_writer}
+        , #{board_content}
+        , sysdate
+        , #{board_lev}
+        , #{board_ref}
+        , #{board_reply_seq},
+        <if test="board_lev==2">
+            (select max(board_num) +1 from board)
+        </if>
+        <if test="board_lev==3">
+            #{board_reply_ref}
+        </if>
+        )
+
+
+    </insert>
+    <insert id="insertBoard" parameterType="Board">
+        insert into BOARD (board_num, board_writer, board_title, board_content, board_original_filename,
+                           board_rename_filename, board_ref, board_reply_ref, board_lev, board_reply_seq,
+                           board_readcount, board_date)
+        values ((select max(BOARD_NUM) + 1 from BOARD),
+                #{board_writer},
+                #{board_title},
+                #{board_content},
+                #{board_original_filename},
+                #{board_rename_filename},
+                (select max(BOARD_NUM) + 1 from BOARD),
+                NULL,
+                1,
+                default,
+                default,
+                SYSDATE)
+
+    </insert>
+
+    <update id="updateReply" parameterType="Board">
+        update BOARD
+        set BOARD_TITLE=#{board_title},
+            BOARD_CONTENT=#{board_content},
+            BOARD_DATE=sysdate
+        where board_num = #{board_num}
+
+    </update>
+
+    <update id="updateBoard" parameterType="Board">
+        update BOARD
+        set BOARD_TITLE=#{board_title},
+        BOARD_CONTENT=#{board_content},
+        BOARD_DATE=sysdate,
+
+        <if test="board_original_filename != null">
+            BOARD_ORIGINAL_FILENAME=#{board_original_filename},
+            BOARD_RENAME_FILENAME=#{board_rename_filename}
+        </if>
+
+        <if test="board_original_filename == null">
+            BOARD_ORIGINAL_FILENAME = NUll,
+            BOARD_RENAME_FILENAME= NULL
+        </if>
+
+        where board_num = #{board_num}
+
+    </update>
+
+
+    <update id="updateReplySeq" parameterType="Board">
+        update BOARD
+        set BOARD_REPLY_SEQ = BOARD_REPLY_SEQ + 1
+        where board_ref = #{board_ref}
+        and BOARD_LEV = #{board_lev}
+        <if test="board_lev == 3">
+            and BOARD_REPLY_REF=#{board_reply_ref}
+        </if>
+    </update>
+
+
+    <update id="updateBoardReadCount" parameterType="_int">
+        update BOARD
+        set BOARD_READCOUNT = BOARD_READCOUNT + 1
+        where BOARD_NUM = #{board_num}
+    </update>
+
+    <delete id="deleteBoard" parameterType="Board">
+        delete BOARD
+        <if test="board_lev==1">
+            where board_ref=#{board_num}
+        </if>
+        <if test="board_lev==2">
+            where board_reply_ref=#{board_num}
+        </if>
+        <if test="board_lev==3">
+            where board_num=#{board_num}
+        </if>
+    </delete>
+</mapper>
