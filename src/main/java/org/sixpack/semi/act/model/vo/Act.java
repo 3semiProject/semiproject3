@@ -2,7 +2,7 @@ package org.sixpack.semi.act.model.vo;
 
 public class Act implements java.io.Serializable{	
 	private static final long serialVersionUID = -1122694301283848688L;
-	
+	//주석만 수정
 	private String diary_no;	//다이어리번호
 	private String act_seq;		//운동 순번
 	private String move_code; 	//운동 일련번호
