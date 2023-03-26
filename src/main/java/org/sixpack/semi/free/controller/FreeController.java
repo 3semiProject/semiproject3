@@ -40,10 +40,9 @@ public class FreeController {
 		for(Free free : list) {
 			JSONObject job = new JSONObject();
 			
-			job.put("free_no", free.getFree_no());
 			job.put("free_name", URLEncoder.encode(free.getFree_name(), "utf-8"));
 			job.put("write_free_date", free.getWrite_free_date().toString());
-			
+			job.put("user_id", free.getUser_id());
 			jarr.add(job);
 		}
 		sendJson.put("list", jarr);

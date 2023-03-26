@@ -161,17 +161,17 @@
         			var json = JSON.parse(jsonStr);
         			
         			for(var i in json.list){
-        				values += "<tr><td>" + json.list[i].free_no
-						+ "</td><td><a href=''>" 
+        				values +=  "</td><td><a href=''>" 
 						+ decodeURIComponent(
 								json.list[i].free_name).replace(/\+/gi, " ")
-						+ "</a></td><td>" + json.list[i].write_free_date
+						+ "</a></td><td>" + json.list[i].user_id
+						+ "</td><td>" + json.list[i].write_free_date
 						+ "</td></tr>";
         			}
         			$('#new_topN').html(values);
         		},
         		error : function(jqXHR, textStatus, errorThrown){
-        			console.log("ntop5.do error : " + jqXHR
+        			console.log("ftop5.do error : " + jqXHR
     						+ ", " + textStatus + ", "
     						+ errorThrown);
         		}
