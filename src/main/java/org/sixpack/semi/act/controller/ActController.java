@@ -1,5 +1,4 @@
 package org.sixpack.semi.act.controller;
-package org.sixpack.semi.act.controller;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -175,7 +174,7 @@ public class ActController {
 			updateCount += actService.updateOneAct(a);
 		}
 		
-		if(updateSize == updateCount && diaryService.updateOneDiary(diary) > 0) {
+		if(updateSize == updateCount && diaryService.deleteOneDiary(diary) > 0) {
 			mv.addObject("diary",diary);
 			return "redirect:diary_showAct.do";
 		}else {
