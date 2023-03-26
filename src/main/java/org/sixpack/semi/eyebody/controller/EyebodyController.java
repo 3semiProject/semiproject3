@@ -1,7 +1,15 @@
 package org.sixpack.semi.eyebody.controller;
 
+import org.sixpack.semi.eyebody.model.service.EyebodyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller
 public class EyebodyController {
+private static final Logger logger = LoggerFactory.getLogger(EyebodyController.class);
+	
+	@Autowired
+	private EyebodyService eyebodyService;
 }
