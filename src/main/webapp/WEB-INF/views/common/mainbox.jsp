@@ -145,6 +145,39 @@
             //버튼 클릭시, 로그인 페이지로 이동하는 controller 요청
             location.href = "loginPage.do";
         }
+            
+            
+        $(function(){
+        	var values = $('#new_topN').html();
+        	console.log("values : " + values);
+        	$.ajax({
+        		url: "ftop5.do",
+        		type: "post",
+        		dataType: "json",
+        		success: function(data){
+        			console.log("success : " + data);
+        			
+        			var jsonStr = JSON.stringify(data);
+        			var json = JSON.parse(jsonStr);
+        			
+        			for(var i in json.list){
+        				values +=  "</td><td><a href=''>" 
+						+ decodeURIComponent(
+								json.list[i].free_name).replace(/\+/gi, " ")
+						+ "</a></td><td>" + json.list[i].user_id
+						+ "</td><td>" + json.list[i].write_free_date
+						+ "</td></tr>";
+        			}
+        			$('#new_topN').html(values);
+        		},
+        		error : function(jqXHR, textStatus, errorThrown){
+        			console.log("ftop5.do error : " + jqXHR
+    						+ ", " + textStatus + ", "
+    						+ errorThrown);
+        		}
+        	});
+            
+        }); //document ready
     </script>
 </head>
 <body>
@@ -175,9 +208,9 @@
         <%-- hot/new & article / youtube --%>
         <div id="mainTextBox">
             <div id="mainTextBox_topN">
-                <div id="hot_topN" style="height: 50%; border: 1px solid black;">
+                <div style="height: 50%; border: 1px solid black;">
                     <h1 style="text-align: center">HOT</h1>
-                    <table align="center" border="1" style="width: 95%;margin-top: 50px;">
+                    <table id="hot_topN" align="center" border="1" style="width: 95%;margin-top: 50px;">
                         <tr>
                             <th style="width: 70%">제목</th>
                             <th style="width: 20%">글쓴이</th>
@@ -212,42 +245,14 @@
                         </tr>
                     </table>
                 </div>
-                <div id="new_topN" style="height: 50%; border: 1px solid black;">
-
-
+                <div style="height: 50%; border: 1px solid black;">
                     <h1 style="text-align: center">NEW</h1>
-                    <table align="center" border="1" style="width: 95%;margin-top: 50px;">
+                    <table id="new_topN" align="center" border="1" style="width: 95%;margin-top: 50px;">
                         <tr>
                             <th style="width: 70%">제목</th>
                             <th style="width: 20%">글쓴이</th>
                             <th style="width: 10%">날짜</th>
 
-                        </tr>
-                        <tr>
-                            <td>ㅇㅇㅇ</td>
-                            <td>ㅇㅇㅇ</td>
-                            <td>ㅇㅇㅇ</td>
-
-                        </tr>
-                        <tr>
-                            <td>ㅇㅇㅇ</td>
-                            <td>ㅇㅇㅇ</td>
-                            <td>ㅇㅇㅇ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅇㅇㅇ</td>
-                            <td>ㅇㅇㅇ</td>
-                            <td>ㅇㅇㅇ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅇㅇㅇ</td>
-                            <td>ㅇㅇㅇ</td>
-                            <td>ㅇㅇㅇ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅇㅇㅇ</td>
-                            <td>ㅇㅇㅇ</td>
-                            <td>ㅇㅇㅇ</td>
                         </tr>
                     </table>
 
