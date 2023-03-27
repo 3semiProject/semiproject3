@@ -2,7 +2,7 @@ package org.sixpack.semi.goal.model.dao;
 
 import org.springframework.stereotype.Repository;
 
-@Repository("goalInfoDao")
+@Repository("goalDao")
 
-public class GoalInfoDao {
+public class GoalDao {
 }

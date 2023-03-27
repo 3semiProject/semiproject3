@@ -84,7 +84,7 @@ hr { clear: both;}
 	<!-- non-login -->
 	<c:if test="${ empty sessionScope.loginMember }">
 		<ul id="menubar">
-			<li><a href="${ pageContext.servletContext.contextPath }/mypage.do">마이페이지</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/test.do">다이어리</a></li>
 			<li><a href="${ pageContext.servletContext.contextPath }/commu.do">커뮤니티</a></li>
 			<!-- cs.do = customer service center -->
 			<li><a href="${ pageContext.servletContext.contextPath }/cs.do">고객센터</a></li>
@@ -94,7 +94,7 @@ hr { clear: both;}
 	<!-- login : admin -->
 	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin eq 'Y' }">
 		<ul id="menubar">
-			<li><a href="${ pageContext.servletContext.contextPath }/mypage.do"></a>마이페이지</li>
+			<li><a href="${ pageContext.servletContext.contextPath }/diary.do"></a>다이어리</li>
 			<li><a href="${ pageContext.servletContext.contextPath }/commu.do"></a>커뮤니티</li>
 			<!-- cs.do = customer service center -->
 			<li><a href="${ pageContext.servletContext.contextPath }/cs.do"></a>고객센터</li>
@@ -104,7 +104,7 @@ hr { clear: both;}
 	<!-- login : member -->
 	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin ne 'Y'}">
 		<ul id="menubar">
-			<li><a href="${ pageContext.servletContext.contextPath }/mypage.do"></a>마이페이지</li>
+			<li><a href="${ pageContext.servletContext.contextPath }/diary.do"></a>다이어리</li>
 			<li><a href="${ pageContext.servletContext.contextPath }/commu.do"></a>커뮤니티</li>
 			<!-- cs.do = customer service center -->
 			<li><a href="${ pageContext.servletContext.contextPath }/cs.do"></a>고객센터</li>
