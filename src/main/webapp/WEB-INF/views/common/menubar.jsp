@@ -3,14 +3,14 @@
 <%-- <%@ page import="vo.model.member.org.sixpack.semi.Member" %> --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- <% 
-	Member loginMember = (Member)session.getAttribute("loginMember");
+   Member loginMember = (Member)session.getAttribute("loginMember");
 %> --%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <style type="text/css">
-
+header { margin: 0; paddig :0; }
         div#logo {
             width: 300px;
             height: 100px;
@@ -28,7 +28,7 @@
 
         header ul#menubar {
             list-style: none;
-            position: fixed;
+            position: absolute;
             left: 400px;
             top: -5px;
 
@@ -98,6 +98,7 @@
 <header>
     <div id="logo"><img alt="logo" onclick="movePage()"
                         src="${ pageContext.servletContext.contextPath }/resources/images/mainLogo.jpg"></div>
+                        
     <!-- non-login -->
     <div id="tab">
         <c:if test="${ empty sessionScope.loginMember }">
@@ -110,25 +111,25 @@
         </c:if>
 
         <!-- login : admin -->
-        <c:if test="${ !empty sessionScope.loginMember and loginMember.admin eq 'Y' }">
+        <c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'N' }">
             <ul id="menubar">
-                <li><a href="${ pageContext.servletContext.contextPath }/member.do"></a>회원관리</li>
-                <li><a href="${ pageContext.servletContext.contextPath }/board.do"></a>게시판관리</li>
+                <li><a href="${ pageContext.servletContext.contextPath }/member.do">회원관리</a></li>
+                <li><a href="${ pageContext.servletContext.contextPath }/board.do">게시판관리</a></li>
                 <!-- cs.do = customer service center -->
-                <li><a href="${ pageContext.servletContext.contextPath }/banner.do"></a>배너관리</li>
+                <li><a href="${ pageContext.servletContext.contextPath }/banner.do">배너관리</a></li>
             </ul>
         </c:if>
 
         <!-- login : member -->
-        <c:if test="${ !empty sessionScope.loginMember and loginMember.admin ne 'Y'}">
+        <c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y' }">
             <ul id="menubar">
-                <li><a href="${ pageContext.servletContext.contextPath }/diary.do"></a>다이어리</li>
-                <li><a href="${ pageContext.servletContext.contextPath }/commu.do"></a>커뮤니티</li>
+                <li><a href="${ pageContext.servletContext.contextPath }/diary.do">다이어리</a></li>
+                <li><a href="${ pageContext.servletContext.contextPath }/commu.do">커뮤니티</a></li>
                 <!-- cs.do = customer service center -->
-                <li><a href="${ pageContext.servletContext.contextPath }/cs.do"></a>고객센터</li>
+                <li><a href="${ pageContext.servletContext.contextPath }/cs.do">고객센터</a></li>
             </ul>
         </c:if>
-    </div>
+   </div>
 
 </header>
 </body>

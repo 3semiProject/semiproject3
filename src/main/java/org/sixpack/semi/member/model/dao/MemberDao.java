@@ -14,8 +14,8 @@ public class MemberDao {
 	private SqlSessionTemplate session;
 
 	public Member selectLogin(Member member) {
-		// TODO Auto-generated method stub
-		return null;
+		 return session.selectOne("memberMapper.selectLogin", member);
+
 	}
 
 	public Member selectFindIdPhone(Member member) {

@@ -17,7 +17,7 @@
         }
 
         #mainContain {
- 	
+    
             width: 1200px;
             height: 1200px;
         }
@@ -27,7 +27,7 @@
         }
 
         #userBox #userBox_intro {
-        	border: 1px solid #D1D1D1;
+           border: 1px solid #D1D1D1;
             position: relative;
             float: left;
             margin-top: 5px;
@@ -41,7 +41,7 @@
         }
 
         #userBox #userBox_loginBox {
-        	border: 1px solid #D1D1D1;
+           border: 1px solid #D1D1D1;
             position: relative;
             float: right;
             margin-top: 5px;
@@ -148,34 +148,34 @@
             
             
         $(function(){
-        	var values = $('#new_topN').html();
-        	console.log("values : " + values);
-        	$.ajax({
-        		url: "ftop5.do",
-        		type: "post",
-        		dataType: "json",
-        		success: function(data){
-        			console.log("success : " + data);
-        			
-        			var jsonStr = JSON.stringify(data);
-        			var json = JSON.parse(jsonStr);
-        			
-        			for(var i in json.list){
-        				values +=  "</td><td><a href=''>" 
-						+ decodeURIComponent(
-								json.list[i].free_name).replace(/\+/gi, " ")
-						+ "</a></td><td>" + json.list[i].user_id
-						+ "</td><td>" + json.list[i].write_free_date
-						+ "</td></tr>";
-        			}
-        			$('#new_topN').html(values);
-        		},
-        		error : function(jqXHR, textStatus, errorThrown){
-        			console.log("ftop5.do error : " + jqXHR
-    						+ ", " + textStatus + ", "
-    						+ errorThrown);
-        		}
-        	});
+           var values = $('#new_topN').html();
+           console.log("values : " + values);
+           $.ajax({
+              url: "ftop5.do",
+              type: "post",
+              dataType: "json",
+              success: function(data){
+                 console.log("success : " + data);
+                 
+                 var jsonStr = JSON.stringify(data);
+                 var json = JSON.parse(jsonStr);
+                 
+                 for(var i in json.list){
+                    values +=  "</td><td><a href=''>" 
+                  + decodeURIComponent(
+                        json.list[i].free_name).replace(/\+/gi, " ")
+                  + "</a></td><td>" + json.list[i].user_id
+                  + "</td><td>" + json.list[i].write_free_date
+                  + "</td></tr>";
+                 }
+                 $('#new_topN').html(values);
+              },
+              error : function(jqXHR, textStatus, errorThrown){
+                 console.log("ftop5.do error : " + jqXHR
+                      + ", " + textStatus + ", "
+                      + errorThrown);
+              }
+           });
             
         }); //document ready
     </script>
@@ -203,6 +203,48 @@
                 </div>
             </div>
         </div>
+       </c:if>
+   <!-- 로그인 했을 때 : 일반회원인 경우 -->
+   <c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y' }">
+        <div id="userBox">
+            <div id="userBox_intro">Introduce</div>
+            <div id="userBox_loginBox">
+                <div id="loginbtn"><img alt="loginbtn" onclick="moveLoginPage()"
+                                        src="${ pageContext.servletContext.contextPath }/resources/images/mainLogo.jpg">
+                </div>
+                <div id="loginA">
+                    <div id="login_find">
+                        <a href="${ pageContext.servletContext.contextPath }/findId.do">ID 찾기</a>
+                        <a href="${ pageContext.servletContext.contextPath }/findPw.do">PW 찾기</a>
+                    </div>
+                    <div id="login_join">
+                        <a href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </c:if>
+   
+   <!-- 로그인 했을 때 : 관리자인 경우 -->
+   <c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'N' }">
+        <div id="userBox">
+            <div id="userBox_intro">Introduce</div>
+            <div id="userBox_loginBox">
+                <div id="loginbtn"><img alt="loginbtn"
+                                        src="${ pageContext.servletContext.contextPath }/resources/images/button.jpg">
+                </div>
+                <div id="loginA">
+                    <div id="login_find">
+                        <a href="${ pageContext.servletContext.contextPath }/findId.do">ID 찾기</a>
+                        <a href="${ pageContext.servletContext.contextPath }/findPw.do">PW 찾기</a>
+                    </div>
+                    <div id="login_join">
+                        <a href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </c:if>
 
         <hr style="clear:both; border: none">
         <%-- hot/new & article / youtube --%>
@@ -280,7 +322,6 @@
                 </div>
             </div>
         </div>
-    </c:if>
 </div>
 
 
