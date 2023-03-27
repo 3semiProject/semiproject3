@@ -5,6 +5,8 @@
 target/
 *.iml
 *.xml
+*.MF
+log4j.dtd
 ### Eclipse ###
 .metadata
 bin/
