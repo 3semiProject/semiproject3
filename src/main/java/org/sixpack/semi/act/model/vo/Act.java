@@ -8,7 +8,7 @@ public class Act implements java.io.Serializable{
 	private String move_code; 	//운동 일련번호
 	private int act_mm; 		//운동한 시간(m)
 	private int act_kcal; 		//소모칼로리량(kcal)
-	private String move_name;	//운동 이름
+	private String move_name;	//운동 이름 :출력용
 	
 	protected Act() {
 		super();	
