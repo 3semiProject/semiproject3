@@ -28,7 +28,7 @@
 
         header ul#menubar {
             list-style: none;
-            position: absolute;
+            position: fixed;
             left: 400px;
             top: -5px;
 
