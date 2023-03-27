@@ -18,6 +18,6 @@ public interface StatsActService {
 	ArrayList<Graph> selectGraphAct(Period period);
 	
 	// 추천운동 한개 조회
-	ActRec selectRecAct(String recCode); 
+	ActRec selectRecAct(int rec_act_lev);
 
 }

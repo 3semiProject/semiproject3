@@ -1,62 +1,72 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Diary</title>
-<style type="text/css">
-ul{
-padding: 0;}
-ol{
-padding:0;}
-ol li{
-display: inline-block;
-}
-</style>
-<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
-<script type="text/javascript">
-	//운동추천 화면출력용 ajax
-	//diary_showActRec.do실행
-	//
-</script>
+    <meta charset="UTF-8">
+    <title>Diary</title>
+    <style type="text/css">
+        ul {
+            padding: 0;
+        }
+
+        ol {
+            padding: 0;
+        }
+
+        ol li {
+            display: inline-block;
+        }
+    </style>
+    <script type="text/javascript"
+            src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
+    <script type="text/javascript">
+    </script>
 </head>
 <body>
-<c:import url="/WEB-INF/views/diary/common/menubar.jsp" /> <!--메인 메뉴바-->
-<c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--다이어리 메뉴바-->
+<c:import url="/WEB-INF/views/diary/common/menubar.jsp"/> <!--메인 메뉴바-->
+<c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp"/> <!--다이어리 메뉴바-->
 
-<c:import url="/WEB-INF/views/diary/common/weekbar.jsp" />		<!--날짜이동바-->
+<c:import url="/WEB-INF/views/diary/common/weekbar.jsp"/>        <!--날짜이동바-->
 
-<c:import url="/WEB-INF/views/diary/common/tap.jsp" />			<!--식단/운동/체형 탭-->
-<c:import url="/WEB-INF/views/diary/common/target.jsp" />		<!--목표 표시-->
+<c:import url="/WEB-INF/views/diary/common/tap.jsp"/>            <!--식단/운동/체형 탭-->
+<c:import url="/WEB-INF/views/diary/common/target.jsp"/>        <!--목표 표시-->
 <hr>
 
 <h2> diary_showAct.do -> actDiaryView : 운동다이어리 보기</h2>
 보낼값 : diary
 
 
-
 <div>
-<lable>운동다이어리</lable>
-<ul><li><ol>
-	<li>운동이름 : ${act[0].actname}</li>
-	<li>운동한 시간 : ${act[0].act_mm}</li>
-	<li>소모 칼로리 : ${act[0].act_kacl}</li>
-</ol></li></ul>
+    <lable>운동다이어리</lable>
+    <ul>
+        <li>
+            <ol>
+                <li>운동이름 : ${act[0].actname}</li>
+                <li>운동한 시간 : ${act[0].act_mm}</li>
+                <li>소모 칼로리 : ${act[0].act_kacl}</li>
+            </ol>
+        </li>
+    </ul>
 
-<ul><li><ol>
-	<li>운동이름 : ${act[1].actname}</li>
-	<li>운동한 시간 : ${act[1].act_mm} }</li>
-	<li>소모 칼로리 : ${act[1].act_kacl} }</li>
-</ol></li></ul>
-<ol>
+    <ul>
+        <li>
+            <ol>
+                <li>운동이름 : ${act[1].actname}</li>
+                <li>운동한 시간 : ${act[1].act_mm} }</li>
+                <li>소모 칼로리 : ${act[1].act_kacl} }</li>
+            </ol>
+        </li>
+    </ul>
+    <ol></ol>
+
 </div>
 <hr>
 <div>
-운동추천 ajax화면
+    운동추천 ajax화면
 </div>
 <pre>
 글쓰기버튼 ->ActWrite : 운동다이어리 작성
@@ -84,6 +94,6 @@ display: inline-block;
 
 </pre>
 <hr>
-<c:import url="/WEB-INF/views/common/footer.jsp" />
+<c:import url="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>

@@ -4,13 +4,14 @@ public class ActRec implements java.io.Serializable {
 	private static final long serialVersionUID = -4804906935956435619L;
 	
 	private int rec_act_code; //코멘트 코드
+	private int rec_act_lev; // 저중고 강도 확인용
 	private String rec_act_title; //코멘트 글
 	private String rec_act_image; //코멘트 이미지이름
 	private String rec_act_link; //백과사전 링크
-	protected ActRec() {
+	public ActRec() {
 		super();
 	}
-	protected ActRec(int rec_act_code, String rec_act_title, String rec_act_image, String rec_act_link) {
+	public ActRec(int rec_act_code, String rec_act_title, String rec_act_image, String rec_act_link) {
 		super();
 		this.rec_act_code = rec_act_code;
 		this.rec_act_title = rec_act_title;

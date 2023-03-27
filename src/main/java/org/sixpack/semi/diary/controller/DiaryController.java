@@ -183,4 +183,11 @@ public class DiaryController {
 //		return "views/diary/common/calendar";
 //	}
 
+
+	@RequestMapping ("diary.do")
+	public String moveStatsMethod(){
+		return "diary/stats/actStats";
+	}
+
+
 }//controller
