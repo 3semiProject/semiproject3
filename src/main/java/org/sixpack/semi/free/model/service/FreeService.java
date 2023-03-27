@@ -17,4 +17,7 @@ public interface FreeService {
 	int updateBoard(Free free);	//원글 수정용
 	int updateReply(Free reply);	//댓글 수정용 (대댓글 수정 포함)
 	int deleteBoard(Free free);	//게시글 삭제용 (원글 삭제시, 관련 댓글과 대댓글 같이 삭제)
+	ArrayList<Free> selectSearchTitle(String keyword);
+	ArrayList<Free> selectSearchWriter(String keyword);
+	ArrayList<Free> selectSearchValue(String keyword);
 }

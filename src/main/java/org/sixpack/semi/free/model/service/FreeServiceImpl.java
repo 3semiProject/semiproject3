@@ -68,5 +68,20 @@ public class FreeServiceImpl implements FreeService{
 	public ArrayList<Free> selectTop5() {
 		return freeDao.selectTop5();
 	}
+
+	@Override
+	public ArrayList<Free> selectSearchTitle(String keyword) {
+		return freeDao.selectSearchTitle(keyword);
+	}
+
+	@Override
+	public ArrayList<Free> selectSearchWriter(String keyword) {
+		return freeDao.selectSearchWriter(keyword);
+	}
+
+	@Override
+	public ArrayList<Free> selectSearchValue(String keyword) {
+		return freeDao.selectSearchValue(keyword);
+	}
 	
 }

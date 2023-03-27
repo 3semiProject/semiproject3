@@ -20,7 +20,7 @@
 		[맨처음] &nbsp;
 	</c:if>
 	<c:if test="${ currentPage > 1 }">
-		<c:url var="p1" value="/blist.do">
+		<c:url var="p1" value="/commu.do">
 			<c:param name="page" value="1" />
 		</c:url>
 		<a href="${ p1 }">[맨처음]</a> &nbsp;
@@ -30,7 +30,7 @@
 		[이전그룹] &nbsp;
 	</c:if>
 	<c:if test="${ (currentPage - 10) < startPage and (currentPage - 10) > 1 }">
-		<c:url var="pbefore" value="/blist.do">
+		<c:url var="pbefore" value="/commu.do">
 			<c:param name="page" value="${ startPage - 10 }" />
 		</c:url>
 		<a href="${ pbefore }">[이전그룹]</a> &nbsp;
@@ -42,7 +42,7 @@
 			<font size="4" color="red">[${ p }]</font>
 		</c:if>
 		<c:if test="${ p ne currentPage }">
-			<c:url var="pp" value="/blist.do">
+			<c:url var="pp" value="/commu.do">
 				<c:param name="page" value="${ p }" />
 			</c:url>
 			<a href="${ pp }">${ p }</a>
@@ -54,7 +54,7 @@
 		[다음그룹] &nbsp;
 	</c:if>
 	<c:if test="${ (currentPage + 10) > endPage and (currentPage + 10) < maxPage }">
-		<c:url var="pafter" value="/blist.do">
+		<c:url var="pafter" value="/commu.do">
 			<c:param name="page" value="${ endPage + 10 }" />
 		</c:url>
 		<a href="${ pafter }">[다음그룹]</a> &nbsp;
@@ -65,7 +65,7 @@
 		[맨끝]
 	</c:if>
 	<c:if test="${ currentPage < maxPage }">
-		<c:url var="pmax" value="/blist.do">
+		<c:url var="pmax" value="/commu.do">
 			<c:param name="page" value="${ maxPage }" />
 		</c:url>
 		<a href="${ pmax }">[맨끝]</a>

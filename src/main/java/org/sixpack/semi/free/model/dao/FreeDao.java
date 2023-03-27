@@ -59,4 +59,19 @@ public class FreeDao {
 		List<Free> list = session.selectList("freeMapper.selectTop5");
 		return (ArrayList<Free>)list;
 	}
+
+	public ArrayList<Free> selectSearchValue(String keyword) {
+		List<Free> list = session.selectList("freeMapper.selectSearchValue", keyword);
+		return (ArrayList<Free>)list;
+	}
+
+	public ArrayList<Free> selectSearchWriter(String keyword) {
+		List<Free> list = session.selectList("freeMapper.selectSearchWriter", keyword);
+		return (ArrayList<Free>)list;
+	}
+
+	public ArrayList<Free> selectSearchTitle(String keyword) {
+		List<Free> list = session.selectList("freeMapper.selectSearchTitle", keyword);
+		return (ArrayList<Free>)list;
+	}
 }
