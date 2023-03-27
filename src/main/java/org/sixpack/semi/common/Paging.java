@@ -9,7 +9,7 @@ public class Paging {
 	private int currentPage; // 출력할 페이지
 	private int maxPage; // 총 페이지 수
 	private int startPage; //페이지그룹의 시작값
-	private int endPage;  //페이지그룹의 끝값
+	private int endPage;  //페이지그룹의 끝값5
 
 	public Paging(int listCount, int currentPage, int limit) {
 		this.listCount = listCount;
