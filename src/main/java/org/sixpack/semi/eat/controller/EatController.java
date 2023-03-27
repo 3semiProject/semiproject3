@@ -27,7 +27,7 @@ public class EatController {
 	private DiaryService diaryService;	
 	
 	
-	//식단다이어리 화면출력용
+	//식단다이어리 화면출력용///
 	//diary 전달값은 없을 수 없음. userid와 날짜라도 받아야함.
 	@RequestMapping("diary_showEat.do")
 	public String showEatDiary(ModelAndView mv,
