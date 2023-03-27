@@ -15,10 +15,11 @@ div.tabs{
 	width: 500px;
 	height: 40px;
 	text-align: center;
+	font-size:0
 }
 div a.tab{
 	display: inline-block;
-	margin: -1px;
+	margin: 0px;
 	padding: 0px;
 	width:150px;
 	height:40px;
