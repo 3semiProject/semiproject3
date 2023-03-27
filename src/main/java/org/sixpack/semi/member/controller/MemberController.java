@@ -59,15 +59,21 @@ public class MemberController {
 
 	}
 	
-	// 로그인 페이지 내보내기용 메소드
+	  // 로그인 페이지 내보내기용 메소드
+	   @RequestMapping(value = "loginPage.do", method = { RequestMethod.GET, RequestMethod.POST })
+	   public String moveLoginPage() {
+	      return "member/loginPage";
+	   }
+	
+	// 회원가입 페이지 내보내기용 메소드
 	@RequestMapping(value = "enrollPage.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String moveLoginPage() {
-		return "member/loginPage";
+	public String moveEnrollPage() {
+		return "member/enrollPage";
 	}
 	
 	// ajax 통신으로 아이디 중복확인 요청 처리용 메소드
 	@RequestMapping(value = "idChk.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
-	public void dupCheckIdMethod(@RequestParam("userid") String user_id, HttpServletResponse response)
+	public void dupCheckIdMethod(@RequestParam("user_id") String user_id, HttpServletResponse response)
 			throws IOException {
 		int idCount = memberService.selectDupCheckId(user_id);
 
@@ -87,14 +93,14 @@ public class MemberController {
 
 	}
 	
-	// ajax 통신으로 아이디 중복확인 요청 처리용 메소드
+	// ajax 통신으로 닉네임 중복확인 요청 처리용 메소드
 	@RequestMapping(value = "nickChk.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
 	public void dupCheckNickMethod(@RequestParam("user_nickname") String user_nickname, HttpServletResponse response)
 			throws IOException {
-		int idCount = memberService.selectDupCheckNick(user_nickname);
+		int nickCount = memberService.selectDupCheckNick(user_nickname);
 
 		String returnStr = null;
-		if (idCount == 0) {
+		if (nickCount == 0) {
 			returnStr = "ok";
 		} else {
 			returnStr = "duple";
@@ -109,7 +115,7 @@ public class MemberController {
 
 	}
 	
-	// ajax 통신으로 아이디 중복확인 요청 처리용 메소드
+	// ajax 통신으로 핸드폰 중복확인 요청 처리용 메소드
 	@RequestMapping(value = "phoneChk.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
 	public void dupCheckPhoneMethod(@RequestParam("phone") String phone, HttpServletResponse response)
 			throws IOException {
