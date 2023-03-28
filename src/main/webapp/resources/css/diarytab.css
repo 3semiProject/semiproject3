@@ -1,0 +1,44 @@
+@charset "UTF-8";
+/*다이어리 tab에 적용될 css*/
+div.tabs{
+	margin: auto;
+	padding: 0px;
+	height: 40px;
+	text-align: center;
+	font-size:0;
+}
+a.tabs.center{
+	border-left: 1px solid #868e96;
+	border-right: 1px solid #868e96;
+	border-radius: 0px;
+}
+a.tabs.left{
+	border-radius: 7px 0px 0px 7px;	
+}
+a.tabs.right{
+	border-radius: 0px 7px 7px 0px;	
+}
+a.tabs{
+	border: 1px solid #868e96;
+	display: inline-block;
+	margin: 0px;
+	padding: 0px;
+	width:150px;
+	height:40px;
+	background-color: white;
+	border-bottom: 3px solid rgba(134, 142, 150,0.5);
+
+	color: #797979;
+	line-height: 40px;
+	text-align: center;
+	text-decoration: none;
+	font-size: large;
+	font-weight: 600;
+	text-shadow: 1px 1px 2px rgba(0,0,0,0.3);	
+	border-bottom: 3px solid gray;
+}
+
+a.tabs:hover{
+	background-color: rgba(130, 201, 18, 0.5);
+	border-bottom: 3px solid rgba(86,140,8,0.5);
+}

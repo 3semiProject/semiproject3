@@ -19,12 +19,10 @@ display: inline-block;
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 </head>
-<eat>
-<c:import url="/WEB-INF/views/diary/common/menubar.jsp" /> <!--메인 메뉴바-->
-<c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--다이어리 메뉴바-->
- 
-
-<c:import url="/WEB-INF/views/diary/common/tap.jsp" />			<!--식단/식단/식단 탭-->
+<body>
+<c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
+<br><c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--다이어리 메뉴바-->
+<br><c:import url="/WEB-INF/views/diary/common/statsTap.jsp" />			<!--식단/식단/식단 탭-->
 <hr>
 
 <h2> diary_showEatStats.do-> eatStatsView : 식단 통계 보기  </h2>
@@ -39,5 +37,5 @@ diary_eatStats.do ->ajax : stats -> 분석내용, top3 이미지
 
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp" />
-</eat>
+</body>
 </html>

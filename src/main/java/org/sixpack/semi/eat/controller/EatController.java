@@ -2,6 +2,7 @@ package org.sixpack.semi.eat.controller;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.act.model.vo.Act;
 import org.sixpack.semi.diary.controller.DiaryController;
 import org.sixpack.semi.diary.model.service.DiaryService;
 import org.sixpack.semi.diary.model.vo.Diary;
@@ -27,10 +28,14 @@ public class EatController {
 	private DiaryService diaryService;	
 	
 	
-	//식단다이어리 화면출력용///
+	//식단다이어리 화면출력용
+	@RequestMapping("diary_showEatDiary.do")
+	public String showEatDiary() {
+		return "diary/eat/eatDiary";			
+	}
+	
 	//diary 전달값은 없을 수 없음. userid와 날짜라도 받아야함.
-	@RequestMapping("diary_showEat.do")
-	public String showEatDiary(ModelAndView mv,
+	public String show(ModelAndView mv,
 			@RequestParam(value="diary", required=false) Diary diary, 
 			ArrayList<Diary> diarys, ArrayList<Eat> eats, ArrayList<Eat> sums,
 			Eat total) {		
@@ -62,14 +67,29 @@ public class EatController {
 			mv.addObject("eats", eats);
 			mv.addObject("sums", sums);
 			mv.addObject("total", total);
-			return "diary/eat/eatView";
+			return "diary/eat/eatDiary";
 		}else {
 			mv.addObject("message","다이어리 조회 실패");
 			return "common/error";
 		}
 		}else {
-			return "diary/eat/eatView";			
+			return "diary/eat/eatDiary";			
 		}
 		
 	}
+	
+	//식단다이어리 작성 화면출력용
+	@RequestMapping("diary_showEatWrite.do")
+	public String showEatWriteView() {
+		//어떤날짜에 누가 작성할지를 전달받고 전달해야함
+		return "diary/eat/eatWrite";
+	}
+	
+	//식단다이어리 수정 화면출력용
+	@RequestMapping("diary_showEatModify.do")
+	public String showEatModify() {
+		return "diary/eat/eatModify";
+	}
+
+	
 }
