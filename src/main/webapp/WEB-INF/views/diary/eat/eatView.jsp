@@ -34,7 +34,7 @@ ol li{display: inline-block;}
 <br><c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
 <br><c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--다이어리 메뉴바-->
 <br><c:import url="/WEB-INF/views/diary/common/weekbar.jsp" />		<!--날짜이동바-->
-<br><c:import url="/WEB-INF/views/diary/common/tap.jsp" />		<!--식단/운동/식단 탭-->
+<br><c:import url="/WEB-INF/views/diary/common/showTap.jsp" />		<!--식단/운동/식단 탭-->
 <br><c:import url="/WEB-INF/views/diary/common/target.jsp" />		<!--목표 표시-->
 <hr>
 
