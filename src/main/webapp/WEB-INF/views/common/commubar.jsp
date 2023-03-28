@@ -13,8 +13,8 @@
             margin:0;
             padding: 0;
             list-style: none;
-            border: 1px solid gray;
-            border-radius: 30px;
+            border: 1px solid #D1D1D1;
+            border-radius: 35px;
 
         }
         
@@ -25,6 +25,8 @@
             margin: 0px;
             padding: 0;
         }
+        
+        
 
         #tab2 div a {
             text-decoration: none;
@@ -40,20 +42,8 @@
             text-shadow: 1px 1px 2px #D1D1D1;
             font-size: 20pt;
             border: 1px solid #D1D1D1;
+            
         }
-        
-        .round {
-        border-radius-top-left: 30px;
-        border-radius-bottom-left: 30px;
-        
-        }
-        
-        .round a {
-        border-spacing: 0;
-         border-radius-top-left: 30px;
-        border-radius-bottom-left: 30px;
-        }
-        
 
         #tab2 div a:hover {
             text-decoration: none;
@@ -77,12 +67,12 @@
 <body>
 <hr>
 <div id="tab2">
-	<div class="round"><a href="${ pageContext.servletContext.contextPath }/hotlist.do">HOT</a></div>
-	<div><a href="${ pageContext.servletContext.contextPath }/newlist.do">NEW</a></div>
-	<div><a href="${ pageContext.servletContext.contextPath }/commu.do">FREE</a></div>
-	<div><a href="${ pageContext.servletContext.contextPath }/tiplist.do">TIP</a></div>
-	<div><a href="${ pageContext.servletContext.contextPath }/eyebodylist.do">EYEBODY</a></div>
-	<div class="round"><a href="${ pageContext.servletContext.contextPath }/bfaflist.do">BF & AF</a></div>
+	<div class="round"><a style="border-bottom-left-radius: 35px; border-top-left-radius: 35px;" href="${ pageContext.servletContext.contextPath }/hotlist.do?page=1">HOT</a></div>
+	<div><a href="${ pageContext.servletContext.contextPath }/newlist.do?page=1">NEW</a></div>
+	<div><a href="${ pageContext.servletContext.contextPath }/commu.do?page=1">FREE</a></div>
+	<div><a href="${ pageContext.servletContext.contextPath }/tiplist.do?page=1">TIP</a></div>
+	<div><a href="${ pageContext.servletContext.contextPath }/eyebodylist.do?page=1">EYEBODY</a></div>
+	<div class="round"><a style="border-bottom-right-radius: 35px; border-top-right-radius: 35px;" href="${ pageContext.servletContext.contextPath }/bfaflist.do?page=1">BF & AF</a></div>
    </ul>
 </div>
 </body>

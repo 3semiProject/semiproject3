@@ -120,7 +120,7 @@
 
         <ul>
             <!-- 게시판 제목 -->
-            <li id="title">FREE 게시판</li>
+            <li id="title">EYEBODY 게시판</li>
 
             <!-- 게시판 목록  -->
             <li>
@@ -136,29 +136,29 @@
                         </ul>
                     </li>
                     <!-- 게시물이 출력될 영역 -->
-                <c:forEach items="${ list }" var="f">
+                <c:forEach items="${ list }" var="e">
                 	<li>
                 		<ul>
-                			<li>${ f.free_no }</li>
-                			<c:url var="fdt" value="/freedetail.do?page=1">
-								<c:param name="free_no" value="${ f.free_no }" />
+                			<li>${ e.eyebody_no }</li>
+                			<c:url var="edt" value="/edetail.do?page=1">
+								<c:param name="free_no" value="${ e.eyebody_no }" />
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
                             <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">
-								<a href="${ fdt }">${ f.free_name }</a>
+								<a href="${ edt }">${ e.eyebody_name }</a>
 							</c:if>
 							<c:if test="${ empty sessionScope.loginMember }">
-								${ f.free_name }
+								${ e.eyebody_name }
 							</c:if>
                             </li>
                             <li>
-                            	<c:if test="${ !empty f.originfile_free }">◎</c:if>
-								<c:if test="${ empty f.originfile_free }">Empty</c:if>
+                            	<c:if test="${ !empty e.originfile_eyebody }">◎</c:if>
+								<c:if test="${ empty e.originfile_eyebody }">Empty</c:if>
                             </li>
-                            <li>${f.write_free_date}</li>
-                            <li>${f.user_id}</li>
-                            <li>${f.click_free_no}</li>
+                            <li>${e.write_eyebody_date}</li>
+                            <li>${e.user_id}</li>
+                            <li>${e.click_eyebody_no}</li>
                 		</ul>
                 	</li>
                 </c:forEach>                       
@@ -167,12 +167,12 @@
 
             <!-- 검색 폼 영역 -->
             <li id='liSearchOption'>
-            	<form action="fsearch.do?page=1" method="post">
+            	<form action="eyebodysearch.do?page=1" method="post">
                 <div>
                     <select name="searchtype" >
-                        <option value="fname">제목</option>
-                        <option value="fvalue">내용</option>
-                        <option value="fid">작성자</option>
+                        <option value="ename">제목</option>
+                        <option value="evalue">내용</option>
+                        <option value="eid">작성자</option>
                     </select>
                     <input type="search" name="keyword">
                     <input type="submit" value="검색">
@@ -184,7 +184,7 @@
     </div>
 <br>
 <!-- 페이징 처리 -->
-<c:import url="/WEB-INF/views/free/freepaging.jsp" />
+<c:import url="/WEB-INF/views/eyebody/eyebodypaging.jsp" />
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 </body>

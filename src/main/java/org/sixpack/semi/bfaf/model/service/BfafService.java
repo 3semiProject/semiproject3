@@ -16,4 +16,7 @@ public interface BfafService {
 	int updateBoard(Bfaf bfaf);	//원글 수정용
 	int updateReply(Bfaf reply);	//댓글 수정용 (대댓글 수정 포함)
 	int deleteBoard(Bfaf bfaf);	//게시글 삭제용 (원글 삭제시, 관련 댓글과 대댓글 같이 삭제)
+	ArrayList<Bfaf> selectSearchTitle(String keyword);
+	ArrayList<Bfaf> selectSearchWriter(String keyword);
+	ArrayList<Bfaf> selectSearchValue(String keyword);
 }

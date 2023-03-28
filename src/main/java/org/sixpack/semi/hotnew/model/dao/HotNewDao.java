@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -54,5 +55,44 @@ public class HotNewDao {
 
 	public int deleteBoard(HotNew hotnew) {
 		return session.delete("hotnewMapper.deleteBoard", hotnew);
+	}
+
+	public ArrayList<HotNew> newSelectList(Paging page) {
+		List<HotNew> list = session.selectList("hotnewMapper.newSelectList", page);
+		return (ArrayList<HotNew>)list;
+	}
+
+	public ArrayList<HotNew> newSelectSearchTitle(String keyword) {
+		List<HotNew> list = session.selectList("hotnewMapper.newSelectSearchTitle", keyword);
+		return (ArrayList<HotNew>)list;
+	}
+
+	public ArrayList<HotNew> newSelectSearchWriter(String keyword) {
+		List<HotNew> list = session.selectList("hotnewMapper.newSelectSearchWriter", keyword);
+		return (ArrayList<HotNew>)list;
+	}
+
+	public ArrayList<HotNew> newSelectSearchValue(String keyword) {
+		List<HotNew> list = session.selectList("hotnewMapper.newSelectSearchValue", keyword);
+		return (ArrayList<HotNew>)list;
+	}
+	public ArrayList<HotNew> hotSelectList(Paging page) {
+		List<HotNew> list = session.selectList("hotnewMapper.hotSelectList", page);
+		return (ArrayList<HotNew>)list;
+	}
+
+	public ArrayList<HotNew> hotSelectSearchTitle(String keyword) {
+		List<HotNew> list = session.selectList("hotnewMapper.hotSelectSearchTitle", keyword);
+		return (ArrayList<HotNew>)list;
+	}
+
+	public ArrayList<HotNew> hotSelectSearchWriter(String keyword) {
+		List<HotNew> list = session.selectList("hotnewMapper.hotSelectSearchWriter", keyword);
+		return (ArrayList<HotNew>)list;
+	}
+
+	public ArrayList<HotNew> hotSelectSearchValue(String keyword) {
+		List<HotNew> list = session.selectList("hotnewMapper.hotSelectSearchValue", keyword);
+		return (ArrayList<HotNew>)list;
 	}
 }

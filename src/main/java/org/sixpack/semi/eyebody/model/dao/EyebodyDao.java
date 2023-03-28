@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.sixpack.semi.bfaf.model.vo.Bfaf;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,19 @@ public class EyebodyDao {
 
 	public int deleteBoard(Eyebody eyebody) {
 		return session.delete("eyebodyMapper.deleteBoard", eyebody);
+	}
+	public ArrayList<Eyebody> selectSearchValue(String keyword) {
+		List<Eyebody> list = session.selectList("eyebodyMapper.selectSearchValue", keyword);
+		return (ArrayList<Eyebody>)list;
+	}
+
+	public ArrayList<Eyebody> selectSearchWriter(String keyword) {
+		List<Eyebody> list = session.selectList("eyebodyMapper.selectSearchWriter", keyword);
+		return (ArrayList<Eyebody>)list;
+	}
+
+	public ArrayList<Eyebody> selectSearchTitle(String keyword) {
+		List<Eyebody> list = session.selectList("eyebodyMapper.selectSearchTitle", keyword);
+		return (ArrayList<Eyebody>)list;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.sixpack.semi.tip.model.vo.Tip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -55,5 +56,20 @@ public class TipDao {
 
 	public int deleteBoard(Tip tip) {
 		return session.delete("tipMapper.deleteBoard", tip);
+	}
+	
+	public ArrayList<Tip> selectSearchValue(String keyword) {
+		List<Tip> list = session.selectList("tipMapper.selectSearchValue", keyword);
+		return (ArrayList<Tip>)list;
+	}
+
+	public ArrayList<Tip> selectSearchWriter(String keyword) {
+		List<Tip> list = session.selectList("tipMapper.selectSearchWriter", keyword);
+		return (ArrayList<Tip>)list;
+	}
+
+	public ArrayList<Tip> selectSearchTitle(String keyword) {
+		List<Tip> list = session.selectList("tipMapper.selectSearchTitle", keyword);
+		return (ArrayList<Tip>)list;
 	}
 }
