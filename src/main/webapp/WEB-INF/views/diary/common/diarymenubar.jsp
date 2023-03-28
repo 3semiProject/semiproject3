@@ -9,15 +9,11 @@
 <meta charset="UTF-8">
 <style type="text/css">
 div.diarymenu{
-	margin: auto;
-	background-color: white;
-	border-radius: 10px; 
-	width: 683px;
-	height: 40px;
 	text-align: center;
+	margin: auto;
+	padding: 0px;
+	height: 40px;
 	font-size:0;
-	border: 2px solid #868e96;
-	border-bottom: 3px solid rgba(134, 142, 150,0.5);
 }
 a.diarymenu{
 	display: inline-block;
@@ -25,6 +21,9 @@ a.diarymenu{
 	padding: 0px;
 	width:170px;
 	height:40px;
+	border: 2px solid #868e96;
+	background-color: white;
+	border-bottom: 3px solid rgba(134, 142, 150,0.5);
 
 	color: #087f5b;
 	line-height: 40px;
@@ -54,9 +53,9 @@ a.diarymenu:hover{
 </head>
 <body>
 	<div class="diarymenu">
-		<a href="${ pageContext.servletContext.contextPath }/diary_showEat.do" class="diarymenu left">다이어리</a>
+		<a href="${ pageContext.servletContext.contextPath }/diary_showEatDiary.do" class="diarymenu left">다이어리</a>
 		<a href="${ pageContext.servletContext.contextPath }/diary_showEatWrite.do" class="diarymenu center">다이어리 작성</a>
-		<a href="#" class="diarymenu center">목표관리</a>
+		<a href="${ pageContext.servletContext.contextPath }/diary_showGoalView.do" class="diarymenu center">목표관리</a>
 		<a href="${ pageContext.servletContext.contextPath }/diary_showEatStats.do" class="diarymenu right">통계화면</a>
 	</div>
 </body>

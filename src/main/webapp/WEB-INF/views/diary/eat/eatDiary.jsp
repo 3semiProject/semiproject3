@@ -13,9 +13,8 @@ ul{padding: 0;}
 ol{padding:0;}
 ol li{display: inline-block;}
 #mainContain {
- 	
-            width: 1200px;
-            height: 1200px;
+	width: 1200px;
+    height: 1200px;
     min-height: 100%;
     position: relative;
     padding-bottom: 60px;
@@ -23,9 +22,8 @@ ol li{display: inline-block;}
 #footer {
     position: relative;
     transform: translatY(-100%);
-}   
-        
-        
+}      
+      
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 </head>
@@ -33,12 +31,12 @@ ol li{display: inline-block;}
 <div id="mainContain">
 <br><c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
 <br><c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--다이어리 메뉴바-->
-<br><c:import url="/WEB-INF/views/diary/common/weekbar.jsp" />		<!--날짜이동바-->
-<br><c:import url="/WEB-INF/views/diary/common/showTap.jsp" />		<!--식단/운동/식단 탭-->
+<br><c:import url="/WEB-INF/views/diary/common/weekBar.jsp" />		<!--날짜이동바-->
+<br><c:import url="/WEB-INF/views/diary/common/diaryTap.jsp" />		<!--식단/운동/식단 탭-->
 <br><c:import url="/WEB-INF/views/diary/common/target.jsp" />		<!--목표 표시-->
 <hr>
 
-<h2> diary_showEat -> eatView : 운동다이어리 보기</h2>
+<h2> diary_showEat -> eatView : 식단다이어리 보기</h2>
 <pre>
 보낼값 : diary
 받을값 : diarys, eats, sums, total

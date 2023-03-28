@@ -84,7 +84,7 @@ hr { clear: both;}
 	<!-- non-login -->
 	<c:if test="${ empty sessionScope.loginMember }">
 		<ul id="menubar">
-			<li><a href="${ pageContext.servletContext.contextPath }/test.do">다이어리</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/diary_showEatDiary.do">다이어리</a></li>
 			<li><a href="${ pageContext.servletContext.contextPath }/commu.do">커뮤니티</a></li>
 			<!-- cs.do = customer service center -->
 			<li><a href="${ pageContext.servletContext.contextPath }/cs.do">고객센터</a></li>

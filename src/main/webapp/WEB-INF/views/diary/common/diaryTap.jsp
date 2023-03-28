@@ -12,9 +12,9 @@
 </head>
 <body>
 	<div class="tabs">
-		<a href="${ pageContext.servletContext.contextPath }/diary_showEat.do" class="tabs left">식단</a>
-		<a href="${ pageContext.servletContext.contextPath }/diary_showAct.do" class="tabs center">운동</a>
-		<a href="${ pageContext.servletContext.contextPath }/diary_showBody.do" class="tabs right">체형</a>
+		<a href="${ pageContext.servletContext.contextPath }/diary_showEatDiary.do" class="tabs left">식단</a>
+		<a href="${ pageContext.servletContext.contextPath }/diary_showActDiary.do" class="tabs center">운동</a>
+		<a href="${ pageContext.servletContext.contextPath }/diary_showBodyDiary.do" class="tabs right">체형</a>
 	</div>
 </body>
 </html>

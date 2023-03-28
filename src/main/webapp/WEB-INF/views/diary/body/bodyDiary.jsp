@@ -16,20 +16,22 @@ padding:0;}
 ol li{
 display: inline-block;
 }
+#footer {
+    position: relative;
+    transform: translatY(-100%);
+} 
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 </head>
 <body>
-<c:import url="/WEB-INF/views/diary/common/menubar.jsp" /> <!--메인 메뉴바-->
-<c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--다이어리 메뉴바-->
-
-<c:import url="/WEB-INF/views/diary/common/weekbar.jsp" />		<!--날짜이동바-->
-
-<c:import url="/WEB-INF/views/diary/common/tap.jsp" />			<!--식단/운동/체형 탭-->
-<c:import url="/WEB-INF/views/diary/common/target.jsp" />		<!--목표 표시-->
+<br><c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
+<br><c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--다이어리 메뉴바-->
+<br><c:import url="/WEB-INF/views/diary/common/weekBar.jsp" />		<!--날짜이동바-->
+<br><c:import url="/WEB-INF/views/diary/common/diaryTap.jsp" />		<!--식단/운동/식단 탭-->
+<br><c:import url="/WEB-INF/views/diary/common/target.jsp" />		<!--목표 표시-->
 <hr>
 
-<h2> diary_showBody.do -> bodyView : 운동다이어리 보기</h2>
+<h2> diary_showBody.do -> bodyView : 체형다이어리 보기</h2>
 보낼값 : diary
 
 받을값 : body
@@ -77,6 +79,7 @@ display: inline-block;
 추천없음
 </pre>
 <hr>
+<div id="footer">
 <c:import url="/WEB-INF/views/common/footer.jsp" />
-</body>
+</div></body>
 </html>

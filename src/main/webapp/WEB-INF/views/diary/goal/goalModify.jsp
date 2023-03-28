@@ -20,12 +20,11 @@ display: inline-block;
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 </head>
 <body>
-<c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
-<br>
-<c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--다이어리 메뉴바-->
+<c:import url="/WEB-INF/views/common/diary/menubar.jsp" /> <!--메인 메뉴바-->
+<br><c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--메인 메뉴바-->
 <hr>
 
-<h2> diary_showGoalView.do : showGoalView-> goalView : 목표관리 화면</h2>
+<h2> diary_showGoalModify.do : showGoalModify -> goalModify : 목표관리 수정화면</h2>
 보낼값 : diary
 받은값 : goal
 
