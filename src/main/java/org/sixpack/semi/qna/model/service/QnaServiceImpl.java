@@ -2,6 +2,7 @@ package org.sixpack.semi.qna.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.qna.model.dao.QnaDao;
 import org.sixpack.semi.qna.model.vo.Qna;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,8 @@ public class QnaServiceImpl implements QnaService{
 	private QnaDao qnaDao;
 
 	@Override
-	public ArrayList<Qna> selectQnaList() {
-		return qnaDao.selectQnaList();
+	public ArrayList<Qna> selectQnaList(Paging page) {
+		return qnaDao.selectQnaList(page);
 	}
 
 	@Override
@@ -40,5 +41,10 @@ public class QnaServiceImpl implements QnaService{
 	@Override
 	public int deleteQna(int qna_no) {
 		return qnaDao.deleteQna(qna_no);
+	}
+
+	@Override
+	public int selectListCount() {
+		return qnaDao.selectListCount();
 	}
 }
