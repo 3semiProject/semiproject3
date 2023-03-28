@@ -95,4 +95,9 @@ public class HotNewDao {
 		List<HotNew> list = session.selectList("hotnewMapper.hotSelectSearchValue", keyword);
 		return (ArrayList<HotNew>)list;
 	}
+
+	public ArrayList<HotNew> hotnewSelectTop5() {
+		List<HotNew> list = session.selectList("hotnewMapper.hotnewSelectTop5");
+		return (ArrayList<HotNew>)list;
+	}
 }

@@ -1,9 +1,14 @@
 package org.sixpack.semi.hotnew.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
+import org.sixpack.semi.free.model.vo.Free;
 import org.sixpack.semi.hotnew.model.service.HotNewService;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
 import org.slf4j.Logger;
@@ -14,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -22,6 +28,27 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 	
 	@Autowired
 	private HotNewService hotNewService;
+	
+	@RequestMapping(value="hntop5.do", method=RequestMethod.POST)
+	@ResponseBody
+	public String freeNewTop5Method() throws UnsupportedEncodingException {
+		ArrayList<HotNew> list = hotNewService.hotnewSelectTop5();
+		logger.info("hntop5.do : " + list.size());
+		
+		JSONObject sendJson = new JSONObject();
+		JSONArray jarr = new JSONArray();
+		
+		for(HotNew hotNew : list) {
+			JSONObject job = new JSONObject();
+			
+			job.put("hotnew_name", URLEncoder.encode(hotNew.getHotnew_name(), "utf-8"));
+			job.put("write_hotnew_date", hotNew.getWrite_hotnew_date().toString());
+			job.put("user_id", hotNew.getUser_id());
+			jarr.add(job);
+		}
+		sendJson.put("list", jarr);
+		return sendJson.toJSONString();
+	}
 	
 	@RequestMapping("newlist.do")
 	public ModelAndView newListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {

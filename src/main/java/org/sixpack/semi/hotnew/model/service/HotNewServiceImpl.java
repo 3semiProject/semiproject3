@@ -98,4 +98,9 @@ public class HotNewServiceImpl implements HotNewService {
 	public ArrayList<HotNew> hotSelectSearchValue(String keyword) {
 		return hotNewDao.hotSelectSearchValue(keyword);
 	}
+
+	@Override
+	public ArrayList<HotNew> hotnewSelectTop5() {
+		return hotNewDao.hotnewSelectTop5();
+	}
 }

@@ -25,4 +25,5 @@ public interface HotNewService {
 	ArrayList<HotNew> hotSelectSearchTitle(String keyword);
 	ArrayList<HotNew> hotSelectSearchWriter(String keyword);
 	ArrayList<HotNew> hotSelectSearchValue(String keyword);
+	ArrayList<HotNew> hotnewSelectTop5();
 }
