@@ -3,11 +3,13 @@ package org.sixpack.semi.member.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.sixpack.semi.member.model.service.MemberService;
 import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;
@@ -18,21 +20,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import net.nurigo.java_sdk.api.Message;
 
 @Controller
 public class MemberController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
-	
+
 	@Autowired
 	private MemberService memberService;
-	
+
 	// login 처리용 메소드
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public String loginMethod(Member member, HttpSession session, Model model) {
 		logger.info("login.do : " + member);
-		
+
 		Member loginMember = memberService.selectLogin(member);
 
 		if (loginMember != null) {
@@ -43,7 +48,7 @@ public class MemberController {
 			return "common/error";
 		}
 	}
-	
+
 	// logout 처리용 메소드
 	@RequestMapping("logout.do")
 	public String logoutMethod(HttpServletRequest request, Model model) {
@@ -58,19 +63,19 @@ public class MemberController {
 		}
 
 	}
-	
-	  // 로그인 페이지 내보내기용 메소드
-	   @RequestMapping(value = "loginPage.do", method = { RequestMethod.GET, RequestMethod.POST })
-	   public String moveLoginPage() {
-	      return "member/loginPage";
-	   }
-	
+
+	// 로그인 페이지 내보내기용 메소드
+	@RequestMapping(value = "loginPage.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String moveLoginPage() {
+		return "member/loginPage";
+	}
+
 	// 회원가입 페이지 내보내기용 메소드
 	@RequestMapping(value = "enrollPage.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String moveEnrollPage() {
 		return "member/enrollPage";
 	}
-	
+
 	// ajax 통신으로 아이디 중복확인 요청 처리용 메소드
 	@RequestMapping(value = "idChk.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
 	public void dupCheckIdMethod(@RequestParam("user_id") String user_id, HttpServletResponse response)
@@ -92,7 +97,7 @@ public class MemberController {
 		out.close();
 
 	}
-	
+
 	// ajax 통신으로 닉네임 중복확인 요청 처리용 메소드
 	@RequestMapping(value = "nickChk.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
 	public void dupCheckNickMethod(@RequestParam("user_nickname") String user_nickname, HttpServletResponse response)
@@ -114,29 +119,41 @@ public class MemberController {
 		out.close();
 
 	}
-	
-	// ajax 통신으로 핸드폰 중복확인 요청 처리용 메소드
-	@RequestMapping(value = "phoneChk.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
-	public void dupCheckPhoneMethod(@RequestParam("phone") String phone, HttpServletResponse response)
-			throws IOException {
-		int idCount = memberService.selectDupCheckPhone(phone);
 
-		String returnStr = null;
-		if (idCount == 0) {
-			returnStr = "ok";
-		} else {
-			returnStr = "duple";
+	// ajax 통신으로 핸드폰 인증번호 요청 처리용 메소드
+	@RequestMapping(value = "authNumber.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
+	@ResponseBody
+	public String authPhoneMethod(@RequestParam("phone") String phone)
+			{
+		// 휴대폰 문자 보내기 => 난수생성
+		int randomNumber = (int) ((Math.random() * (9999 - 1000 + 1)) + 1000);
+
+		System.out.println("실행전 : " +phone);
+
+		String api_key = "NCSAXYKAJ1BPSNRP";
+		String api_secret = "ZNSC1NPSRO0FCUH9RN5XWG7MAJPXU81Z";
+		Message coolsms = new Message(api_key, api_secret);
+		String url = "http://api.coolsms.co.kr/messages/v4/send";
+		System.out.println("asdfasdf" + coolsms);
+
+		// param(to, from, type, text)
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("to", phone); // 수신번호
+		params.put("from", "01042357723"); // 발신번호
+		params.put("type", "SMS");
+		params.put("text", "[인증번호]\n" + randomNumber + "\n입니다.");
+		params.put("app_version", "test app 1.2"); // application name and version
+
+		try {
+			JSONObject obj = (JSONObject) coolsms.send(params);
+			System.out.println(obj.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		// response 를 이용해서 클라이언트와 출력스트림을 연결하고 값 보냄
-		response.setContentType("text/html; charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.append(returnStr);
-		out.flush();
-		out.close();
-
+			return Integer.toString(randomNumber);
 	}
-	
+
 	// 회원가입 요청 처리용 메소드
 	@RequestMapping(value = "enroll.do", method = RequestMethod.POST)
 	public String memberinsertMethod(Member member, Model model) {
@@ -151,39 +168,47 @@ public class MemberController {
 			return "common/error";
 		}
 	}
+
 	@RequestMapping("findIdPhone.do")
 	public String findIdPhoneMethod(HttpServletResponse response, Member member, Model model) {
 		return null;
 	}
+
 	@RequestMapping("findIdEmail.do")
 	public String findIdEmailMethod(HttpServletResponse response, Member member, Model model) {
 		return null;
 	}
+
 	@RequestMapping("findPwId.do")
 	public String findpwIMethod(HttpServletResponse response, Member member, Model model) {
 		return null;
 	}
+
 	@RequestMapping("findPwEmailr.do")
 	public String findpwEmailMethod(HttpServletResponse response, Member member, Model model) {
 		return null;
 	}
+
 	@RequestMapping("findPwEmail.do")
 	public String findpwEMethod(HttpServletResponse response, Member member, Model model) {
 		return null;
 	}
+
 	@RequestMapping("sendEmail.do")
 	public String sendEmailMethod(HttpServletResponse response, @RequestParam("email") String email) {
 		return null;
 	}
+
 	@RequestMapping("ShowPfofile.do")
 	public String showProfileMethod(Member member, Model model) {
 		return null;
 	}
+
 	@RequestMapping("showNickname.do")
 	public String showNicknameMethod(Member member, Model model) {
 		return null;
 	}
-	
+
 	// 회원정보 비밀번호 수정
 	@RequestMapping(value = "updatePw.do", method = RequestMethod.POST)
 	public String memberUpdateMethod(Member member, Model model) {
@@ -199,7 +224,7 @@ public class MemberController {
 			return "common/error";
 		}
 	}
-	
+
 	// 마이페이지 클릭시 내 정보 보기 요청 처리용 메소드
 	@RequestMapping("myinfo.do")
 	public ModelAndView showMypageMethod(@RequestParam("user_id") String user_id, ModelAndView mv) {
@@ -219,7 +244,7 @@ public class MemberController {
 
 		return mv;
 	}
-	
+
 	// 회원정보 수정 처리용 : 수정 성공시 myinfoPage.jsp 로 이동함
 	@RequestMapping(value = "updateMember.do", method = RequestMethod.POST)
 	public String updateMemberMethod(Member member, Model model) {
@@ -235,7 +260,7 @@ public class MemberController {
 			return "common/error";
 		}
 	}
-	
+
 	// 회원 탈퇴(삭제) 요청 처리용
 	@RequestMapping("deleteMember.do")
 	public String deleteMemberMethod(@RequestParam("user_id") String user_id, Model model) {
@@ -251,7 +276,7 @@ public class MemberController {
 		}
 
 	}
-	
+
 	// 회원 전체 출력???
 	@RequestMapping("memberList.do")
 	public String showMmeberListMethod(Model model) {
@@ -265,7 +290,5 @@ public class MemberController {
 			return "common/error";
 		}
 	}
-	
+
 }
-
-

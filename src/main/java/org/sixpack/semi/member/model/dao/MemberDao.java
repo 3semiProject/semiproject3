@@ -84,13 +84,11 @@ public class MemberDao {
 	}
 
 	public int selectDupCheckId(String user_id) {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.selectOne("memberMapper.selectDupCheckId", user_id.toUpperCase());
 	}
 
 	public int selectDupCheckNick(String user_nickname) {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.selectOne("memberMapper.selectDupCheckNick", user_nickname);
 	}
 
 	public int selectDupCheckPhone(String phone) {
