@@ -1,0 +1,12 @@
+
+member 컨트롤러 nurigo 임포트관련 에러
+
+--> 아래항목 pom.xml 에 추가
+
+		<!-- https://mvnrepository.com/artifact/net.nurigo/javaSDK -->
+		<dependency>
+			<groupId>net.nurigo</groupId>
+			<artifactId>javaSDK</artifactId>
+			<version>2.2</version>
+		</dependency>
+
