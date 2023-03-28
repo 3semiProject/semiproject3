@@ -11,47 +11,55 @@ import org.sixpack.semi.diary.model.service.DiaryServiceImpl;
 import org.sixpack.semi.diary.model.vo.Diary;
 import org.sixpack.semi.diary.model.vo.Period;
 import org.sixpack.semi.stats.model.service.StatsActService;
+import org.sixpack.semi.stats.model.service.StatsActServiceImpl;
 import org.sixpack.semi.stats.model.vo.ActRec;
 import org.sixpack.semi.stats.model.vo.ActStats;
 import org.sixpack.semi.stats.model.vo.Graph;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+@Controller
 public class StatsActController {
 
-    private StatsActService actService;
+    @Autowired
+    private StatsActServiceImpl statsActService;
+    @Autowired
     private DiaryServiceImpl diaryService;
 
     //운동추천 ajax
-    @RequestMapping(value = "diary_showActRec.do", method = RequestMethod.POST)
-    public String actRecommendMethod(ModelAndView mv, JSONObject sendJSON) {
+    @RequestMapping(value = "diary_showActRec.do", method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public String actRecommendMethod() {
+
+
         ArrayList<ActRec> recs = new ArrayList<ActRec>();
         //랜덤으로 운동추천코드 3가지
         for (int i = 1; i <= 3; i++) {
             ActRec rec = new ActRec();
-            rec = actService.selectRecAct(i);
+            rec = statsActService.selectRecAct(i);
             recs.add(rec);
         }
 
+        JSONObject sendJSON = new JSONObject();
         JSONArray jarr = new JSONArray();
-        JSONObject job = new JSONObject();
+
         for (ActRec r : recs) {
+            JSONObject job = new JSONObject();
             job.put("title", r.getRec_act_title());
             job.put("image", r.getRec_act_image());
             job.put("link", r.getRec_act_link());
             jarr.add(job);
         }
 
-        if (recs != null && recs.size() > 0) {
-            //json에 담기
-            sendJSON.put("recs", jarr);
-            return sendJSON.toJSONString();
-        } else {
-            mv.addObject("message", "운동추천 조회 실패");
-            return "common/error";
-        }
+        //json에 담기
+        sendJSON.put("list", jarr);
+        return sendJSON.toJSONString();
+
     }
 
     //운동통계 화면출력용
@@ -105,8 +113,8 @@ public class StatsActController {
                                  ActStats stats, JSONObject sendJSON) {
         //userid, 조회할 기간, 오늘날짜 -> period set
         //period로 selectActperiod(period) -> ActStats
-        stats = actService.selectPeriodAct(period);
-        ActStats top3 = actService.selectPeriodTop3Act(period);
+        stats = statsActService.selectPeriodAct(period);
+        ActStats top3 = statsActService.selectPeriodTop3Act(period);
         stats.setMany_actName(top3.getMany_actName());
         stats.setMaxKcal_actName(top3.getMaxKcal_actName());
         stats.setMinKcal_actName(top3.getMinKcal_actName());
@@ -125,7 +133,7 @@ public class StatsActController {
         //period로 selectActGraph(period) -> ArrayList<Graph>
         //ArrayList<Graph>를 ajax객체에 담아 String으로 내보냄
         //String selectPeriod = period.getBegin()+"~" + period.getEnd();
-        graphs = actService.selectGraphAct(period);
+        graphs = statsActService.selectGraphAct(period);
 
         JSONArray jarr = new JSONArray();
         JSONObject job = new JSONObject();

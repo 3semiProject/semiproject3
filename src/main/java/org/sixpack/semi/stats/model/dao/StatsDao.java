@@ -5,9 +5,9 @@ import org.sixpack.semi.stats.model.vo.ActRec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository()
+@Repository("statsDao")
 public class StatsDao {
-	
+	@Autowired
 	private SqlSessionTemplate session; //의존성 주입됨(DI)
 
 
