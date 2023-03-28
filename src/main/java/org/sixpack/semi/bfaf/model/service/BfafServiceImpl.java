@@ -62,4 +62,18 @@ public class BfafServiceImpl implements BfafService {
 	public int deleteBoard(Bfaf bfaf) {
 		return bfafDao.deleteBoard(bfaf);
 	}
+	@Override
+	public ArrayList<Bfaf> selectSearchTitle(String keyword) {
+		return bfafDao.selectSearchTitle(keyword);
+	}
+
+	@Override
+	public ArrayList<Bfaf> selectSearchWriter(String keyword) {
+		return bfafDao.selectSearchWriter(keyword);
+	}
+
+	@Override
+	public ArrayList<Bfaf> selectSearchValue(String keyword) {
+		return bfafDao.selectSearchValue(keyword);
+	}
 }

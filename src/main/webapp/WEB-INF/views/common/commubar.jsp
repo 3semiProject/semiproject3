@@ -44,18 +44,6 @@
             border: 1px solid #D1D1D1;
             
         }
-   
-/*         
-        .round a {
-        border-spacing: 0;
-         border-radius-top-left: 35px;
-        border-radius-bottom-left: 35px;
-        } */
-        
-   /*      #tab2 div:first-child a {
-        	border-radius-top-left: 35px;
-        border-radius-bottom-left: 35px;
-        } */
 
         #tab2 div a:hover {
             text-decoration: none;
@@ -79,12 +67,12 @@
 <body>
 <hr>
 <div id="tab2">
-	<div class="round"><a style="border-bottom-left-radius: 35px; border-top-left-radius: 35px;" href="${ pageContext.servletContext.contextPath }/hotlist.do">HOT</a></div>
-	<div><a href="${ pageContext.servletContext.contextPath }/newlist.do">NEW</a></div>
-	<div><a href="${ pageContext.servletContext.contextPath }/commu.do">FREE</a></div>
-	<div><a href="${ pageContext.servletContext.contextPath }/tiplist.do">TIP</a></div>
-	<div><a href="${ pageContext.servletContext.contextPath }/eyebodylist.do">EYEBODY</a></div>
-	<div class="round"><a style="border-bottom-right-radius: 35px; border-top-right-radius: 35px;" href="${ pageContext.servletContext.contextPath }/bfaflist.do">BF & AF</a></div>
+	<div class="round"><a style="border-bottom-left-radius: 35px; border-top-left-radius: 35px;" href="${ pageContext.servletContext.contextPath }/hotlist.do?page=1">HOT</a></div>
+	<div><a href="${ pageContext.servletContext.contextPath }/newlist.do?page=1">NEW</a></div>
+	<div><a href="${ pageContext.servletContext.contextPath }/commu.do?page=1">FREE</a></div>
+	<div><a href="${ pageContext.servletContext.contextPath }/tiplist.do?page=1">TIP</a></div>
+	<div><a href="${ pageContext.servletContext.contextPath }/eyebodylist.do?page=1">EYEBODY</a></div>
+	<div class="round"><a style="border-bottom-right-radius: 35px; border-top-right-radius: 35px;" href="${ pageContext.servletContext.contextPath }/bfaflist.do?page=1">BF & AF</a></div>
    </ul>
 </div>
 </body>

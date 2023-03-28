@@ -62,4 +62,18 @@ public class TipServiceImpl implements TipService {
 	public int deleteBoard(Tip tip) {
 		return tipDao.deleteBoard(tip);
 	}
+	@Override
+	public ArrayList<Tip> selectSearchTitle(String keyword) {
+		return tipDao.selectSearchTitle(keyword);
+	}
+
+	@Override
+	public ArrayList<Tip> selectSearchWriter(String keyword) {
+		return tipDao.selectSearchWriter(keyword);
+	}
+
+	@Override
+	public ArrayList<Tip> selectSearchValue(String keyword) {
+		return tipDao.selectSearchValue(keyword);
+	}
 }
