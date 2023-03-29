@@ -75,7 +75,27 @@ public class MemberController {
 	public String moveEnrollPage() {
 		return "member/enrollPage";
 	}
-
+	
+	//회원정보 수정페이지ㅣ 내보내기용 메소드
+	@RequestMapping(value = "updateMove.do", method = RequestMethod.POST)
+	public String updateMovePage(@RequestParam("user_id") String user_id, Model model) {
+		Member member = memberService.selectMember(user_id);
+		logger.info("user_id : " + user_id);
+		if(member != null) {
+			model.addAttribute("member", member);
+			return "member/updatePage";
+		}else {
+			model.addAttribute("message", user_id + " : 회원정보 조회 실패!");
+			return "common/error";
+		}
+	}
+	
+	
+	
+	
+	
+	
+	//---------------------------------------------
 	// ajax 통신으로 아이디 중복확인 요청 처리용 메소드
 	@RequestMapping(value = "idChk.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
 	public void dupCheckIdMethod(@RequestParam("user_id") String user_id, HttpServletResponse response)
@@ -98,6 +118,8 @@ public class MemberController {
 
 	}
 
+	
+	
 	// ajax 통신으로 닉네임 중복확인 요청 처리용 메소드
 	@RequestMapping(value = "nickChk.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
 	public void dupCheckNickMethod(@RequestParam("user_nickname") String user_nickname, HttpServletResponse response)
@@ -119,40 +141,57 @@ public class MemberController {
 		out.close();
 
 	}
-
-	// ajax 통신으로 핸드폰 인증번호 요청 처리용 메소드
-	@RequestMapping(value = "authNumber.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
+	
+	//ajax 통신으로 핸드폰 인증번호 요청 처리용 메소드(naver cloud)
+	@RequestMapping(value = "authNumber.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String authPhoneMethod(@RequestParam("phone") String phone)
-			{
-		// 휴대폰 문자 보내기 => 난수생성
-		int randomNumber = (int) ((Math.random() * (9999 - 1000 + 1)) + 1000);
+	public String phoneAuth(@RequestParam("phone") String phone, HttpSession session) {
 
-		System.out.println("실행전 : " +phone);
+	    try { // 이미 가입된 전화번호가 있으면
+	        if(memberService.selectPhoneCount(phone) > 0) 
+	            return "no"; 
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 
-		String api_key = "NCSAXYKAJ1BPSNRP";
-		String api_secret = "ZNSC1NPSRO0FCUH9RN5XWG7MAJPXU81Z";
-		Message coolsms = new Message(api_key, api_secret);
-		String url = "http://api.coolsms.co.kr/messages/v4/send";
-		System.out.println("asdfasdf" + coolsms);
-
-		// param(to, from, type, text)
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("to", phone); // 수신번호
-		params.put("from", "01042357723"); // 발신번호
-		params.put("type", "SMS");
-		params.put("text", "[인증번호]\n" + randomNumber + "\n입니다.");
-		params.put("app_version", "test app 1.2"); // application name and version
-
-		try {
-			JSONObject obj = (JSONObject) coolsms.send(params);
-			System.out.println(obj.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-			return Integer.toString(randomNumber);
+	    String code = memberService.sendRandomMsg(phone);
+	    session.setAttribute("randomNum", code);
+	    
+	    return "ok";
 	}
+
+	
+
+//	// ajax 통신으로 핸드폰 인증번호 요청 처리용 메소드
+//	@RequestMapping(value = "authNumber.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
+//	@ResponseBody
+//	public String authPhoneMethod(@RequestParam("phone") String phone)
+//
+//
+//		System.out.println("실행전 : " +phone);
+//
+//		String api_key = "NCSL0GK6MED8AM1K";
+//		String api_secret = "TH5SWZ2TULUDGTVY6COZLAH8XNQXGHL6";
+//		Message coolsms = new Message(api_key, api_secret);
+//		System.out.println("asdfasdf" + coolsms);
+//
+//		// param(to, from, type, text)
+//		HashMap<String, String> params = new HashMap<String, String>();
+//		params.put("to", phone); // 수신번호
+//		params.put("from", "01095326547"); // 발신번호
+//		params.put("type", "SMS");
+//		params.put("text", "[인증번호]\n" + randomNumber + "\n입니다.");
+//		params.put("app_version", "test app 1.2"); // application name and version
+//
+//		try {
+//			JSONObject obj = (JSONObject) coolsms.send(params);
+//			System.out.println(obj.toString());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//			return Integer.toString(randomNumber);
+//	}
 
 	// 회원가입 요청 처리용 메소드
 	@RequestMapping(value = "enroll.do", method = RequestMethod.POST)
@@ -229,16 +268,16 @@ public class MemberController {
 	@RequestMapping("myinfo.do")
 	public ModelAndView showMypageMethod(@RequestParam("user_id") String user_id, ModelAndView mv) {
 		// 서비스로 아이디 전달하고, 해당 회원정보 받기
-		logger.info(user_id);
+		
 		Member member = memberService.selectMember(user_id);
-
+		logger.info(user_id);
 		if (member != null) {
 			mv.addObject("member", member); // requestSetAttribute("member", member) 와 같음
 			// Model 또는 ModelAndView 에 저장하는 것은
 			// request.setAttribute("member", member); 와 같음
 			mv.setViewName("member/myinfoPage");
 		} else {
-			mv.addObject("message", user_id + " : 회원 정보 조회 실패😞");
+			mv.addObject("message", user_id+ " : 회원 정보 조회 실패😞");
 			mv.setViewName("common/error");
 		}
 
@@ -247,8 +286,8 @@ public class MemberController {
 
 	// 회원정보 수정 처리용 : 수정 성공시 myinfoPage.jsp 로 이동함
 	@RequestMapping(value = "updateMember.do", method = RequestMethod.POST)
-	public String updateMemberMethod(Member member, Model model) {
-		logger.info("updateMember.do : " + member);
+	public String updateMemberMethod(Member member , Model model) {
+
 
 		if (memberService.updateMember(member) > 0) {
 			// 수정이 성공했다면, 컨트롤러의 메소드를 직접 호출함

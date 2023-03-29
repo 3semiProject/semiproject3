@@ -8,13 +8,27 @@
 	box-sizing: border-box;
 }
 
+.home_a {
+	display: block;
+	text-decoration: none;
+	color: #01CD88;
+	border: 1px solid #01CD88;
+}
 body {
 	width: 1200px;
 	height: 1200px;
 }
 
+ h1 {
+ 	color: #A4A4A4;
+ 	font-weight: 800;
+ 	font-size: 30pt;
+ }
 #enroll_form {
 	text-align: center;
+	font-size: 15pt;
+	font-style: inherit;
+	color: #5f5f5f;
 }
 
 #join_box {
@@ -22,11 +36,13 @@ body {
 	align-items: center;
 	border: 3px solid #D1D1D1;
 	width: 600px;
-	height: 900px;
+	height: 1000px;
 	border-radius: 30px;
 	display: inline-block;
 	margin: 0;
 }
+
+
 
 .join_e {
 	border-bottom: 2px solid #D1D1D1;
@@ -44,16 +60,16 @@ body {
 	border-right: 2px solid #D1D1D1;
 }
 
-.join_e>div:not(.join_item) {
-	height: 100px;
-	width: 400px;
-	align-items: center;
+.join_item2{
+	display: flex;
+	padding: 30px;
+}
+.join_item2 > * {
+	height: 30px;
+	vertical-align: middle;
+	
 }
 
-.auto_number>div {
-	display: flex;
-	justify-content: center;
-}
 
 #title {
 	display: inline-block;
@@ -154,14 +170,16 @@ body {
         	alert("인증번호 발송되었습니다.\n휴대폰에서 인증번호를 확인해주세요.");
 			$.ajax({
 				url:"authNumber.do",
-				type: "post",
+				type: "POST",
 				data: {phone : $('#phone').val()},
+				dataType: "text",
 				success: function(data) {
 					alert("테스트");
 					console.log("success : " + data);
-					if(data !=  null) {
+					if(data !="no") {
+						alert("테스트2");
                         $('#authNumber').focus();
-                        checknum=data;
+                        checknum = data;
 					}
 				},
 				error: function (jqXHR, textStatujs, errorThrown) {
@@ -195,14 +213,14 @@ body {
 	<c:import url="/WEB-INF/views/common/menubar.jsp" />
 	<hr>
 	<div id="enroll_form">
-		<div align="center" id="title">회원 가입 페이지</div>
+		<h1 align="center" id="title">회원가입</h1>
 		<br>
-		<div align="center" style="color: #D96969; font-size: x-large;">필수입력항목</div>
+		<div align="center" style="color: #D96969; font-size: x-large; margin-bottom: 20px;">필수입력항목</div>
 		<form action="enroll.do" method="post" onsubmit="return validate();">
-			<div id="join_box" align="center" cellspacing="5" cellpadding="0">
+			<div id="join_box" align="center">
 				<div class="join_e">
 					<div class="join_item">ID</div>
-					<div>
+					<div class="join_item2">
 						<input type="text" name="user_id" id="user_id" required>
 						&nbsp; &nbsp; <input type="button" value="중복확인"
 							onclick="return dupCheckId();">
@@ -210,26 +228,26 @@ body {
 				</div>
 				<div class="join_e">
 					<div class="join_item">PW</div>
-					<div>
+					<div class="join_item2">
 						<input type="password" name="user_pw" id="user_pw1" required>
 					</div>
 				</div>
 				<div class="join_e">
 					<div class="join_item">PW CHECK</div>
-					<div>
-						<input type="password" id="user_pw2" required> <input
-							type="button" value="중복확인" onclick="return validate();">
+					<div class="join_item2">
+						<input type="password" id="user_pw2" required> &nbsp; &nbsp;
+						<input type="button" value="중복확인" onclick="return validate();">
 					</div>
 				</div>
 				<div class="join_e">
 					<div class="join_item">이름</div>
-					<div>
+					<div class="join_item2">
 						<input type="text" name="user_name" id="user_name" required>
 					</div>
 				</div>
 				<div class="join_e">
 					<div class="join_item">닉네임</div>
-					<div>
+					<div class="join_item2">
 						<input type="text" name="user_nickname" id="user_nickname"
 							required> &nbsp; &nbsp; <input type="button" value="중복확인"
 							onclick="return dupCheckNick();">
@@ -237,13 +255,13 @@ body {
 				</div>
 				<div class="join_e">
 					<div class="join_item">생년월일</div>
-					<div>
-						<input type="date" name="birth" id="birth"> &nbsp;
+					<div class="join_item2">
+						<input type="date" name="birth" id="birth" required> &nbsp;
 					</div>
 				</div>
 				<div class="join_e">
 					<div class="join_item">성별</div>
-					<div>
+					<div class="join_item2">
 						<input type="radio" name="gender" value="M"> 남자 &nbsp;
 						<input type="radio" name="gender" value="F"> 여자
 					</div>
@@ -251,29 +269,31 @@ body {
 				<div class="join_e">
 					<div class="join_item">전화번호</div>
 					<div class="auto_number">
-						<div>
-							<input type="tel" name="phone" id="phone" required>
+						<div class="join_item2">
+							<input type="tel" name="phone" id="phone" required> &nbsp; &nbsp;
 							<input type="button" value="인증번호받기" onclick="return phoneAuth();">
-						</div>
-						<div>
-							인증번호 <input type="number" id="authNumber" required="required" />
-							<input type="button" value="인증번호확인"
-								onclick="return authNumberChek();" />
 						</div>
 					</div>
 				</div>
 				<div class="join_e">
+						<div class="join_item">인증번호</div>
+						<div class="join_item2" id="authBox">
+							<input type="number" id="authNumber" required /> &nbsp; &nbsp;
+							<input type="button" value="인증번호확인"
+								onclick="return authNumberChek();" />
+						</div>
+				</div>
+				<div class="join_e">
 					<div class="join_item">이메일</div>
-					<div>
-						<input type="email" name="email" required="required" />
+					<div class="join_item2">
+						<input type="email" name="email" id="email" required />
 					</div>
 				</div>
 
 				<div class="join_button">
-					<div colspan="2">
-						<input type="submit" value="가입"> &nbsp; <input
-							type="reset" value="취소"> &nbsp; <a href="main.do">홈으로
-							이동</a>
+					<div>
+						<input type="submit" value="가입"> &nbsp; &nbsp; 
+						<input type="reset" value="취소" onclick="javascript:location.href='${ pageContext.servletContext.contextPath}/main.do';"> &nbsp; &nbsp;
 					</div>
 				</div>
 			</div>

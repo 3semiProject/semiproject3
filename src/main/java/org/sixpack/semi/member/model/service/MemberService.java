@@ -23,5 +23,8 @@ public interface MemberService {
 	int updatePw(Member member);
 	int updateMember(Member member);
 	int deleteMember(String user_id);
-	
+	//난수생성 메소드
+	public String sendRandomMsg(String phone);
+	//회원가입시 이미 가입된 전화번호 있는지 확인하는 메소드
+	int selectPhoneCount(String phone);
 }
