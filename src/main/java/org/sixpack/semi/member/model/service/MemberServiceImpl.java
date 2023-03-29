@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.sixpack.semi.member.model.dao.MemberDao;
 import org.sixpack.semi.member.model.vo.Member;
+import org.sixpack.semi.member.model.vo.PhoneSns;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -101,6 +102,31 @@ public class MemberServiceImpl implements MemberService{
 	public ArrayList<Member> selectMemberList() {
 		return memberDao.selectMemberList();
 	}
+
+	
+	//핸드폰 인증 난수생성 메소드
+	@Override
+	public String sendRandomMsg(String phone) {
+		PhoneSns msg = new PhoneSns();
+		
+		//4자리 랜덤숫자 생성
+		String randomNumber = Integer.toString((int)((Math.random() * (9999 - 1000 + 1)) + 1000));
+		
+		
+		
+		System.out.println("회원가입 문자 인증 : " + randomNumber);
+		
+		msg.send_msg(phone, randomNumber);
+		
+		return randomNumber;
+	}
+
+	@Override
+	public int selectPhoneCount(String phone) {
+		
+		return memberDao.selectPhoneCount(phone);
+	}
+	
 	
 	
 }

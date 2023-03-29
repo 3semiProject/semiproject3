@@ -49,8 +49,7 @@ public class MemberDao {
 	}
 
 	public Member selectMember(String user_id) {
-		// TODO Auto-generated method stub
-		return null;
+		return session.selectOne("memberMapper.selectMember", user_id);
 	}
 
 	public int updateFindpwE(Member member) {
@@ -99,6 +98,11 @@ public class MemberDao {
 	public ArrayList<Member> selectMemberList() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	//회원가입시 해당 핸드폰 번호가 존재하는지 확인하는 메소드
+	public int selectPhoneCount(String phone) {
+		return session.selectOne("memberMapper.selectPhoneCount", phone);
 	}
 
 }
