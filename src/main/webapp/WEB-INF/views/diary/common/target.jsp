@@ -9,14 +9,9 @@
 <meta charset="UTF-8">
 </head>
 <body>
-<h2>
-목표체중 표시바
-</h2>
+<h2>목표체중 표시바</h2>
 받을값 : Goal
-
 <pre>
-<%-- 목표체중 :	${goal.} 현재체중 : ${goal.} 목표까지 ${goal} D데이 : -sysdate-${goal. }
- --%>
 </pre>
 </body>
 </html>

@@ -84,30 +84,30 @@ hr { clear: both;}
 	<!-- non-login -->
 	<c:if test="${ empty sessionScope.loginMember }">
 		<ul id="menubar">
-			<li><a href="${ pageContext.servletContext.contextPath }/test.do">다이어리</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/diary_showEatDiary.do">다이어리</a></li>
 			<li><a href="${ pageContext.servletContext.contextPath }/commu.do">커뮤니티</a></li>
 			<!-- cs.do = customer service center -->
-			<li><a href="${ pageContext.servletContext.contextPath }/cs.do">고객센터</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/customer.do">고객센터</a></li>
 		</ul>
 	</c:if>
 	
 	<!-- login : admin -->
-	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin eq 'Y' }">
+	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
 		<ul id="menubar">
-			<li><a href="${ pageContext.servletContext.contextPath }/diary.do"></a>다이어리</li>
-			<li><a href="${ pageContext.servletContext.contextPath }/commu.do"></a>커뮤니티</li>
+			<li><a href="${ pageContext.servletContext.contextPath }/diary.do">게시판관리</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/commu.do">회원관리</a></li>
 			<!-- cs.do = customer service center -->
-			<li><a href="${ pageContext.servletContext.contextPath }/cs.do"></a>고객센터</li>
+			<li><a href="${ pageContext.servletContext.contextPath }/cs.do">배너관리</a></li>
 		</ul>
 	</c:if>
 	
 	<!-- login : member -->
-	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin ne 'Y'}">
+	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y'}">
 		<ul id="menubar">
-			<li><a href="${ pageContext.servletContext.contextPath }/diary.do"></a>다이어리</li>
-			<li><a href="${ pageContext.servletContext.contextPath }/commu.do"></a>커뮤니티</li>
+			<li><a href="${ pageContext.servletContext.contextPath }/diary.do">다이어리</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/commu.do">커뮤니티</a></li>
 			<!-- cs.do = customer service center -->
-			<li><a href="${ pageContext.servletContext.contextPath }/cs.do"></a>고객센터</li>
+			<li><a href="${ pageContext.servletContext.contextPath }/customer.do">고객센터</a></li>
 		</ul>
 	</c:if>
 </header>

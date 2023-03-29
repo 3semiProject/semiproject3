@@ -4,15 +4,15 @@ import java.sql.Date;
 
 public class Qna {
 	
-	private int qna_no;
-	private String qna_title;
-	private String user_id;
-	private Date qna_post_date;
-	private int qna_views;
-	private String qna_content;
-	private String qna_originfile;
-	private String qna_renamefile;
-	private String qna_private;
+	private int qna_no;				//qna 번호
+	private String qna_title;		//qna 제목
+	private String user_id;			//qna 작성자
+	private Date qna_post_date;		//qna 작성일
+	private int qna_views;			//qna 조회수
+	private String qna_content;		//qna내용
+	private String qna_originfile;	//qna답변원본파일
+	private String qna_renamefile;	//qna수정파일
+	private String qna_private;		//qna공개여부
 	
 	public Qna() {
 		super();

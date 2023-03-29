@@ -20,11 +20,6 @@ public class HotNewServiceImpl implements HotNewService {
 	}
 
 	@Override
-	public ArrayList<HotNew> selectList(Paging page) {
-		return hotNewDao.selectList(page);
-	}
-
-	@Override
 	public HotNew selectBoard(int hotnew_no) {
 		return hotNewDao.selectBoard(hotnew_no);
 	}
@@ -62,5 +57,50 @@ public class HotNewServiceImpl implements HotNewService {
 	@Override
 	public int deleteBoard(HotNew hotnew) {
 		return hotNewDao.deleteBoard(hotnew);
+	}
+
+	@Override
+	public ArrayList<HotNew> newSelectList(Paging page) {
+		return hotNewDao.newSelectList(page);
+	}
+
+	@Override
+	public ArrayList<HotNew> newSelectSearchTitle(String keyword) {
+		return hotNewDao.newSelectSearchTitle(keyword);
+	}
+
+	@Override
+	public ArrayList<HotNew> newSelectSearchWriter(String keyword) {
+		return hotNewDao.newSelectSearchWriter(keyword);
+	}
+
+	@Override
+	public ArrayList<HotNew> newSelectSearchValue(String keyword) {
+		return hotNewDao.newSelectSearchValue(keyword);
+	}
+
+	@Override
+	public ArrayList<HotNew> hotSelectList(Paging page) {
+		return hotNewDao.hotSelectList(page);
+	}
+
+	@Override
+	public ArrayList<HotNew> hotSelectSearchTitle(String keyword) {
+		return hotNewDao.hotSelectSearchTitle(keyword);
+	}
+
+	@Override
+	public ArrayList<HotNew> hotSelectSearchWriter(String keyword) {
+		return hotNewDao.hotSelectSearchWriter(keyword);
+	}
+
+	@Override
+	public ArrayList<HotNew> hotSelectSearchValue(String keyword) {
+		return hotNewDao.hotSelectSearchValue(keyword);
+	}
+
+	@Override
+	public ArrayList<HotNew> hotnewSelectTop5() {
+		return hotNewDao.hotnewSelectTop5();
 	}
 }

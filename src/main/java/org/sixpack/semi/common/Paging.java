@@ -10,12 +10,25 @@ public class Paging {
 	private int maxPage; // 총 페이지 수
 	private int startPage; //페이지그룹의 시작값
 	private int endPage;  //페이지그룹의 끝값5
+	private String keyword;
 
 	public Paging(int listCount, int currentPage, int limit) {
 		this.listCount = listCount;
 		this.currentPage = currentPage;
 		this.limit = limit;
 	}
+	
+	
+
+	public Paging(int listCount, int limit, int currentPage, String keyword) {
+		super();
+		this.listCount = listCount;
+		this.limit = limit;
+		this.currentPage = currentPage;
+		this.keyword = keyword;
+	}
+
+
 
 	public void calculator() {
 		// 페이지 수 계산
@@ -102,13 +115,19 @@ public class Paging {
 		this.endPage = endPage;
 	}
 
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
 	@Override
 	public String toString() {
 		return "Paging [startRow=" + startRow + ", endRow=" + endRow + ", listCount=" + listCount + ", limit=" + limit
 				+ ", currentPage=" + currentPage + ", maxPage=" + maxPage + ", startPage=" + startPage + ", endPage="
-				+ endPage + "]";
+				+ endPage + ", keyword=" + keyword + "]";
 	}
 	
-	
-
 }

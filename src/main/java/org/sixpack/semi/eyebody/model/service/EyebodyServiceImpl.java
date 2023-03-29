@@ -62,4 +62,19 @@ public class EyebodyServiceImpl implements EyebodyService {
 	public int deleteBoard(Eyebody eyebody) {
 		return eyebodyDao.deleteBoard(eyebody);
 	}
+
+	@Override
+	public ArrayList<Eyebody> selectSearchTitle(String keyword) {
+		return eyebodyDao.selectSearchTitle(keyword);
+	}
+
+	@Override
+	public ArrayList<Eyebody> selectSearchWriter(String keyword) {
+		return eyebodyDao.selectSearchWriter(keyword);
+	}
+
+	@Override
+	public ArrayList<Eyebody> selectSearchValue(String keyword) {
+		return eyebodyDao.selectSearchValue(keyword);
+	}
 }

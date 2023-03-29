@@ -108,15 +108,12 @@
 <script type="text/javascript"
             src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
-	function fsearch(){
-		
-	}
+	
 </script>
 <title></title>
 </head>
 <body>
 <c:import url="/WEB-INF/views/common/menubar.jsp"/>
-<hr>
 <c:import url="/WEB-INF/views/common/commubar.jsp"/>
 <hr>
 <div id="mainWrapper">
@@ -143,7 +140,7 @@
                 	<li>
                 		<ul>
                 			<li>${ f.free_no }</li>
-                			<c:url var="fdt" value="/fdetail.do">
+                			<c:url var="fdt" value="/freedetail.do?page=1">
 								<c:param name="free_no" value="${ f.free_no }" />
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
@@ -170,10 +167,8 @@
 
             <!-- 검색 폼 영역 -->
             <li id='liSearchOption'>
+            	<form action="fsearch.do?page=1" method="post">
                 <div>
-                <form action="fsearch.do" method="post">
-                
-                
                     <select name="searchtype" >
                         <option value="fname">제목</option>
                         <option value="fvalue">내용</option>
@@ -181,15 +176,15 @@
                     </select>
                     <input type="search" name="keyword">
                     <input type="submit" value="검색">
-				</form>
                 </div>
+                </form>
              </li>
 
         </ul>
     </div>
 <br>
 <!-- 페이징 처리 -->
-<c:import url="/WEB-INF/views/common/paging.jsp" />
+<c:import url="/WEB-INF/views/free/freepaging.jsp" />
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 </body>

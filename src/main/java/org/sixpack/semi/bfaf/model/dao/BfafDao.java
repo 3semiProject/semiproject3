@@ -6,6 +6,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.bfaf.model.vo.Bfaf;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.free.model.vo.Free;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -54,5 +55,19 @@ public class BfafDao {
 
 	public int deleteBoard(Bfaf bfaf) {
 		return session.delete("bfafMapper.deleteBoard", bfaf);
+	}
+	public ArrayList<Bfaf> selectSearchValue(String keyword) {
+		List<Bfaf> list = session.selectList("bfafMapper.selectSearchValue", keyword);
+		return (ArrayList<Bfaf>)list;
+	}
+
+	public ArrayList<Bfaf> selectSearchWriter(String keyword) {
+		List<Bfaf> list = session.selectList("bfafMapper.selectSearchWriter", keyword);
+		return (ArrayList<Bfaf>)list;
+	}
+
+	public ArrayList<Bfaf> selectSearchTitle(String keyword) {
+		List<Bfaf> list = session.selectList("bfafMapper.selectSearchTitle", keyword);
+		return (ArrayList<Bfaf>)list;
 	}
 }
