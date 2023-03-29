@@ -5,14 +5,21 @@ import org.sixpack.semi.stats.model.dao.StatsDao;
 import org.sixpack.semi.stats.model.vo.ActRec;
 import org.sixpack.semi.stats.model.vo.ActStats;
 import org.sixpack.semi.stats.model.vo.Graph;
+import org.sixpack.semi.stats.model.vo.StatsDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
-public class StatsActServiceImpl implements StatsActService{
-    StatsDao statsDao = new StatsDao();
+@Service("statsActServices")
+public class StatsActServiceImpl implements StatsActService {
+    @Autowired
+    StatsDao statsDao;
+
+
     @Override
-    public ActStats selectPeriodAct(Period period) {
-        return null;
+    public ActStats actStatsTotal(StatsDate statsDate) {
+        return statsDao.selectActStatsTotal(statsDate);
     }
 
     @Override

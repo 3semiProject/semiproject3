@@ -193,7 +193,7 @@ body{
 
         </ul>
         <!-- 페이징 처리 -->
-		<c:import url="/WEB-INF/views/new/newpaging.jsp" />
+		<c:import url="/WEB-INF/views/new/newsearchpaging.jsp" />
     </div>
 <br>
 <hr>

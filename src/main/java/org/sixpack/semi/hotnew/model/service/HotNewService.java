@@ -2,7 +2,9 @@ package org.sixpack.semi.hotnew.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
 
@@ -18,12 +20,13 @@ public interface HotNewService {
 	int updateReply(HotNew reply);	//댓글 수정용 (대댓글 수정 포함)
 	int deleteBoard(HotNew hotnew);	//게시글 삭제용 (원글 삭제시, 관련 댓글과 대댓글 같이 삭제)
 	ArrayList<HotNew> newSelectList(Paging page);	//한 페이지에 출력할 게시글 조회용
-	ArrayList<HotNew> newSelectSearchTitle(String keyword);
-	ArrayList<HotNew> newSelectSearchWriter(String keyword);
-	ArrayList<HotNew> newSelectSearchValue(String keyword);
+	ArrayList<HotNew> newSelectSearchTitle(Searchs searchs);
+	ArrayList<HotNew> newSelectSearchWriter(Searchs searchs);
+	ArrayList<HotNew> newSelectSearchValue(Searchs searchs);
 	ArrayList<HotNew> hotSelectList(Paging page);	//한 페이지에 출력할 게시글 조회용
-	ArrayList<HotNew> hotSelectSearchTitle(String keyword);
-	ArrayList<HotNew> hotSelectSearchWriter(String keyword);
-	ArrayList<HotNew> hotSelectSearchValue(String keyword);
+	ArrayList<HotNew> hotSelectSearchTitle(Searchs searchs);
+	ArrayList<HotNew> hotSelectSearchWriter(Searchs searchs);
+	ArrayList<HotNew> hotSelectSearchValue(Searchs searchs);
 	ArrayList<HotNew> hotnewSelectTop5();
+	int selectSearchListCount(CountSearch countSearch);
 }

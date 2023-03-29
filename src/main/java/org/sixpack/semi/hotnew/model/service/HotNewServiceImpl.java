@@ -2,7 +2,9 @@ package org.sixpack.semi.hotnew.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.hotnew.model.dao.HotNewDao;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,18 +67,18 @@ public class HotNewServiceImpl implements HotNewService {
 	}
 
 	@Override
-	public ArrayList<HotNew> newSelectSearchTitle(String keyword) {
-		return hotNewDao.newSelectSearchTitle(keyword);
+	public ArrayList<HotNew> newSelectSearchTitle(Searchs searchs) {
+		return hotNewDao.newSelectSearchTitle(searchs);
 	}
 
 	@Override
-	public ArrayList<HotNew> newSelectSearchWriter(String keyword) {
-		return hotNewDao.newSelectSearchWriter(keyword);
+	public ArrayList<HotNew> newSelectSearchWriter(Searchs searchs) {
+		return hotNewDao.newSelectSearchWriter(searchs);
 	}
 
 	@Override
-	public ArrayList<HotNew> newSelectSearchValue(String keyword) {
-		return hotNewDao.newSelectSearchValue(keyword);
+	public ArrayList<HotNew> newSelectSearchValue(Searchs searchs) {
+		return hotNewDao.newSelectSearchValue(searchs);
 	}
 
 	@Override
@@ -85,22 +87,27 @@ public class HotNewServiceImpl implements HotNewService {
 	}
 
 	@Override
-	public ArrayList<HotNew> hotSelectSearchTitle(String keyword) {
-		return hotNewDao.hotSelectSearchTitle(keyword);
+	public ArrayList<HotNew> hotSelectSearchTitle(Searchs searchs) {
+		return hotNewDao.hotSelectSearchTitle(searchs);
 	}
 
 	@Override
-	public ArrayList<HotNew> hotSelectSearchWriter(String keyword) {
-		return hotNewDao.hotSelectSearchWriter(keyword);
+	public ArrayList<HotNew> hotSelectSearchWriter(Searchs searchs) {
+		return hotNewDao.hotSelectSearchWriter(searchs);
 	}
 
 	@Override
-	public ArrayList<HotNew> hotSelectSearchValue(String keyword) {
-		return hotNewDao.hotSelectSearchValue(keyword);
+	public ArrayList<HotNew> hotSelectSearchValue(Searchs searchs) {
+		return hotNewDao.hotSelectSearchValue(searchs);
 	}
 
 	@Override
 	public ArrayList<HotNew> hotnewSelectTop5() {
 		return hotNewDao.hotnewSelectTop5();
+	}
+	
+	@Override
+	public int selectSearchListCount(CountSearch countSearch) {
+		return hotNewDao.selectSearchListCount(countSearch);
 	}
 }

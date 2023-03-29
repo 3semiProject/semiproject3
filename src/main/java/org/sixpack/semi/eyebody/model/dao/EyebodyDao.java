@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.bfaf.model.vo.Bfaf;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -56,18 +58,22 @@ public class EyebodyDao {
 	public int deleteBoard(Eyebody eyebody) {
 		return session.delete("eyebodyMapper.deleteBoard", eyebody);
 	}
-	public ArrayList<Eyebody> selectSearchValue(String keyword) {
-		List<Eyebody> list = session.selectList("eyebodyMapper.selectSearchValue", keyword);
+	public ArrayList<Eyebody> selectSearchValue(Searchs searchs) {
+		List<Eyebody> list = session.selectList("eyebodyMapper.selectSearchValue", searchs);
 		return (ArrayList<Eyebody>)list;
 	}
 
-	public ArrayList<Eyebody> selectSearchWriter(String keyword) {
-		List<Eyebody> list = session.selectList("eyebodyMapper.selectSearchWriter", keyword);
+	public ArrayList<Eyebody> selectSearchWriter(Searchs searchs) {
+		List<Eyebody> list = session.selectList("eyebodyMapper.selectSearchWriter", searchs);
 		return (ArrayList<Eyebody>)list;
 	}
 
-	public ArrayList<Eyebody> selectSearchTitle(String keyword) {
-		List<Eyebody> list = session.selectList("eyebodyMapper.selectSearchTitle", keyword);
+	public ArrayList<Eyebody> selectSearchTitle(Searchs searchs) {
+		List<Eyebody> list = session.selectList("eyebodyMapper.selectSearchTitle", searchs);
 		return (ArrayList<Eyebody>)list;
+	}
+	
+	public int selectSearchListCount(CountSearch countSearch) {
+		return session.selectOne("eyebodyMapper.selectSearchListCount", countSearch);
 	}
 }

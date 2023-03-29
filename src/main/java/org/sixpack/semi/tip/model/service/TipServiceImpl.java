@@ -2,7 +2,9 @@ package org.sixpack.semi.tip.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.tip.model.dao.TipDao;
 import org.sixpack.semi.tip.model.vo.Tip;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,17 +65,22 @@ public class TipServiceImpl implements TipService {
 		return tipDao.deleteBoard(tip);
 	}
 	@Override
-	public ArrayList<Tip> selectSearchTitle(String keyword) {
-		return tipDao.selectSearchTitle(keyword);
+	public ArrayList<Tip> selectSearchTitle(Searchs searchs) {
+		return tipDao.selectSearchTitle(searchs);
 	}
 
 	@Override
-	public ArrayList<Tip> selectSearchWriter(String keyword) {
-		return tipDao.selectSearchWriter(keyword);
+	public ArrayList<Tip> selectSearchWriter(Searchs searchs) {
+		return tipDao.selectSearchWriter(searchs);
 	}
 
 	@Override
-	public ArrayList<Tip> selectSearchValue(String keyword) {
-		return tipDao.selectSearchValue(keyword);
+	public ArrayList<Tip> selectSearchValue(Searchs searchs) {
+		return tipDao.selectSearchValue(searchs);
+	}
+	
+	@Override
+	public int selectSearchListCount(CountSearch countSearch) {
+		return tipDao.selectSearchListCount(countSearch);
 	}
 }

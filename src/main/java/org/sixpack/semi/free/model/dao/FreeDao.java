@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.free.model.vo.Free;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -54,25 +56,28 @@ public class FreeDao {
 	public int deleteBoard(Free free) {
 		return session.delete("freeMapper.deleteBoard", free);
 	}
-	
+
 	public ArrayList<Free> selectTop5() {
 		List<Free> list = session.selectList("freeMapper.selectTop5");
 		return (ArrayList<Free>)list;
 	}
 
-	public ArrayList<Free> selectSearchValue(String keyword) {
-		List<Free> list = session.selectList("freeMapper.selectSearchValue", keyword);
+	public ArrayList<Free> selectSearchValue(Searchs searchs) {
+		List<Free> list = session.selectList("freeMapper.selectSearchValue", searchs);
 		return (ArrayList<Free>)list;
 	}
 
-	public ArrayList<Free> selectSearchWriter(String keyword) {
-		List<Free> list = session.selectList("freeMapper.selectSearchWriter", keyword);
+	public ArrayList<Free> selectSearchWriter(Searchs searchs) {
+		List<Free> list = session.selectList("freeMapper.selectSearchWriter", searchs);
 		return (ArrayList<Free>)list;
 	}
 
-	public ArrayList<Free> selectSearchTitle(String keyword) {
-		List<Free> list = session.selectList("freeMapper.selectSearchTitle", keyword);
+	public ArrayList<Free> selectSearchTitle(Searchs searchs) {
+		List<Free> list = session.selectList("freeMapper.selectSearchTitle", searchs);
 		return (ArrayList<Free>)list;
 	}
 
+	public int selectSearchListCount(CountSearch countSearch) {
+		return session.selectOne("freeMapper.selectSearchListCount", countSearch);
+	}
 }

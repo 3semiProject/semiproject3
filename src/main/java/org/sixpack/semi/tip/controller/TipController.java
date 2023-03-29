@@ -2,8 +2,11 @@ package org.sixpack.semi.tip.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
-import org.sixpack.semi.eyebody.model.vo.Eyebody;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.tip.model.service.TipService;
 import org.sixpack.semi.tip.model.vo.Tip;
 import org.slf4j.Logger;
@@ -24,7 +27,7 @@ private static final Logger logger = LoggerFactory.getLogger(TipController.class
 	private TipService tipService;
 	
 	@RequestMapping("tiplist.do")
-	public ModelAndView bfafListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+	public ModelAndView tipListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = Integer.parseInt(page);
@@ -33,7 +36,6 @@ private static final Logger logger = LoggerFactory.getLogger(TipController.class
 		int limit = 10;
 		int listCount = tipService.selectListCount();
 		Paging paging = new Paging(listCount, currentPage,limit);
-		paging.calculator();
 		
 		ArrayList<Tip> list = tipService.selectList(paging);
 		if(list != null && list.size() > 0) {
@@ -48,25 +50,55 @@ private static final Logger logger = LoggerFactory.getLogger(TipController.class
 		return mv;
 	}
 	@RequestMapping(value="tipsearch.do", method={ RequestMethod.GET, RequestMethod.POST })
-	public String bfafSearchMethod(@RequestParam("searchtype") String searchtype, 
-			@RequestParam("keyword") String keyword, Model model) {
+	public ModelAndView tipSearchMethod(
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page, 
+			HttpServletRequest request, ModelAndView mv) {
+		String searchtype = request.getParameter("searchtype");
+		String keyword = request.getParameter("keyword");
+		
+		CountSearch countSearch = new CountSearch(searchtype, keyword);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		int limit = 10;
+		int listCount = tipService.selectSearchListCount(countSearch);
+		Searchs searchs = new Searchs(listCount, currentPage, limit);
+		
+		searchs.setSearchtype(searchtype);
+		searchs.setKeyword(keyword);
 		
 		ArrayList<Tip> list;
 		if(searchtype.equals("tname")) {
-			list = tipService.selectSearchTitle(keyword);
-			model.addAttribute("list", list);
-			return "tip/tipListView";
+			list = tipService.selectSearchTitle(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("tip/tipListView2");
+			}
 		}else if(searchtype.equals("tvalue")) {
-			list = tipService.selectSearchValue(keyword);
-			model.addAttribute("list", list);
-			return "tip/tipListView";
+			list = tipService.selectSearchValue(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("tip/tipListView2");
+			}
 		}else if(searchtype.equals("tid")) {
-			list = tipService.selectSearchWriter(keyword);
-			model.addAttribute("list", list);
-			return "tip/tipListView";
+			list = tipService.selectSearchWriter(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("tip/tipListView2");
+			}
 		}else {
-			model.addAttribute("message", "검색 결과가 없습니다.");
-			return "common/error";
+			mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
+			mv.setViewName("common/error");
 		}
+		return mv;
 	}
 }

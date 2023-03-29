@@ -47,7 +47,7 @@ a.diarymenu.center{
 a.diarymenu:hover{
 	background-color: rgba(15, 123, 90, 0.2);
 	border-bottom: 3px solid rgba(86,140,8,0.2);
-	box-shadow: 4px, 4px, 6px, gray;
+	box-shadow: 4px 4px 6px gray;
 }
 </style>
 </head>

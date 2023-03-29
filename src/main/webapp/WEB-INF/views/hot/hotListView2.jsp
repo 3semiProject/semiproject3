@@ -20,12 +20,12 @@ body{
         margin:0;
 }
 
-    #newWrapper{
+    #hotWrapper{
         width: 1130px;
         height: 1200px;
     }
 
-    #newWrapper > ul > li:first-child {
+    #hotWrapper > ul > li:first-child {
         text-align: center;
         font-size:14pt;
         height:40px;
@@ -104,12 +104,12 @@ body{
         
 	}
 	
-	.newa {
+	.hota {
 		text-decoration: none;
 		color: black;
 	}
 	
-	.newa:hover {
+	.hota:hover {
 		text-decoration: none;
 		color: black;
 		font-weight: bold;
@@ -127,11 +127,11 @@ body{
 <c:import url="/WEB-INF/views/common/menubar.jsp"/>
 <c:import url="/WEB-INF/views/common/commubar.jsp"/>
 <hr>
-<div id="newWrapper">
+<div id="hotWrapper">
 
         <ul>
             <!-- 게시판 제목 -->
-            <li id="title">NEW 게시판</li>
+            <li id="title">HOT 게시판</li>
 
             <!-- 게시판 목록  -->
             <li>
@@ -147,29 +147,29 @@ body{
                         </ul>
                     </li>
                     <!-- 게시물이 출력될 영역 -->
-                <c:forEach items="${ list }" var="nn">
+                <c:forEach items="${ list }" var="hh">
                 	<li>
                 		<ul>
-                			<li>${ nn.hotnew_no }</li>
-                			<c:url var="newdt" value="/newdetail.do">
-								<c:param name="hotnew_no" value="${ nn.hotnew_no }" />
+                			<li>${ hh.hotnew_no }</li>
+                			<c:url var="hotdt" value="/hotdetail.do">
+								<c:param name="hotnew_no" value="${ hh.hotnew_no }" />
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
                             <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">
-								<a class="newa" href="${ newdt }">${ nn.hotnew_name }</a>
+								<a class="hota" href="${ hotdt }">${ hh.hotnew_name }</a>
 							</c:if>
 							<c:if test="${ empty sessionScope.loginMember }">
-								${ nn.hotnew_name }
+								${ hh.hotnew_name }
 							</c:if>
                             </li>
                             <li>
-                            	<c:if test="${ !empty nn.originfile_hotnew }">◎</c:if>
-								<c:if test="${ empty nn.originfile_hotnew }">Empty</c:if>
+                            	<c:if test="${ !empty hh.originfile_hotnew }">◎</c:if>
+								<c:if test="${ empty hh.originfile_hotnew }">Empty</c:if>
                             </li>
-                            <li>${nn.write_hotnew_date}</li>
-                            <li>${nn.user_id}</li>
-                            <li> &nbsp; &nbsp;${nn.click_hotnew_no}&nbsp; &nbsp; </li>
+                            <li>${hh.write_hotnew_date}</li>
+                            <li>${hh.user_id}</li>
+                            <li> &nbsp; &nbsp;${hh.click_hotnew_no}&nbsp; &nbsp; </li>
                 		</ul>
                 	</li>
                 </c:forEach>                       
@@ -178,12 +178,12 @@ body{
 
             <!-- 검색 폼 영역 -->
             <li id='liSearchOption'>
-            	<form action="newsearch.do" method="post">
+            	<form action="hotsearch.do" method="post">
                 <div>
                     <select name="searchtype" >
-                        <option value="newname">제목</option>
-                        <option value="newvalue">내용</option>
-                        <option value="newid">작성자</option>
+                        <option value="hotname">제목</option>
+                        <option value="hotvalue">내용</option>
+                        <option value="hotid">작성자</option>
                     </select>
                     <input type="search" name="keyword">
                     <input type="submit" value="검색">
@@ -193,7 +193,7 @@ body{
 
         </ul>
         <!-- 페이징 처리 -->
-		<c:import url="/WEB-INF/views/new/newpaging.jsp" />
+		<c:import url="/WEB-INF/views/hot/hotsearchpaging.jsp" />
     </div>
 <br>
 <hr>

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,18 +64,18 @@ public class HotNewDao {
 		return (ArrayList<HotNew>)list;
 	}
 
-	public ArrayList<HotNew> newSelectSearchTitle(String keyword) {
-		List<HotNew> list = session.selectList("hotnewMapper.newSelectSearchTitle", keyword);
+	public ArrayList<HotNew> newSelectSearchTitle(Searchs searchs) {
+		List<HotNew> list = session.selectList("hotnewMapper.newSelectSearchTitle", searchs);
 		return (ArrayList<HotNew>)list;
 	}
 
-	public ArrayList<HotNew> newSelectSearchWriter(String keyword) {
-		List<HotNew> list = session.selectList("hotnewMapper.newSelectSearchWriter", keyword);
+	public ArrayList<HotNew> newSelectSearchWriter(Searchs searchs) {
+		List<HotNew> list = session.selectList("hotnewMapper.newSelectSearchWriter", searchs);
 		return (ArrayList<HotNew>)list;
 	}
 
-	public ArrayList<HotNew> newSelectSearchValue(String keyword) {
-		List<HotNew> list = session.selectList("hotnewMapper.newSelectSearchValue", keyword);
+	public ArrayList<HotNew> newSelectSearchValue(Searchs searchs) {
+		List<HotNew> list = session.selectList("hotnewMapper.newSelectSearchValue", searchs);
 		return (ArrayList<HotNew>)list;
 	}
 	public ArrayList<HotNew> hotSelectList(Paging page) {
@@ -81,23 +83,27 @@ public class HotNewDao {
 		return (ArrayList<HotNew>)list;
 	}
 
-	public ArrayList<HotNew> hotSelectSearchTitle(String keyword) {
-		List<HotNew> list = session.selectList("hotnewMapper.hotSelectSearchTitle", keyword);
+	public ArrayList<HotNew> hotSelectSearchTitle(Searchs searchs) {
+		List<HotNew> list = session.selectList("hotnewMapper.hotSelectSearchTitle", searchs);
 		return (ArrayList<HotNew>)list;
 	}
 
-	public ArrayList<HotNew> hotSelectSearchWriter(String keyword) {
-		List<HotNew> list = session.selectList("hotnewMapper.hotSelectSearchWriter", keyword);
+	public ArrayList<HotNew> hotSelectSearchWriter(Searchs searchs) {
+		List<HotNew> list = session.selectList("hotnewMapper.hotSelectSearchWriter", searchs);
 		return (ArrayList<HotNew>)list;
 	}
 
-	public ArrayList<HotNew> hotSelectSearchValue(String keyword) {
-		List<HotNew> list = session.selectList("hotnewMapper.hotSelectSearchValue", keyword);
+	public ArrayList<HotNew> hotSelectSearchValue(Searchs searchs) {
+		List<HotNew> list = session.selectList("hotnewMapper.hotSelectSearchValue", searchs);
 		return (ArrayList<HotNew>)list;
 	}
 
 	public ArrayList<HotNew> hotnewSelectTop5() {
 		List<HotNew> list = session.selectList("hotnewMapper.hotnewSelectTop5");
 		return (ArrayList<HotNew>)list;
+	}
+	
+	public int selectSearchListCount(CountSearch countSearch) {
+		return session.selectOne("hotnewMapper.selectSearchListCount", countSearch);
 	}
 }

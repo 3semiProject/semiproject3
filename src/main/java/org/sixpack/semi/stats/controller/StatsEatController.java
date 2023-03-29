@@ -40,6 +40,7 @@ public class StatsEatController {
 		
 		//diary 없으면 session에서 뽑아서 식단으로 조회
 		//term 없으면 7일짜리로 조회
+
 		period.setEnd(today);
 		switch(term) {
 		case 1 : period.setBegin(null); break; //오늘날짜-7일인 Date값
@@ -49,11 +50,12 @@ public class StatsEatController {
 		}
 
 		if (diary == null) {
+			Diary dry= new Diary();
 			String userid = request.getSession().getId(); // userid 추출코드 작성하기
-			diary.setUser_id(userid);
-			diary.setDiary_post_date(today); // 다이어리에 오늘날짜 담기
+			dry.setUser_id(userid);
+			dry.setDiary_post_date(today); // 다이어리에 오늘날짜 담기
 
-			mv.addObject("diary", diary);
+			mv.addObject("diary", dry);
 			mv.addObject("period", period);
 			
 			return "diary/eat/eatStats";
