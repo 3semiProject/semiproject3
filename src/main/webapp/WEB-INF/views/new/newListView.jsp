@@ -167,7 +167,7 @@
 
             <!-- 검색 폼 영역 -->
             <li id='liSearchOption'>
-            	<form action="newsearch.do?page=1" method="post">
+            	<form action="newsearch.do" method="post">
                 <div>
                     <select name="searchtype" >
                         <option value="newname">제목</option>

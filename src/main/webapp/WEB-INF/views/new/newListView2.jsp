@@ -120,7 +120,7 @@
 
         <ul>
             <!-- 게시판 제목 -->
-            <li id="title">HOT 게시판</li>
+            <li id="title">NEW 게시판</li>
 
             <!-- 게시판 목록  -->
             <li>
@@ -136,29 +136,29 @@
                         </ul>
                     </li>
                     <!-- 게시물이 출력될 영역 -->
-                <c:forEach items="${ list }" var="hh">
+                <c:forEach items="${ list }" var="nn">
                 	<li>
                 		<ul>
-                			<li>${ hh.hotnew_no }</li>
-                			<c:url var="hotdt" value="/hotdetail.do">
-								<c:param name="hotnew_no" value="${ hh.hotnew_no }" />
+                			<li>${ nn.hotnew_no }</li>
+                			<c:url var="newdt" value="/newdetail.do">
+								<c:param name="hotnew_no" value="${ nn.hotnew_no }" />
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
                             <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">
-								<a href="${ hotdt }">${ hh.hotnew_name }</a>
+								<a href="${ newdt }">${ nn.hotnew_name }</a>
 							</c:if>
 							<c:if test="${ empty sessionScope.loginMember }">
-								${ hh.hotnew_name }
+								${ nn.hotnew_name }
 							</c:if>
                             </li>
                             <li>
-                            	<c:if test="${ !empty hh.originfile_hotnew }">◎</c:if>
-								<c:if test="${ empty hh.originfile_hotnew }">Empty</c:if>
+                            	<c:if test="${ !empty nn.originfile_hotnew }">◎</c:if>
+								<c:if test="${ empty nn.originfile_hotnew }">Empty</c:if>
                             </li>
-                            <li>${hh.write_hotnew_date}</li>
-                            <li>${hh.user_id}</li>
-                            <li>${hh.click_hotnew_no}</li>
+                            <li>${nn.write_hotnew_date}</li>
+                            <li>${nn.user_id}</li>
+                            <li>${nn.click_hotnew_no}</li>
                 		</ul>
                 	</li>
                 </c:forEach>                       
@@ -167,12 +167,12 @@
 
             <!-- 검색 폼 영역 -->
             <li id='liSearchOption'>
-            	<form action="hotsearch.do" method="post">
+            	<form action="newsearch.do" method="post">
                 <div>
                     <select name="searchtype" >
-                        <option value="hotname">제목</option>
-                        <option value="hotvalue">내용</option>
-                        <option value="hotid">작성자</option>
+                        <option value="newname">제목</option>
+                        <option value="newvalue">내용</option>
+                        <option value="newid">작성자</option>
                     </select>
                     <input type="search" name="keyword">
                     <input type="submit" value="검색">
@@ -184,7 +184,7 @@
     </div>
 <br>
 <!-- 페이징 처리 -->
-<c:import url="/WEB-INF/views/hot/hotpaging.jsp" />
+<c:import url="/WEB-INF/views/new/newsearchpaging.jsp" />
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 </body>

@@ -4,9 +4,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.sixpack.semi.free.model.vo.Free;
 import org.sixpack.semi.hotnew.model.service.HotNewService;
@@ -31,7 +35,7 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 	
 	@RequestMapping(value="hntop5.do", method=RequestMethod.POST)
 	@ResponseBody
-	public String freeNewTop5Method() throws UnsupportedEncodingException {
+	public String hotnewNewTop5Method() throws UnsupportedEncodingException {
 		ArrayList<HotNew> list = hotNewService.hotnewSelectTop5();
 		logger.info("hntop5.do : " + list.size());
 		
@@ -74,28 +78,6 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 		}
 		return mv;
 	}
-	@RequestMapping(value="newsearch.do", method={ RequestMethod.GET, RequestMethod.POST })
-	public String newSearchMethod(@RequestParam("searchtype") String searchtype, 
-			@RequestParam("keyword") String keyword, Model model) {
-		
-		ArrayList<HotNew> list;
-		if(searchtype.equals("newname")) {
-			list = hotNewService.newSelectSearchTitle(keyword);
-			model.addAttribute("list", list);
-			return "new/newListView";
-		}else if(searchtype.equals("newvalue")) {
-			list = hotNewService.newSelectSearchValue(keyword);
-			model.addAttribute("list", list);
-			return "new/newListView";
-		}else if(searchtype.equals("newid")) {
-			list = hotNewService.newSelectSearchWriter(keyword);
-			model.addAttribute("list", list);
-			return "new/newListView";
-		}else {
-			model.addAttribute("message", "검색 결과가 없습니다.");
-			return "common/error";
-		}
-	}
 	
 	@RequestMapping("hotlist.do")
 	public ModelAndView hotListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
@@ -121,26 +103,110 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 		}
 		return mv;
 	}
+	
 	@RequestMapping(value="hotsearch.do", method={ RequestMethod.GET, RequestMethod.POST })
-	public String hotSearchMethod(@RequestParam("searchtype") String searchtype, 
-			@RequestParam("keyword") String keyword, Model model) {
+	public ModelAndView hotSearchMethod(
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page, 
+			HttpServletRequest request, ModelAndView mv) {
+		String searchtype = request.getParameter("searchtype");
+		String keyword = request.getParameter("keyword");
+		
+		CountSearch countSearch = new CountSearch(searchtype, keyword);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		int limit = 10;
+		int listCount = hotNewService.selectSearchListCount(countSearch);
+		Searchs searchs = new Searchs(listCount, currentPage, limit);
+		
+		searchs.setSearchtype(searchtype);
+		searchs.setKeyword(keyword);
 		
 		ArrayList<HotNew> list;
 		if(searchtype.equals("hotname")) {
-			list = hotNewService.newSelectSearchTitle(keyword);
-			model.addAttribute("list", list);
-			return "hot/hotListView";
+			list = hotNewService.hotSelectSearchTitle(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("hot/hotListView2");
+			}
 		}else if(searchtype.equals("hotvalue")) {
-			list = hotNewService.newSelectSearchValue(keyword);
-			model.addAttribute("list", list);
-			return "hot/hotListView";
+			list = hotNewService.hotSelectSearchValue(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("hot/hotListView2");
+			}
 		}else if(searchtype.equals("hotid")) {
-			list = hotNewService.newSelectSearchWriter(keyword);
-			model.addAttribute("list", list);
-			return "hot/hotListView";
+			list = hotNewService.hotSelectSearchWriter(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("hot/hotListView2");
+			}
 		}else {
-			model.addAttribute("message", "검색 결과가 없습니다.");
-			return "common/error";
+			mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
+			mv.setViewName("common/error");
 		}
+		return mv;
+	}
+	
+	@RequestMapping(value="newsearch.do", method={ RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView newSearchMethod(
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page, 
+			HttpServletRequest request, ModelAndView mv) {
+		String searchtype = request.getParameter("searchtype");
+		String keyword = request.getParameter("keyword");
+		
+		CountSearch countSearch = new CountSearch(searchtype, keyword);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		int limit = 10;
+		int listCount = hotNewService.selectSearchListCount(countSearch);
+		Searchs searchs = new Searchs(listCount, currentPage, limit);
+		
+		searchs.setSearchtype(searchtype);
+		searchs.setKeyword(keyword);
+		
+		ArrayList<HotNew> list;
+		if(searchtype.equals("newname")) {
+			list = hotNewService.hotSelectSearchTitle(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("new/newListView2");
+			}
+		}else if(searchtype.equals("newvalue")) {
+			list = hotNewService.hotSelectSearchValue(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("new/newListView2");
+			}
+		}else if(searchtype.equals("newid")) {
+			list = hotNewService.hotSelectSearchWriter(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("new/newListView2");
+			}
+		}else {
+			mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
+			mv.setViewName("common/error");
+		}
+		return mv;
 	}
 }
