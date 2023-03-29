@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.sixpack.semi.diary.model.dao.DiaryDao;
 import org.sixpack.semi.diary.model.vo.DateData;
 import org.sixpack.semi.diary.model.vo.Diary;
+import org.sixpack.semi.goal.model.vo.Goal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +16,18 @@ public class DiaryServiceImpl implements DiaryService {
 	private DiaryDao diaryDao;
 
 	@Override
+	public Goal selectGoal(Diary diary) {
+		return diaryDao.selectGoal(diary);
+	}
+	
+	@Override
 	public Diary selectOneDiary(Diary diary) {
-		return null;
+		return diaryDao.selectOneDiary(diary);
 	}
 
 	@Override
 	public ArrayList<Diary> selectDayDiary(Diary diary) {
-		return null;
+		return diaryDao.selectDayDiary(diary);
 	}
 
 	@Override
@@ -43,4 +49,10 @@ public class DiaryServiceImpl implements DiaryService {
 	public ArrayList<DateData> selectWeekDiary(Diary diary) {
 		return diaryDao.selectWeekDiary(diary);
 	}
+
+	@Override
+	public Diary selectDiaryNo(int diary_no) {
+		return null;
+	}
+
 }

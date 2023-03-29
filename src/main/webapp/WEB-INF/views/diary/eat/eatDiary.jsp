@@ -31,15 +31,37 @@ ol li{display: inline-block;}
 <div id="mainContain">
 <br><c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
 <br><c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--다이어리 메뉴바-->
-<br><c:import url="/WEB-INF/views/diary/common/weekBar.jsp" />		<!--날짜이동바-->
-<br><c:import url="/WEB-INF/views/diary/common/diaryTap.jsp" />		<!--식단/운동/식단 탭-->
-<br><c:import url="/WEB-INF/views/diary/common/target.jsp" />		<!--목표 표시-->
+<br><c:import url="/WEB-INF/views/diary/common/weekBar.jsp">
+		<c:param name="week0" value="${week[0]}"/>
+		<c:param name="week1" value="${week[1]}"/>
+		<c:param name="week2" value="${week[2]}"/>
+		<c:param name="week3" value="${week[3]}"/>
+		<c:param name="week4" value="${week[4]}"/>
+		<c:param name="week5" value="${week[5]}"/>
+		<c:param name="week6" value="${week[6]}"/>
+</c:import>		<!--날짜이동바-->
+<br><c:import url="/WEB-INF/views/diary/common/diaryTap.jsp" >
+		<c:param name="id" value="${diary.user_id}"/>
+		<c:param name="date" value="${diary.diary_post_date}"/>
+</c:import>		<!--식단/운동/식단 탭-->
+<br><c:import url="/WEB-INF/views/diary/common/goalBar.jsp" >
+		<c:param name="current_weight" value="${goal.current_weight}"/>
+		<c:param name="standard_weight" value="${goal.standard_weight}"/>
+		<c:param name="target_weight" value="${goal.target_weight}"/>
+		<c:param name="dday" value="${goal.dday}"/>
+</c:import>	<!--목표 표시-->
 <hr>
 
 <h2> diary_showEat -> eatView : 식단다이어리 보기</h2>
 <pre>
-보낼값 : diary
-받을값 : diarys, eats, sums, total
+보낼값----
+메뉴바 : ${diary}
+네비게이터 : ${week}
+목표바 : ${goal}
+받을값----
+이미지,메모 : ${diarys}
+음식정보 : ${eats}
+식단별 소계 및 총합계 : ${sums}
 
 식단 다이어리
 </pre>

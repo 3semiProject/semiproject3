@@ -1,10 +1,11 @@
 package org.sixpack.semi.eat.model.vo;
 
+
 public class Eat implements java.io.Serializable{
 	private static final long serialVersionUID = -8752520660149781460L;
 	private String diary_no; 		//다이어리번호
 	private String eat_seq; 		//식단 순번
-	private String food_code; 		//음식 일련번호
+	private String food_code; 		//음식 일련번호 or 이름
 	private int eat_g; 				//섭취한 양(g)
 	private int eat_kcal; 			//섭취칼로리량(kcal)
 	private int eat_carbohydrate; 	//섭취한 탄수화물(g)
