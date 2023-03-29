@@ -20,12 +20,12 @@
         margin:0;
 }
 
-    #mainWrapper{
-        width: 800px;
-        margin: 0 auto; /*가운데 정렬*/
+    #freeWrapper{
+        width: 1130px;
+        height: 1200px;
     }
 
-    #mainWrapper > ul > li:first-child {
+    #freeWrapper > ul > li:first-child {
         text-align: center;
         font-size:14pt;
         height:40px;
@@ -93,7 +93,7 @@
             height: 200px;
             display: block;
             background-color: white;
-            text-align: center;
+            text-align: left;
             
             color: #01CD88;
             font-weight: bold;
@@ -102,6 +102,17 @@
             font-size: 20pt;
             border: 1px solid;
         
+	}
+	
+	.freea {
+		text-decoration: none;
+		color: black;
+	}
+	
+	.freea:hover {
+		text-decoration: none;
+		color: black;
+		font-weight: bold;
 	}
 
 </style>
@@ -116,7 +127,7 @@
 <c:import url="/WEB-INF/views/common/menubar.jsp"/>
 <c:import url="/WEB-INF/views/common/commubar.jsp"/>
 <hr>
-<div id="mainWrapper">
+<div id="freeWrapper">
 
         <ul>
             <!-- 게시판 제목 -->
@@ -146,7 +157,7 @@
 							</c:url>
                             <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">
-								<a href="${ fdt }">${ f.free_name }</a>
+								<a class="freea" href="${ fdt }">${ f.free_name }</a>
 							</c:if>
 							<c:if test="${ empty sessionScope.loginMember }">
 								${ f.free_name }
@@ -158,7 +169,7 @@
                             </li>
                             <li>${f.write_free_date}</li>
                             <li>${f.user_id}</li>
-                            <li>${f.click_free_no}</li>
+                            <li> &nbsp; &nbsp;${f.click_free_no}&nbsp; &nbsp; </li>
                 		</ul>
                 	</li>
                 </c:forEach>                       
@@ -179,12 +190,11 @@
                 </div>
                 </form>
              </li>
-
         </ul>
-        <c:import url="/WEB-INF/views/free/freesearchpaging.jsp" />
+        <!-- 페이징 처리 -->   
+        <c:import url="/WEB-INF/views/free/freepaging.jsp" />
     </div>
 <br>
-<!-- 페이징 처리 -->
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 </body>

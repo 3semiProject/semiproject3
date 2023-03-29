@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <style type="text/css">
-    body{
+body{
         line-height:2em;        
         font-family:"맑은 고딕";
 }
@@ -20,12 +20,12 @@
         margin:0;
 }
 
-    #mainWrapper{
-        width: 800px;
-        margin: 0 auto; /*가운데 정렬*/
+    #newWrapper{
+        width: 1130px;
+        height: 1200px;
     }
 
-    #mainWrapper > ul > li:first-child {
+    #newWrapper > ul > li:first-child {
         text-align: center;
         font-size:14pt;
         height:40px;
@@ -93,7 +93,7 @@
             height: 200px;
             display: block;
             background-color: white;
-            text-align: center;
+            text-align: left;
             
             color: #01CD88;
             font-weight: bold;
@@ -102,6 +102,17 @@
             font-size: 20pt;
             border: 1px solid;
         
+	}
+	
+	.newa {
+		text-decoration: none;
+		color: black;
+	}
+	
+	.newa:hover {
+		text-decoration: none;
+		color: black;
+		font-weight: bold;
 	}
 
 </style>
@@ -116,7 +127,7 @@
 <c:import url="/WEB-INF/views/common/menubar.jsp"/>
 <c:import url="/WEB-INF/views/common/commubar.jsp"/>
 <hr>
-<div id="mainWrapper">
+<div id="newWrapper">
 
         <ul>
             <!-- 게시판 제목 -->
@@ -146,7 +157,7 @@
 							</c:url>
                             <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">
-								<a href="${ newdt }">${ nn.hotnew_name }</a>
+								<a class="newa" href="${ newdt }">${ nn.hotnew_name }</a>
 							</c:if>
 							<c:if test="${ empty sessionScope.loginMember }">
 								${ nn.hotnew_name }
@@ -158,7 +169,7 @@
                             </li>
                             <li>${nn.write_hotnew_date}</li>
                             <li>${nn.user_id}</li>
-                            <li>${nn.click_hotnew_no}</li>
+                            <li> &nbsp; &nbsp;${nn.click_hotnew_no}&nbsp; &nbsp; </li>
                 		</ul>
                 	</li>
                 </c:forEach>                       
@@ -181,10 +192,10 @@
              </li>
 
         </ul>
+        <!-- 페이징 처리 -->
+		<c:import url="/WEB-INF/views/new/newsearchpaging.jsp" />
     </div>
 <br>
-<!-- 페이징 처리 -->
-<c:import url="/WEB-INF/views/new/newsearchpaging.jsp" />
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 </body>
