@@ -54,7 +54,7 @@ public class FreeDao {
 	public int deleteBoard(Free free) {
 		return session.delete("freeMapper.deleteBoard", free);
 	}
-
+	
 	public ArrayList<Free> selectTop5() {
 		List<Free> list = session.selectList("freeMapper.selectTop5");
 		return (ArrayList<Free>)list;
@@ -74,4 +74,5 @@ public class FreeDao {
 		List<Free> list = session.selectList("freeMapper.selectSearchTitle", keyword);
 		return (ArrayList<Free>)list;
 	}
+
 }

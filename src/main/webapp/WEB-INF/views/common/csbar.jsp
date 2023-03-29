@@ -9,7 +9,7 @@
 	
         #tab2{
             width: 1000px;
-            height: 70px;
+            height: 50px;
             margin:0;
             padding: 0;
             list-style: none;
@@ -21,7 +21,7 @@
         #tab2 div {
             float: left;
             width: 333px;
-            height: 70px;
+            height: 50px;
             margin: 0px;
             padding: 0;
         }
@@ -31,11 +31,11 @@
         #tab2 div a {
             text-decoration: none;
             width: 333px;
-            height: 70px;
+            height: 50px;
             display: block;
             background-color: white;
             text-align: center;
-            line-height: 70px;
+            line-height: 50px;
             color: #01CD88;
             font-weight: bold;
             margin: 0;
@@ -60,8 +60,8 @@
         #tab2 div a:hover {
             text-decoration: none;
             width: 333px;
-            height: 70px;
-            line-height: 70px;
+            height: 50px;
+            line-height: 50px;
             display: block;
             background-color: #01CD88;
             font-size: 25pt;
@@ -80,8 +80,8 @@
 <hr>
 <div id="tab2">
 	<div class="round"><a style="border-bottom-left-radius: 35px; border-top-left-radius: 35px;" href="${ pageContext.servletContext.contextPath }/customer.do">QnA & FAQ</a></div>
-	<div><a href="${ pageContext.servletContext.contextPath }/tiplist.do">공지사항</a></div>
-	<div class="round"><a style="border-bottom-right-radius: 35px; border-top-right-radius: 35px;" href="${ pageContext.servletContext.contextPath }/eyebodylist.do">EVENT</a></div>
+	<div><a href="${ pageContext.servletContext.contextPath }/nlist.do">공지사항</a></div>
+	<div class="round"><a style="border-bottom-right-radius: 35px; border-top-right-radius: 35px;" href="${ pageContext.servletContext.contextPath }/elist.do">EVENT</a></div>
    </ul>
 </div>
 </body>
