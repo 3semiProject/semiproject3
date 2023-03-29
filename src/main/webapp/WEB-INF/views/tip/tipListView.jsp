@@ -140,8 +140,8 @@
                 	<li>
                 		<ul>
                 			<li>${ t.tip_no }</li>
-                			<c:url var="tdt" value="/tipdetail.do?page=1">
-								<c:param name="free_no" value="${ t.tip_no }" />
+                			<c:url var="tdt" value="/tipdetail.do">
+								<c:param name="tip_no" value="${ t.tip_no }" />
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
                             <li class="left">
@@ -167,7 +167,7 @@
 
             <!-- 검색 폼 영역 -->
             <li id='liSearchOption'>
-            	<form action="tipsearch.do?page=1" method="post">
+            	<form action="tipsearch.do" method="post">
                 <div>
                     <select name="searchtype" >
                         <option value="tname">제목</option>

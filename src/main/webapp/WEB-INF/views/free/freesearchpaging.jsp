@@ -2,9 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 
-<c:set var="startPage" value="${ requestScope.paging.startPage }" />
-<c:set var="endPage" value="${ requestScope.paging.endPage }" />
-<c:set var="maxPage" value="${ requestScope.paging.maxPage }" />
+<c:set var="startPage" value="${ requestScope.searchs.startPage }" />
+<c:set var="endPage" value="${ requestScope.searchs.endPage }" />
+<c:set var="maxPage" value="${ requestScope.searchs.maxPage }" />
+
 
 <!DOCTYPE html>
 <html>
@@ -20,8 +21,10 @@
 		[맨처음] &nbsp;
 	</c:if>
 	<c:if test="${ currentPage > 1 }">
-		<c:url var="p1" value="/commu.do">
+		<c:url var="p1" value="/freesearch.do">
 			<c:param name="page" value="1" />
+			<c:param name="searchtype" value="${ requestScope.searchs.searchtype }" />
+			<c:param name="keyword" value="${ requestScope.searchs.keyword }" />
 		</c:url>
 		<a href="${ p1 }">[맨처음]</a> &nbsp;
 	</c:if>
@@ -30,8 +33,10 @@
 		[이전그룹] &nbsp;
 	</c:if>
 	<c:if test="${ (currentPage - 10) < startPage and (currentPage - 10) > 1 }">
-		<c:url var="pbefore" value="/commu.do">
+		<c:url var="pbefore" value="/freesearch.do">
 			<c:param name="page" value="${ startPage - 10 }" />
+			<c:param name="searchtype" value="${ requestScope.searchs.searchtype }" />
+			<c:param name="keyword" value="${ requestScope.searchs.keyword }" />
 		</c:url>
 		<a href="${ pbefore }">[이전그룹]</a> &nbsp;
 	</c:if>
@@ -42,8 +47,10 @@
 			<font size="4" color="red">[${ p }]</font>
 		</c:if>
 		<c:if test="${ p ne currentPage }">
-			<c:url var="pp" value="/commu.do">
+			<c:url var="pp" value="/freesearch.do">
 				<c:param name="page" value="${ p }" />
+				<c:param name="searchtype" value="${ requestScope.searchs.searchtype }" />
+				<c:param name="keyword" value="${ requestScope.searchs.keyword }" />
 			</c:url>
 			<a href="${ pp }">${ p }</a>
 		</c:if>
@@ -54,8 +61,10 @@
 		[다음그룹] &nbsp;
 	</c:if>
 	<c:if test="${ (currentPage + 10) > endPage and (currentPage + 10) < maxPage }">
-		<c:url var="pafter" value="/commu.do">
+		<c:url var="pafter" value="/freesearch.do">
 			<c:param name="page" value="${ endPage + 10 }" />
+			<c:param name="searchtype" value="${ requestScope.searchs.searchtype }" />
+			<c:param name="keyword" value="${ requestScope.searchs.keyword }" />
 		</c:url>
 		<a href="${ pafter }">[다음그룹]</a> &nbsp;
 	</c:if>
@@ -65,8 +74,10 @@
 		[맨끝]
 	</c:if>
 	<c:if test="${ currentPage < maxPage }">
-		<c:url var="pmax" value="/commu.do">
+		<c:url var="pmax" value="/freesearch.do">
 			<c:param name="page" value="${ maxPage }" />
+			<c:param name="searchtype" value="${ requestScope.searchs.searchtype }" />
+			<c:param name="keyword" value="${ requestScope.searchs.keyword }" />
 		</c:url>
 		<a href="${ pmax }">[맨끝]</a>
 	</c:if>

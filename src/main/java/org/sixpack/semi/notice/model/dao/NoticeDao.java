@@ -1,6 +1,6 @@
 package org.sixpack.semi.notice.model.dao;
 
-import org.sixpack.semi.common.SearchDate;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.notice.model.vo.Notice;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

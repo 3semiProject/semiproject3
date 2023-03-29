@@ -2,7 +2,9 @@ package org.sixpack.semi.free.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.free.model.dao.FreeDao;
 import org.sixpack.semi.free.model.vo.Free;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,18 +72,23 @@ public class FreeServiceImpl implements FreeService{
 	}
 
 	@Override
-	public ArrayList<Free> selectSearchTitle(String keyword) {
-		return freeDao.selectSearchTitle(keyword);
+	public ArrayList<Free> selectSearchTitle(Searchs searchs) {
+		return freeDao.selectSearchTitle(searchs);
 	}
 
 	@Override
-	public ArrayList<Free> selectSearchWriter(String keyword) {
-		return freeDao.selectSearchWriter(keyword);
+	public ArrayList<Free> selectSearchWriter(Searchs searchs) {
+		return freeDao.selectSearchWriter(searchs);
 	}
 
 	@Override
-	public ArrayList<Free> selectSearchValue(String keyword) {
-		return freeDao.selectSearchValue(keyword);
+	public ArrayList<Free> selectSearchValue(Searchs searchs) {
+		return freeDao.selectSearchValue(searchs);
+	}
+
+	@Override
+	public int selectSearchListCount(CountSearch countSearch) {
+		return freeDao.selectSearchListCount(countSearch);
 	}
 	
 }

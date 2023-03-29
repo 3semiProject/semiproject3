@@ -2,9 +2,14 @@ package org.sixpack.semi.eyebody.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.eyebody.model.service.EyebodyService;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
+import org.sixpack.semi.free.model.vo.Free;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +28,7 @@ private static final Logger logger = LoggerFactory.getLogger(EyebodyController.c
 	private EyebodyService eyebodyService;
 	
 	@RequestMapping("eyebodylist.do")
-	public ModelAndView eyebodydoListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+	public ModelAndView eyebodyListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = Integer.parseInt(page);
@@ -47,25 +52,55 @@ private static final Logger logger = LoggerFactory.getLogger(EyebodyController.c
 		return mv;
 	}
 	@RequestMapping(value="eyebodysearch.do", method={ RequestMethod.GET, RequestMethod.POST })
-	public String eyebodySearchMethod(@RequestParam("searchtype") String searchtype, 
-			@RequestParam("keyword") String keyword, Model model) {
+	public ModelAndView eyebodySearchMethod(
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page, 
+			HttpServletRequest request, ModelAndView mv) {
+		String searchtype = request.getParameter("searchtype");
+		String keyword = request.getParameter("keyword");
+		
+		CountSearch countSearch = new CountSearch(searchtype, keyword);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		int limit = 10;
+		int listCount = eyebodyService.selectSearchListCount(countSearch);
+		Searchs searchs = new Searchs(listCount, currentPage, limit);
+		
+		searchs.setSearchtype(searchtype);
+		searchs.setKeyword(keyword);
 		
 		ArrayList<Eyebody> list;
 		if(searchtype.equals("ename")) {
-			list = eyebodyService.selectSearchTitle(keyword);
-			model.addAttribute("list", list);
-			return "eyebody/eyebodyListView";
+			list = eyebodyService.selectSearchTitle(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("eyebody/eyebodyListView2");
+			}
 		}else if(searchtype.equals("evalue")) {
-			list = eyebodyService.selectSearchValue(keyword);
-			model.addAttribute("list", list);
-			return "eyebody/eyebodyListView";
+			list = eyebodyService.selectSearchValue(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("eyebody/eyebodyListView2");
+			}
 		}else if(searchtype.equals("eid")) {
-			list = eyebodyService.selectSearchWriter(keyword);
-			model.addAttribute("list", list);
-			return "eyebody/eyebodyListView";
+			list = eyebodyService.selectSearchWriter(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("eyebody/eyebodyListView2");
+			}
 		}else {
-			model.addAttribute("message", "검색 결과가 없습니다.");
-			return "common/error";
+			mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
+			mv.setViewName("common/error");
 		}
+		return mv;
 	}
 }

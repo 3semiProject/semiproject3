@@ -140,8 +140,8 @@
                 	<li>
                 		<ul>
                 			<li>${ e.eyebody_no }</li>
-                			<c:url var="edt" value="/edetail.do?page=1">
-								<c:param name="free_no" value="${ e.eyebody_no }" />
+                			<c:url var="edt" value="/edetail.do">
+								<c:param name="eyebody_no" value="${ e.eyebody_no }" />
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
                             <li class="left">

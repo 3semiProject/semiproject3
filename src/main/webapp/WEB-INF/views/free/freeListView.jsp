@@ -140,7 +140,7 @@
                 	<li>
                 		<ul>
                 			<li>${ f.free_no }</li>
-                			<c:url var="fdt" value="/freedetail.do?page=1">
+                			<c:url var="fdt" value="/freedetail.do">
 								<c:param name="free_no" value="${ f.free_no }" />
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
@@ -167,10 +167,10 @@
 
             <!-- 검색 폼 영역 -->
             <li id='liSearchOption'>
-            	<form action="fsearch.do?page=1" method="post">
+            	<form action="freesearch.do" method="post">
                 <div>
                     <select name="searchtype" >
-                        <option value="fname">제목</option>
+                        <option value="fname" >제목</option>
                         <option value="fvalue">내용</option>
                         <option value="fid">작성자</option>
                     </select>
@@ -179,12 +179,11 @@
                 </div>
                 </form>
              </li>
-
-        </ul>
+        </ul>   
+        <c:import url="/WEB-INF/views/free/freepaging.jsp" />
     </div>
 <br>
 <!-- 페이징 처리 -->
-<c:import url="/WEB-INF/views/free/freepaging.jsp" />
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 </body>

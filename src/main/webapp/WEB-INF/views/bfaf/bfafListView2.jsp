@@ -184,7 +184,7 @@
     </div>
 <br>
 <!-- 페이징 처리 -->
-<c:import url="/WEB-INF/views/bfaf/bfafpaging.jsp" />
+<c:import url="/WEB-INF/views/bfaf/bfafsearchpaging.jsp" />
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 </body>

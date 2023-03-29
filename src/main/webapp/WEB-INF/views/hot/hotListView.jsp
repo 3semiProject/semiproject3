@@ -167,7 +167,7 @@
 
             <!-- 검색 폼 영역 -->
             <li id='liSearchOption'>
-            	<form action="hotsearch.do?page=1" method="post">
+            	<form action="hotsearch.do" method="post">
                 <div>
                     <select name="searchtype" >
                         <option value="hotname">제목</option>

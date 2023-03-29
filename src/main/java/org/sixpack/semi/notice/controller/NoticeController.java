@@ -1,6 +1,6 @@
 package org.sixpack.semi.notice.controller;
 
-import org.sixpack.semi.common.SearchDate;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.notice.model.service.NoticeService;
 import org.sixpack.semi.notice.model.vo.Notice;

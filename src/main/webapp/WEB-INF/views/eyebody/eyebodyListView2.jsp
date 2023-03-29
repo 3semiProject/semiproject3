@@ -120,7 +120,7 @@
 
         <ul>
             <!-- 게시판 제목 -->
-            <li id="title">BF & AF 게시판</li>
+            <li id="title">EYEBODY 게시판</li>
 
             <!-- 게시판 목록  -->
             <li>
@@ -136,29 +136,29 @@
                         </ul>
                     </li>
                     <!-- 게시물이 출력될 영역 -->
-                <c:forEach items="${ list }" var="ba">
+                <c:forEach items="${ list }" var="e">
                 	<li>
                 		<ul>
-                			<li>${ ba.bfaf_no }</li>
-                			<c:url var="badt" value="/bfafdetail.do">
-								<c:param name="bfaf_no" value="${ ba.bfaf_no }" />
+                			<li>${ e.eyebody_no }</li>
+                			<c:url var="edt" value="/edetail.do">
+								<c:param name="eyebody_no" value="${ e.eyebody_no }" />
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
                             <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">
-								<a href="${ badt }">${ ba.bfaf_name }</a>
+								<a href="${ edt }">${ e.eyebody_name }</a>
 							</c:if>
 							<c:if test="${ empty sessionScope.loginMember }">
-								${ ba.bfaf_name }
+								${ e.eyebody_name }
 							</c:if>
                             </li>
                             <li>
-                            	<c:if test="${ !empty ba.originfile_bfaf }">◎</c:if>
-								<c:if test="${ empty ba.originfile_bfaf }">Empty</c:if>
+                            	<c:if test="${ !empty e.originfile_eyebody }">◎</c:if>
+								<c:if test="${ empty e.originfile_eyebody }">Empty</c:if>
                             </li>
-                            <li>${ba.write_bfaf_date}</li>
-                            <li>${ba.user_id}</li>
-                            <li>${ba.click_bfaf_no}</li>
+                            <li>${e.write_eyebody_date}</li>
+                            <li>${e.user_id}</li>
+                            <li>${e.click_eyebody_no}</li>
                 		</ul>
                 	</li>
                 </c:forEach>                       
@@ -167,12 +167,12 @@
 
             <!-- 검색 폼 영역 -->
             <li id='liSearchOption'>
-            	<form action="bfafsearch.do" method="post">
+            	<form action="eyebodysearch.do" method="post">
                 <div>
                     <select name="searchtype" >
-                        <option value="baname">제목</option>
-                        <option value="bavalue">내용</option>
-                        <option value="baid">작성자</option>
+                        <option value="ename">제목</option>
+                        <option value="evalue">내용</option>
+                        <option value="eid">작성자</option>
                     </select>
                     <input type="search" name="keyword">
                     <input type="submit" value="검색">
@@ -184,7 +184,7 @@
     </div>
 <br>
 <!-- 페이징 처리 -->
-<c:import url="/WEB-INF/views/bfaf/bfafpaging.jsp" />
+<c:import url="/WEB-INF/views/eyebody/eyebodysearchpaging.jsp" />
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 </body>

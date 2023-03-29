@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.sixpack.semi.tip.model.vo.Tip;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,18 +60,22 @@ public class TipDao {
 		return session.delete("tipMapper.deleteBoard", tip);
 	}
 	
-	public ArrayList<Tip> selectSearchValue(String keyword) {
-		List<Tip> list = session.selectList("tipMapper.selectSearchValue", keyword);
+	public ArrayList<Tip> selectSearchValue(Searchs searchs) {
+		List<Tip> list = session.selectList("tipMapper.selectSearchValue", searchs);
 		return (ArrayList<Tip>)list;
 	}
 
-	public ArrayList<Tip> selectSearchWriter(String keyword) {
-		List<Tip> list = session.selectList("tipMapper.selectSearchWriter", keyword);
+	public ArrayList<Tip> selectSearchWriter(Searchs searchs) {
+		List<Tip> list = session.selectList("tipMapper.selectSearchWriter", searchs);
 		return (ArrayList<Tip>)list;
 	}
 
-	public ArrayList<Tip> selectSearchTitle(String keyword) {
-		List<Tip> list = session.selectList("tipMapper.selectSearchTitle", keyword);
+	public ArrayList<Tip> selectSearchTitle(Searchs searchs) {
+		List<Tip> list = session.selectList("tipMapper.selectSearchTitle", searchs);
 		return (ArrayList<Tip>)list;
+	}
+	
+	public int selectSearchListCount(CountSearch countSearch) {
+		return session.selectOne("tipMapper.selectSearchListCount", countSearch);
 	}
 }

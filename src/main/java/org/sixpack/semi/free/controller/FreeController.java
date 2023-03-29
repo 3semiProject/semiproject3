@@ -4,9 +4,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.free.model.service.FreeService;
 import org.sixpack.semi.free.model.vo.Free;
 import org.slf4j.Logger;
@@ -58,7 +62,6 @@ public class FreeController {
 		int limit = 10;
 		int listCount = freeService.selectListCount();
 		Paging paging = new Paging(listCount, currentPage,limit);
-		paging.calculator();
 		
 		ArrayList<Free> list = freeService.selectList(paging);
 		if(list != null && list.size() > 0) {
@@ -72,26 +75,56 @@ public class FreeController {
 		}
 		return mv;
 	}
-	@RequestMapping(value="fsearch.do", method={ RequestMethod.GET, RequestMethod.POST })
-	public String freeSearchMethod(@RequestParam("searchtype") String searchtype, 
-			@RequestParam("keyword") String keyword, Model model) {
+	@RequestMapping(value="freesearch.do", method={ RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView freeSearchMethod(
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page, 
+			HttpServletRequest request, ModelAndView mv) {
+		String searchtype = request.getParameter("searchtype");
+		String keyword = request.getParameter("keyword");
+		
+		CountSearch countSearch = new CountSearch(searchtype, keyword);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		int limit = 10;
+		int listCount = freeService.selectSearchListCount(countSearch);
+		Searchs searchs = new Searchs(listCount, currentPage, limit);
+		
+		searchs.setSearchtype(searchtype);
+		searchs.setKeyword(keyword);
 		
 		ArrayList<Free> list;
 		if(searchtype.equals("fname")) {
-			list = freeService.selectSearchTitle(keyword);
-			model.addAttribute("list", list);
-			return "free/freeListView";
+			list = freeService.selectSearchTitle(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("free/freeListView2");
+			}
 		}else if(searchtype.equals("fvalue")) {
-			list = freeService.selectSearchValue(keyword);
-			model.addAttribute("list", list);
-			return "free/freeListView";
+			list = freeService.selectSearchValue(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("free/freeListView2");
+			}
 		}else if(searchtype.equals("fid")) {
-			list = freeService.selectSearchWriter(keyword);
-			model.addAttribute("list", list);
-			return "free/freeListView";
+			list = freeService.selectSearchWriter(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("free/freeListView2");
+			}
 		}else {
-			model.addAttribute("message", "검색 결과가 없습니다.");
-			return "common/error";
+			mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
+			mv.setViewName("common/error");
 		}
+		return mv;
 	}
 }
