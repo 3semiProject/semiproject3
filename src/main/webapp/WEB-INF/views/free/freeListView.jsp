@@ -114,6 +114,9 @@
 		color: black;
 		font-weight: bold;
 	}
+	#wri{
+		text-align: right;
+	}
 
 </style>
 <script type="text/javascript"
@@ -189,6 +192,15 @@
                     <input type="submit" value="검색">
                 </div>
                 </form>
+             </li>
+             <li>
+             <form action="commuwrite.do" method="post">
+            	<div>
+            	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y'}">
+             		<input id="wri" type=submit value="글쓰기">
+             	</c:if>
+            	</div>
+            </form>
              </li>
         </ul>
         <!-- 페이징 처리 -->   

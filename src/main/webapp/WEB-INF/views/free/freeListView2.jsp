@@ -192,7 +192,7 @@
              </li>
         </ul>
         <!-- 페이징 처리 -->   
-        <c:import url="/WEB-INF/views/free/freepaging.jsp" />
+        <c:import url="/WEB-INF/views/free/freesearchpaging.jsp" />
     </div>
 <br>
 <hr>
