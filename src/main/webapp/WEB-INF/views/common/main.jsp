@@ -11,7 +11,7 @@
 <c:import url="/WEB-INF/views/common/menubar.jsp"/>
 <hr>
 <c:import url="/WEB-INF/views/common/mainbox.jsp"/>
-<hr>
+<c:import url="/WEB-INF/views/common/contentBox.jsp"/>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 
 

@@ -105,4 +105,6 @@ public class MemberDao {
 		return session.selectOne("memberMapper.selectPhoneCount", phone);
 	}
 
+
+
 }
