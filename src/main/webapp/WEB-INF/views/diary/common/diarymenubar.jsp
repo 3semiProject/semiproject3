@@ -56,7 +56,7 @@ a.diarymenu:hover{
 		<a href="${ pageContext.servletContext.contextPath }/diary_showEatDiary.do" class="diarymenu left">다이어리</a>
 		<a href="${ pageContext.servletContext.contextPath }/diary_showEatWrite.do" class="diarymenu center">다이어리 작성</a>
 		<a href="${ pageContext.servletContext.contextPath }/diary_showGoalView.do" class="diarymenu center">목표관리</a>
-		<a href="${ pageContext.servletContext.contextPath }/diary_showEatStats.do" class="diarymenu right">통계화면</a>
+		<a href="${ pageContext.servletContext.contextPath }/diary_moveEatStats.do" class="diarymenu right">통계화면</a>
 	</div>
 </body>
 

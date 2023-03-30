@@ -25,8 +25,19 @@ public class StatsDao {
         ActStats actStats = new ActStats();
 
         ActStats actTotal = session.selectOne("statsMapper.actTotal", statsDate);
-        List<ActStats> actIntensity = session.selectList("statsMapper.actIntensity", statsDate.getUser_id());
+        System.out.println(actTotal);
+        List<Integer> actIntensity = session.selectList("statsMapper.actIntensity", statsDate);
+        actStats.setTot_act_val(actTotal.getTot_act_val());
+        actStats.setTot_act_time(actTotal.getTot_act_time());
+        actStats.setAvg_act_one(actTotal.getAvg_act_one());
+        actStats.setTot_weak_time(actIntensity.get(0));
+        actStats.setTot_middle_time(actIntensity.get(1));
+        actStats.setTot_strong_time(actIntensity.get(2));
+        actStats.setMaxDay_actName(session.selectOne("statsMapper.actMaxDay", statsDate));
+        actStats.setMaxKcal_actName(session.selectOne("statsMapper.actMaxKcal", statsDate));
+        actStats.setMaxTime_actName(session.selectOne("statsMapper.actMaxTime", statsDate));
 
+        System.out.println(actStats);
 
         return actStats;
     }

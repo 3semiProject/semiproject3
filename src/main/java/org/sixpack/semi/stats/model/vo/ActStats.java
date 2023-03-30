@@ -8,7 +8,7 @@ public class ActStats implements java.io.Serializable {
     private int avg_act_one;        //1회 평균 운동시간(분)
     private int tot_weak_time;    //저강도 총시간(분)
     private int tot_middle_time;    //중강도 총시간(분)
-    private int tot_strongTime;        //고강도 총시간(분)
+    private int tot_strong_time;        //고강도 총시간(분)
 
     private String maxDay_actName;    //가장 많이한 운동 :
     private String maxKcal_actName; //최대 소모 kcal 운동이름 : 한번인지 총합인지
@@ -24,7 +24,7 @@ public class ActStats implements java.io.Serializable {
                 ", avg_act_one=" + avg_act_one +
                 ", tot_weak_time=" + tot_weak_time +
                 ", tot_middle_time=" + tot_middle_time +
-                ", tot_strongTime=" + tot_strongTime +
+                ", tot_strong_time=" + tot_strong_time +
                 ", maxDay_actName='" + maxDay_actName + '\'' +
                 ", maxKcal_actName='" + maxKcal_actName + '\'' +
                 ", maxTime_actName='" + maxTime_actName + '\'' +
@@ -79,12 +79,12 @@ public class ActStats implements java.io.Serializable {
         this.tot_middle_time = tot_middle_time;
     }
 
-    public int getTot_strongTime() {
-        return tot_strongTime;
+    public int getTot_strong_time() {
+        return tot_strong_time;
     }
 
-    public void setTot_strongTime(int tot_strongTime) {
-        this.tot_strongTime = tot_strongTime;
+    public void setTot_strong_time(int tot_strong_time) {
+        this.tot_strong_time = tot_strong_time;
     }
 
     public String getMaxDay_actName() {
@@ -114,14 +114,14 @@ public class ActStats implements java.io.Serializable {
     public ActStats() {
     }
 
-    public ActStats(int tot_act_val, int tot_act_time, int avg_act_time, int avg_act_one, int tot_weak_time, int tot_middle_time, int tot_strongTime, String maxDay_actName, String maxKcal_actName, String maxTime_actName) {
+    public ActStats(int tot_act_val, int tot_act_time, int avg_act_time, int avg_act_one, int tot_weak_time, int tot_middle_time, int tot_strong_time, String maxDay_actName, String maxKcal_actName, String maxTime_actName) {
         this.tot_act_val = tot_act_val;
         this.tot_act_time = tot_act_time;
         this.avg_act_time = avg_act_time;
         this.avg_act_one = avg_act_one;
         this.tot_weak_time = tot_weak_time;
         this.tot_middle_time = tot_middle_time;
-        this.tot_strongTime = tot_strongTime;
+        this.tot_strong_time = tot_strong_time;
         this.maxDay_actName = maxDay_actName;
         this.maxKcal_actName = maxKcal_actName;
         this.maxTime_actName = maxTime_actName;

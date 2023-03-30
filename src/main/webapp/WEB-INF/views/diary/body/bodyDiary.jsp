@@ -18,7 +18,7 @@ display: inline-block;
 }
 #footer {
     position: relative;
-    transform: translatY(-100%);
+    transform: translateY(-100%);
 } 
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
