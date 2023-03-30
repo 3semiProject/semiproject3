@@ -2,7 +2,9 @@ package org.sixpack.semi.qna.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.qna.model.dao.QnaDao;
 import org.sixpack.semi.qna.model.vo.Qna;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +16,23 @@ public class QnaServiceImpl implements QnaService{
 	private QnaDao qnaDao;
 
 	@Override
-	public ArrayList<Qna> selectQnaList(Paging page) {
-		return qnaDao.selectQnaList(page);
+	public int selectListCount() {
+		return qnaDao.selectListCount();
 	}
 
 	@Override
-	public ArrayList<Qna> selectQnaDetail(int qna_no) {
-		return qnaDao.selectQnaDetail(qna_no);
+	public ArrayList<Qna> selectList(Paging page) {
+		return qnaDao.selectList(page);
 	}
 
 	@Override
-	public ArrayList<Qna> selectNoAnswerList() {
-		return qnaDao.selectNoAnswerList();
+	public Qna selectQna(int qna_no) {
+		return qnaDao.selectQna(qna_no);
+	}
+
+	@Override
+	public int updateQnaReadcount(int qna_no) {
+		return qnaDao.updateQnaReadcount(qna_no);
 	}
 
 	@Override
@@ -44,7 +51,24 @@ public class QnaServiceImpl implements QnaService{
 	}
 
 	@Override
-	public int selectListCount() {
-		return qnaDao.selectListCount();
+	public ArrayList<Qna> selectSearchTitle(Searchs searchs) {
+		return qnaDao.selectSearchTitle(searchs);
 	}
+
+	@Override
+	public ArrayList<Qna> selectSearchWriter(Searchs searchs) {
+		return qnaDao.selectSearchWriter(searchs);
+	}
+
+	@Override
+	public ArrayList<Qna> selectSearchContent(Searchs searchs) {
+		return qnaDao.selectSearchContent(searchs);
+	}
+
+	@Override
+	public int selectSearchListCount(CountSearch countSearch) {
+		return qnaDao.selectSearchListCount(countSearch);
+	}
+
+	
 }

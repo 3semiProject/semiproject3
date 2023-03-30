@@ -87,7 +87,7 @@ hr { clear: both;}
 			<li><a href="${ pageContext.servletContext.contextPath }/diary_showEatDiary.do">다이어리</a></li>
 			<li><a href="${ pageContext.servletContext.contextPath }/commu.do">커뮤니티</a></li>
 			<!-- cs.do = customer service center -->
-			<li><a href="${ pageContext.servletContext.contextPath }/customer.do">고객센터</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/qnalist.do">고객센터</a></li>
 		</ul>
 	</c:if>
 	
@@ -107,7 +107,7 @@ hr { clear: both;}
 			<li><a href="${ pageContext.servletContext.contextPath }/diary.do">다이어리</a></li>
 			<li><a href="${ pageContext.servletContext.contextPath }/commu.do">커뮤니티</a></li>
 			<!-- cs.do = customer service center -->
-			<li><a href="${ pageContext.servletContext.contextPath }/customer.do">고객센터</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/qnalist.do">고객센터</a></li>
 		</ul>
 	</c:if>
 </header>

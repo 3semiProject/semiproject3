@@ -1,7 +1,9 @@
 package org.sixpack.semi.notice.model.dao;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.SearchDate;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.notice.model.vo.Notice;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,18 +47,22 @@ public class NoticeDao {
 		return session.delete("noticeMapper.selectNotice", notice_no);
 	}
 
-	public ArrayList<Notice> selectSearchTitle(String keyword) {
-		List<Notice> list = session.selectList("noticeMapper.selectSearchTitle", keyword);
+	public ArrayList<Notice> selectSearchTitle(Searchs searchs) {
+		List<Notice> list = session.selectList("noticeMapper.selectSearchTitle", searchs);
 		return (ArrayList<Notice>)list;
 	}
 
-	public ArrayList<Notice> selectSearchWriter(String keyword) {
-		List<Notice> list = session.selectList("noticeMapper.selectSearchWriter", keyword);
+	public ArrayList<Notice> selectSearchWriter(Searchs searchs) {
+		List<Notice> list = session.selectList("noticeMapper.selectSearchWriter", searchs);
 		return (ArrayList<Notice>)list;
 	}
 
-	public ArrayList<Notice> selectSearchContent(String keyword) {
-		List<Notice> list = session.selectList("noticeMapper.selectSearchContent", keyword);
+	public ArrayList<Notice> selectSearchContent(Searchs searchs) {
+		List<Notice> list = session.selectList("noticeMapper.selectSearchContent", searchs);
 		return (ArrayList<Notice>)list;
+	}
+
+	public int selectSearchListCount(CountSearch countSearch) {
+		return session.selectOne("noticeMapper.selectSearchListCount", countSearch);
 	}
 }
