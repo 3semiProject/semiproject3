@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import org.sixpack.semi.bfaf.model.dao.BfafDao;
 import org.sixpack.semi.bfaf.model.vo.Bfaf;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,17 +65,22 @@ public class BfafServiceImpl implements BfafService {
 		return bfafDao.deleteBoard(bfaf);
 	}
 	@Override
-	public ArrayList<Bfaf> selectSearchTitle(String keyword) {
-		return bfafDao.selectSearchTitle(keyword);
+	public ArrayList<Bfaf> selectSearchTitle(Searchs searchs) {
+		return bfafDao.selectSearchTitle(searchs);
 	}
 
 	@Override
-	public ArrayList<Bfaf> selectSearchWriter(String keyword) {
-		return bfafDao.selectSearchWriter(keyword);
+	public ArrayList<Bfaf> selectSearchWriter(Searchs searchs) {
+		return bfafDao.selectSearchWriter(searchs);
 	}
 
 	@Override
-	public ArrayList<Bfaf> selectSearchValue(String keyword) {
-		return bfafDao.selectSearchValue(keyword);
+	public ArrayList<Bfaf> selectSearchValue(Searchs searchs) {
+		return bfafDao.selectSearchValue(searchs);
+	}
+	
+	@Override
+	public int selectSearchListCount(CountSearch countSearch) {
+		return bfafDao.selectSearchListCount(countSearch);
 	}
 }

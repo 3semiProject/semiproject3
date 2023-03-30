@@ -2,7 +2,9 @@ package org.sixpack.semi.tip.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.tip.model.vo.Tip;
 
 public interface TipService {
@@ -17,7 +19,8 @@ public interface TipService {
 	int updateBoard(Tip tip);	//원글 수정용
 	int updateReply(Tip reply);	//댓글 수정용 (대댓글 수정 포함)
 	int deleteBoard(Tip tip);	//게시글 삭제용 (원글 삭제시, 관련 댓글과 대댓글 같이 삭제)
-	ArrayList<Tip> selectSearchTitle(String keyword);
-	ArrayList<Tip> selectSearchWriter(String keyword);
-	ArrayList<Tip> selectSearchValue(String keyword);
+	ArrayList<Tip> selectSearchTitle(Searchs searchs);
+	ArrayList<Tip> selectSearchWriter(Searchs searchs);
+	ArrayList<Tip> selectSearchValue(Searchs searchs);
+	int selectSearchListCount(CountSearch countSearch);
 }

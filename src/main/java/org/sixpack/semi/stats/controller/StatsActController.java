@@ -4,17 +4,20 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.sixpack.semi.diary.model.service.DiaryServiceImpl;
 import org.sixpack.semi.diary.model.vo.Diary;
 import org.sixpack.semi.diary.model.vo.Period;
+import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.stats.model.service.StatsActService;
 import org.sixpack.semi.stats.model.service.StatsActServiceImpl;
 import org.sixpack.semi.stats.model.vo.ActRec;
 import org.sixpack.semi.stats.model.vo.ActStats;
 import org.sixpack.semi.stats.model.vo.Graph;
+import org.sixpack.semi.stats.model.vo.StatsDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +34,17 @@ public class StatsActController {
     @Autowired
     private DiaryServiceImpl diaryService;
 
+
+
+    @RequestMapping(value = "diary_moveActStats.do", method = {RequestMethod.POST, RequestMethod.GET})
+    public String moveActStatsMethod() {
+        return "diary/stats/actStats";
+    }
+
+
+
     //운동추천 ajax
-    @RequestMapping(value = "diary_showActRec.do", method = {RequestMethod.POST,RequestMethod.GET})
+    @RequestMapping(value = "diary_showActRec.do", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public String actRecommendMethod() {
 
@@ -107,19 +119,33 @@ public class StatsActController {
 
     //운동통계 분석내용과 운동top3 ajax
     @RequestMapping("diary_ActStats.do")
+    @ResponseBody
     public String actStatsMethod(ModelAndView mv,
-                                 @RequestParam("diary") Diary diary,
-                                 @RequestParam("period") Period period,
-                                 ActStats stats, JSONObject sendJSON) {
+                                 @RequestParam(value = "statsRange", required = false) String statsRange,
+                                 HttpSession session) {
         //userid, 조회할 기간, 오늘날짜 -> period set
         //period로 selectActperiod(period) -> ActStats
-        stats = statsActService.selectPeriodAct(period);
-        ActStats top3 = statsActService.selectPeriodTop3Act(period);
-        stats.setMany_actName(top3.getMany_actName());
-        stats.setMaxKcal_actName(top3.getMaxKcal_actName());
-        stats.setMinKcal_actName(top3.getMinKcal_actName());
-        //ActStats를 ajax객체에 담아 String으로 내보냄
-        sendJSON.put("stats", stats);
+
+        StatsDate statsDate = new StatsDate(
+                ((Member) session.getAttribute("loginMember")).getUser_id(),
+                Integer.parseInt(statsRange));
+
+        ActStats actStatsResult = statsActService.actStatsTotal(statsDate);
+
+        JSONObject sendJSON = new JSONObject();
+
+
+        sendJSON.put("tot_act_val", actStatsResult.getTot_act_val());
+        sendJSON.put("tot_act_time", actStatsResult.getTot_act_time());
+        sendJSON.put("avg_act_one", actStatsResult.getAvg_act_one());
+        sendJSON.put("tot_weak_time", actStatsResult.getTot_weak_time());
+        sendJSON.put("tot_middle_time", actStatsResult.getTot_middle_time());
+        sendJSON.put("tot_strong_time", actStatsResult.getTot_strong_time());
+        sendJSON.put("maxDay_actName", actStatsResult.getMaxDay_actName());
+        sendJSON.put("maxKcal_actName", actStatsResult.getMaxKcal_actName());
+        sendJSON.put("maxTime_actName", actStatsResult.getMaxTime_actName());
+
+        System.out.println("sendJSON : " + sendJSON);
         return sendJSON.toJSONString();
     }
 

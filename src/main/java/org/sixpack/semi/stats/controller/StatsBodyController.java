@@ -16,6 +16,7 @@ import org.sixpack.semi.stats.model.vo.Graph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,6 +28,12 @@ public class StatsBodyController {
 	
 	private DiaryServiceImpl diaryService;
 	// 체형통계 화면출력용
+
+
+	@RequestMapping(value = "diary_moveBodyStats.do", method = {RequestMethod.POST, RequestMethod.GET})
+	public String moveBodyStatsMethod() {
+		return "diary/stats/bodyStats";
+	}
 	@RequestMapping("diary_showBodyStats.do")
 	public String showBodyStats(ModelAndView mv,
 @RequestParam(value = "diary", required = false) Diary diary,

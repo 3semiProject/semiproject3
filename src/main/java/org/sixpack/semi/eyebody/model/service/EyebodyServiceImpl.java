@@ -2,7 +2,9 @@ package org.sixpack.semi.eyebody.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.eyebody.model.dao.EyebodyDao;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,17 +66,22 @@ public class EyebodyServiceImpl implements EyebodyService {
 	}
 
 	@Override
-	public ArrayList<Eyebody> selectSearchTitle(String keyword) {
-		return eyebodyDao.selectSearchTitle(keyword);
+	public ArrayList<Eyebody> selectSearchTitle(Searchs searchs) {
+		return eyebodyDao.selectSearchTitle(searchs);
 	}
 
 	@Override
-	public ArrayList<Eyebody> selectSearchWriter(String keyword) {
-		return eyebodyDao.selectSearchWriter(keyword);
+	public ArrayList<Eyebody> selectSearchWriter(Searchs searchs) {
+		return eyebodyDao.selectSearchWriter(searchs);
 	}
 
 	@Override
-	public ArrayList<Eyebody> selectSearchValue(String keyword) {
-		return eyebodyDao.selectSearchValue(keyword);
+	public ArrayList<Eyebody> selectSearchValue(Searchs searchs) {
+		return eyebodyDao.selectSearchValue(searchs);
+	}
+	
+	@Override
+	public int selectSearchListCount(CountSearch countSearch) {
+		return eyebodyDao.selectSearchListCount(countSearch);
 	}
 }

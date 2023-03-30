@@ -275,3 +275,6 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,java,intellij,eclipse
 /src/main/webapp/WEB-INF/classes/
 /.gradle/
+/log/
+/src/main/resources/logs/
+/src/main/resources/logs/

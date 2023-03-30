@@ -51,6 +51,27 @@
             background-color: white;
             border-radius: 35px;
         }
+        
+         #userBox #userBox_memberBox {
+            border: 1px solid #D1D1D1;
+            position: relative;
+            float: right;
+            margin-top: 5px;
+            margin-right: 0.5%;
+            width: 28%;
+            height: 300px;
+            background-color: white;
+            border-radius: 35px;
+         }
+         
+        #userBox #userBox_memberBox #fofile img {
+        	line-height: 100px;
+            width: 60%;
+            height: 100px;
+            margin: 10px;
+            border-radius: 20px;
+           
+        }
 
         #loginbtn img {
             line-height: 100px;
@@ -59,9 +80,6 @@
             margin: 10px;
         }
 
-        #loginA {
-
-        }
 
         #mainTextBox {
             width: 100%;
@@ -151,7 +169,7 @@
             //버튼 클릭시, 로그인 페이지로 이동하는 controller 요청
             location.href = "loginPage.do";
         }
-            
+        
             
         $(function(){
            var values = $('#new_topN').html();
@@ -243,12 +261,18 @@
         </div>
        </c:if>
    <!-- 로그인 했을 때 : 일반회원인 경우 -->
-   <c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y' }">
+   <c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'N' }">
         <div id="userBox">
             <div id="userBox_intro">Introduce</div>
-            <div id="userBox_loginBox">
-                <div id="loginbtn"><img alt="loginbtn" onclick="moveLoginPage()"
-                                        src="${ pageContext.servletContext.contextPath }/resources/images/mainLogo.jpg">
+            <div id="userBox_memberBox">
+                <div id="fofile">
+                <c:url var="myInfo" value="/myinfo.do">
+					<c:param name="user_id" value="${sessionScope.loginMember.user_id }" />
+                </c:url>
+                <a href="${ myInfo }">
+                <img alt="memberProfile" src="${ pageContext.servletContext.contextPath }/resources/images/profile.jpeg">
+                </a>
+                                        
                 </div>
                 <div id="loginA">
                     <div id="login_find">
@@ -264,7 +288,7 @@
    </c:if>
    
    <!-- 로그인 했을 때 : 관리자인 경우 -->
-   <c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'N' }">
+   <c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
         <div id="userBox">
             <div id="userBox_intro">Introduce</div>
             <div id="userBox_loginBox">

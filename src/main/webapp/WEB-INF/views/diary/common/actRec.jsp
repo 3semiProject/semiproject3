@@ -20,7 +20,6 @@
                 dataType: "json",
                 success: function (data) {
                     var jsonStr = JSON.stringify(data);
-
                     console.log("data : " + data);
 
                     var json = JSON.parse(jsonStr);

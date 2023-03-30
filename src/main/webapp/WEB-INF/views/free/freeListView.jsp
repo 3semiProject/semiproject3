@@ -20,12 +20,12 @@
         margin:0;
 }
 
-    #mainWrapper{
-        width: 800px;
-        margin: 0 auto; /*가운데 정렬*/
+    #freeWrapper{
+        width: 1130px;
+        height: 1200px;
     }
 
-    #mainWrapper > ul > li:first-child {
+    #freeWrapper > ul > li:first-child {
         text-align: center;
         font-size:14pt;
         height:40px;
@@ -93,7 +93,7 @@
             height: 200px;
             display: block;
             background-color: white;
-            text-align: center;
+            text-align: left;
             
             color: #01CD88;
             font-weight: bold;
@@ -102,6 +102,20 @@
             font-size: 20pt;
             border: 1px solid;
         
+	}
+	
+	.freea {
+		text-decoration: none;
+		color: black;
+	}
+	
+	.freea:hover {
+		text-decoration: none;
+		color: black;
+		font-weight: bold;
+	}
+	#wri{
+		text-align: right;
 	}
 
 </style>
@@ -116,7 +130,7 @@
 <c:import url="/WEB-INF/views/common/menubar.jsp"/>
 <c:import url="/WEB-INF/views/common/commubar.jsp"/>
 <hr>
-<div id="mainWrapper">
+<div id="freeWrapper">
 
         <ul>
             <!-- 게시판 제목 -->
@@ -140,13 +154,13 @@
                 	<li>
                 		<ul>
                 			<li>${ f.free_no }</li>
-                			<c:url var="fdt" value="/freedetail.do?page=1">
+                			<c:url var="fdt" value="/freedetail.do">
 								<c:param name="free_no" value="${ f.free_no }" />
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
                             <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">
-								<a href="${ fdt }">${ f.free_name }</a>
+								<a class="freea" href="${ fdt }">${ f.free_name }</a>
 							</c:if>
 							<c:if test="${ empty sessionScope.loginMember }">
 								${ f.free_name }
@@ -158,7 +172,7 @@
                             </li>
                             <li>${f.write_free_date}</li>
                             <li>${f.user_id}</li>
-                            <li>${f.click_free_no}</li>
+                            <li> &nbsp; &nbsp;${f.click_free_no}&nbsp; &nbsp; </li>
                 		</ul>
                 	</li>
                 </c:forEach>                       
@@ -167,10 +181,10 @@
 
             <!-- 검색 폼 영역 -->
             <li id='liSearchOption'>
-            	<form action="fsearch.do?page=1" method="post">
+            	<form action="freesearch.do" method="post">
                 <div>
                     <select name="searchtype" >
-                        <option value="fname">제목</option>
+                        <option value="fname" >제목</option>
                         <option value="fvalue">내용</option>
                         <option value="fid">작성자</option>
                     </select>
@@ -179,12 +193,20 @@
                 </div>
                 </form>
              </li>
-
+             <li>
+             <form action="commuwrite.do" method="post">
+            	<div>
+            	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y'}">
+             		<input id="wri" type=submit value="글쓰기">
+             	</c:if>
+            	</div>
+            </form>
+             </li>
         </ul>
+        <!-- 페이징 처리 -->   
+        <c:import url="/WEB-INF/views/free/freepaging.jsp" />
     </div>
 <br>
-<!-- 페이징 처리 -->
-<c:import url="/WEB-INF/views/free/freepaging.jsp" />
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 </body>
