@@ -8,7 +8,7 @@
     	 body {
     		width: 1200px;
     		height: 1200px;
-    		
+    		text-align: center;
     	}
     	#btn_box {
         	width: 1200px;
@@ -43,19 +43,29 @@
     </style>
 <script src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
-
+/* 	function memberQuit() {
+		window.open("", "quitPopup", "width=450, height=250, top=150, left=200");
+		
+		//버튼 클릭시, 회원탈퇴 페이지로 이동하는 controller 요청
+		location.href = "deleteMember.do";
+	} */
 </script>
 
 </head>
 <body>
-<h1 align="center">회원정보 보기</h1>
+<c:import url="/WEB-INF/views/common/menubar.jsp"/>
+<c:import url="/WEB-INF/views/member/memberbar.jsp"/>
 <hr>
 <div id="btn_box" align="center">
 	<div>기본정보</div>
 	<div>
-	<form action="pwCheckPopUp.do" method="post" name="user_id">
+	<form action="pwCheckPopUp.do" method="post" name="updateMember">
 		<input type="hidden" name="user_id" value="${ member.user_id }" />
 		<input type="submit" value="수정하기" />
+	</form>
+	<form action="deletePage.do" method="post" name="deleteMember">
+		<input type="hidden" name="user_id" value="${ member.user_id }" />
+		<input type="submit" value="탈퇴하기" <%-- onclick="memberQuit();" --%> />
 	</form>
 	</div>
 </div>

@@ -215,7 +215,7 @@ border: 1px solid #D1D1D1;
 					<div id="calendar"></div>
 				</div>
 				<div id="myActivity_box">
-					<div><a href="${ pageContext.servletContext.contextPath }/diary_showEatDiary.do">오늘의 다이어리</a></div>
+					<div><a href="${ pageContext.servletContext.contextPath }/diary.do">오늘의 다이어리</a></div>
 					<div>내가 쓴 게시글 ${ loginMember.user_id } 개</div> <!-- 유저의 게시글 쿼리문 물어보기 -->
 					<div>내가 쓴 댓글 ${ loginMember.user_id } 개</div>
 				</div>
@@ -279,26 +279,6 @@ border: 1px solid #D1D1D1;
 					</div>
 				</div>
 			</div>
-			<%-- <div id="userBox">
-				<div id="userBox_intro">Introduce</div>
-				<div id="userBox_loginBox">
-					<div id="loginbtn">
-						<img alt="loginbtn"
-							src="${ pageContext.servletContext.contextPath }/resources/images/button.jpg">
-					</div>
-					<div id="loginA">
-						<div id="login_find">
-							<a href="${ pageContext.servletContext.contextPath }/findId.do">ID
-								찾기</a> <a
-								href="${ pageContext.servletContext.contextPath }/findPw.do">PW
-								찾기</a>
-						</div>
-						<div id="login_join">
-							<a href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
-						</div>
-					</div>
-				</div>
-			</div> --%>
 		</c:if>
 
 
