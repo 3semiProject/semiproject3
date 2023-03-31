@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.sixpack.semi.diary.model.service.DiaryService;
 import org.sixpack.semi.diary.model.vo.DateData;
 import org.sixpack.semi.diary.model.vo.Diary;
+import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,16 @@ public class DiaryController {
 			LoggerFactory.getLogger(DiaryController.class);
 	
 	//다이어리 최초화면 정보전달용
-	@RequestMapping(value="diary.do", method=RequestMethod.POST)
+	@RequestMapping(value="diary.do", method=RequestMethod.GET)
 	public String showFirstDiary(RedirectAttributes redirect,
 			HttpSession session, Diary diary) {
 		if(session!=null) {
 		//회원id로 오늘날짜의 식단을 입력한 diary 정보만 전달
-		diary.setUser_id(session.getAttribute("user_id").toString());
-		diary.setDiary_post_date((Date)new java.util.Date());
+		Member loginMember = (Member)session.getAttribute("loginMember");
+		diary.setUser_id(loginMember.getUser_id());
+		
+		
+		diary.setDiary_post_date(new Date(new java.util.Date().getTime()));
 		diary.setDiary_catagory("eat");
 		}
 		//test용 data입력
@@ -135,10 +139,10 @@ public class DiaryController {
 //	}
 
 
-	@RequestMapping ("diary.do")
-	public String moveStatsMethod(){
-		return "diary/stats/actStats";
-	}
+//	@RequestMapping ("diary.do")
+//	public String moveStatsMethod(){
+//		return "diary/stats/actStats";
+//	}
 
 
 }//controller

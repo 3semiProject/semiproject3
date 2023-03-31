@@ -76,14 +76,6 @@ hr { clear: both;}
 		//버튼 클릭시, 로그인 페이지로 이동하는 controller 요청
 		location.href = "main.do";
 	}
-	function submitDiary(url) {
-		//버튼 클릭시, post방식으로 다이어리페이지로 이동
-	  const form = document.createElement('form');
-	  form.method = 'POST';
-	  form.action = url;
-	  document.body.appendChild(form);
-	  form.submit();
-	}
 </script>
 </head>
 <body>
@@ -112,7 +104,7 @@ hr { clear: both;}
 	<!-- login : member -->
 	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y'}">
 		<ul id="menubar">
-			<li><button onclick="submitDiary('${pageContext.servletContext.contextPath}/diary.do')">다이어리</button></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/diary.do">다이어리</a></li>
 			<li><a href="${ pageContext.servletContext.contextPath }/commu.do">커뮤니티</a></li>
 			<!-- cs.do = customer service center -->
 			<li><a href="${ pageContext.servletContext.contextPath }/qnalist.do">고객센터</a></li>
