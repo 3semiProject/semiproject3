@@ -115,7 +115,7 @@
 		font-weight: bold;
 	}
 	#wri{
-		text-align: right;
+		align: center;
 	}
 
 </style>
@@ -135,7 +135,6 @@
         <ul>
             <!-- 게시판 제목 -->
             <li id="title">FREE 게시판</li>
-
             <!-- 게시판 목록  -->
             <li>
                 <ul id ="ulTable">
@@ -175,12 +174,18 @@
                             <li> &nbsp; &nbsp;${f.click_free_no}&nbsp; &nbsp; </li>
                 		</ul>
                 	</li>
-                </c:forEach>                       
+                </c:forEach>
                 </ul>
             </li>
-
             <!-- 검색 폼 영역 -->
             <li id='liSearchOption'>
+            <form action="commuwrite.do" method="post">
+            	<div>
+            	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y'}">
+             		<input id="wri" type=submit value="글쓰기">
+             	</c:if>
+            	</div>
+            </form>
             	<form action="freesearch.do" method="post">
                 <div>
                     <select name="searchtype" >
@@ -194,17 +199,11 @@
                 </form>
              </li>
              <li>
-             <form action="commuwrite.do" method="post">
-            	<div>
-            	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y'}">
-             		<input id="wri" type=submit value="글쓰기">
-             	</c:if>
-            	</div>
-            </form>
-             </li>
+             <!-- 페이징 처리 -->   
+        	 <c:import url="/WEB-INF/views/free/freepaging.jsp" />
+            </li>
         </ul>
-        <!-- 페이징 처리 -->   
-        <c:import url="/WEB-INF/views/free/freepaging.jsp" />
+        
     </div>
 <br>
 <hr>

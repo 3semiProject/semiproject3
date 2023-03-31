@@ -114,6 +114,9 @@ body{
 		color: black;
 		font-weight: bold;
 	}
+	#wri{
+		align: center;
+	}
 
 </style>
 <script type="text/javascript"
@@ -178,6 +181,13 @@ body{
 
             <!-- 검색 폼 영역 -->
             <li id='liSearchOption'>
+            <form action="commuwrite.do" method="post">
+            	<div>
+            	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y'}">
+             		<input id="wri" type=submit value="글쓰기">
+             	</c:if>
+            	</div>
+            </form>
             	<form action="hotsearch.do" method="post">
                 <div>
                     <select name="searchtype" >
