@@ -8,7 +8,7 @@
 <style type="text/css">
 .footer_box{
         width: 1200px;
-        height: 100px;	
+        height: 100px;
 }
 footer {
 	text-align: center;
@@ -32,6 +32,7 @@ footer {
 <footer>
 <br>
 <div class="footer_box">
+<hr>
 <ul class="footer_list" >
     <li>ⓒDAMUNITY</li>
 	<li><a href="${ pageContext.servletContext.contextPath }/info.do">다뮤니티 이용안내</a></li>

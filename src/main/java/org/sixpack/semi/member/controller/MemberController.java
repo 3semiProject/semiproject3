@@ -3,13 +3,11 @@ package org.sixpack.semi.member.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONObject;
 import org.sixpack.semi.member.model.service.MemberService;
 import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import net.nurigo.java_sdk.api.Message;
 
 @Controller
 public class MemberController {
@@ -77,27 +73,59 @@ public class MemberController {
 	}
 	
 	//회원정보 수정페이지ㅣ 내보내기용 메소드
-	@RequestMapping(value = "updateMove.do", method = RequestMethod.POST)
+	@RequestMapping("updateMove.do")
 	public String updateMovePage(@RequestParam("user_id") String user_id, Model model) {
-		Member member = memberService.selectMember(user_id);
+		
 		logger.info("user_id : " + user_id);
+		Member member = (Member)memberService.selectMember(user_id);
+		
 		if(member != null) {
 			model.addAttribute("member", member);
 			return "member/updatePage";
 		}else {
-			model.addAttribute("message", user_id + " : 회원정보 조회 실패!");
+			model.addAttribute("message", member + " : 회원정보 조회 실패!");
 			return "common/error";
 		}
 	}
 	
+	//회원정보 수정 페이지 요청 전, 비밀번호 체크 팝업창
+	@RequestMapping(value = "pwCheckPopUp.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView movePwCheckPopUp(@RequestParam("user_id") String user_id, ModelAndView mv) {
+		Member member = (Member)memberService.selectMember(user_id);
+		
+		if (member != null) {
+			mv.addObject("user_id", user_id);
+			mv.addObject("user_nickname", member.getUser_nickname());
+			mv.setViewName("member/pwCheckPopUp");
+		} else {
+			mv.addObject("message", user_id+ " : 회원 정보 수정 실패");
+			mv.setViewName("common/error");
+		}
+		
+		return mv;
+	}
 	
-	
-	
-	
+//	//회원정보 수정 페이지 요청 전, 비밀번호 체크 팝업창
+//	@RequestMapping(value = "pwCheckPopUp.do", method = { RequestMethod.GET, RequestMethod.POST })
+//	public ModelAndView movePwCheckPopUp(@RequestParam("user_id") String user_id, ModelAndView mv) {
+//		Member member = (Member)memberService.selectMember(user_id);
+//		
+//		if (member != null) {
+//			mv.addObject("member", member.getUser_pw()); // requestSetAttribute("member", member) 와 같음
+//			// Model 또는 ModelAndView 에 저장하는 것은
+//			// request.setAttribute("member", member); 와 같음
+//			mv.setViewName("member/pwCheckPopUp");
+//		} else {
+//			mv.addObject("message", user_id+ " : 회원 정보 수정 실패");
+//			mv.setViewName("common/error");
+//		}
+//		
+//		return mv;
+//	}
 	
 	//---------------------------------------------
 	// ajax 통신으로 아이디 중복확인 요청 처리용 메소드
-	@RequestMapping(value = "idChk.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
+	@RequestMapping(value = "idChk.do",  method = { RequestMethod.GET, RequestMethod.POST }) // 전송방식 틀리면 405 에러
 	public void dupCheckIdMethod(@RequestParam("user_id") String user_id, HttpServletResponse response)
 			throws IOException {
 		int idCount = memberService.selectDupCheckId(user_id);
@@ -121,7 +149,7 @@ public class MemberController {
 	
 	
 	// ajax 통신으로 닉네임 중복확인 요청 처리용 메소드
-	@RequestMapping(value = "nickChk.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
+	@RequestMapping(value = "nickChk.do",  method = { RequestMethod.GET, RequestMethod.POST }) // 전송방식 틀리면 405 에러
 	public void dupCheckNickMethod(@RequestParam("user_nickname") String user_nickname, HttpServletResponse response)
 			throws IOException {
 		int nickCount = memberService.selectDupCheckNick(user_nickname);
@@ -143,7 +171,7 @@ public class MemberController {
 	}
 	
 	//ajax 통신으로 핸드폰 인증번호 요청 처리용 메소드(naver cloud)
-	@RequestMapping(value = "authNumber.do", method = RequestMethod.POST)
+	@RequestMapping(value = "authNumber.do",  method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String phoneAuth(@RequestParam("phone") String phone, HttpSession session) {
 
@@ -194,7 +222,7 @@ public class MemberController {
 //	}
 
 	// 회원가입 요청 처리용 메소드
-	@RequestMapping(value = "enroll.do", method = RequestMethod.POST)
+	@RequestMapping(value = "enroll.do",  method = { RequestMethod.GET, RequestMethod.POST })
 	public String memberinsertMethod(Member member, Model model) {
 		logger.info("enroll.do : " + member);
 
@@ -247,9 +275,34 @@ public class MemberController {
 	public String showNicknameMethod(Member member, Model model) {
 		return null;
 	}
+	
+	// 회원정보 비밀번호 확인
+	@RequestMapping(value = "selectPw.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String selectPwMethod(@RequestParam("user_pw") String user_pw, @RequestParam("user_id") String user_id, Model model) {;
+	
+	logger.info("user_id : " + user_id);
+		Member member = memberService.selectMember(user_id);
+	
+		if (member != null) {
+			if(member.getUser_pw().equals(user_pw)) {
+				model.addAttribute("member", member);
+			return "member/updatePage";
+				
+			}else{
+				model.addAttribute("message", member.getUser_nickname() + "님 비밀번호 입력이 잘 못 되었습니다.");
+				return "common/redirectErrorPage";
+			}
+		} else {
+			model.addAttribute("message", member.getUser_nickname() + "님 회원 정보 불러오기 실패!😞");
+			return "common/error";
+		}
+	}
+	
+	
+	
 
 	// 회원정보 비밀번호 수정
-	@RequestMapping(value = "updatePw.do", method = RequestMethod.POST)
+	@RequestMapping(value = "updatePw.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String memberUpdateMethod(Member member, Model model) {
 		logger.info("updatePw.do : " + member);
 
@@ -265,12 +318,13 @@ public class MemberController {
 	}
 
 	// 마이페이지 클릭시 내 정보 보기 요청 처리용 메소드
-	@RequestMapping("myinfo.do")
+	@RequestMapping(value = "myinfo.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView showMypageMethod(@RequestParam("user_id") String user_id, ModelAndView mv) {
 		// 서비스로 아이디 전달하고, 해당 회원정보 받기
 		
-		Member member = memberService.selectMember(user_id);
-		logger.info(user_id);
+		logger.info("user_id : " + user_id);
+		Member member = (Member)memberService.selectMember(user_id);
+		
 		if (member != null) {
 			mv.addObject("member", member); // requestSetAttribute("member", member) 와 같음
 			// Model 또는 ModelAndView 에 저장하는 것은
@@ -285,23 +339,57 @@ public class MemberController {
 	}
 
 	// 회원정보 수정 처리용 : 수정 성공시 myinfoPage.jsp 로 이동함
-	@RequestMapping(value = "updateMember.do", method = RequestMethod.POST)
-	public String updateMemberMethod(Member member , Model model) {
-
+	@RequestMapping(value = "updateMember.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String updateMemberMethod(Member member, Model model) {
 
 		if (memberService.updateMember(member) > 0) {
 			// 수정이 성공했다면, 컨트롤러의 메소드를 직접 호출함
 			// 필요시, 값을 전달할 수도 있음 : 쿼리스트링 사용함
 			// ?이름=값&이름=값
-			return "redirect:myinfo.do?userid=" + member.getUser_id();
+			return "redirect:myinfo.do?user_id=" + member.getUser_id();
 		} else {
 			model.addAttribute("message", member.getUser_id() + " : 회원 정보 수정 실패😞");
 			return "common/error";
 		}
 	}
+	
+//	//회원정보 수정 처리용 : 수정 성공시 myinfoPage.jsp 로 이동
+//	@RequestMapping(value="mupdate.do", method = RequestMethod.POST)
+//	public String memberUpdateMethod(Member member, Model model,
+//									@RequestParam("origin_userpwd") String originUserpwd) {
+//		logger.info("mupdate.do : " + member);
+//		
+//		//새로운 암호 전송 받을 시, 패스워드 암호화 처리
+//		//사용시 공백 자동 제거되게해야 오류 발생 안됨
+//		String user_pw = member.getUser_pw().trim();
+//		if(userpwd != null && userpwd.length() > 0) {//userpwd에 값이 들어왔다면,
+//			//암호화된 기존의 패스워드 !== 새로운 패스워드
+//			if(!this.bcryptPasswordEncder.matches(user_pw, originUserpwd)) {
+//				//member에 새로운 패스워드 암호화해서 기록
+//				member.setUserpwd(bcryptPasswordEncoder.encode(userpwd));
+//			}
+//			
+//		} else {	//새 암호가 들어오지 않은 경우
+//			//새로운 패스워드 값이 존재하지 않을 시, member에 원래 패스워드 기록
+//			member.setUserpwd(originUserpwd); //기존의 패스워드 암호화가 이미 된 상태라 새로 암호화할 필요 없음
+//
+//		}
+//		
+//		
+//		if(memberService.updateMember(member) > 0) {	//처리된 행의 갯수가 1개이상이냐
+//			//수정 성공시, 컨트롤러의 메소드를 직접 호출 처리
+//			//필요시, 값을 전달 가능 : 쿼리스트링 사용.
+//			//queryString : ?name=value&name=value
+//			return "redirect:myinfo.do?userid=" + member.getUserid();
+//		} else {
+//			model.addAttribute("message", member.getUserid() + " : 회원 정보 수정 실패!");
+//			return "common/error";
+//		}
+//	}
+//	
 
 	// 회원 탈퇴(삭제) 요청 처리용
-	@RequestMapping("deleteMember.do")
+	@RequestMapping(value = "deleteMember.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String deleteMemberMethod(@RequestParam("user_id") String user_id, Model model) {
 		logger.info("deleteMember.do: " + user_id);
 

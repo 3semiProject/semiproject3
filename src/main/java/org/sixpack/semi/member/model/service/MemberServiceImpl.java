@@ -126,7 +126,7 @@ public class MemberServiceImpl implements MemberService{
 		
 		return memberDao.selectPhoneCount(phone);
 	}
-	
+
 	
 	
 }

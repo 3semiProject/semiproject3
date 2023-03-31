@@ -27,4 +27,5 @@ public interface MemberService {
 	public String sendRandomMsg(String phone);
 	//회원가입시 이미 가입된 전화번호 있는지 확인하는 메소드
 	int selectPhoneCount(String phone);
+	
 }
