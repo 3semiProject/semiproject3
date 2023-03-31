@@ -9,9 +9,6 @@
 <meta charset="UTF-8">
 <title>Diary</title>
 <style type="text/css">
-ul{padding: 0;}
-ol{padding:0;}
-ol li{display: inline-block;}
 #mainContain {
 	width: 1200px;
     height: 1200px;
@@ -62,56 +59,63 @@ ol li{display: inline-block;}
 이미지,메모 : ${diarys}
 음식정보 : ${eats}
 식단별 소계 및 총합계 : ${sums}
-
-식단 다이어리
 </pre>
 <div>
-<h4>1번식단_음식2개, 이미지, 메모</h4>
+<div id="eatDiarys">
+		<p>식사 일지:</p>
+</div>
+<script type="text/javascript">
+//모든 코드를 작성해두고 값이 있을때만 보이게 하자.
 
-<ol>
-	<li>음식이름 : </li>
-	<li>음식  : </li>
-	<li>섭취 kcal :</li>
-	<li>탄수화물 섭취량g :</li>
-	<li>단백질 섭취량g :</li>
-	<li>지방 섭취량g :</li>
-</ol>
-<ol>
-	<li>음식이름 : </li>
-	<li>음식  : </li>
-	<li>섭취 kcal :</li>
-	<li>탄수화물 섭취량g :</li>
-	<li>단백질 섭취량g :</li>
-	<li>지방 섭취량g :</li>
-</ol>
-<ol>
-	<li>총 섭취 kcal :</li>
-	<li>총 탄수화물 섭취량g :</li>
-	<li>총 단백질 섭취량g :</li>
-	<li>총 지방 섭취량g :</li>
-</ol>
-이미지
-메모
-</div>
-<div>
-<h4>2번식단_음식1개,이미지,메모</h4>
-<ol>
-	<li>음식이름 : </li>
-	<li>음식  : </li>
-	<li>섭취 kcal :</li>
-	<li>탄수화물 섭취량g :</li>
-	<li>단백질 섭취량g :</li>
-	<li>지방 섭취량g :</li>
-</ol>
-<ol>
-	<li>총 섭취 kcal :</li>
-	<li>총 탄수화물 섭취량g :</li>
-	<li>총 단백질 섭취량g :</li>
-	<li>총 지방 섭취량g :</li>
-</ol>
-이미지
-메모
-</div>
+//eatDiarys에 식단내용을 추가하는 메소드 
+/* (function(){
+	document.getElementById("eatDiarys").insertAdjacentHTML("afterend", 
+			"<br><ol><li>식사시간 </li>	<li>음식이름</li><li>섭취 kcal :</li><li>탄수화물 섭취량g " +
+			":</li><li>단백질 섭취량g :</li><li>지방 섭취량g :</li></ol>");
+})(); //자동으로 실행되는 함수 */
+</script>
+	<c:forEach var="D" items="${diarys}">
+		<table>
+			<tr>
+			<td>
+		<img alt="${D.diary_no}의 이미지" src="${D.diary_image}">			
+			</td>
+			<td>
+				<p>식사시간 &nbsp; ${D.diary_post_date }</p>
+			</td>
+			
+			</tr>
+		</table>
+		<c:forEach var="eat" items="${eats}">
+			<c:if test="${eat.diary_no eq D.diary_no}">
+				<div id="${eat.eat_seq}" style="border: 1px solid green;">
+					${eat.food_code} &nbsp; ${eat.eat_g} &nbsp; &nbsp; =>
+					${eat.eat_kcal} kcal <br> => 탄수화물 ${eat.eat_carbohydrate}g
+					&nbsp; 단백질 ${eat.eat_protein}g &nbsp; 지방 ${eat.eat_fat}g
+					&nbsp;&nbsp;
+				</div>
+			</c:if>
+		</c:forEach>
+			<c:forEach var="sum" items="${sums}" varStatus="status">
+				<c:if test="${status.last}">
+					<b>총 탄수화물 ${sum.eat_carbohydrate}g&nbsp;
+					총 단백질 ${sum.eat_protein}g&nbsp;
+					총 지방 ${sum.eat_fat}g &nbsp;&nbsp; => 
+					${sum.eat_kcal}kcal</b><br>
+				</c:if>
+			</c:forEach>
+		<textarea rows="5" cols="150">${D.diary_memo}</textarea>
+	</c:forEach>
+	<hr>
+	<br>
+			<c:forEach var="sum" items="${sums}" varStatus="status">
+				<c:if test="${status.last}">
+					<b>총 탄수화물 ${sum.eat_carbohydrate}g&nbsp;
+					총 단백질 ${sum.eat_protein}g&nbsp;
+					총 지방 ${sum.eat_fat}g &nbsp;&nbsp; => 
+					${sum.eat_kcal}kcal</b><br>
+				</c:if>
+			</c:forEach>
 <hr>
 <pre>
 총 섭취량 / 권장 섭취칼로리 : 

@@ -44,7 +44,7 @@ public class EatController {
 		
 			diary.setUser_id("USER01");
 			diary.setDiary_post_date(new Date(2023-1900,3-1,4));
-			diary.setDiary_catagory("eat");			
+			diary.setDiary_category("eat");			
 		
 		//weekBar.jsp에 전달할 데이터
 //		week = diaryService.selectWeekDiary(diary);	//sql문 오류
@@ -90,14 +90,14 @@ public class EatController {
 		
 		diary.setUser_id(session.getAttribute("user_id").toString());
 		diary.setDiary_post_date(diary_post_date);
-		diary.setDiary_catagory("eat");
+		diary.setDiary_category("eat");
 		
 		//test용 입력값
 		if(session == null) {
 		System.out.println("test용 입력값");
 		diary.setUser_id("ADMIN");
 		diary = diaryService.selectOneDiary(diary);
-		diary.setDiary_catagory("eat");
+		diary.setDiary_category("eat");
 		diary.setDiary_post_date(Date.valueOf("2023-03-04"));
 		}
 		

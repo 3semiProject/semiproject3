@@ -1,6 +1,5 @@
 package org.sixpack.semi.eat.model.vo;
 
-
 public class Eat implements java.io.Serializable{
 	private static final long serialVersionUID = -8752520660149781460L;
 	private String diary_no; 		//다이어리번호
@@ -12,11 +11,9 @@ public class Eat implements java.io.Serializable{
 	private int eat_protein; 		//섭취한 단백질(g)
 	private int eat_fat; 			//섭취한지방(g)
 	
-	
 	public Eat() {
 		super();
 	}
-	
 	public Eat(String diary_no, String eat_seq, String food_code, int eat_g, int eat_kcal, int eat_carbohydrate,
 			int eat_protein, int eat_fat) {
 		super();
@@ -30,6 +27,7 @@ public class Eat implements java.io.Serializable{
 		this.eat_fat = eat_fat;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Eat [diary_no=" + diary_no + ", eat_seq=" + eat_seq + ", food_code=" + food_code + ", eat_g=" + eat_g
@@ -37,53 +35,93 @@ public class Eat implements java.io.Serializable{
 				+ ", eat_fat=" + eat_fat + "]";
 	}
 
+
 	public String getDiary_no() {
 		return diary_no;
 	}
+
+
 	public void setDiary_no(String diary_no) {
 		this.diary_no = diary_no;
 	}
-	public String getEat_no() {
+
+
+	public String getEat_seq() {
 		return eat_seq;
 	}
-	public void setEat_no(String eat_seq) {
+
+
+	public void setEat_seq(String eat_seq) {
 		this.eat_seq = eat_seq;
 	}
-	public String getFood_no() {
+
+
+	public String getFood_code() {
 		return food_code;
 	}
-	public void setFood_no(String food_code) {
+
+
+	public void setFood_code(String food_code) {
 		this.food_code = food_code;
 	}
+
+
 	public int getEat_g() {
 		return eat_g;
 	}
+
+
 	public void setEat_g(int eat_g) {
 		this.eat_g = eat_g;
 	}
+
+
 	public int getEat_kcal() {
 		return eat_kcal;
 	}
+
+
 	public void setEat_kcal(int eat_kcal) {
 		this.eat_kcal = eat_kcal;
 	}
+
+
 	public int getEat_carbohydrate() {
 		return eat_carbohydrate;
 	}
+
+
 	public void setEat_carbohydrate(int eat_carbohydrate) {
 		this.eat_carbohydrate = eat_carbohydrate;
 	}
+
+
 	public int getEat_protein() {
 		return eat_protein;
 	}
+
+
 	public void setEat_protein(int eat_protein) {
 		this.eat_protein = eat_protein;
 	}
+
+
 	public int getEat_fat() {
 		return eat_fat;
 	}
+
+
 	public void setEat_fat(int eat_fat) {
 		this.eat_fat = eat_fat;
 	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	
+
+
 	
 }

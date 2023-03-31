@@ -27,7 +27,7 @@ public class DiaryController {
 	private static final Logger logger = 
 			LoggerFactory.getLogger(DiaryController.class);
 	
-	//다이어리 최초화면 정보전달용
+	//메인->다이어리로 화면전환시 회원정보전달용
 	@RequestMapping(value="diary.do", method=RequestMethod.GET)
 	public String showFirstDiary(RedirectAttributes redirect,
 			HttpSession session, Diary diary) {
@@ -38,13 +38,13 @@ public class DiaryController {
 		
 		
 		diary.setDiary_post_date(new Date(new java.util.Date().getTime()));
-		diary.setDiary_catagory("eat");
+		diary.setDiary_category("eat");
 		}
 		//test용 data입력
 		if(session==null) {
 			diary.setUser_id("USER01");
 			diary.setDiary_post_date(new Date(2023-1900,3-1,4));
-			diary.setDiary_catagory("eat");			
+			diary.setDiary_category("eat");			
 		}
 		
 		redirect.addFlashAttribute("diary", diary);
@@ -65,11 +65,11 @@ public class DiaryController {
 		diary.setUser_id(data.getUser_id());
 		diary.setDiary_post_date(data.getDate());		
 		if(data.getEats()>0) {
-			diary.setDiary_catagory("eat");
+			diary.setDiary_category("eat");
 		}else if(data.getActs()>0) {
-			diary.setDiary_catagory("act");
+			diary.setDiary_category("act");
 		}else {
-			diary.setDiary_catagory("body");
+			diary.setDiary_category("body");
 		}
 		//다이어리 조회, model에 담기
 		diary = diaryService.selectOneDiary(diary);
@@ -77,9 +77,9 @@ public class DiaryController {
 		
 		//카테고리에 따라 controller 지정
 		//diary 없으면 빈 식단화면으로 나옴
-		if(diary.getDiary_catagory().equals("act")){
+		if(diary.getDiary_category().equals("act")){
 			return "diary_showBodyView.do";						
-		}else if(diary.getDiary_catagory().equals("body")){
+		}else if(diary.getDiary_category().equals("body")){
 			return "diary_showActView.do";						
 		}else {
 			//diary.getDiary_catagory().equals("eat")

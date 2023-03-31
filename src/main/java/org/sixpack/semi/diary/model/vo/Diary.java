@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class Diary implements java.io.Serializable{
 	private static final long serialVersionUID = 185627232181389972L;
-
+	
 	private String user_id;					//작성자 아이디
 	private java.sql.Date diary_post_date;	//작성일시
 	private int diary_no;				//다이어리번호
@@ -13,8 +13,8 @@ public class Diary implements java.io.Serializable{
 	private String diary_image;				//이미지 링크
 	public Diary() {
 		super();
-	}	
-	protected Diary(String user_id, Date diary_post_date, int diary_no, String diary_category, String diary_memo,
+	}
+	public Diary(String user_id, Date diary_post_date, int diary_no, String diary_category, String diary_memo,
 			String diary_image) {
 		super();
 		this.user_id = user_id;
@@ -23,13 +23,6 @@ public class Diary implements java.io.Serializable{
 		this.diary_category = diary_category;
 		this.diary_memo = diary_memo;
 		this.diary_image = diary_image;
-	}
-
-	@Override
-	public String toString() {
-		return "Diary [user_id=" + user_id + ", diary_post_date=" + diary_post_date + ", diary_no=" + diary_no
-				+ ", diary_category=" + diary_category + ", diary_memo=" + diary_memo + ", diary_image=" + diary_image
-				+ "]";
 	}
 	public String getUser_id() {
 		return user_id;
@@ -43,17 +36,16 @@ public class Diary implements java.io.Serializable{
 	public void setDiary_post_date(java.sql.Date diary_post_date) {
 		this.diary_post_date = diary_post_date;
 	}
-
 	public int getDiary_no() {
 		return diary_no;
 	}
 	public void setDiary_no(int diary_no) {
 		this.diary_no = diary_no;
 	}
-	public String getDiary_catagory() {
+	public String getDiary_category() {
 		return diary_category;
 	}
-	public void setDiary_catagory(String diary_category) {
+	public void setDiary_category(String diary_category) {
 		this.diary_category = diary_category;
 	}
 	public String getDiary_memo() {
@@ -71,8 +63,16 @@ public class Diary implements java.io.Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	@Override
+	public String toString() {
+		return "Diary [user_id=" + user_id + ", diary_post_date=" + diary_post_date + ", diary_no=" + diary_no
+				+ ", diary_category=" + diary_category + ", diary_memo=" + diary_memo + ", diary_image=" + diary_image
+				+ "]";
+	}
 	
-
+	
+	
+	
 	
 
 }
