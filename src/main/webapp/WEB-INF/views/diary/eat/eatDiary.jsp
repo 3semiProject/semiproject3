@@ -81,7 +81,7 @@
 		<img alt="${D.diary_no}의 이미지" src="${D.diary_image}">			
 			</td>
 			<td>
-				<p>식사시간 &nbsp; ${D.diary_post_date }</p>
+				<p>식사시간 &nbsp; <fmt:formatDate value="${D.diary_post_date}" type="date" pattern="HH:mm"/></p>
 			</td>
 			
 			</tr>
@@ -96,15 +96,15 @@
 				</div>
 			</c:if>
 		</c:forEach>
-			<c:forEach var="sum" items="${sums}" varStatus="status">
-				<c:if test="${status.last}">
+			<c:forEach var="sum" items="${sums}">
+				<c:if test="${sum.diary_no eq D.diary_no}">
 					<b>총 탄수화물 ${sum.eat_carbohydrate}g&nbsp;
 					총 단백질 ${sum.eat_protein}g&nbsp;
 					총 지방 ${sum.eat_fat}g &nbsp;&nbsp; => 
 					${sum.eat_kcal}kcal</b><br>
-				</c:if>
+				</c:if>	
 			</c:forEach>
-		<textarea rows="5" cols="150">${D.diary_memo}</textarea>
+		<textarea rows="5" cols="120">${D.diary_memo}</textarea>
 	</c:forEach>
 	<hr>
 	<br>

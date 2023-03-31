@@ -1,6 +1,7 @@
 package org.sixpack.semi.diary.model.vo;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class Diary implements java.io.Serializable{
 	private static final long serialVersionUID = 185627232181389972L;
@@ -11,6 +12,7 @@ public class Diary implements java.io.Serializable{
 	private String diary_category;				//카테고리
 	private String diary_memo;				//메모
 	private String diary_image;				//이미지 링크
+
 	public Diary() {
 		super();
 	}

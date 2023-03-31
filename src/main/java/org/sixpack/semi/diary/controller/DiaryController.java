@@ -36,7 +36,6 @@ public class DiaryController {
 		Member loginMember = (Member)session.getAttribute("loginMember");
 		diary.setUser_id(loginMember.getUser_id());
 		
-		
 		diary.setDiary_post_date(new Date(new java.util.Date().getTime()));
 		diary.setDiary_category("eat");
 		}

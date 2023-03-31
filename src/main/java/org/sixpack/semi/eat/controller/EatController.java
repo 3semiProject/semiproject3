@@ -43,7 +43,7 @@ public class EatController {
 		//test용 data입력
 		
 			diary.setUser_id("USER01");
-			diary.setDiary_post_date(new Date(2023-1900,3-1,4));
+			diary.setDiary_post_date(new Date(2023-1900,3-1,1));
 			diary.setDiary_category("eat");			
 		
 		//weekBar.jsp에 전달할 데이터
