@@ -1,8 +1,8 @@
 package org.sixpack.semi.diary.controller;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.sixpack.semi.diary.model.service.DiaryService;
 import org.sixpack.semi.diary.model.vo.DateData;
@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller("diaryCon")
 public class DiaryController {
@@ -22,56 +24,27 @@ public class DiaryController {
 	private DiaryService diaryService;
 	
 	private static final Logger logger = 
-			LoggerFactory.getLogger(DiaryController.class);	
-	//단순화면출력
-	@SuppressWarnings("deprecation")
-	@RequestMapping("test.do")
-	public String testWeekvarView(Model model, Diary diary,
-			ArrayList<DateData> week) {
-		week.add(new DateData(new Date(2023,3,1),"ADMIN", 1, 3,0,1));
-		week.add(new DateData(new Date(2023,3,2),"ADMIN", 2, 0,1,1));
-		week.add(new DateData(new Date(2023,3,3),"ADMIN", 3, 2,1,1));
-		week.add(new DateData(new Date(2023,3,4),"ADMIN", 4, 1,1,1));
-		week.add(new DateData(new Date(2023,3,5),"ADMIN", 5, 0,1,1));
-		week.add(new DateData(new Date(2023,3,6),"ADMIN", 6, 0,0,1));
-		week.add(new DateData(new Date(2023,3,7),"ADMIN", 7, 0,0,1));
-		
-		diary.setDiary_post_date(week.get(3).getDate());
-		diary.setUser_id(week.get(3).getUser_id());
-		diary.setDiary_catagory("eat");
-		
-		model.addAttribute("diary", diary);
-		model.addAttribute("week", week);
-	return "diary/common/weekbar";
-	}
+			LoggerFactory.getLogger(DiaryController.class);
 	
-	//날짜네비게이션 출력용
-	@RequestMapping("diary_showWeekVar.do")
-	public String showWeekvarView(Model model, 
-			Diary diary, @RequestParam("week") DateData data,
-	ArrayList<DateData> week) {
-		logger.info("diary_showWeekVar실행 : " + diary.toString());
-		//기준날짜 넣어서 일주일 다이어리 불러오기
-		//값 있으면 바로 diary 넣고
-		//값 없으면 id, 오늘날짜 만들어서 diary에 넣고 조회
-		//샘플데이터는 ID 대문자로 통일시켰음
-		if(data ==null) {
-			diary.setDiary_post_date((Date)new java.util.Date());
-			diary.setUser_id("ADMIN");
-		}else {
-			diary.setDiary_post_date(data.getDate());
-			diary.setUser_id(data.getUser_id());
+	//다이어리 최초화면 정보전달용
+	@RequestMapping(value="diary.do", method=RequestMethod.POST)
+	public String showFirstDiary(RedirectAttributes redirect,
+			HttpSession session, Diary diary) {
+		if(session!=null) {
+		//회원id로 오늘날짜의 식단을 입력한 diary 정보만 전달
+		diary.setUser_id(session.getAttribute("user_id").toString());
+		diary.setDiary_post_date((Date)new java.util.Date());
+		diary.setDiary_catagory("eat");
 		}
-		week = diaryService.selectWeekDiary(diary);
-		//네비게이션 기준일 today를 하나만 보내는 경우, 날짜가 31로 넘어갈 수 없음 -1일이 되버림
-		//int today = (week.get(3).getDate().getDay());
-		//각 DateData가 day를 가져야함
-		logger.info("조회 기준일 : ", diary.getDiary_post_date(), ", ", 
-				week.get(3).getDay());
+		//test용 data입력
+		if(session==null) {
+			diary.setUser_id("USER01");
+			diary.setDiary_post_date(new Date(2023-1900,3-1,4));
+			diary.setDiary_catagory("eat");			
+		}
 		
-		//다이어리 화면으로 이동할땐 week.get[3]을 diary로 보내주면됨
-		model.addAttribute("week", week);
-		return "diary/common/weekbar";
+		redirect.addFlashAttribute("diary", diary);
+		return "redirect:diary_showEatDiary.do";
 	}
 	
 	
@@ -110,29 +83,7 @@ public class DiaryController {
 		}
 	}
 
-	
-//	//다이어리 첫 화면 출력용
-//
-//	public String showfirstDiaryView(HttpServletRequest request,
-//			Diary diary, Model model) {
-//		if(diary.getUser_id()==null) {
-//		diary.setUser_id((String)request.getAttribute("userid"));
-//
-//		diary.setDiary_post_date(today);
-//		logger.info("today" + today);
-//		
-//		model.addAttribute("today", today);
-//		
-//		}		
-//		
-//		if(request !=null) {			
-//			model.addAttribute("diary", diary);
-//			return "diary/eat/eatView";
-//		}else {
-//			return "diary/eat/eatView";
-//		}
-//	}//showfirstDiaryview
-//	
+
 //	//캘린더 출력용
 //	@RequestMapping(value = "diary_showCalendar.do", method = RequestMethod.GET)
 //	public String calendar(Model model, HttpServletRequest request, DateData dateData){

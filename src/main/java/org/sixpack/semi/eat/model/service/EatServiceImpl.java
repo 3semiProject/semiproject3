@@ -16,13 +16,13 @@ public class EatServiceImpl implements EatService {
 		private EatDao eatDao;
 
 		@Override
-		public ArrayList<Eat> selectDayEat(Diary diary) {
-			return null;
+		public ArrayList<Eat> selectDayEats(Diary diary) {
+			return eatDao.selectDayEats(diary);
 		}
 
 		@Override
-		public ArrayList<Eat> selectSumAllEat(Diary diary) {
-			return null;
+		public ArrayList<Eat> selectSumAllEats(Diary diary) {
+			return eatDao.selectSumAllEats(diary);
 		}
 		
 		@Override

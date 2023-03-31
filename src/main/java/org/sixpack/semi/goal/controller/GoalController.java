@@ -1,18 +1,25 @@
 package org.sixpack.semi.goal.controller;
 
+import java.io.PrintWriter;
 import java.sql.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.sixpack.semi.diary.model.service.DiaryServiceImpl;
 import org.sixpack.semi.diary.model.vo.Diary;
 import org.sixpack.semi.goal.model.service.GoalService;
 import org.sixpack.semi.goal.model.vo.Goal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import net.sf.json.JSONObject;
 
 @Controller("goalCon")
 public class GoalController {
@@ -21,26 +28,9 @@ public class GoalController {
 	private GoalService goalService;
 	@Autowired
 	private DiaryServiceImpl diaryService;
-	//로그객체 생성구문 넣어야함
-	
-	//목표바 출력용
-	@RequestMapping("diary_showGoalBar.do")
-	public String showGoalBar(ModelAndView mv,
-			@RequestParam(value="diary", required=false) Diary diary,
-			HttpServletRequest request, Goal goal, Date today) {
-		
-		//해당일 목표값 조회
-		goal = goalService.selectGoal(diary);
-		if(goal ==null) {
-			//없으면 해당일 기준 가장 최신 목표값 조회해서 오늘날짜로 생성, 다시조회해서 출력
-			goal = goalService.selectRecentGoal(diary);
-			goal.setGoal_date(today);
-			int result = goalService.insertGoalInfo(goal);
-			goal = goalService.selectGoal(diary);
-		}
-		mv.addObject("goal",goal);
-		return "diary/common/goalBar";
-	}
+
+	private static final Logger logger = 
+			LoggerFactory.getLogger(GoalController.class);	
 	
 	//목표관리 화면출력용
 	@RequestMapping("diary_showGoalView.do")
@@ -63,7 +53,7 @@ public class GoalController {
 		return "diary/goal/goalView";
 	}
 	
-	//목표관리 수정 화면출력용
+	//수정버튼 클릭시 수정 화면출력용
 	@RequestMapping("diary_showGoalModify.do")
 	public String showGoalModify(ModelAndView mv,
 			@RequestParam(value="diary", required=false) Diary diary,
