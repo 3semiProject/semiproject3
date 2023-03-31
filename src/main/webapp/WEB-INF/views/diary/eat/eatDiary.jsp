@@ -21,7 +21,7 @@ ol li{display: inline-block;}
 }
 #footer {
     position: relative;
-    transform: translatY(-100%);
+    transform: translateY(-100%);
 }      
       
 </style>

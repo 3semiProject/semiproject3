@@ -36,7 +36,7 @@ div.target td.dday{
 height: 55px;
 width: 120px;
 	color: #5c940d;
-	text-shadow: 1px #82c912;
+	text-shadow: 1px 1px #82c912;
 	font-weight: bold;
 	font-size: 40px;
 	vertical-align: middle;	
