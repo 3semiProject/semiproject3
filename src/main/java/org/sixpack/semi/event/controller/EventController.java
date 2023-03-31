@@ -15,6 +15,7 @@ import org.sixpack.semi.event.model.vo.Event;
 import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.notice.controller.NoticeController;
 import org.sixpack.semi.notice.model.vo.Notice;
+import org.sixpack.semi.qna.model.vo.Qna;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,29 +125,28 @@ public class EventController {
 	
 	//공지글 상세보기 요청 처리용
 	@RequestMapping("edetail.do")
-	public String eventDetailMethod(@RequestParam("event_no") int event_no, Model model, HttpSession session) {
-		//관리자용 상세보기 페이지와 일반 회원|비회원 상세보기 페이지 구분함
-		//HttpSession 을 매개변수에 추가함
+	public ModelAndView eventDetailMethod(@RequestParam("event_no") int event_no, ModelAndView mv, 
+			@RequestParam(name = "page", required = false) String page) {
 		
+		int currentPage = 1;
+		
+		//조회수증가
+		eventService.updateEventReadcount(event_no);
+		
+		//게시글 조회
 		Event event = eventService.selectEvent(event_no);
 		
+		
 		if(event != null) {
-			model.addAttribute("event", event);
+			mv.addObject("event", event);
+			mv.addObject("currentPage", currentPage);
 			
-			Member loginMember = (Member)session.getAttribute("loginMember");
-			
-			if(loginMember != null && loginMember.getAdmin_ck().equals("Y")) {
-				//로그인한 관리자가 요청했다면
-				return "event/eventAdminDetailView";
-			}else {
-				//관리자가 아닌 | 로그인 안 한 상태에서의 요청이라면
-				return "event/eventDetailView";
-			}
-			
+			mv.setViewName("event/eventDetailView");
 		}else {
-			model.addAttribute("message", event_no + "번 공지글 상세보기 조회 실패!");
-			return "common/error";
+			mv.addObject("message", event_no + "번 QNA글 조회 실패!");
+			mv.setViewName("common/error");
 		}
+		return mv;
 		
 	}
 	

@@ -64,5 +64,13 @@ public class QnaDao {
 		return session.selectOne("qnaMapper.selectSearchListCount", countSearch);
 	}
 
+	public int updateReplySeq(Qna reply) {
+		return session.update("qnaMapper.updateReplySeq", reply);
+	}
+
+	public int insertReply(Qna reply) {
+		return session.insert("qnaMapper.insertReply", reply);
+	}
+
 	
 }

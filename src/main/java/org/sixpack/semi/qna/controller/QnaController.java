@@ -73,7 +73,7 @@ public class QnaController {
 	
 	//검색용 
 	@RequestMapping(value="qnasearch.do", method={ RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView noitceSearchMethod(
+	public ModelAndView qnaSearchMethod(
 			@RequestParam(name = "page", required = false, defaultValue = "1") String page,
 			@RequestParam("searchtype") String searchtype,
 			@RequestParam("keyword") String keyword, ModelAndView mv) {
@@ -158,6 +158,60 @@ public class QnaController {
 		return "qna/qnaWriteForm";
 	}
 	
+	@RequestMapping(value = "qinsert.do", method ={ RequestMethod.GET, RequestMethod.POST })
+	public String qnaInsertMethod(Qna qna, Model model, HttpServletRequest request,
+			@RequestParam(name = "upfile", required = false) MultipartFile mfile) {
+
+		// 게시원글 첨부파일 저장 폴더 경로 지정
+		String savePath = request.getSession()
+				.getServletContext().getRealPath(
+						"resources/qna_upfiles");
+
+		// 새로운 첨부파일이 있을때
+		if (!mfile.isEmpty()) {
+			
+			// 전송온 파일이름 추출함
+			String fileName = mfile.getOriginalFilename();
+
+			// 다른 게시글의 첨부파일과 파일명이 중복되어서
+			// 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
+			// 폴더에 저장하는 방식을 사용할 수 있음
+			// 변경 파일명 : 년월일시분초.확장자
+			if (fileName != null && fileName.length() > 0) {
+
+				String renameFileName = 
+						FileNameChange.change(
+							fileName, "yyyyMMddHHmmss");
+
+				logger.info("첨부 파일명 확인 : " + fileName 
+						+ ", " + renameFileName);
+
+				// 폴더에 저장 처리
+				try {
+					mfile.transferTo(new File(savePath + 
+							"/" + renameFileName));
+				} catch (Exception e) {
+					e.printStackTrace();
+					model.addAttribute("message", "첨부파일 저장 실패!");
+					return "common/error";
+				}
+
+				// board 객체에 첨부파일 정보 기록 저장
+				qna.setQna_originfile(fileName);
+				qna.setQna_renamefile(renameFileName);
+			} // 이름바꾸기
+		} // 새로운 첨부파일이 있을 때
+
+		if (qnaService.insertQna(qna) > 0) {
+			// 게시원글 수정 성공시 상세보기 페이지로 이동
+			return "redirect:qnalist.do";
+		} else {
+			model.addAttribute("message", qna.getQna_no() 
+					+ "번 게시글 수정 실패!");
+			return "common/error";
+		}
+	}
+	
 	//수정페이지로 이동 처리용
 	@RequestMapping("qupview.do")
 	public String moveqnaUpdateView(@RequestParam("qna_no") int qna_no,
@@ -165,7 +219,7 @@ public class QnaController {
 									  Model model) {
 		
 
-		//수정페이지로 보낼 board 객체 정보 조회함
+		//수정페이지로 보낼 qna 객체 정보 조회함
 		Qna qna = qnaService.selectQna(qna_no);
 		
 		if(qna != null) {
@@ -181,7 +235,7 @@ public class QnaController {
 	}
 	
 	@RequestMapping(value = "qoriginup.do", method = RequestMethod.POST)
-	public String boardUpdateMethod(Qna qna, Model model, HttpServletRequest request,
+	public String qnaUpdateMethod(Qna qna, Model model, HttpServletRequest request,
 			@RequestParam("page") int page,
 			@RequestParam(name = "delflag", required = false) String delFlag,
 			@RequestParam(name = "upfile", required = false) MultipartFile mfile) {
@@ -280,6 +334,47 @@ public class QnaController {
 		mv.addObject("originFile", originFile);
 
 		return mv;
+	}
+	
+	// 답글달기 페이지로 이동 처리용
+	@RequestMapping("qreplyform.do")
+	public String moveReplyForm(Model model, @RequestParam("qna_no") int origin_num,
+			@RequestParam("page") int currentPage) {
+		model.addAttribute("qna_no", origin_num);
+		model.addAttribute("currentPage", currentPage);
+
+		return "qna/qnaReplyForm";
+	}
+	
+	@RequestMapping(value = "qreply.do", method = RequestMethod.POST)
+	public String replyInsertMethod(Qna reply, @RequestParam("page") int page, Model model) {
+		// 해당 댓글에 대한 원글 조회해 옴
+		Qna origin = qnaService.selectQna(reply.getQna_ref());
+
+		// 현재 등록할 댓글의 레벨을 설정
+		reply.setQna_lev(origin.getQna_lev() + 1);
+
+		// 대댓글(댓글의 댓글)일떄는
+		// board_reply_ref(참조하는 댓글번호) 값 지정
+		if (reply.getQna_lev() == 3) {
+			// 참조 원글번호
+			reply.setQna_ref(origin.getQna_ref());
+			// 참조 댓글번호
+			reply.setQna_reply_ref(origin.getQna_no());
+		}
+
+		// 댓글과 대댓글은 최신글을 board_reply_seq 를 1로 지정함
+		reply.setQna_seq(1);
+		// 기존의 댓글 | 대댓글의 순번을 모두 1증가 처리함
+		qnaService.updateReplySeq(reply);
+
+		if (qnaService.insertReply(reply) > 0) {
+			return "redirect:qnalist.do?page=" + page;
+		} else {
+			model.addAttribute("message", reply.getQna_ref() + "번 글에 대한 댓글 등록 실패!");
+			return "common/error";
+		}
+
 	}
 	
 	//삭제

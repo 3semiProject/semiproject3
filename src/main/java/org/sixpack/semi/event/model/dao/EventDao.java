@@ -27,23 +27,23 @@ public class EventDao {
 	}
 
 	public Event selectEvent(int event_no) {
-		return session.selectOne("eventMapper.selectListCount", event_no);
+		return session.selectOne("eventMapper.selectEvent", event_no);
 	}
 
 	public int updateEventReadcount(int event_no) {
-		return session.update("eventMapper.selectListCount", event_no);
+		return session.update("eventMapper.updateEventReadcount", event_no);
 	}
 
 	public int insertEvent(Event event) {
-		return session.insert("eventMapper.selectListCount", event);
+		return session.insert("eventMapper.insertEvent", event);
 	}
 
 	public int updateEvent(Event event) {
-		return session.update("eventMapper.selectListCount", event);
+		return session.update("eventMapper.updateEvent", event);
 	}
 
 	public int deleteEvent(int event_no) {
-		return session.delete("eventMapper.selectListCount", event_no);
+		return session.delete("eventMapper.deleteEvent", event_no);
 	}
 
 	public ArrayList<Event> selectSearchTitle(Searchs searchs) {
