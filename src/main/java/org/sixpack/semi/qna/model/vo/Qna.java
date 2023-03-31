@@ -13,13 +13,14 @@ public class Qna {
 	private String qna_originfile;	//qna답변원본파일
 	private String qna_renamefile;	//qna수정파일
 	private String qna_private;		//qna공개여부
+	private int qna_lev;			//qna답글단계
 	
 	public Qna() {
 		super();
 	}
 
-	public Qna(int qna_no, String qna_title, String user_id, Date qna_post_date, int qna_views,
-			String qna_content, String qna_originfile, String qna_renamefile, String qna_private) {
+	public Qna(int qna_no, String qna_title, String user_id, Date qna_post_date, int qna_views, String qna_content,
+			String qna_originfile, String qna_renamefile, String qna_private, int qna_lev) {
 		super();
 		this.qna_no = qna_no;
 		this.qna_title = qna_title;
@@ -30,6 +31,7 @@ public class Qna {
 		this.qna_originfile = qna_originfile;
 		this.qna_renamefile = qna_renamefile;
 		this.qna_private = qna_private;
+		this.qna_lev = qna_lev;
 	}
 
 	public int getQna_no() {
@@ -104,11 +106,22 @@ public class Qna {
 		this.qna_private = qna_private;
 	}
 
+	public int getQna_lev() {
+		return qna_lev;
+	}
+
+	public void setQna_lev(int qna_lev) {
+		this.qna_lev = qna_lev;
+	}
+
 	@Override
 	public String toString() {
-		return "MemberQna [qna_no=" + qna_no + ", qna_title=" + qna_title + ", user_id=" + user_id + ", qna_post_date="
+		return "Qna [qna_no=" + qna_no + ", qna_title=" + qna_title + ", user_id=" + user_id + ", qna_post_date="
 				+ qna_post_date + ", qna_views=" + qna_views + ", qna_content=" + qna_content + ", qna_originfile="
-				+ qna_originfile + ", qna_renamefile=" + qna_renamefile + ", qna_private=" + qna_private + "]";
+				+ qna_originfile + ", qna_renamefile=" + qna_renamefile + ", qna_private=" + qna_private + ", qna_lev="
+				+ qna_lev + "]";
 	}
+
+	
 	
 }	

@@ -2,7 +2,9 @@ package org.sixpack.semi.event.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.event.model.vo.Event;
 
 public interface EventService {
@@ -13,7 +15,8 @@ public interface EventService {
 	int insertEvent(Event event);	//원글 등록용
 	int updateEvent(Event event);	//원글 수정용
 	int deleteEvent(int event_no);	//게시글 삭제용 (원글 삭제시, 관련 댓글과 대댓글 같이 삭제)
-	ArrayList<Event> selectSearchTitle(String keyword);
-	ArrayList<Event> selectSearchWriter(String keyword);
-	ArrayList<Event> selectSearchContent(String keyword);
+	ArrayList<Event> selectSearchTitle(Searchs searchs);
+	ArrayList<Event> selectSearchWriter(Searchs searchs);
+	ArrayList<Event> selectSearchContent(Searchs searchs);
+	int selectSearchListCount(CountSearch countSearch);
 }

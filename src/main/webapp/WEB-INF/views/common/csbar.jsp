@@ -20,7 +20,7 @@
         
         #tab2 div {
             float: left;
-            width: 333px;
+            width: 250px;
             height: 50px;
             margin: 0px;
             padding: 0;
@@ -30,7 +30,7 @@
 
         #tab2 div a {
             text-decoration: none;
-            width: 333px;
+            width: 250px;
             height: 50px;
             display: block;
             background-color: white;
@@ -59,7 +59,7 @@
 
         #tab2 div a:hover {
             text-decoration: none;
-            width: 333px;
+            width: 250px;
             height: 50px;
             line-height: 50px;
             display: block;
@@ -79,7 +79,8 @@
 <body>
 <hr>
 <div id="tab2">
-	<div class="round"><a style="border-bottom-left-radius: 35px; border-top-left-radius: 35px;" href="${ pageContext.servletContext.contextPath }/customer.do">QnA & FAQ</a></div>
+	<div class="round"><a style="border-bottom-left-radius: 35px; border-top-left-radius: 35px;" href="${ pageContext.servletContext.contextPath }/qnalist.do">QnA</a></div>
+	<div><a href="${ pageContext.servletContext.contextPath }/nlist.do">FAQ</a></div>	
 	<div><a href="${ pageContext.servletContext.contextPath }/nlist.do">공지사항</a></div>
 	<div class="round"><a style="border-bottom-right-radius: 35px; border-top-right-radius: 35px;" href="${ pageContext.servletContext.contextPath }/elist.do">EVENT</a></div>
    </ul>

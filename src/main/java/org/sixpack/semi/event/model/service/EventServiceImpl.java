@@ -2,7 +2,9 @@ package org.sixpack.semi.event.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.event.model.dao.EventDao;
 import org.sixpack.semi.event.model.vo.Event;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,17 +52,22 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public ArrayList<Event> selectSearchTitle(String keyword) {
-		return eventdao.selectSearchTitle(keyword);
+	public ArrayList<Event> selectSearchTitle(Searchs searchs) {
+		return eventdao.selectSearchTitle(searchs);
 	}
 
 	@Override
-	public ArrayList<Event> selectSearchWriter(String keyword) {
-		return eventdao.selectSearchWriter(keyword);
+	public ArrayList<Event> selectSearchWriter(Searchs searchs) {
+		return eventdao.selectSearchWriter(searchs);
 	}
 
 	@Override
-	public ArrayList<Event> selectSearchContent(String keyword) {
-		return eventdao.selectSearchContent(keyword);
+	public ArrayList<Event> selectSearchContent(Searchs searchs) {
+		return eventdao.selectSearchContent(searchs);
+	}
+
+	@Override
+	public int selectSearchListCount(CountSearch countSearch) {
+		return eventdao.selectSearchListCount(countSearch);
 	}
 }

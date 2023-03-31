@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.notice.model.service.NoticeService;
 import org.sixpack.semi.notice.model.vo.Notice;
@@ -38,7 +40,7 @@ public class NoticeController {
 			currentPage = Integer.parseInt(page);
 		}
 		
-		int limit = 8;
+		int limit = 10;
 		
 		int listCount = noticeService.selectListCount();
 		Paging paging = new Paging(listCount, currentPage, limit);
@@ -61,28 +63,61 @@ public class NoticeController {
 	}
 	
 	//공지글 검색용 
-	@RequestMapping(value="nsearch.do", method=RequestMethod.POST)
-	public String noitceSearchTitleMethod(@RequestParam("keyword") String keyword,
-			@RequestParam("searchtype") String searchtype, Model model) {
+	@RequestMapping(value="nsearch.do", method={ RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView noitceSearchMethod(
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page,
+			@RequestParam("searchtype") String searchtype,
+			@RequestParam("keyword") String keyword,
+			/* HttpServletRequest request, */ ModelAndView mv) {
+//		String searchtype = request.getParameter("searchtype");
+//		String keyword = request.getParameter("keyword");
+		
+		CountSearch countSearch = new CountSearch(searchtype, keyword);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		int limit = 10;
+		int listCount = noticeService.selectSearchListCount(countSearch);
+		Searchs searchs = new Searchs(listCount, currentPage, limit);
+		searchs.calculator();
+		
+		searchs.setSearchtype(searchtype);
+		searchs.setKeyword(keyword);
+		
 		ArrayList<Notice> list;
 		
-		//제목검색
 		if(searchtype.equals("nname")) {
-			list = noticeService.selectSearchTitle(keyword);
-			model.addAttribute("list", list);
-			return "notice/noticeListView";
+			list = noticeService.selectSearchTitle(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("notice/noticeListView2");
+			}
 		}else if(searchtype.equals("ncontent")) {
-			list = noticeService.selectSearchContent(keyword);
-			model.addAttribute("list", list);
-			return "notice/noticeListView";
+			list = noticeService.selectSearchContent(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("notice/noticeListView2");
+			}
 		}else if(searchtype.equals("nid")) {
-			list = noticeService.selectSearchWriter(keyword);
-			model.addAttribute("list", list);
-			return "notice/noticeListView";
+			list = noticeService.selectSearchWriter(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("notice/noticeListView2");
+			}
 		}else {
-			model.addAttribute("message", keyword + "로 검색된 공지글 정보가 없습니다.");
-			return "common/error";
+			mv.addObject("message", currentPage + "로 검색된 공지글 정보가 없습니다.");
+			mv.setViewName("common/error");
 		}
+		return mv;
 	}
 	
 	//공지글 상세보기 요청 처리용

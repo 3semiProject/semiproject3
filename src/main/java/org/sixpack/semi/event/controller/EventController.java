@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.event.model.service.EventService;
 import org.sixpack.semi.event.model.vo.Event;
 import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.notice.controller.NoticeController;
+import org.sixpack.semi.notice.model.vo.Notice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +42,7 @@ public class EventController {
 			currentPage = Integer.parseInt(page);
 		}
 		
-		int limit = 8;
+		int limit = 10;
 		
 		int listCount = eventService.selectListCount();
 		Paging paging = new Paging(listCount, currentPage, limit);
@@ -61,29 +64,62 @@ public class EventController {
 		return mv;
 	}
 	
-	//공지글 검색용 
-	@RequestMapping(value="esearch.do", method=RequestMethod.POST)
-	public String eventSearchTitleMethod(@RequestParam("keyword") String keyword,
-			@RequestParam("searchtype") String searchtype, Model model) {
+	//검색용 
+	@RequestMapping(value="esearch.do", method={ RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView noitceSearchMethod(
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page,
+			@RequestParam("searchtype") String searchtype,
+			@RequestParam("keyword") String keyword,
+			/* HttpServletRequest request, */ ModelAndView mv) {
+//		String searchtype = request.getParameter("searchtype");
+//		String keyword = request.getParameter("keyword");
+		
+		CountSearch countSearch = new CountSearch(searchtype, keyword);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		int limit = 10;
+		int listCount = eventService.selectSearchListCount(countSearch);
+		Searchs searchs = new Searchs(listCount, currentPage, limit);
+		searchs.calculator();
+		
+		searchs.setSearchtype(searchtype);
+		searchs.setKeyword(keyword);
+		
 		ArrayList<Event> list;
 		
-		//제목검색
 		if(searchtype.equals("ename")) {
-			list = eventService.selectSearchTitle(keyword);
-			model.addAttribute("list", list);
-			return "event/eventListView";
+			list = eventService.selectSearchTitle(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("event/eventListView2");
+			}
 		}else if(searchtype.equals("econtent")) {
-			list = eventService.selectSearchContent(keyword);
-			model.addAttribute("list", list);
-			return "event/eventListView";
+			list = eventService.selectSearchContent(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("event/eventListView2");
+			}
 		}else if(searchtype.equals("eid")) {
-			list = eventService.selectSearchWriter(keyword);
-			model.addAttribute("list", list);
-			return "event/eventListView";
+			list = eventService.selectSearchWriter(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("event/eventListView2");
+			}
 		}else {
-			model.addAttribute("message", keyword + "로 검색된 공지글 정보가 없습니다.");
-			return "common/error";
+			mv.addObject("message", currentPage + "로 검색된 이벤트글 정보가 없습니다.");
+			mv.setViewName("common/error");
 		}
+		return mv;
 	}
 	
 	//공지글 상세보기 요청 처리용
