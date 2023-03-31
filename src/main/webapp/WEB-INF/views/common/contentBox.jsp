@@ -107,7 +107,8 @@ div[name="youtube"] {
               var json = JSON.parse(jsonStr);
               
               for(var i in json.list){
-                 values +=  "</td><td><a href=''>" 
+                 values +=  "</td><td><a href='freedetail.do?free_no=" 
+  			   + json.list[i].free_no + "'>" 
                + decodeURIComponent(
                      json.list[i].free_name).replace(/\+/gi, " ")
                + "</a></td><td>" + json.list[i].user_id
@@ -139,7 +140,8 @@ div[name="youtube"] {
      			var json = JSON.parse(jsonStr);
      			
      			for(var i in json.list){
-     				values +=  "</td><td><a href=''>" 
+     				values += "</td><td><a href='hotnewdetail.do?hotnew_no=" 
+     					+ json.list[i].hotnew_no + "'>" 
 						+ decodeURIComponent(
 								json.list[i].hotnew_name).replace(/\+/gi, " ")
 						+ "</a></td><td>" + json.list[i].user_id
