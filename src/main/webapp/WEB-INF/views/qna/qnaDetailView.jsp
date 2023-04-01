@@ -52,12 +52,20 @@
 	<tr><th colspan="2">
 		<button onclick="javascript:location.href='qnalist.do?page=${ currentPage }';">목 록</button>
 		&nbsp;
+		<c:if test="${ requestScope.qna.user_id ne sessionScope.loginMember.user_id }">
+			<c:url var="qrf" value="/qreplyform.do">
+				<c:param name="qna_no" value="${ qna.qna_no }" />
+				<c:param name="page" value="${ currentPage }" />
+			</c:url>
+			<a href="${ qrf }">[답글달기]</a> &nbsp;
+		</c:if>
 		<!-- 본인이 등록한 게시글 일 때는 수정과 삭제 기능 제공 -->
 		<c:if test="${ requestScope.qna.user_id eq sessionScope.loginMember.user_id }">
 			<c:url var="qup" value="/qupview.do">
 				<c:param name="qna_no" value="${ qna.qna_no }" />
 				<c:param name="page" value="${ currentPage }" />
 			</c:url>
+		
 			<a href="${ qup }">[수정페이지로 이동]</a> &nbsp;
 			
 			<c:url var="qdl" value="/qdel.do">

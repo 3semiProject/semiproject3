@@ -20,7 +20,7 @@
 		[맨처음] &nbsp;
 	</c:if>
 	<c:if test="${ currentPage > 1 }">
-		<c:url var="p1" value="/qlist.do">
+		<c:url var="p1" value="/qnalist.do">
 			<c:param name="page" value="1" />
 			<c:param name="searchtype" value="${ requestScope.searchs.searchtype }" />
 			<c:param name="keyword" value="${ requestScope.searchs.keyword }" />
@@ -32,7 +32,7 @@
 		[이전그룹] &nbsp;
 	</c:if>
 	<c:if test="${ (currentPage - 10) < startPage and (currentPage - 10) > 1 }">
-		<c:url var="pbefore" value="/qlist.do">
+		<c:url var="pbefore" value="/qnalist.do">
 			<c:param name="page" value="${ startPage - 10 }" />
 			<c:param name="searchtype" value="${ requestScope.searchs.searchtype }" />
 			<c:param name="keyword" value="${ requestScope.searchs.keyword }" />
@@ -46,7 +46,7 @@
 			<font size="4" color="red">[${ p }]</font>
 		</c:if>
 		<c:if test="${ p ne currentPage }">
-			<c:url var="pp" value="/qlist.do">
+			<c:url var="pp" value="/qnalist.do">
 				<c:param name="page" value="${ p }" />
 				<c:param name="searchtype" value="${ requestScope.searchs.searchtype }" />
 			<c:param name="keyword" value="${ requestScope.searchs.keyword }" />
@@ -60,7 +60,7 @@
 		[다음그룹] &nbsp;
 	</c:if>
 	<c:if test="${ (currentPage + 10) > endPage and (currentPage + 10) < maxPage }">
-		<c:url var="pafter" value="/qlist.do">
+		<c:url var="pafter" value="/qnalist.do">
 			<c:param name="page" value="${ endPage + 10 }" />
 			<c:param name="searchtype" value="${ requestScope.searchs.searchtype }" />
 			<c:param name="keyword" value="${ requestScope.searchs.keyword }" />
@@ -73,7 +73,7 @@
 		[맨끝]
 	</c:if>
 	<c:if test="${ currentPage < maxPage }">
-		<c:url var="pmax" value="/qlist.do">
+		<c:url var="pmax" value="/qnalist.do">
 			<c:param name="page" value="${ maxPage }" />
 			<c:param name="searchtype" value="${ requestScope.searchs.searchtype }" />
 			<c:param name="keyword" value="${ requestScope.searchs.keyword }" />

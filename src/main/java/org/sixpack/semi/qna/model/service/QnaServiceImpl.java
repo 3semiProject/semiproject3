@@ -70,5 +70,15 @@ public class QnaServiceImpl implements QnaService{
 		return qnaDao.selectSearchListCount(countSearch);
 	}
 
+	@Override
+	public int updateReplySeq(Qna reply) {
+		return qnaDao.updateReplySeq(reply);
+	}
+
+	@Override
+	public int insertReply(Qna reply) {
+		return qnaDao.insertReply(reply);
+	}
+
 	
 }

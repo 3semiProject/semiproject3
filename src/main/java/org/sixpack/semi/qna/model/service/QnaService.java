@@ -19,6 +19,8 @@ public interface QnaService {
 	ArrayList<Qna> selectSearchWriter(Searchs searchs);
 	ArrayList<Qna> selectSearchContent(Searchs searchs);
 	int selectSearchListCount(CountSearch countSearch);
+	int updateReplySeq(Qna reply);
+	int insertReply(Qna reply);
 	
 	
 	

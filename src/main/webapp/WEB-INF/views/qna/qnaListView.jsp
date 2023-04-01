@@ -161,6 +161,8 @@
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
                             <li class="center">
+                            <c:if test="${ q.qna_lev eq 2 }">&nbsp; &nbsp; ▶</c:if>
+                            <c:if test="${ q.qna_lev eq 3 }">&nbsp; &nbsp; &nbsp; &nbsp; ▶▶</c:if>
                             <c:if test="${ !empty sessionScope.loginMember }">
 								<a class="yy" href="${ qdt }">${ q.qna_title }</a>
 							</c:if>
@@ -184,6 +186,13 @@
 <%--검색 항목--%>
 <center>
             <li id='liSearchOption'>
+            <form action="qwform.do" method="post">
+            	<div>
+            	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y'}">
+             		<input id="qri" type=submit value="글쓰기">
+             	</c:if>
+            	</div>
+            </form>
             	<form action="qnasearch.do?page=1" method="post">
                 <div>
                     <select name="searchtype" >
