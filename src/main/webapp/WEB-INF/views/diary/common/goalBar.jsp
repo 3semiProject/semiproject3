@@ -10,6 +10,7 @@
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <style type="text/css">
 div.target{
+	width: 900px;
 	margin: auto;
 	position: relative
 }

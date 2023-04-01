@@ -43,8 +43,9 @@
 </style>
 <body>
 <pre>
-diary_showWeekBar.do -> diary/common/weekBar : 날짜 네비게이션
-받을값 : ArrayList DateData "week"</pre>
+<!-- diary_showWeekBar.do -> diary/common/weekBar : 날짜 네비게이션
+받을값 : ArrayList DateData "week"
+ --></pre>
 <div class="calendar">
     <a href="">2023.3.28 ${week[3].date}</a>
     <br>
