@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.sixpack.semi.diary.model.service.DiaryService;
 import org.sixpack.semi.diary.model.vo.DateData;
 import org.sixpack.semi.diary.model.vo.Diary;
+import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +26,18 @@ public class DiaryController {
 
 	private static final Logger logger =
 			LoggerFactory.getLogger(DiaryController.class);
-
-	//다이어리 최초화면 정보전달용
-	@RequestMapping(value="diary.do", method=RequestMethod.POST)
+	
+	//메인->다이어리로 화면전환시 회원정보전달용
+	@RequestMapping(value="diary.do", method=RequestMethod.GET)
 	public String showFirstDiary(RedirectAttributes redirect,
 								 HttpSession session, Diary diary) {
 		if(session!=null) {
 			//회원id로 오늘날짜의 식단을 입력한 diary 정보만 전달
-			diary.setUser_id(session.getAttribute("user_id").toString());
-			diary.setDiary_post_date((Date)new java.util.Date());
-			diary.setDiary_category("eat");
+		Member loginMember = (Member)session.getAttribute("loginMember");
+		diary.setUser_id(loginMember.getUser_id());
+
+		diary.setDiary_post_date(new Date(new java.util.Date().getTime()));
+		diary.setDiary_category("eat");
 		}
 		//test용 data입력
 		if(session==null) {
@@ -42,24 +45,24 @@ public class DiaryController {
 			diary.setDiary_post_date(new Date(2023-1900,3-1,4));
 			diary.setDiary_category("eat");
 		}
-
+		
 		redirect.addFlashAttribute("diary", diary);
 		return "redirect:diary_showEatDiary.do";
 	}
-
-
+	
+	
 	//날짜네비게이션 날짜 이동처리용
 	@RequestMapping("diary_moveWeekVar.do")
 	public String moveWeekvarMethod(Model model,
-									@RequestParam("week")DateData data, Diary diary) {
+			@RequestParam("week")DateData data, Diary diary) {
 		if(data==null) {
 			model.addAttribute("message","전달정보가 없어 날짜이동 실패");
 			return "common/error";
 		}
-
+		
 		//전달받은 값으로 출력할 다이어리 값 셋팅
 		diary.setUser_id(data.getUser_id());
-		diary.setDiary_post_date(data.getDate());
+		diary.setDiary_post_date(data.getDate());		
 		if(data.getEats()>0) {
 			diary.setDiary_category("eat");
 		}else if(data.getActs()>0) {
@@ -70,16 +73,16 @@ public class DiaryController {
 		//다이어리 조회, model에 담기
 		diary = diaryService.selectOneDiary(diary);
 		model.addAttribute("diary",diary);
-
+		
 		//카테고리에 따라 controller 지정
 		//diary 없으면 빈 식단화면으로 나옴
 		if(diary.getDiary_category().equals("act")){
-			return "diary_showBodyView.do";
+			return "diary_showBodyView.do";						
 		}else if(diary.getDiary_category().equals("body")){
-			return "diary_showActView.do";
+			return "diary_showActView.do";						
 		}else {
-			//diary.getDiary_category().equals("eat")
-			return "diary_showEatView.do";
+			//diary.getDiary_catagory().equals("eat")
+			return "diary_showEatView.do";			
 		}
 	}
 
@@ -135,10 +138,10 @@ public class DiaryController {
 //	}
 
 
-	@RequestMapping ("diary.do")
-	public String moveStatsMethod(){
-		return "diary/stats/actStats";
-	}
+//	@RequestMapping ("diary.do")
+//	public String moveStatsMethod(){
+//		return "diary/stats/actStats";
+//	}
 
 
 }//controller
