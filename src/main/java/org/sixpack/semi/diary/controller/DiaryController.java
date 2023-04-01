@@ -19,67 +19,67 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller("diaryCon")
 public class DiaryController {
-	
+
 	@Autowired
 	private DiaryService diaryService;
-	
-	private static final Logger logger = 
+
+	private static final Logger logger =
 			LoggerFactory.getLogger(DiaryController.class);
-	
+
 	//다이어리 최초화면 정보전달용
 	@RequestMapping(value="diary.do", method=RequestMethod.POST)
 	public String showFirstDiary(RedirectAttributes redirect,
-			HttpSession session, Diary diary) {
+								 HttpSession session, Diary diary) {
 		if(session!=null) {
-		//회원id로 오늘날짜의 식단을 입력한 diary 정보만 전달
-		diary.setUser_id(session.getAttribute("user_id").toString());
-		diary.setDiary_post_date((Date)new java.util.Date());
-		diary.setDiary_catagory("eat");
+			//회원id로 오늘날짜의 식단을 입력한 diary 정보만 전달
+			diary.setUser_id(session.getAttribute("user_id").toString());
+			diary.setDiary_post_date((Date)new java.util.Date());
+			diary.setDiary_category("eat");
 		}
 		//test용 data입력
 		if(session==null) {
 			diary.setUser_id("USER01");
 			diary.setDiary_post_date(new Date(2023-1900,3-1,4));
-			diary.setDiary_catagory("eat");			
+			diary.setDiary_category("eat");
 		}
-		
+
 		redirect.addFlashAttribute("diary", diary);
 		return "redirect:diary_showEatDiary.do";
 	}
-	
-	
+
+
 	//날짜네비게이션 날짜 이동처리용
 	@RequestMapping("diary_moveWeekVar.do")
 	public String moveWeekvarMethod(Model model,
-			@RequestParam("week")DateData data, Diary diary) {
+									@RequestParam("week")DateData data, Diary diary) {
 		if(data==null) {
 			model.addAttribute("message","전달정보가 없어 날짜이동 실패");
 			return "common/error";
 		}
-		
+
 		//전달받은 값으로 출력할 다이어리 값 셋팅
 		diary.setUser_id(data.getUser_id());
-		diary.setDiary_post_date(data.getDate());		
+		diary.setDiary_post_date(data.getDate());
 		if(data.getEats()>0) {
-			diary.setDiary_catagory("eat");
+			diary.setDiary_category("eat");
 		}else if(data.getActs()>0) {
-			diary.setDiary_catagory("act");
+			diary.setDiary_category("act");
 		}else {
-			diary.setDiary_catagory("body");
+			diary.setDiary_category("body");
 		}
 		//다이어리 조회, model에 담기
 		diary = diaryService.selectOneDiary(diary);
 		model.addAttribute("diary",diary);
-		
+
 		//카테고리에 따라 controller 지정
 		//diary 없으면 빈 식단화면으로 나옴
-		if(diary.getDiary_catagory().equals("act")){
-			return "diary_showBodyView.do";						
-		}else if(diary.getDiary_catagory().equals("body")){
-			return "diary_showActView.do";						
+		if(diary.getDiary_category().equals("act")){
+			return "diary_showBodyView.do";
+		}else if(diary.getDiary_category().equals("body")){
+			return "diary_showActView.do";
 		}else {
-			//diary.getDiary_catagory().equals("eat")
-			return "diary_showEatView.do";			
+			//diary.getDiary_category().equals("eat")
+			return "diary_showEatView.do";
 		}
 	}
 

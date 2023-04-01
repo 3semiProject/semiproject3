@@ -14,7 +14,7 @@
 	<div class="tabs">
 		<a href="${ pageContext.servletContext.contextPath }/diary_moveEatStats.do" class="tabs left">식단</a>
 		<a href="${ pageContext.servletContext.contextPath }/diary_moveActStats.do" class="tabs center">운동</a>
-		<a href="${ pageContext.servletContext.contextPath }/diary_moveBodyStats.do" class="tabs center">체형</a>
+		<a href="${ pageContext.servletContext.contextPath }/diary_moveBodyStats.do" class="tabs right">체형</a>
 	</div>
 </body>
 </html>

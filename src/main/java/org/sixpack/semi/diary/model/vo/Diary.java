@@ -50,10 +50,10 @@ public class Diary implements java.io.Serializable{
 	public void setDiary_no(int diary_no) {
 		this.diary_no = diary_no;
 	}
-	public String getDiary_catagory() {
+	public String getDiary_category() {
 		return diary_category;
 	}
-	public void setDiary_catagory(String diary_category) {
+	public void setDiary_category(String diary_category) {
 		this.diary_category = diary_category;
 	}
 	public String getDiary_memo() {

@@ -66,7 +66,6 @@ public class BfafController {
 									"첨부파일 저장 실패!");
 							return "common/error";
 						} 
-						
 						//객체에 첨부파일 정보 기록 저장
 						bfaf.setOriginfile_bfaf(fileName);
 						bfaf.setRenamefile_bfaf(renameFileName);
