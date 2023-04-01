@@ -53,8 +53,8 @@ public class FreeDao {
 		return session.update("freeMapper.updateReply", reply);
 	}
 
-	public int deleteBoard(Free free) {
-		return session.delete("freeMapper.deleteBoard", free);
+	public int deleteBoard(int free_no) {
+		return session.delete("freeMapper.deletefreeBoard", free_no);
 	}
 
 	public ArrayList<Free> selectTop5() {
@@ -79,5 +79,18 @@ public class FreeDao {
 
 	public int selectSearchListCount(CountSearch countSearch) {
 		return session.selectOne("freeMapper.selectSearchListCount", countSearch);
+	}
+
+	public ArrayList<Free> selectRepleList(int free_no) {
+		List<Free> list = session.selectList("freeMapper.selectRepleList", free_no);
+		return (ArrayList<Free>)list;
+	}
+
+	public int deleteBoard(Free free) {
+		return session.delete("freeMapper.deleteBoard", free);
+	}
+
+	public int deleteReple(Free free) {
+		return session.delete("freeMapper.deleteReple", free);
 	}
 }

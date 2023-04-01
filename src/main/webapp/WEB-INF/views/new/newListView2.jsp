@@ -154,7 +154,7 @@ body{
                 	<li>
                 		<ul>
                 			<li>${ nn.hotnew_no }</li>
-                			<c:url var="newdt" value="/newdetail.do">
+                			<c:url var="newdt" value="/hotnewdetail.do">
 								<c:param name="hotnew_no" value="${ nn.hotnew_no }" />
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>

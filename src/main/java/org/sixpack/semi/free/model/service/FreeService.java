@@ -18,9 +18,12 @@ public interface FreeService {
 	int updateReplySeq(Free reply);	//댓글 등록시 기존 댓글의 순번을 1증가 처리(최신 댓글이 순번1이 되게함)
 	int updateBoard(Free free);	//원글 수정용
 	int updateReply(Free reply);	//댓글 수정용 (대댓글 수정 포함)
-	int deleteBoard(Free free);	//게시글 삭제용 (원글 삭제시, 관련 댓글과 대댓글 같이 삭제)
+	int deleteBoard(Free free);//게시글 삭제용 (원글 삭제시, 관련 댓글과 대댓글 같이 삭제)
 	ArrayList<Free> selectSearchTitle(Searchs searchs);
 	ArrayList<Free> selectSearchWriter(Searchs searchs);
 	ArrayList<Free> selectSearchValue(Searchs searchs);
 	int selectSearchListCount(CountSearch countSearch);
+	ArrayList<Free> selectRepleList(int free_no);
+	int deleteBoard(int free_no);
+	int deleteReple(Free free);
 }

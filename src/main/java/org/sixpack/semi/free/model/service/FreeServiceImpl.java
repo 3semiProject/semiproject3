@@ -62,8 +62,8 @@ public class FreeServiceImpl implements FreeService{
 	}
 
 	@Override
-	public int deleteBoard(Free free) {
-		return freeDao.deleteBoard(free);
+	public int deleteBoard(int free_no) {
+		return freeDao.deleteBoard(free_no);
 	}
 
 	@Override
@@ -89,6 +89,21 @@ public class FreeServiceImpl implements FreeService{
 	@Override
 	public int selectSearchListCount(CountSearch countSearch) {
 		return freeDao.selectSearchListCount(countSearch);
+	}
+
+	@Override
+	public ArrayList<Free> selectRepleList(int free_no) {
+		return freeDao.selectRepleList(free_no);
+	}
+
+	@Override
+	public int deleteBoard(Free free) {
+		return freeDao.deleteBoard(free);
+	}
+
+	@Override
+	public int deleteReple(Free free) {
+		return freeDao.deleteReple(free);
 	}
 	
 }
