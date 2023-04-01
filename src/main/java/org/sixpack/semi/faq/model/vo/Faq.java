@@ -12,13 +12,14 @@ public class Faq {
 	private String faq_content;
 	private String faq_originfile;
 	private String faq_renamefile;
+	private String faq_cat;
 	
 	public Faq() {
 		super();
 	}
 
-	public Faq(int faq_no, String faq_title, String user_id, Date faq_post_date, int faq_views,
-			String faq_content, String faq_originfile, String faq_renamefile) {
+	public Faq(int faq_no, String faq_title, String user_id, Date faq_post_date, int faq_views, String faq_content,
+			String faq_originfile, String faq_renamefile, String faq_cat) {
 		super();
 		this.faq_no = faq_no;
 		this.faq_title = faq_title;
@@ -28,6 +29,7 @@ public class Faq {
 		this.faq_content = faq_content;
 		this.faq_originfile = faq_originfile;
 		this.faq_renamefile = faq_renamefile;
+		this.faq_cat = faq_cat;
 	}
 
 	public int getFaq_no() {
@@ -85,21 +87,31 @@ public class Faq {
 	public void setFaq_originfile(String faq_originfile) {
 		this.faq_originfile = faq_originfile;
 	}
-	
+
 	public String getFaq_renamefile() {
 		return faq_renamefile;
 	}
-	
+
 	public void setFaq_renamefile(String faq_renamefile) {
 		this.faq_renamefile = faq_renamefile;
 	}
 
+	public String getFaq_cat() {
+		return faq_cat;
+	}
+
+	public void setFaq_cat(String faq_cat) {
+		this.faq_cat = faq_cat;
+	}
+
 	@Override
 	public String toString() {
-		return "MemberFaq [faq_no=" + faq_no + ", faq_title=" + faq_title + ", user_id=" + user_id + ", faq_post_date="
-				+ faq_post_date + ", faq_views=" + faq_views + ", faq_content=" + faq_content + ", faq_originfile=" + faq_originfile
-				+ ", faq_renamefile=" + faq_renamefile + "]";
+		return "Faq [faq_no=" + faq_no + ", faq_title=" + faq_title + ", user_id=" + user_id + ", faq_post_date="
+				+ faq_post_date + ", faq_views=" + faq_views + ", faq_content=" + faq_content + ", faq_originfile="
+				+ faq_originfile + ", faq_renamefile=" + faq_renamefile + ", faq_cat=" + faq_cat + "]";
 	}
+
+	
 	
 
 }

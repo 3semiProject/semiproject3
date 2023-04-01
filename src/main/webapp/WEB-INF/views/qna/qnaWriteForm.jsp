@@ -62,7 +62,7 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/menubar.jsp" />
-	<c:import url="/WEB-INF/views/common/commubar.jsp" />
+	<c:import url="/WEB-INF/views/common/csbar.jsp" />
 	<hr>
 	<div id="qnadiv">
 		<form action="qinsert.do" method="post"
@@ -71,7 +71,7 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
 				cellspacing="0">
 				<tr>
 					<th>게시판 종류</th>
-					<td align="center">QnA</td>
+					<td align="center"><h3>QnA</h3></td>
 				</tr>
 				<tr height="40">
 					<th>작성자</th>
@@ -93,15 +93,25 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
 					<td><input name="upfile" type="file" /></td>
 				</tr>
 				<tr>
-					<td colspan="2" align="right"><input type="submit" value="등록">
+					<th>공개여부</th>
+					<td class="form-inline">
+    					<input type="radio" name="qna_private" id="qna_private" value="Y" class="radio" />
+    						<span class="ml_10">공개</span>&nbsp;&nbsp;&nbsp;&nbsp;
+    					<input type="radio" name="qna_private" id="qna_private" value="N" class="radio" />
+    						<span class="ml_10">비공개</span>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<input type="submit" value="등록">
 						<input type="button" value="뒤로가기"
-						onclick="javascript:history.go(-1)"></td>
+						onclick="javascript:history.go(-1)">
+					</td>						
 				</tr>
 			</table>
 		</form>
 	</div>
 	<br>
-<hr>
 
 		<script type="text/javascript">
 	    CKEDITOR.replace("qna_content", { height: 100 });
