@@ -80,7 +80,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public int deleteMember(String user_id) {
-		return memberDao.updateMember(user_id);
+		return memberDao.deleteMember(user_id);
 	}
 
 	@Override
@@ -125,6 +125,12 @@ public class MemberServiceImpl implements MemberService{
 	public int selectPhoneCount(String phone) {
 		
 		return memberDao.selectPhoneCount(phone);
+	}
+	
+	//회원탈퇴시, 탈퇴테이블로 추가하는 메서드
+	@Override
+	public int insertQuitMember(Member member) {
+		return  memberDao.insertQuitMember(member);
 	}
 
 	

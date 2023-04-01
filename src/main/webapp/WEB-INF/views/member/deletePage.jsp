@@ -48,11 +48,11 @@ body {
 <hr>
 <br><br><br><br>
 	<div id="popup_Box">
-	<div><h1>비밀번호 재확인</h1></div>
-	<h2>${user_nickname} 님</h2>
+	<div><h1>정말 탈퇴하시겠습니까?</h1></div>
+	<h2>${member.user_nickname} 님</h2>
 	<h2>본인확인을 위해 비밀번호를 확인해주세요.</h2>
-	<form action="selectPw.do" method="post" name="popup_box_form">
-		<input type="hidden" name="user_id" id="user_id" value="${ user_id }" />
+	<form action="deleteMember.do" method="post" name="popup_box_form">
+		<input type="hidden" name="user_id" id="user_id" value="${ member.user_id }" />
 		<input type="password" name="user_pw" id="user_pw" />
 		<input type="button" name="button" value="확인" /> 
 	</form>

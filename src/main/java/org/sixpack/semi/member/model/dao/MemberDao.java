@@ -104,6 +104,16 @@ public class MemberDao {
 	public int selectPhoneCount(String phone) {
 		return session.selectOne("memberMapper.selectPhoneCount", phone);
 	}
+	
+	//회원탈퇴시, 탈퇴테이블로 추가하는 메서드
+	public int insertQuitMember(Member member) {
+		return session.insert("quitMapper.insertQuitMember", member);
+	}
+
+	//회원탈퇴시, 기본테이블 null값으로 변경(delete 대신 null처리 pk라서 삭제가 불가능함)
+	public int deleteMember(String user_id) {
+		return session.update("memberMapper.deleteMember", user_id);
+	}
 
 
 

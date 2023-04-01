@@ -69,8 +69,9 @@
 <div id="btn_box" align="center">
 	<div>기본정보</div>
 	<div>
-	<form action="updateMember.do" method="post" name="user_id">
+	<form action="mupdate.do" method="post" name="user_id">
 		<input type="hidden" name="user_id" value="${ member.user_id }" />
+		<input type="hidden" name="user_pw" value="${ member.user_pw }" />
 		<input type="submit" value="저장하기" />
 	</form>
 	<button type="button" onclick="location.href='javascript:history.go(-1)';">취소</button>

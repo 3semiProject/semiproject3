@@ -13,6 +13,7 @@ import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncder;
 
 	// login 처리용 메소드
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
@@ -87,6 +91,21 @@ public class MemberController {
 			return "common/error";
 		}
 	}
+	
+	
+	// 회원탈퇴 페이지 내보내기용 메소드
+	@RequestMapping(value = "deletePage.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView moveDeletePage(@RequestParam("user_id") String user_id, ModelAndView mv) {
+		Member member = memberService.selectMember(user_id);
+		
+		mv.addObject("member", member);
+		mv.setViewName("member/deletePage");
+		
+		return mv;
+	}
+	
+	
+	//------------------------------------------------------------------------------------------
 	
 	//회원정보 수정 페이지 요청 전, 비밀번호 체크 팝업창
 	@RequestMapping(value = "pwCheckPopUp.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -276,52 +295,53 @@ public class MemberController {
 		return null;
 	}
 	
-	// 회원정보 비밀번호 확인
+	// 회원정보 수정 전 비밀번호 확인
 	@RequestMapping(value = "selectPw.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String selectPwMethod(@RequestParam("user_pw") String user_pw, @RequestParam("user_id") String user_id, Model model) {;
+	public ModelAndView selectPwMethod(@RequestParam("user_pw") String user_pw, @RequestParam("user_id") String user_id, ModelAndView mv) {;
 	
 	logger.info("user_id : " + user_id);
 		Member member = memberService.selectMember(user_id);
 	
 		if (member != null) {
 			if(member.getUser_pw().equals(user_pw)) {
-				model.addAttribute("member", member);
-			return "member/updatePage";
+				mv.addObject("member", member);
+				mv.setViewName("member/updatePage"); 
 				
 			}else{
-				model.addAttribute("message", member.getUser_nickname() + "님 비밀번호 입력이 잘 못 되었습니다.");
-				return "common/redirectErrorPage";
+				mv.addObject("message", member.getUser_nickname() + "님 비밀번호 입력이 잘못되었습니다.");
+				mv.setViewName("common/redirectErrorPage");
 			}
 		} else {
-			model.addAttribute("message", member.getUser_nickname() + "님 회원 정보 불러오기 실패!😞");
-			return "common/error";
+			mv.addObject("message", member.getUser_nickname() + "님 회원 정보 불러오기 실패!😞");
+			mv.setViewName("common/error");
 		}
+		return mv;
 	}
 	
 	
 	
 
-	// 회원정보 비밀번호 수정
-	@RequestMapping(value = "updatePw.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String memberUpdateMethod(Member member, Model model) {
-		logger.info("updatePw.do : " + member);
-
-		if (memberService.updatePw(member) > 0) {
-			// 수정이 성공했다면, 컨트롤러의 메소드를 직접 호출함
-			// 필요시, 값을 전달할 수도 있음 : 쿼리스트링 사용함
-			// ?이름=값&이름=값
-			return "redirect:myinfo.do?user_pw=" + member.getUser_pw();
-		} else {
-			model.addAttribute("message", member.getUser_pw() + " : 회원 정보 수정 실패😞");
-			return "common/error";
-		}
-	}
+//	// 회원정보 비밀번호 수정
+//	@RequestMapping(value = "updatePw.do", method = { RequestMethod.GET, RequestMethod.POST })
+//	public String memberUpdateMethod(Member member, Model model) {
+//		logger.info("updatePw.do : " + member);
+//
+//		if (memberService.updatePw(member) > 0) {
+//			// 수정이 성공했다면, 컨트롤러의 메소드를 직접 호출함
+//			// 필요시, 값을 전달할 수도 있음 : 쿼리스트링 사용함
+//			// ?이름=값&이름=값
+//			return "redirect:myinfo.do?user_pw=" + member.getUser_pw();
+//		} else {
+//			model.addAttribute("message", member.getUser_pw() + " : 회원 정보 수정 실패😞");
+//			return "common/error";
+//		}
+//	}
 
 	// 마이페이지 클릭시 내 정보 보기 요청 처리용 메소드
 	@RequestMapping(value = "myinfo.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView showMypageMethod(@RequestParam("user_id") String user_id, ModelAndView mv) {
+	public ModelAndView showMypageMethod(/*@RequestParam("user_id") String user_id,*/ ModelAndView mv, HttpServletRequest request) {
 		// 서비스로 아이디 전달하고, 해당 회원정보 받기
-		
+		String user_id = request.getParameter("user_id");
 		logger.info("user_id : " + user_id);
 		Member member = (Member)memberService.selectMember(user_id);
 		
@@ -337,70 +357,86 @@ public class MemberController {
 
 		return mv;
 	}
+//
+//	// 회원정보 수정 처리용 : 수정 성공시 myinfoPage.jsp 로 이동함
+//	@RequestMapping(value = "updateMember.do", method = { RequestMethod.GET, RequestMethod.POST })
+//	public String updateMemberMethod(Member member, Model model) {
+//
+//		if (memberService.updateMember(member) > 0) {
+//			// 수정이 성공했다면, 컨트롤러의 메소드를 직접 호출함
+//			// 필요시, 값을 전달할 수도 있음 : 쿼리스트링 사용함
+//			// ?이름=값&이름=값
+//			return "redirect:myinfo.do?user_id=" + member.getUser_id();
+//		} else {
+//			model.addAttribute("message", member.getUser_id() + " : 회원 정보 수정 실패😞");
+//			return "common/error";
+//		}
+//	}
+	
+	//회원정보 수정 처리용 : 수정 성공시 myinfoPage.jsp 로 이동
+	@RequestMapping(value="mupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String memberUpdateMethod(@RequestParam("user_id") String user_id,@RequestParam("user_pw") String new_user_pw, Model model) {
+		
+		Member member = memberService.selectMember(user_id);
+		String origin_user_pw = member.getUser_pw();
+		logger.info("origin_user_pw : " + origin_user_pw);
+		logger.info("new_user_pw : " + new_user_pw);
+		//새로운 암호 전송 받을 시, 패스워드 암호화 처리
+//		//사용시 공백 자동 제거되게해야 오류 발생 안됨
+//		String user_pw = member.getUser_pw().trim();
+		String password = new_user_pw.trim();
+		if(password != null && password.length() > 0) {//userpwd에 값이 들어왔다면,
+			//암호화된 기존의 패스워드 !== 새로운 패스워드O
+			if(!this.bcryptPasswordEncder.matches(password, origin_user_pw)) {
+				//member에 새로운 패스워드 암호화해서 기록
+				member.setUser_pw(bcryptPasswordEncder.encode(password));
+			}
+			
+		} else {	//새 암호가 들어오지 않은 경우
+			//새로운 패스워드 값이 존재하지 않을 시, member에 원래 패스워드 기록
+			member.setUser_pw(origin_user_pw); //기존의 패스워드 암호화가 이미 된 상태라 새로 암호화할 필요 없음
 
-	// 회원정보 수정 처리용 : 수정 성공시 myinfoPage.jsp 로 이동함
-	@RequestMapping(value = "updateMember.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String updateMemberMethod(Member member, Model model) {
-
-		if (memberService.updateMember(member) > 0) {
-			// 수정이 성공했다면, 컨트롤러의 메소드를 직접 호출함
-			// 필요시, 값을 전달할 수도 있음 : 쿼리스트링 사용함
-			// ?이름=값&이름=값
-			return "redirect:myinfo.do?user_id=" + member.getUser_id();
+		}
+		
+		
+		if(memberService.updateMember(member) > 0) {	//처리된 행의 갯수가 1개이상이냐
+			//수정 성공시, 컨트롤러의 메소드를 직접 호출 처리
+			//필요시, 값을 전달 가능 : 쿼리스트링 사용.
+			//queryString : ?name=value&name=value
+			return "redirect:myinfo.do?userid=" + member.getUser_id();
 		} else {
-			model.addAttribute("message", member.getUser_id() + " : 회원 정보 수정 실패😞");
+			model.addAttribute("message", member.getUser_id() + " : 회원 정보 수정 실패!");
 			return "common/error";
 		}
 	}
 	
-//	//회원정보 수정 처리용 : 수정 성공시 myinfoPage.jsp 로 이동
-//	@RequestMapping(value="mupdate.do", method = RequestMethod.POST)
-//	public String memberUpdateMethod(Member member, Model model,
-//									@RequestParam("origin_userpwd") String originUserpwd) {
-//		logger.info("mupdate.do : " + member);
-//		
-//		//새로운 암호 전송 받을 시, 패스워드 암호화 처리
-//		//사용시 공백 자동 제거되게해야 오류 발생 안됨
-//		String user_pw = member.getUser_pw().trim();
-//		if(userpwd != null && userpwd.length() > 0) {//userpwd에 값이 들어왔다면,
-//			//암호화된 기존의 패스워드 !== 새로운 패스워드
-//			if(!this.bcryptPasswordEncder.matches(user_pw, originUserpwd)) {
-//				//member에 새로운 패스워드 암호화해서 기록
-//				member.setUserpwd(bcryptPasswordEncoder.encode(userpwd));
-//			}
-//			
-//		} else {	//새 암호가 들어오지 않은 경우
-//			//새로운 패스워드 값이 존재하지 않을 시, member에 원래 패스워드 기록
-//			member.setUserpwd(originUserpwd); //기존의 패스워드 암호화가 이미 된 상태라 새로 암호화할 필요 없음
-//
-//		}
-//		
-//		
-//		if(memberService.updateMember(member) > 0) {	//처리된 행의 갯수가 1개이상이냐
-//			//수정 성공시, 컨트롤러의 메소드를 직접 호출 처리
-//			//필요시, 값을 전달 가능 : 쿼리스트링 사용.
-//			//queryString : ?name=value&name=value
-//			return "redirect:myinfo.do?userid=" + member.getUserid();
-//		} else {
-//			model.addAttribute("message", member.getUserid() + " : 회원 정보 수정 실패!");
-//			return "common/error";
-//		}
-//	}
-//	
+	
+	
+	
 
 	// 회원 탈퇴(삭제) 요청 처리용
 	@RequestMapping(value = "deleteMember.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String deleteMemberMethod(@RequestParam("user_id") String user_id, Model model) {
+	public ModelAndView deleteMemberMethod(@RequestParam("user_id") String user_id, ModelAndView mv) {
 		logger.info("deleteMember.do: " + user_id);
-
-		if (memberService.deleteMember(user_id) > 0) {
+		Member member = memberService.selectMember(user_id);
+		
+			if(member != null) { //해당 유저 존재시,
+			if (memberService.deleteMember(user_id) > 0) {	//해당 멤버 삭제
+				if(memberService.insertQuitMember(member) > 0) {	//해당 멤버의 정보를 삭제테이블로 이동
+					logger.info(user_id + "님 삭제 테이블로 이동 성공!");
+				} else {
+					logger.info(user_id + "님 삭제 테이블로 이동 실패!");
+				}
 			// 회원 탈퇴 성공시 , 자동 로그아웃 처리해야 함
 			// 컨트롤러 메소드에서 다른 [컨트롤러] 메소드 호출할 수 있음
-			return "redirect:logout.do";
+				mv.addObject("message", user_id + "님 안녕히 가세요😞");
+				mv.setViewName("redirect:logout.do");
 		} else {
-			model.addAttribute("message", user_id + " : 회원 삭제 실패😞");
-			return "common/error";
+			mv.addObject("message", user_id + " : 회원 삭제 실패😞");
+			mv.setViewName("common/error");
 		}
+		}
+			return mv;
 
 	}
 
