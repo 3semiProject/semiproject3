@@ -89,4 +89,8 @@ public class FreeDao {
 	public int deleteBoard(Free free) {
 		return session.delete("freeMapper.deleteBoard", free);
 	}
+
+	public int deleteReple(Free free) {
+		return session.delete("freeMapper.deleteReple", free);
+	}
 }

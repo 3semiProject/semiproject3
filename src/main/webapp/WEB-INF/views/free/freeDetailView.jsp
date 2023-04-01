@@ -51,7 +51,7 @@ body{
 				<c:if test="${ requestScope.free.user_id eq sessionScope.loginMember.user_id }">
 				<th>게시물 관리</th><td align="center">
 				<c:url var="ffup" value="/freeupdate.do">
-					<c:param name="free_no" value="${board.board_num }" />
+					<c:param name="free_no" value="${ free.free_no }" />
 				</c:url>
 				<a href="${ ffup }">[글수정]</a> &nbsp; &nbsp;
 				</c:if>
@@ -110,24 +110,31 @@ body{
 					<td align="center" >댓글내용</td>
 				</tr>
 				<c:forEach items="${ list }" var="f">
+				<tr>
+				<c:if test="${ f.user_id eq sessionScope.loginMember.user_id }">
+				<th>댓글 관리</th>
+				<td align="center">
+					<c:url var="ffreup" value="/freerepupdate.do">
+						<c:param name="free_no" value="${f.free_no }" />
+					</c:url>
+					<a href="${ ffreup }">[댓글 수정하기]</a> &nbsp;
+					</c:if>
+					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id }">
+					<c:url var="ffrede" value="/freerepdelete.do">
+						<c:param name="free_no" value="${ f.free_no }" />
+						<c:param name="free_ref" value="${ f.free_ref }" />
+						<c:param name="free_reply_ref" value="${ f.free_reply_ref }" />
+						<c:param name="free_reply_lev" value="${ f.free_reply_lev }" />
+						<c:param name="freeno" value="${ free.free_no }" />
+					</c:url>
+					<a href="${ ffrede }">[댓글 삭제하기]</a> &nbsp;
+					</c:if>
+				</td>
+				</tr>
 				<tr height="35">
 					<c:if test="${ f.free_reply_lev eq 2 }">
 					<th>${f.user_id}</th>
 					<td>&nbsp; &nbsp; ${f.free_value} <br>
-					
-					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id }">
-					<c:url var="ffreup" value="/freerepupdate.do">
-						<c:param name="free_no" value="${f.free_no }" />
-					</c:url>
-					<a href="${ ffreup }">[수정하기]</a> &nbsp;
-					</c:if>
-					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id }">
-					<c:url var="ffrede" value="/freerepdelete.do">
-						<c:param name="free_no" value="${f.free_no }" />
-					</c:url>
-					<a href="${ ffrede }">[삭제하기]</a> &nbsp;
-					</c:if>
-					
 					</td>
 					</c:if>
 					<c:if test="${ f.free_reply_lev eq 3 }">
@@ -137,14 +144,17 @@ body{
 				</tr>
 				</c:forEach>
 			</table>
+			<div>
+			<table>
 			<c:if test="${ requestScope.free.user_id ne sessionScope.loginMember.user_id }">
 			<c:url var="ffrein" value="/freerepinsert.do">
-				<c:param name="free_no" value="${board.board_num }" />
+				<c:param name="free_no" value="${free.free_no }" />
 				<c:param name="page" value="${ currentPage }" />
 			</c:url>
 			<a href="${ ffrein }">[댓글달기]</a> &nbsp;
 			</c:if>
-		
+			</table>
+		</div>
 	</div>
 	<br>
 <hr>

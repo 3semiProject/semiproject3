@@ -6,9 +6,11 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.sixpack.semi.HomeController;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.common.Paging;
@@ -38,6 +40,23 @@ public class FreeController {
 	public String moveWriteMethod() {
 		return "common/cwriteForm";
 	}
+	//freeupdate.do
+	
+	//freerepinsert.do
+	
+	//freerepupdate.do
+	
+	//댓글 삭제 처리용
+		@RequestMapping(value = "freerepdelete.do", method = { RequestMethod.GET, RequestMethod.POST })
+		public String freerepdeleteMethod(@RequestParam("freeno") int freeno, 
+				Free free, Model model) {
+			if(freeService.deleteReple(free) > 0) {
+				return "redirect:freedetail.do?free_no=" + freeno;
+			} else {
+				model.addAttribute("message", "게시글 삭제 실패!");
+				return "common/error";
+			}
+		}
 	
 	//원글 삭제 처리용
 	@RequestMapping(value = "freedelete.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -58,7 +77,7 @@ public class FreeController {
 		if (page != null) {
 			currentPage = Integer.parseInt(page);
 		}
-
+		
 		// 조회수 1 증가 처리
 		freeService.updateBoardReadcount(free_no);
 
@@ -162,7 +181,8 @@ public class FreeController {
 
 		for (Free free : list) {
 			JSONObject job = new JSONObject();
-
+			
+			job.put("free_no", free.getFree_no());
 			job.put("free_name", URLEncoder.encode(free.getFree_name(), "utf-8"));
 			job.put("write_free_date", free.getWrite_free_date().toString());
 			job.put("user_id", free.getUser_id());

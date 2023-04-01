@@ -100,5 +100,10 @@ public class FreeServiceImpl implements FreeService{
 	public int deleteBoard(Free free) {
 		return freeDao.deleteBoard(free);
 	}
+
+	@Override
+	public int deleteReple(Free free) {
+		return freeDao.deleteReple(free);
+	}
 	
 }
