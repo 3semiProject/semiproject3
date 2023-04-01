@@ -26,7 +26,7 @@ body {
 	float: left;
 	width: 200px;
 	height: 100px;
-	margin: 0px;
+	margin: 0;
 	padding: 0;
 }
 

@@ -1,120 +1,194 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-    <title>마이페이지</title>
+<title>마이페이지</title>
+<style>
 
-    <style>
-    	 body {
-    		width: 1200px;
-    		height: 1200px;
-    		text-align: center;
-    	}
-    	#btn_box {
-        	width: 1200px;
-       		display: flex;
-       		justify-content: center;
-			
-        }
-    	
-    	body #btn_box div{
-      		left: 350px;
-    		width: 100px;
-    		
-    	}
-        table th {
-            background: #99ffff;
-        }
+.home_a {
+	display: block;
+	text-decoration: none;
+	color: #01CD88;
+	border: 1px solid #01CD88;
+}
+body {
+	width: 1200px;
+	height: 1200px;
+}
 
-        table th {
-            border: 1px solid black;
-        }
+ h1 {
+ 	color: #A4A4A4;
+ 	font-weight: 800;
+ 	font-size: 30pt;
+ }
+#enroll_form {
+	text-align: center;
+	font-size: 15pt;
+	font-style: inherit;
+	color: #5f5f5f;
+}
 
-        table tr td {
-            border: 1px solid black;
-        }
+#join_box {
+	display: flex;
+	align-items: center;
+	border: 3px solid #D1D1D1;
+	width: 600px;
+	height: 800px;
+	border-radius: 30px;
+	display: inline-block;
+	margin: 0;
+}
+#enroll_form #text {
+	display: flex;
+	color: #D96969;
+}
 
-        table#tbl {
-            border: 2px solid black;
+.join_e {
+	border-bottom: 2px solid #D1D1D1;
+	height: 100px;
+	width: 600px;
+	display: flex;
+}
 
-        }
+.join_item {
+	line-height: 100px;
+	margin: 0;
+	height: 100px;
+	width: 200px;
+	border-right: 2px solid #D1D1D1;
+}
 
-      
-    </style>
-<script src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
+.join_item2{
+	display: flex;
+	padding: 30px;
+}
+.join_item2 > * {
+	
+	height: 30px;
+	vertical-align: middle;
+	
+}
+
+
+#title {
+	display: inline-block;
+	border-bottom: 3px solid #D1D1D1;
+	margin: 50px 0;
+	width: 500px;
+	padding-bottom: 20px;
+	font-size: xx-large;
+	 
+}
+
+.api_join_item2 {
+	padding: 10px 30px;
+}
+
+.button_box {
+	padding: 0 20px;
+	width: 500px;
+	display: flex;
+	justify-content:space-between;
+	font-size: x-large;
+	margin-bottom: 20px;
+	position: relative;
+	left: 300px;
+
+}
+
+.button_box_form {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+}
+
+
+
+</style>
+<script
+	src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
+
 <script type="text/javascript">
-/* 	function memberQuit() {
-		window.open("", "quitPopup", "width=450, height=250, top=150, left=200");
-		
-		//버튼 클릭시, 회원탈퇴 페이지로 이동하는 controller 요청
-		location.href = "deleteMember.do";
-	} */
+function form_submit() {
+	$('#pwCheckPopUp_form').submit();
+	
+}
 </script>
-
 </head>
 <body>
-<c:import url="/WEB-INF/views/common/menubar.jsp"/>
-<c:import url="/WEB-INF/views/member/memberbar.jsp"/>
-<hr>
-<div id="btn_box" align="center">
-	<div>기본정보</div>
-	<div>
-	<form action="pwCheckPopUp.do" method="post" name="updateMember">
-		<input type="hidden" name="user_id" value="${ member.user_id }" />
-		<input type="submit" value="수정하기" />
-	</form>
-	<form action="deletePage.do" method="post" name="deleteMember">
-		<input type="hidden" name="user_id" value="${ member.user_id }" />
-		<input type="submit" value="탈퇴하기" <%-- onclick="memberQuit();" --%> />
-	</form>
+	<c:import url="/WEB-INF/views/common/menubar.jsp" />
+	<c:import url="/WEB-INF/views/member/memberbar.jsp"/>
+	<hr>
+	<div id="enroll_form">
+		<h1 align="center" id="title">회원정보 보기</h1>
+		<div class="button_box">
+			<div id="text">기본정보</div>
+			<div class="button_box_form">
+			<form action="deletePage.do" method="post" name="deleteMember">
+				<input type="hidden" name="user_id" value="${ member.user_id }" />
+				<input type="submit" value="탈퇴하기" <%-- onclick="memberQuit();" --%> />
+			</form>
+			<button type="button" style="height: 23px; margin-left: 10px;" onclick="form_submit();">수정하기</button>
+			</div>
+		</div>
 	</div>
-</div>
-<table id="tbl" align="center" width="500" cellspacing="5" cellpadding="0">
-    <tr>
-        <th width="120">아이디</th>
-        <td>${ member.user_id}</td>
-    </tr>
-    <tr>
-        <th width="120">패스워드</th>
-        <td hidden="true">${member.user_pw}</td>
-    </tr>
-    <tr>
-        <th width="120">이름</th>
-        <td>${member.user_name}</td>
-    </tr>
-    <tr>
-        <th width="120">닉네임</th>
-        <td>${member.user_nickname}</td>
-    </tr>
-    <tr>
-        <th width="120">전화번호</th>
-        <td>${member.phone}</td>
-    </tr>
-    <tr>
-        <th width="120">생일</th>
-        <td>${member.birth}</td>
-    </tr>
-    <tr>
-        <th width="120">성 별</th>
-
-        <c:if test="${member.gender eq 'M'}">
-            <td>
-                남자
-            </td>
-        </c:if>
-
-        <c:if test="${member.gender eq 'F'}">
-            <td>
-                여자
-            </td>
-        </c:if>
-    </tr>
-    <tr>
-        <th width="120">이메일</th>
-        <td>${member.email}</td>
-    </tr>
-
-
-</table>
+	<form action="pwCheckPopUp.do" method="post" name="updateMember" id="pwCheckPopUp_form">
+			<div id="join_box" align="center">
+				<div class="join_e">
+					<div class="join_item">ID</div>
+					<div class="join_item2">
+						<input type="hidden" name="user_id" id="user_id" value="${ member.user_id }"/>
+						<div>${ member.user_id }</div>
+					</div>
+				</div>
+				<div class="join_e">
+					<div class="join_item">PW</div>
+					<div class="join_item2">
+						<input type="password" name="user_pw" id="user_pw" value="${ member.user_pw }" readonly="readonly">
+					</div>
+				</div>
+				<div class="join_e">
+					<div class="join_item">이름</div>
+					<div class="join_item2">
+						<div>${ member.user_name }</div>
+					</div>
+				</div>
+				<div class="join_e">
+					<div class="join_item">닉네임</div>
+					<div class="join_item2">
+						<div>${ member.user_nickname }</div>
+					</div>
+				</div>
+				<div class="join_e">
+					<div class="join_item">생년월일</div>
+					<div class="join_item2">
+						<div>${ member.birth }</div>
+					</div>
+				</div>
+				<div class="join_e">
+					<div class="join_item">성별</div>
+					<div class="join_item2">
+							<c:if test="${ member.gender eq 'M' }">
+								<div>남자</div>
+							</c:if>
+							<c:if test="${ member.gender eq 'F' }">
+								<div>여자</div>
+							</c:if>				
+					</div>
+				</div>
+				<div class="join_e">
+					<div class="join_item">전화번호</div>
+					<div class="join_item2 auto_number api">
+						${member.phone}	
+					</div>
+				</div>
+				<div class="join_e">
+					<div class="join_item">이메일</div>
+					<div class="join_item2 auto_number api">
+						${member.email}
+					</div>						
+				</div>
+			</div>
+			</form>
 </body>
 </html>
