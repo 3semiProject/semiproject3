@@ -160,16 +160,42 @@
 								<c:param name="qna_no" value="${ q.qna_no }" />
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
-                            <li class="center">
-                            <c:if test="${ q.qna_lev eq 2 }">&nbsp; &nbsp; ▶</c:if>
-                            <c:if test="${ q.qna_lev eq 3 }">&nbsp; &nbsp; &nbsp; &nbsp; ▶▶</c:if>
-                            <c:if test="${ !empty sessionScope.loginMember }">
+							<li class="center">  
+							<c:if test="${ q.qna_lev eq 2 }">&nbsp; ┗ Re : </c:if>
+                            <c:if test="${ q.qna_lev eq 3 }">&nbsp; &nbsp; &nbsp; &nbsp; Re : </c:if>
+					        <c:if test="${q.qna_private eq 'N'}" >
+
+					            <c:choose>
+					                <c:when test="${ q.user_id eq sessionScope.loginMember.user_id || sessionScope.loginMember.admin_ck eq 'Y'}">
+					                    <c:if test="${ !empty sessionScope.loginMember }">
+											<a class="yy" href="${ qdt }">${ q.qna_title }</a>
+										</c:if>
+										<c:if test="${ empty sessionScope.loginMember }">
+											${ q.qna_title }
+										</c:if>
+					                </c:when>
+					                <c:otherwise>🔒 비밀글 입니다.</c:otherwise>
+					            </c:choose>
+					        </c:if>
+					        <c:if test="${q.qna_private eq 'Y'}" >
+					            <c:if test="${ !empty sessionScope.loginMember }">
+									<a class="yy" href="${ qdt }">${ q.qna_title }</a>
+								</c:if>
+								<c:if test="${ empty sessionScope.loginMember }">
+									${ q.qna_title }
+								</c:if>
+					        </c:if>
+					        </li>
+                            <%-- <li class="center">
+                            <c:if test="${ q.qna_lev eq 2 }">&nbsp; ┗ Re : </c:if>
+                            <c:if test="${ q.qna_lev eq 3 }">&nbsp; &nbsp; &nbsp; &nbsp; Re : </c:if>
+                           <c:if test="${ !empty sessionScope.loginMember }">
 								<a class="yy" href="${ qdt }">${ q.qna_title }</a>
 							</c:if>
 							<c:if test="${ empty sessionScope.loginMember }">
 								${ q.qna_title }
-							</c:if>
-                            </li>
+							</c:if> --%>
+                            
                             <li>
                             	<c:if test="${ !empty q.qna_originfile }">◎</c:if>
 								<c:if test="${ empty q.qna_originfile }">Empty</c:if>

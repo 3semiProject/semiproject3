@@ -80,7 +80,7 @@
 <hr>
 <div id="tab2">
 	<div class="round"><a style="border-bottom-left-radius: 35px; border-top-left-radius: 35px;" href="${ pageContext.servletContext.contextPath }/qnalist.do">QnA</a></div>
-	<div><a href="${ pageContext.servletContext.contextPath }/nlist.do">FAQ</a></div>	
+	<div><a href="${ pageContext.servletContext.contextPath }/faqlist.do">FAQ</a></div>	
 	<div><a href="${ pageContext.servletContext.contextPath }/nlist.do">공지사항</a></div>
 	<div class="round"><a style="border-bottom-right-radius: 35px; border-top-right-radius: 35px;" href="${ pageContext.servletContext.contextPath }/elist.do">EVENT</a></div>
    </ul>
