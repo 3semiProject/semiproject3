@@ -107,7 +107,7 @@ public class MemberController {
 	
 	//------------------------------------------------------------------------------------------
 	
-	//회원정보 수정 페이지 요청 전, 비밀번호 체크 팝업창
+	//회원정보 수정 페이지 요청 전, 비밀번호 체크 팝업창 내보내기용 메소드
 	@RequestMapping(value = "pwCheckPopUp.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView movePwCheckPopUp(@RequestParam("user_id") String user_id, ModelAndView mv) {
 		Member member = (Member)memberService.selectMember(user_id);
@@ -117,8 +117,9 @@ public class MemberController {
 			mv.addObject("user_nickname", member.getUser_nickname());
 			mv.setViewName("member/pwCheckPopUp");
 		} else {
-			mv.addObject("message", user_id+ " : 회원 정보 수정 실패");
-			mv.setViewName("common/error");
+			mv.addObject("user_id", user_id);
+//			mv.setViewName("common/error");
+			mv.setViewName("redirect:myinfo.do?user_id=" + user_id);
 		}
 		
 		return mv;
@@ -208,6 +209,24 @@ public class MemberController {
 	}
 
 	
+	//ajax 통신으로 이메일 인증번호 요청 처리용 메소드(naver cloud)
+	@RequestMapping(value = "authEmail.do",  method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String emailAuth(@RequestParam("email") String email, HttpSession session) {
+
+	    try { // 이미 가입된 이메일이 있으면
+	        if(memberService.selectPhoneCount(email) > 0) 
+	            return "no"; 
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    String code = memberService.sendRandomMsg(email);
+	    session.setAttribute("randomNum", code);
+	    
+	    return "ok";
+	}
+	
 
 //	// ajax 통신으로 핸드폰 인증번호 요청 처리용 메소드
 //	@RequestMapping(value = "authNumber.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
@@ -244,7 +263,10 @@ public class MemberController {
 	@RequestMapping(value = "enroll.do",  method = { RequestMethod.GET, RequestMethod.POST })
 	public String memberinsertMethod(Member member, Model model) {
 		logger.info("enroll.do : " + member);
-
+		member.setUser_pw(bcryptPasswordEncder.encode(member.getUser_pw()));
+		
+		   logger.info("after encode : " + member.getUser_pw());
+		     logger.info("length : " + member.getUser_pw().length());
 		if (memberService.insertMember(member) > 0) {
 			// 회원가입 성공
 			return "common/main";
@@ -320,7 +342,6 @@ public class MemberController {
 	
 	
 	
-
 //	// 회원정보 비밀번호 수정
 //	@RequestMapping(value = "updatePw.do", method = { RequestMethod.GET, RequestMethod.POST })
 //	public String memberUpdateMethod(Member member, Model model) {
@@ -375,37 +396,74 @@ public class MemberController {
 	
 	//회원정보 수정 처리용 : 수정 성공시 myinfoPage.jsp 로 이동
 	@RequestMapping(value="mupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String memberUpdateMethod(@RequestParam("user_id") String user_id,@RequestParam("user_pw") String new_user_pw, Model model) {
+	public String memberUpdateMethod(@RequestParam("user_id") String user_id, @RequestParam("user_pw") String new_user_pw,
+									@RequestParam("phone") String new_phone, @RequestParam("email") String new_email, Model model) {
 		
 		Member member = memberService.selectMember(user_id);
 		String origin_user_pw = member.getUser_pw();
+		String origin_phone = member.getPhone();
+		String origin_email = member.getPhone();
+
+		
 		logger.info("origin_user_pw : " + origin_user_pw);
 		logger.info("new_user_pw : " + new_user_pw);
+		logger.info("new_phone : " + new_phone);
+		logger.info("new_email : " + new_email);
 		//새로운 암호 전송 받을 시, 패스워드 암호화 처리
 //		//사용시 공백 자동 제거되게해야 오류 발생 안됨
 //		String user_pw = member.getUser_pw().trim();
-		String password = new_user_pw.trim();
-		if(password != null && password.length() > 0) {//userpwd에 값이 들어왔다면,
+		new_user_pw = new_user_pw.trim();
+		new_phone = new_phone.trim();
+		new_email = new_email.trim();
+		
+		//새로운 비밀번호 입력시,
+		if(new_user_pw != null && new_user_pw.length() > 0) {//userpwd에 값이 들어왔다면,
 			//암호화된 기존의 패스워드 !== 새로운 패스워드O
-			if(!this.bcryptPasswordEncder.matches(password, origin_user_pw)) {
-				//member에 새로운 패스워드 암호화해서 기록
-				member.setUser_pw(bcryptPasswordEncder.encode(password));
-			}
-			
+//			if(!this.bcryptPasswordEncder.matches(new_user_pw, origin_user_pw)) {
+//				//member에 새로운 패스워드 암호화해서 기록
+//				member.setUser_pw(bcryptPasswordEncder.encode(new_user_pw));
+//			}
+	
+			member.setUser_pw(new_user_pw);
+			logger.info(member.getUser_pw());
 		} else {	//새 암호가 들어오지 않은 경우
 			//새로운 패스워드 값이 존재하지 않을 시, member에 원래 패스워드 기록
 			member.setUser_pw(origin_user_pw); //기존의 패스워드 암호화가 이미 된 상태라 새로 암호화할 필요 없음
+		
 
 		}
 		
+		//새로운 핸드폰번호 입력시,
+		if(new_phone != null && new_phone.length() > 0) {//phone에 값이 들어왔다면,
+			member.setPhone(new_phone);
+
+			
+		} else {	//새 phone 들어오지 않은 경우
+			//phone null, member에 원래 phone 기록
+			member.setPhone(origin_phone); 
+		
+
+		}
+		
+		//새로운 이메일 입력시,
+		if(new_email != null && new_email.length() > 0) {//email에 값이 들어왔다면,
+			member.setEmail(new_email);
+			
+			
+		} else {	//새 email 들어오지 않은 경우
+			//email null, member에 원래 email 기록
+			member.setEmail(origin_email); 
+			
+
+		}
 		
 		if(memberService.updateMember(member) > 0) {	//처리된 행의 갯수가 1개이상이냐
 			//수정 성공시, 컨트롤러의 메소드를 직접 호출 처리
 			//필요시, 값을 전달 가능 : 쿼리스트링 사용.
 			//queryString : ?name=value&name=value
-			return "redirect:myinfo.do?userid=" + member.getUser_id();
+			return "redirect:myinfo.do?user_id=" + member.getUser_id();
 		} else {
-			model.addAttribute("message", member.getUser_id() + " : 회원 정보 수정 실패!");
+			model.addAttribute("message", member.getUser_nickname() + " : 회원 정보 수정 실패!");
 			return "common/error";
 		}
 	}
@@ -440,6 +498,11 @@ public class MemberController {
 
 	}
 
+	
+	
+	
+	
+//	---------------------------------------------------------------------------
 	// 회원 전체 출력???
 	@RequestMapping("memberList.do")
 	public String showMmeberListMethod(Model model) {

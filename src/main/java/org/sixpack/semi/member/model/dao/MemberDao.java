@@ -73,8 +73,7 @@ public class MemberDao {
 	}
 
 	public int updateMember(Member member) {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.update("memberMapper.updateMember", member);
 	}
 
 	public int updateMember(String user_id) {
