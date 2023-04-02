@@ -50,7 +50,7 @@ body{
 				<tr>
 				<c:if test="${ requestScope.free.user_id eq sessionScope.loginMember.user_id }">
 				<th>게시물 관리</th><td align="center">
-				<c:url var="ffup" value="/freeupdate.do">
+				<c:url var="ffup" value="/freeupmove.do">
 					<c:param name="free_no" value="${ free.free_no }" />
 				</c:url>
 				<a href="${ ffup }">[글수정]</a> &nbsp; &nbsp;
@@ -97,24 +97,45 @@ body{
 							<c:param name="ofile" value="${ free.originfile_free }" />
 							<c:param name="rfile" value="${ free.renamefile_free }" />
 						</c:url>
-						&nbsp; &nbsp; [&nbsp; <a href="${ ffd }">${ free.originfile_free }</a> &nbsp;]
+						&nbsp; &nbsp; &nbsp; <a href="${ ffd }">${ free.originfile_free }</a> &nbsp;
 					</c:if>
-					<!-- 첨부파일이 없다면, 공백 처리 -->
+					<!-- 첨부파일이 없다면, Empty 처리 -->
 					<c:if test="${ empty free.originfile_free }">
 						 &nbsp; &nbsp; Empty
 					</c:if>
 					</td>
 				</tr>
-				<tr height="50">
-					<th>작성자</th>
-					<td align="center" >댓글내용</td>
+				<tr height="100">
+					<th>게시글 추천</th>
+					<td>
+					&nbsp; &nbsp; 
+					${free.free_like_no} &nbsp; &nbsp;
+					<c:if test="${ !empty sessionScope.loginMember }">
+					<c:url var="fflikein" value="/freelike.do">
+					<c:param name="free_no" value="${free.free_no }" />
+					</c:url>
+					<a href="${ fflikein }">[추천하기]</a>
+					</c:if>
+					</td>
 				</tr>
-				<c:forEach items="${ list }" var="f">
-				<tr>
-				<c:if test="${ f.user_id eq sessionScope.loginMember.user_id }">
-				<th>댓글 관리</th>
-				<td align="center">
-					<c:url var="ffreup" value="/freerepupdate.do">
+				<tr height="50">
+					<th>댓글 작성자</th>
+					<td align="center" >댓글내용 &nbsp; &nbsp; 
+					<c:if test="${ !empty sessionScope.loginMember.user_id }">
+					<c:url var="ffrein" value="/movefreerepin.do">
+						<c:param name="free_no" value="${free.free_no }" />
+					</c:url>
+					<a href="${ ffrein }">[댓글등록]</a>
+					</c:if>
+					</td>
+				</tr>
+				<c:forEach items="${ list }" var="f" varStatus="status">
+				<tr height="35">
+					<c:if test="${ f.free_reply_lev eq 2 }">
+					<th>${f.user_id}</th>
+					<td>&nbsp; &nbsp; ${f.free_value} &nbsp;
+					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id }">
+					<c:url var="ffreup" value="/movefreerepup.do">
 						<c:param name="free_no" value="${f.free_no }" />
 					</c:url>
 					<a href="${ ffreup }">[댓글 수정하기]</a> &nbsp;
@@ -129,32 +150,38 @@ body{
 					</c:url>
 					<a href="${ ffrede }">[댓글 삭제하기]</a> &nbsp;
 					</c:if>
-				</td>
-				</tr>
-				<tr height="35">
-					<c:if test="${ f.free_reply_lev eq 2 }">
-					<th>${f.user_id}</th>
-					<td>&nbsp; &nbsp; ${f.free_value} <br>
+					<c:url var="ffrereup" value="/movefreerepin2.do">
+						<c:param name="free_ref" value="${f.free_ref }" />
+						<c:param name="free_reply_ref" value="${f.free_reply_ref }" />
+						<c:param name="free_reply_lev" value="${f.free_reply_lev }" />
+					</c:url>
+					<a href="${ ffrereup }">[대댓글등록]</a>
 					</td>
 					</c:if>
 					<c:if test="${ f.free_reply_lev eq 3 }">
 					<th>${f.user_id}</th>
-					<td>&nbsp; &nbsp; &nbsp;   &nbsp;▶ ${f.free_value}</td>
+					<td>&nbsp; &nbsp; &nbsp; &nbsp; ▶ ${f.free_value}
+					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id }">
+					<c:url var="ffreup2" value="/movefreerepup.do">
+						<c:param name="free_no" value="${f.free_no }" />
+					</c:url>
+					<a href="${ ffreup2 }">[댓글 수정하기]</a> &nbsp;
+					</c:if>
+					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id }">
+					<c:url var="ffrede2" value="/freerepdelete.do">
+						<c:param name="free_no" value="${ f.free_no }" />
+						<c:param name="free_ref" value="${ f.free_ref }" />
+						<c:param name="free_reply_ref" value="${ f.free_reply_ref }" />
+						<c:param name="free_reply_lev" value="${ f.free_reply_lev }" />
+						<c:param name="freeno" value="${ free.free_no }" />
+					</c:url>
+					<a href="${ ffrede2 }">[댓글 삭제하기]</a> &nbsp;
+					</c:if>
+					</td>
 					</c:if>
 				</tr>
 				</c:forEach>
 			</table>
-			<div>
-			<table>
-			<c:if test="${ requestScope.free.user_id ne sessionScope.loginMember.user_id }">
-			<c:url var="ffrein" value="/freerepinsert.do">
-				<c:param name="free_no" value="${free.free_no }" />
-				<c:param name="page" value="${ currentPage }" />
-			</c:url>
-			<a href="${ ffrein }">[댓글달기]</a> &nbsp;
-			</c:if>
-			</table>
-		</div>
 	</div>
 	<br>
 <hr>

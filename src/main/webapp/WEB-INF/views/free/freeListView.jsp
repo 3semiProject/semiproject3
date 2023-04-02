@@ -9,6 +9,12 @@
 <head>
 <meta charset="UTF-8">
 <style type="text/css">
+<!--
+Simple Css --> /* 	html, body{ margin:0; padding:0}
+	 */ form td {
+	width: 800px;
+	margin: 0 auto;
+}
     body{
         line-height:2em;        
         font-family:"맑은 고딕";

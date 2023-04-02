@@ -26,4 +26,7 @@ public interface FreeService {
 	ArrayList<Free> selectRepleList(int free_no);
 	int deleteBoard(int free_no);
 	int deleteReple(Free free);
+	int insertReple(Free free);
+	int updateReple(Free free);
+	int insertReple2(Free free);
 }

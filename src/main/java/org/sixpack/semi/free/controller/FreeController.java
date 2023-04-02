@@ -6,11 +6,9 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.sixpack.semi.HomeController;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.common.Paging;
@@ -35,33 +33,104 @@ public class FreeController {
 
 	@Autowired
 	private FreeService freeService;
-
+	
+	//글쓰기 페이지 이동
 	@RequestMapping(value = "commuwrite.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String moveWriteMethod() {
 		return "common/cwriteForm";
 	}
-	//freeupdate.do
-	
-	//freerepinsert.do
-	
-	//freerepupdate.do
-	
-	//댓글 삭제 처리용
-		@RequestMapping(value = "freerepdelete.do", method = { RequestMethod.GET, RequestMethod.POST })
-		public String freerepdeleteMethod(@RequestParam("freeno") int freeno, 
-				Free free, Model model) {
-			if(freeService.deleteReple(free) > 0) {
-				return "redirect:freedetail.do?free_no=" + freeno;
-			} else {
-				model.addAttribute("message", "게시글 삭제 실패!");
-				return "common/error";
-			}
+
+	// 원글 수정페이지 이동
+	@RequestMapping(value = "freeupmove.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String moveFreeUpdateForm(@RequestParam("free_no") int free_no, Model model) {
+		Free free = freeService.selectBoard(free_no);
+
+		if (free != null) {
+			model.addAttribute("free", free);
+			return "free/freeUpdateForm";
+		} else {
+			model.addAttribute("message", free_no + "번 글 수정페이지로 이동 실패!");
+			return "common/error";
+
 		}
+	}
 	
-	//원글 삭제 처리용
+	// 댓글,대댓글 수정페이지 이동
+	@RequestMapping(value = "movefreerepup.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String moveFreeRepUpForm(@RequestParam("free_no") int free_no, Model model) {
+		Free free = freeService.selectBoard(free_no);
+		if (free != null) {
+			model.addAttribute("free", free);
+			return "free/freeRepUpForm";
+		} else {
+			model.addAttribute("message", free_no + "번 글 수정페이지로 이동 실패!");
+			return "common/error";
+
+		}
+	}
+	
+	// 댓글,대댓글 수정 처리용
+	@RequestMapping(value = "freerepupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String freeRepUpdateMethod(Free free, Model model) {
+		if (freeService.updateReple(free) > 0) {
+			return "redirect:freedetail.do?free_no=" + free.getFree_ref();
+		} else {
+			model.addAttribute("message", "댓글 수정 실패!");
+			return "common/error";
+		}
+	}
+	
+	// 대댓글 등록페이지 이동
+	@RequestMapping(value = "movefreerepin2.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String moveFreeRepForm2(Free free, Model model) {
+		model.addAttribute("free", free);
+		return "free/freeRepForm2";
+	}
+	
+	// 대댓글 등록 처리용
+	@RequestMapping(value = "freerepinsert2.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String freeRepInsert2Method(Free free, Model model) {
+		if (freeService.insertReple2(free) > 0) {
+			return "redirect:freedetail.do?free_no=" + free.getFree_ref();
+		} else {
+			model.addAttribute("message", "대댓글 등록 실패!");
+			return "common/error";
+		}
+	}
+
+	// 댓글 등록페이지 이동
+	@RequestMapping(value = "movefreerepin.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String moveFreeRepForm(@RequestParam("free_no") int free_ref, Model model) {
+		model.addAttribute("free_ref", free_ref);
+		return "free/freeRepForm";
+	}
+
+	// 댓글 등록 처리용
+	@RequestMapping(value = "freerepinsert.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String freeRepInsertMethod(Free free, Model model) {
+		if (freeService.insertReple(free) > 0) {
+			return "redirect:freedetail.do?free_no=" + free.getFree_ref();
+		} else {
+			model.addAttribute("message", "댓글 등록 실패!");
+			return "common/error";
+		}
+	}
+
+	// 댓글,대댓글 삭제 처리용
+	@RequestMapping(value = "freerepdelete.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String freeRepDeleteMethod(@RequestParam("freeno") int freeno, Free free, Model model) {
+		if (freeService.deleteReple(free) > 0) {
+			return "redirect:freedetail.do?free_no=" + freeno;
+		} else {
+			model.addAttribute("message", "게시글 삭제 실패!");
+			return "common/error";
+		}
+	}
+
+	// 원글 삭제 처리용
 	@RequestMapping(value = "freedelete.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String freedeleteMethod(@RequestParam("free_no") int free_no, Model model) {
-		if(freeService.deleteBoard(free_no) > 0) {
+		if (freeService.deleteBoard(free_no) > 0) {
 			return "redirect:commu.do";
 		} else {
 			model.addAttribute("message", "게시글 삭제 실패!");
@@ -77,33 +146,33 @@ public class FreeController {
 		if (page != null) {
 			currentPage = Integer.parseInt(page);
 		}
-		
+
 		// 조회수 1 증가 처리
 		freeService.updateBoardReadcount(free_no);
 
 		// 해당 게시글 조회
-		Free free = freeService.selectBoard(free_no);
 		ArrayList<Free> list = freeService.selectRepleList(free_no);
-		
-		if(list != null) {
+		Free free = freeService.selectBoard(free_no);
+
+		if (list != null) {
 			mv.addObject("list", list);
 		}
-		
+
 		if (free != null) {
 			mv.addObject("free", free);
 			mv.addObject("currentPage", currentPage);
-			
+
 			mv.setViewName("free/freeDetailView");
 		} else {
 			mv.addObject("message", free_no + "번 게시글 조회 실패!");
 			mv.setViewName("common/error");
 		}
-		
+
 		return mv;
 	}
 
 	// 첨부파일 다운로드 요청 처리용
-	@RequestMapping("freedown.do")
+	@RequestMapping(value = "freedown.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView fileDownMethod(ModelAndView mv, HttpServletRequest request,
 			@RequestParam("ofile") String originalFileName, @RequestParam("rfile") String renameFileName) {
 		// 공지사항 첨부파일 저장폴더에 대한 경로(path) 지정
@@ -165,12 +234,84 @@ public class FreeController {
 			// 공지글 수정 성공시 목록 보기 페이지로 이동
 			return "redirect:commu.do";
 		} else {
-			model.addAttribute("message", "새 공지 등록 실패!");
+			model.addAttribute("message", "게시글 등록 실패!");
 			return "common/error";
 		}
 	}
-	//top5
-	@RequestMapping(value = "ftop5.do", method = RequestMethod.POST)
+
+	// 게시원글 수정 요청 처리용 (파일 업로드 기능 사용)
+	@RequestMapping(value = "freeupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String boardUpdateMethod(Free free, Model model, HttpServletRequest request,
+			@RequestParam(name = "delflag", required = false) String delFlag,
+			@RequestParam(name = "upfile", required = false) MultipartFile mfile) {
+
+		// 게시원글 첨부파일 저장 폴더 경로 지정
+		String savePath = request.getSession().getServletContext().getRealPath("resources/free_upfiles");
+
+		// 첨부파일이 수정 처리된 경우 ---------------------------
+		// 1. 원래 첨부파일이 있는데 '파일삭제'를 선택한 경우
+		if (free.getOriginfile_free() != null && delFlag != null && delFlag.equals("yes")) {
+			// 저장 폴더에 있는 파일을 삭제함
+			new File(savePath + "/" + free.getOriginfile_free()).delete();
+			// notice 의 파일 정보도 제거함
+			free.setOriginfile_free(null);
+			free.setRenamefile_free(null);
+		}
+
+		// 2. 게시원글 첨부파일은 1개만 가능한 경우
+		// 새로운 첨부파일이 있을때
+		if (!mfile.isEmpty()) {
+			// 2-1. 이전 첨부파일이 있을 때
+			if (free.getOriginfile_free() != null) {
+				// 저장 폴더에 있는 이전 파일을 삭제함
+				new File(savePath + "/" + free.getOriginfile_free()).delete();
+				// board 의 이전 파일 정보도 제거함
+				free.setOriginfile_free(null);
+				free.setRenamefile_free(null);
+			}
+
+			// 2-2. 이전 첨부파일이 없을 때
+			// 전송온 파일이름 추출함
+			String fileName = mfile.getOriginalFilename();
+
+			// 다른 게시글의 첨부파일과 파일명이 중복되어서
+			// 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
+			// 폴더에 저장하는 방식을 사용할 수 있음
+			// 변경 파일명 : 년월일시분초.확장자
+			if (fileName != null && fileName.length() > 0) {
+
+				String renameFileName = FileNameChange.change(fileName, "yyyyMMddHHmmss");
+
+				logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
+
+				// 폴더에 저장 처리
+				try {
+					mfile.transferTo(new File(savePath + "/" + renameFileName));
+				} catch (Exception e) {
+					e.printStackTrace();
+					model.addAttribute("message", "첨부파일 저장 실패!");
+					return "common/error";
+				}
+
+				// board 객체에 첨부파일 정보 기록 저장
+				free.setOriginfile_free(fileName);
+				free.setRenamefile_free(renameFileName);
+			} // 이름바꾸기
+		} // 새로운 첨부파일이 있을 때
+
+		if (freeService.updateBoard(free) > 0) {
+			// 게시원글 수정 성공시 상세보기 페이지로 이동
+			model.addAttribute("free_no", free.getFree_no());
+
+			return "redirect:freedetail.do";
+		} else {
+			model.addAttribute("message", free.getFree_no() + "번 게시글 수정 실패!");
+			return "common/error";
+		}
+	}
+
+	// top5
+	@RequestMapping(value = "ftop5.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String freeNewTop5Method() throws UnsupportedEncodingException {
 		ArrayList<Free> list = freeService.selectTop5();
@@ -181,7 +322,7 @@ public class FreeController {
 
 		for (Free free : list) {
 			JSONObject job = new JSONObject();
-			
+
 			job.put("free_no", free.getFree_no());
 			job.put("free_name", URLEncoder.encode(free.getFree_name(), "utf-8"));
 			job.put("write_free_date", free.getWrite_free_date().toString());
@@ -191,8 +332,10 @@ public class FreeController {
 		sendJson.put("list", jarr);
 		return sendJson.toJSONString();
 	}
-	//리스트
+
+	// 리스트
 	@RequestMapping(value = "commu.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
 	public ModelAndView freeListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
 		int currentPage = 1;
 		if (page != null) {
@@ -215,7 +358,7 @@ public class FreeController {
 		}
 		return mv;
 	}
-	
+	//검색
 	@RequestMapping(value = "freesearch.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView freeSearchMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page,
 			HttpServletRequest request, ModelAndView mv) {

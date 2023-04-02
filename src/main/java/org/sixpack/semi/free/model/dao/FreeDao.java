@@ -93,4 +93,16 @@ public class FreeDao {
 	public int deleteReple(Free free) {
 		return session.delete("freeMapper.deleteReple", free);
 	}
+
+	public int insertReple(Free free) {
+		return session.insert("freeMapper.insertReple", free);
+	}
+
+	public int updateReple(Free free) {
+		return session.update("freeMapper.updateReple", free);
+	}
+
+	public int insertReple2(Free free) {
+		return session.insert("freeMapper.insertReple2", free);
+	}
 }

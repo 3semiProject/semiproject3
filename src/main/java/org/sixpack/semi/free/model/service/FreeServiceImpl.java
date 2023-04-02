@@ -105,5 +105,20 @@ public class FreeServiceImpl implements FreeService{
 	public int deleteReple(Free free) {
 		return freeDao.deleteReple(free);
 	}
+
+	@Override
+	public int insertReple(Free free) {
+		return freeDao.insertReple(free);
+	}
+
+	@Override
+	public int updateReple(Free free) {
+		return freeDao.updateReple(free);
+	}
+
+	@Override
+	public int insertReple2(Free free) {
+		return freeDao.insertReple2(free);
+	}
 	
 }

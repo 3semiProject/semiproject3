@@ -14,7 +14,6 @@ public class Free implements java.io.Serializable{
 	private String free_value;	//글내용	VARCHAR2(4000 BYTE)
 	private String originfile_free;	//파일원본이름	VARCHAR2(200 BYTE)
 	private String renamefile_free;	//파일수정이름	VARCHAR2(200 BYTE)
-	private String initlink_free;	//링크저장이름	VARCHAR2(200 BYTE)
 	private int free_ref;	//원글참조번호	NUMBER
 	private int free_reply_ref;	//댓글참조번호	NUMBER
 	private int free_reply_lev;	//원글:1 댓글:2 대댓글:3	NUMBER
@@ -25,7 +24,7 @@ public class Free implements java.io.Serializable{
 		// TODO Auto-generated constructor stub
 	}
 	public Free(int free_no, String free_name, String user_id, Date write_free_date, int click_free_no,
-			String free_value, String originfile_free, String renamefile_free, String initlink_free, int free_ref,
+			String free_value, String originfile_free, String renamefile_free, int free_ref,
 			int free_reply_ref, int free_reply_lev, int free_reply_seq, int free_like_no) {
 		super();
 		this.free_no = free_no;
@@ -36,7 +35,6 @@ public class Free implements java.io.Serializable{
 		this.free_value = free_value;
 		this.originfile_free = originfile_free;
 		this.renamefile_free = renamefile_free;
-		this.initlink_free = initlink_free;
 		this.free_ref = free_ref;
 		this.free_reply_ref = free_reply_ref;
 		this.free_reply_lev = free_reply_lev;
@@ -47,8 +45,8 @@ public class Free implements java.io.Serializable{
 	public String toString() {
 		return "Free [free_no=" + free_no + ", free_name=" + free_name + ", user_id=" + user_id + ", write_free_date="
 				+ write_free_date + ", click_free_no=" + click_free_no + ", free_value=" + free_value
-				+ ", originfile_free=" + originfile_free + ", renamefile_free=" + renamefile_free + ", initlink_free="
-				+ initlink_free + ", free_ref=" + free_ref + ", free_reply_ref=" + free_reply_ref + ", free_reply_lev="
+				+ ", originfile_free=" + originfile_free + ", renamefile_free=" + renamefile_free 
+				+ ", free_ref=" + free_ref + ", free_reply_ref=" + free_reply_ref + ", free_reply_lev="
 				+ free_reply_lev + ", free_reply_seq=" + free_reply_seq + ", free_like_no=" + free_like_no + "]";
 	}
 	public int getFree_no() {
@@ -98,12 +96,6 @@ public class Free implements java.io.Serializable{
 	}
 	public void setRenamefile_free(String renamefile_free) {
 		this.renamefile_free = renamefile_free;
-	}
-	public String getInitlink_free() {
-		return initlink_free;
-	}
-	public void setInitlink_free(String initlink_free) {
-		this.initlink_free = initlink_free;
 	}
 	public int getFree_ref() {
 		return free_ref;
