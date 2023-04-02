@@ -11,7 +11,6 @@ public class Eyebody {
 	private String eyebody_value;	//글내용	VARCHAR2(4000 BYTE)
 	private String originfile_eyebody;	//파일원본이름	VARCHAR2(200 BYTE)
 	private String renamefile_eyebody;	//파일수정이름	VARCHAR2(200 BYTE)
-	private String initlink_eyebody;	//링크저장이름	VARCHAR2(200 BYTE)
 	private int eyebody_ref;	//원글참조번호	NUMBER
 	private int eyebody_reply_ref;	//댓글참조번호	NUMBER
 	private int eyebody_reply_lev;	//원글:1 댓글:2 대댓글:3	NUMBER
@@ -22,8 +21,8 @@ public class Eyebody {
 		// TODO Auto-generated constructor stub
 	}
 	public Eyebody(int eyebody_no, String eyebody_name, String user_id, Date write_eyebody_date, int click_eyebody_no,
-			String eyebody_value, String originfile_eyebody, String renamefile_eyebody, String initlink_eyebody,
-			int eyebody_ref, int eyebody_reply_ref, int eyebody_reply_lev, int eyebody_reply_seq, int eyebody_like_no) {
+			String eyebody_value, String originfile_eyebody, String renamefile_eyebody, int eyebody_ref,
+			int eyebody_reply_ref, int eyebody_reply_lev, int eyebody_reply_seq, int eyebody_like_no) {
 		super();
 		this.eyebody_no = eyebody_no;
 		this.eyebody_name = eyebody_name;
@@ -33,7 +32,6 @@ public class Eyebody {
 		this.eyebody_value = eyebody_value;
 		this.originfile_eyebody = originfile_eyebody;
 		this.renamefile_eyebody = renamefile_eyebody;
-		this.initlink_eyebody = initlink_eyebody;
 		this.eyebody_ref = eyebody_ref;
 		this.eyebody_reply_ref = eyebody_reply_ref;
 		this.eyebody_reply_lev = eyebody_reply_lev;
@@ -88,12 +86,6 @@ public class Eyebody {
 	public void setRenamefile_eyebody(String renamefile_eyebody) {
 		this.renamefile_eyebody = renamefile_eyebody;
 	}
-	public String getInitlink_eyebody() {
-		return initlink_eyebody;
-	}
-	public void setInitlink_eyebody(String initlink_eyebody) {
-		this.initlink_eyebody = initlink_eyebody;
-	}
 	public int getEyebody_ref() {
 		return eyebody_ref;
 	}
@@ -129,10 +121,9 @@ public class Eyebody {
 		return "Eyebody [eyebody_no=" + eyebody_no + ", eyebody_name=" + eyebody_name + ", user_id=" + user_id
 				+ ", write_eyebody_date=" + write_eyebody_date + ", click_eyebody_no=" + click_eyebody_no
 				+ ", eyebody_value=" + eyebody_value + ", originfile_eyebody=" + originfile_eyebody
-				+ ", renamefile_eyebody=" + renamefile_eyebody + ", initlink_eyebody=" + initlink_eyebody
-				+ ", eyebody_ref=" + eyebody_ref + ", eyebody_reply_ref=" + eyebody_reply_ref + ", eyebody_reply_lev="
-				+ eyebody_reply_lev + ", eyebody_reply_seq=" + eyebody_reply_seq + ", eyebody_like_no="
-				+ eyebody_like_no + "]";
+				+ ", renamefile_eyebody=" + renamefile_eyebody + ", eyebody_ref=" + eyebody_ref + ", eyebody_reply_ref="
+				+ eyebody_reply_ref + ", eyebody_reply_lev=" + eyebody_reply_lev + ", eyebody_reply_seq="
+				+ eyebody_reply_seq + ", eyebody_like_no=" + eyebody_like_no + "]";
 	}
 	
 }

@@ -14,7 +14,6 @@ public class Tip implements java.io.Serializable {
 	private String tip_value;	//글내용	VARCHAR2(4000 BYTE)
 	private String originfile_tip;	//파일원본이름	VARCHAR2(200 BYTE)
 	private String renamefile_tip;	//파일수정이름	VARCHAR2(200 BYTE)
-	private String initlink_tip;	//링크저장이름	VARCHAR2(200 BYTE)
 	private int tip_ref;	//원글참조번호	NUMBER
 	private int tip_reply_ref;	//댓글참조번호	NUMBER
 	private int tip_reply_lev;	//원글:1 댓글:2 대댓글:3	NUMBER
@@ -25,8 +24,8 @@ public class Tip implements java.io.Serializable {
 		// TODO Auto-generated constructor stub
 	}
 	public Tip(int tip_no, String tip_name, String user_id, Date write_tip_date, int click_tip_no, String tip_value,
-			String originfile_tip, String renamefile_tip, String initlink_tip, int tip_ref, int tip_reply_ref,
-			int tip_reply_lev, int tip_reply_seq, int tip_like_no) {
+			String originfile_tip, String renamefile_tip, int tip_ref, int tip_reply_ref, int tip_reply_lev,
+			int tip_reply_seq, int tip_like_no) {
 		super();
 		this.tip_no = tip_no;
 		this.tip_name = tip_name;
@@ -36,7 +35,6 @@ public class Tip implements java.io.Serializable {
 		this.tip_value = tip_value;
 		this.originfile_tip = originfile_tip;
 		this.renamefile_tip = renamefile_tip;
-		this.initlink_tip = initlink_tip;
 		this.tip_ref = tip_ref;
 		this.tip_reply_ref = tip_reply_ref;
 		this.tip_reply_lev = tip_reply_lev;
@@ -91,12 +89,6 @@ public class Tip implements java.io.Serializable {
 	public void setRenamefile_tip(String renamefile_tip) {
 		this.renamefile_tip = renamefile_tip;
 	}
-	public String getInitlink_tip() {
-		return initlink_tip;
-	}
-	public void setInitlink_tip(String initlink_tip) {
-		this.initlink_tip = initlink_tip;
-	}
 	public int getTip_ref() {
 		return tip_ref;
 	}
@@ -134,10 +126,9 @@ public class Tip implements java.io.Serializable {
 	public String toString() {
 		return "Tip [tip_no=" + tip_no + ", tip_name=" + tip_name + ", user_id=" + user_id + ", write_tip_date="
 				+ write_tip_date + ", click_tip_no=" + click_tip_no + ", tip_value=" + tip_value + ", originfile_tip="
-				+ originfile_tip + ", renamefile_tip=" + renamefile_tip + ", initlink_tip=" + initlink_tip
-				+ ", tip_ref=" + tip_ref + ", tip_reply_ref=" + tip_reply_ref + ", tip_reply_lev=" + tip_reply_lev
-				+ ", tip_reply_seq=" + tip_reply_seq + ", tip_like_no=" + tip_like_no + "]";
+				+ originfile_tip + ", renamefile_tip=" + renamefile_tip + ", tip_ref=" + tip_ref + ", tip_reply_ref="
+				+ tip_reply_ref + ", tip_reply_lev=" + tip_reply_lev + ", tip_reply_seq=" + tip_reply_seq
+				+ ", tip_like_no=" + tip_like_no + "]";
 	}
-	
 	
 }

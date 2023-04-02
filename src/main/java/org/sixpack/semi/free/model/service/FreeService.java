@@ -24,7 +24,7 @@ public interface FreeService {
 	ArrayList<Free> selectSearchValue(Searchs searchs);
 	int selectSearchListCount(CountSearch countSearch);
 	ArrayList<Free> selectRepleList(int free_no);
-	int deleteBoard(int free_no);
+	int deleteFreeBoard(int free_no);
 	int deleteReple(Free free);
 	int insertReple(Free free);
 	int updateReple(Free free);

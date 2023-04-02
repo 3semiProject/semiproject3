@@ -14,7 +14,6 @@ public class HotNew implements java.io.Serializable {
 	private String hotnew_value;	//글내용	VARCHAR2(4000 BYTE)
 	private String originfile_hotnew;	//파일원본이름	VARCHAR2(200 BYTE)
 	private String renamefile_hotnew;	//파일수정이름	VARCHAR2(200 BYTE)
-	private String initlink;	//링크저장이름	VARCHAR2(200 BYTE)
 	private int ref;	//원글참조번호	NUMBER
 	private int reply_ref;	//댓글참조번호	NUMBER
 	private int reply_lev;	//원글:1 댓글:2 대댓글:3	NUMBER
@@ -25,8 +24,8 @@ public class HotNew implements java.io.Serializable {
 		// TODO Auto-generated constructor stub
 	}
 	public HotNew(int hotnew_no, String hotnew_name, String user_id, Date write_hotnew_date, int click_hotnew_no,
-			String hotnew_value, String originfile_hotnew, String renamefile_hotnew, String initlink, int ref,
-			int reply_ref, int reply_lev, int reply_seq, int like_no) {
+			String hotnew_value, String originfile_hotnew, String renamefile_hotnew, int ref, int reply_ref,
+			int reply_lev, int reply_seq, int like_no) {
 		super();
 		this.hotnew_no = hotnew_no;
 		this.hotnew_name = hotnew_name;
@@ -36,7 +35,6 @@ public class HotNew implements java.io.Serializable {
 		this.hotnew_value = hotnew_value;
 		this.originfile_hotnew = originfile_hotnew;
 		this.renamefile_hotnew = renamefile_hotnew;
-		this.initlink = initlink;
 		this.ref = ref;
 		this.reply_ref = reply_ref;
 		this.reply_lev = reply_lev;
@@ -91,12 +89,6 @@ public class HotNew implements java.io.Serializable {
 	public void setRenamefile_hotnew(String renamefile_hotnew) {
 		this.renamefile_hotnew = renamefile_hotnew;
 	}
-	public String getInitlink() {
-		return initlink;
-	}
-	public void setInitlink(String initlink) {
-		this.initlink = initlink;
-	}
 	public int getRef() {
 		return ref;
 	}
@@ -135,9 +127,8 @@ public class HotNew implements java.io.Serializable {
 		return "HotNew [hotnew_no=" + hotnew_no + ", hotnew_name=" + hotnew_name + ", user_id=" + user_id
 				+ ", write_hotnew_date=" + write_hotnew_date + ", click_hotnew_no=" + click_hotnew_no
 				+ ", hotnew_value=" + hotnew_value + ", originfile_hotnew=" + originfile_hotnew + ", renamefile_hotnew="
-				+ renamefile_hotnew + ", initlink=" + initlink + ", ref=" + ref + ", reply_ref=" + reply_ref
-				+ ", reply_lev=" + reply_lev + ", reply_seq=" + reply_seq + ", like_no=" + like_no + "]";
+				+ renamefile_hotnew + ", ref=" + ref + ", reply_ref=" + reply_ref + ", reply_lev=" + reply_lev
+				+ ", reply_seq=" + reply_seq + ", like_no=" + like_no + "]";
 	}
-
 	
 }

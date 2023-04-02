@@ -39,21 +39,6 @@ public class FreeController {
 	public String moveWriteMethod() {
 		return "common/cwriteForm";
 	}
-
-	// 원글 수정페이지 이동
-	@RequestMapping(value = "freeupmove.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String moveFreeUpdateForm(@RequestParam("free_no") int free_no, Model model) {
-		Free free = freeService.selectBoard(free_no);
-
-		if (free != null) {
-			model.addAttribute("free", free);
-			return "free/freeUpdateForm";
-		} else {
-			model.addAttribute("message", free_no + "번 글 수정페이지로 이동 실패!");
-			return "common/error";
-
-		}
-	}
 	
 	// 댓글,대댓글 수정페이지 이동
 	@RequestMapping(value = "movefreerepup.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -127,10 +112,24 @@ public class FreeController {
 		}
 	}
 
+	// 원글 수정페이지 이동
+	@RequestMapping(value = "freeupmove.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String moveFreeUpdateForm(@RequestParam("free_no") int free_no, Model model) {
+		Free free = freeService.selectBoard(free_no);
+
+		if (free != null) {
+			model.addAttribute("free", free);
+			return "free/freeUpdateForm";
+		} else {
+			model.addAttribute("message", free_no + "번 글 수정페이지로 이동 실패!");
+			return "common/error";
+		}
+	}
+
 	// 원글 삭제 처리용
 	@RequestMapping(value = "freedelete.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String freedeleteMethod(@RequestParam("free_no") int free_no, Model model) {
-		if (freeService.deleteBoard(free_no) > 0) {
+		if (freeService.deleteFreeBoard(free_no) > 0) {
 			return "redirect:commu.do";
 		} else {
 			model.addAttribute("message", "게시글 삭제 실패!");

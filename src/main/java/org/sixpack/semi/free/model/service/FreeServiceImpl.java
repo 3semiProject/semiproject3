@@ -62,8 +62,8 @@ public class FreeServiceImpl implements FreeService{
 	}
 
 	@Override
-	public int deleteBoard(int free_no) {
-		return freeDao.deleteBoard(free_no);
+	public int deleteFreeBoard(int free_no) {
+		return freeDao.deleteFreeBoard(free_no);
 	}
 
 	@Override

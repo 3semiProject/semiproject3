@@ -53,8 +53,8 @@ public class FreeDao {
 		return session.update("freeMapper.updateReply", reply);
 	}
 
-	public int deleteBoard(int free_no) {
-		return session.delete("freeMapper.deletefreeBoard", free_no);
+	public int deleteFreeBoard(int free_no) {
+		return session.delete("freeMapper.deleteFreeBoard", free_no);
 	}
 
 	public ArrayList<Free> selectTop5() {
