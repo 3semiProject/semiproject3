@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
+import org.sixpack.semi.tip.model.vo.LikeTip;
 import org.sixpack.semi.tip.model.vo.Tip;
 
 public interface TipService {
@@ -23,4 +24,16 @@ public interface TipService {
 	ArrayList<Tip> selectSearchWriter(Searchs searchs);
 	ArrayList<Tip> selectSearchValue(Searchs searchs);
 	int selectSearchListCount(CountSearch countSearch);
+	ArrayList<Tip> selectRepleList(int tip_no);
+	int deleteTipBoard(int tip_no);
+	int deleteReple(Tip tip);
+	int insertReple(Tip tip);
+	int updateReple(Tip tip);
+	int insertReple2(Tip tip);
+	int insertLikeTip(Tip tip);
+	int updatePTipLikeNo(Tip tip);
+	int deleteLikeTip(Tip tip);
+	int updateMTipLikeNo(Tip tip);
+	LikeTip selectLikeTip(Tip tip);
+	int updateMBoardCount(Tip tip);
 }

@@ -32,6 +32,32 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 	
 	@Autowired
 	private HotNewService hotNewService;
+	//hotnewdetail.do
+	@RequestMapping(value="hotnewdetail.do", method={ RequestMethod.GET, RequestMethod.POST })
+	public String selectDetailMethod(@RequestParam("hotnew_no") int hotnew_no, Model model,
+			@RequestParam("hotnew_name") String hotnew_name, @RequestParam("user_id") String user_id) {
+		HotNew hotnew = new HotNew();
+		hotnew.setHotnew_no(hotnew_no);
+		hotnew.setHotnew_name(hotnew_name);
+		hotnew.setUser_id(user_id);
+		System.out.println(hotnew);
+		if(hotNewService.selectFree(hotnew) != null) {
+			return "redirect:freedetail.do?free_no=" + hotnew.getHotnew_no();
+		}
+		else if(hotNewService.selectTip(hotnew) != null) {
+			return "redirect:tipdetail.do?tip_no=" + hotnew.getHotnew_no();
+		}
+		else if(hotNewService.selectEyebody(hotnew) != null) {
+			return "redirect:eyebodydetail.do?eyebody_no=" + hotnew.getHotnew_no();
+		}
+		else if(hotNewService.selectBfaf(hotnew) != null) {
+			return "redirect:bfafdetail.do?bfaf_no=" + hotnew.getHotnew_no();
+		}else {
+			model.addAttribute("message", hotnew.getHotnew_no() + "번 게시물 조회 실패");
+			return "common/error";
+		}
+		
+	}
 	
 	@RequestMapping(value="hntop5.do", method=RequestMethod.POST)
 	@ResponseBody
@@ -44,7 +70,7 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 		
 		for(HotNew hotNew : list) {
 			JSONObject job = new JSONObject();
-			
+			job.put("hotnew_no", hotNew.getHotnew_no());
 			job.put("hotnew_name", URLEncoder.encode(hotNew.getHotnew_name(), "utf-8"));
 			job.put("write_hotnew_date", hotNew.getWrite_hotnew_date().toString());
 			job.put("user_id", hotNew.getUser_id());

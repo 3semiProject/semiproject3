@@ -157,6 +157,7 @@ body{
                 			<c:url var="badt" value="/bfafdetail.do">
 								<c:param name="bfaf_no" value="${ ba.bfaf_no }" />
 								<c:param name="page" value="${ currentPage }" />
+								<c:param name="user_id" value="${ sessionScope.loginMember.user_id }" />
 							</c:url>
                             <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">

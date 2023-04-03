@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,87 +90,78 @@ div[name="youtube"] {
 	text-shadow: 1px 1px 2px #D1D1D1;
 }
 </style>
- <script type="text/javascript"
-            src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
+<script type="text/javascript"
+	src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
-    $(function(){
-    	var id = $.trim(<%=session.getAttribute("user_id")%>);
-    	
-        var values = $('#new_topN').html();
-        console.log("values : " + values);
-        $.ajax({
-           url: "ftop5.do",
-           type: "post",
-           dataType: "json",
-           success: function(data){
-              console.log("success : " + data);
-              
-              var jsonStr = JSON.stringify(data);
-              var json = JSON.parse(jsonStr);
-              
-	              for(var i in json.list){
-	            	  if(id == null){
-	            	  values +=  "</td><td>" 
-		  	               + decodeURIComponent(
-		  	                     json.list[i].free_name).replace(/\+/gi, " ")
-		  	               + "</td><td>" + json.list[i].user_id
-		  	               + "</td><td>" + json.list[i].write_free_date
-		  	               + "</td></tr>";
-	            	  } else {
-	            		  values +=  "</td><td>" 
-	        	               + "<a href='freedetail.do?free_no=" 
-	        	  			   + json.list[i].free_no + "'>" 
-	        	               + decodeURIComponent(
-	        	                     json.list[i].free_name).replace(/\+/gi, " ")
-	        	               + "</a></td><td>" + json.list[i].user_id
-	        	               + "</td><td>" + json.list[i].write_free_date
-	        	               + "</td></tr>";
-	            	  }
-	              }
-              $('#new_topN').html(values);
-           },
-           error : function(jqXHR, textStatus, errorThrown){
-              console.log("ftop5.do error : " + jqXHR
-                   + ", " + textStatus + ", "
-                   + errorThrown);
-           }
-        });
-         
-     }); //document ready
-     
-     $(function(){
-     	var values = $('#hot_topN').html();
-     	console.log("values : " + values);
-     	$.ajax({
-     		url: "hntop5.do",
-     		type: "post",
-     		dataType: "json",
-     		success: function(data){
-     			console.log("success : " + data);
-     			
-     			var jsonStr = JSON.stringify(data);
-     			var json = JSON.parse(jsonStr);
-     			
-     			for(var i in json.list){
-     				values += "</td><td><a href='hotnewdetail.do?hotnew_no=" 
-     					+ json.list[i].hotnew_no + "'>" 
-						+ decodeURIComponent(
-								json.list[i].hotnew_name).replace(/\+/gi, " ")
-						+ "</a></td><td>" + json.list[i].user_id
-						+ "</td><td>" + json.list[i].write_hotnew_date
-						+ "</td></tr>";
-     			}
-     			$('#hot_topN').html(values);
-     		},
-     		error : function(jqXHR, textStatus, errorThrown){
-     			console.log("hntop5.do error : " + jqXHR
- 						+ ", " + textStatus + ", "
- 						+ errorThrown);
-     		}
-     	});
-         
-     }); //document ready    
-     </script>   
+	$(function() {
+		var values = $('#new_topN').html();
+		console.log("values : " + values);
+		$.ajax({
+			url : "ftop5.do",
+			type : "post",
+			dataType : "json",
+			success : function(data) {
+				console.log("success : " + data);
+
+				var jsonStr = JSON.stringify(data);
+				var json = JSON.parse(jsonStr);
+
+				for ( var i in json.list) {
+					values += "</td><td>"
+							+ "<a href='freedetail.do?free_no="
+							+ json.list[i].free_no
+							+ "'>"
+							+ decodeURIComponent(json.list[i].free_name)
+									.replace(/\+/gi, " ") + "</a></td><td>"
+							+ json.list[i].user_id + "</td><td>"
+							+ json.list[i].write_free_date + "</td></tr>";
+				}
+				$('#new_topN').html(values);
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				console.log("ftop5.do error : " + jqXHR + ", " + textStatus
+						+ ", " + errorThrown);
+			}
+		});
+
+	}); //document ready
+
+	$(function() {
+		var values = $('#hot_topN').html();
+		console.log("values : " + values);
+		$.ajax({
+			url : "hntop5.do",
+			type : "post",
+			dataType : "json",
+			success : function(data) {
+				console.log("success : " + data);
+
+				var jsonStr = JSON.stringify(data);
+				var json = JSON.parse(jsonStr);
+
+				for ( var i in json.list) {
+					values += "</td><td><a href='hotnewdetail.do?hotnew_no="
+							+ json.list[i].hotnew_no
+							+ "&hotnew_name="
+							+ json.list[i].hotnew_name
+							+ "&user_id="
+							+ json.list[i].user_id
+							+ "'>"
+							+ decodeURIComponent(json.list[i].hotnew_name)
+									.replace(/\+/gi, " ") + "</a></td><td>"
+							+ json.list[i].user_id + "</td><td>"
+							+ json.list[i].write_hotnew_date + "</td></tr>";
+				}
+				$('#hot_topN').html(values);
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				console.log("hntop5.do error : " + jqXHR + ", " + textStatus
+						+ ", " + errorThrown);
+			}
+		});
+
+	}); //document ready
+</script>
 </head>
 <body>
 	<hr style="clear: both; border: none">

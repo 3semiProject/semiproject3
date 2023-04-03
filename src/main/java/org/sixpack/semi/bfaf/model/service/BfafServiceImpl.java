@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.sixpack.semi.bfaf.model.dao.BfafDao;
 import org.sixpack.semi.bfaf.model.vo.Bfaf;
+import org.sixpack.semi.bfaf.model.vo.LikeBfaf;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
@@ -82,5 +83,68 @@ public class BfafServiceImpl implements BfafService {
 	@Override
 	public int selectSearchListCount(CountSearch countSearch) {
 		return bfafDao.selectSearchListCount(countSearch);
+	}
+	
+	@Override
+	public int deleteBfafBoard(int bfaf_no) {
+		return bfafDao.deleteBfafBoard(bfaf_no);
+	}
+	
+	@Override
+	public ArrayList<Bfaf> selectRepleList(int bfaf_no) {
+		return bfafDao.selectRepleList(bfaf_no);
+	}
+	
+	@Override
+	public int deleteReple(Bfaf bfaf) {
+		return bfafDao.deleteReple(bfaf);
+	}
+
+	@Override
+	public int insertReple(Bfaf bfaf) {
+		return bfafDao.insertReple(bfaf);
+	}
+
+	@Override
+	public int updateReple(Bfaf bfaf) {
+		return bfafDao.updateReple(bfaf);
+	}
+
+	@Override
+	public int insertReple2(Bfaf bfaf) {
+		return bfafDao.insertReple2(bfaf);
+	}
+
+	@Override
+	public int insertLikeBfaf(Bfaf bfaf) {
+		return bfafDao.insertLikeBfaf(bfaf);
+	}
+
+	@Override
+	public int updatePBfafLikeNo(Bfaf bfaf) {
+		return bfafDao.updatePBfafLikeNo(bfaf);
+		
+	}
+
+	@Override
+	public int deleteLikeBfaf(Bfaf bfaf) {
+		return bfafDao.deleteLikeBfaf(bfaf);
+		
+	}
+
+	@Override
+	public int updateMBfafLikeNo(Bfaf bfaf) {
+		return bfafDao.updateMBfafLikeNo(bfaf);
+		
+	}
+
+	@Override
+	public LikeBfaf selectLikeBfaf(Bfaf bfaf) {
+		return bfafDao.selectLikeBfaf(bfaf);
+	}
+
+	@Override
+	public int updateMBoardCount(Bfaf bfaf) {
+		return bfafDao.updateMBoardCount(bfaf);
 	}
 }

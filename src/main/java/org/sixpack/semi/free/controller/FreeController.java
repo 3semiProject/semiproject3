@@ -15,6 +15,7 @@ import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.free.model.service.FreeService;
 import org.sixpack.semi.free.model.vo.Free;
+import org.sixpack.semi.free.model.vo.LikeFree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,24 @@ public class FreeController {
 
 	@Autowired
 	private FreeService freeService;
-	
+
+	//글추천 처리
+	@RequestMapping(value = "freelike.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String likeUpDeMethod(Free free) {
+		LikeFree freeLike = freeService.selectLikeFree(free);
+		if (freeLike == null) {
+			freeService.insertLikeFree(free);
+			freeService.updatePFreeLikeNo(free);
+			freeService.updateMBoardCount(free);
+			return "redirect:freedetail.do?free_no=" + free.getFree_no()+ "&user_id=" + free.getUser_id();
+		}else {
+			freeService.deleteLikeFree(free);
+			freeService.updateMFreeLikeNo(free);
+			freeService.updateMBoardCount(free);
+			return "redirect:freedetail.do?free_no=" + free.getFree_no() + "&user_id=" + null;
+		}
+	}
+
 	//글쓰기 페이지 이동
 	@RequestMapping(value = "commuwrite.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String moveWriteMethod() {
@@ -140,6 +158,7 @@ public class FreeController {
 	// 게시글 상세보기 처리용
 	@RequestMapping(value = "freedetail.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView boardDetailMethod(ModelAndView mv, @RequestParam("free_no") int free_no,
+			@RequestParam(name = "user_id", required = false) String user_id,
 			@RequestParam(name = "page", required = false) String page) {
 		int currentPage = 1;
 		if (page != null) {
@@ -152,9 +171,18 @@ public class FreeController {
 		// 해당 게시글 조회
 		ArrayList<Free> list = freeService.selectRepleList(free_no);
 		Free free = freeService.selectBoard(free_no);
-
+		Free free2 = new Free();
+		free2.setUser_id(user_id);
+		free2.setFree_no(free_no);
+		
+		LikeFree likeFree =	freeService.selectLikeFree(free2);
+		
 		if (list != null) {
 			mv.addObject("list", list);
+		}
+		
+		if(likeFree != null) {
+			mv.addObject("likeFree", likeFree);
 		}
 
 		if (free != null) {

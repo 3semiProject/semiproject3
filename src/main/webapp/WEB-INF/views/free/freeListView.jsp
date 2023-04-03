@@ -162,6 +162,7 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
                 			<c:url var="fdt" value="/freedetail.do">
 								<c:param name="free_no" value="${ f.free_no }" />
 								<c:param name="page" value="${ currentPage }" />
+								<c:param name="user_id" value="${ sessionScope.loginMember.user_id }" />
 							</c:url>
                             <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">

@@ -19,13 +19,14 @@ public class HotNew implements java.io.Serializable {
 	private int reply_lev;	//원글:1 댓글:2 대댓글:3	NUMBER
 	private int reply_seq;	//댓글순번	NUMBER
 	private int like_no; //좋아요수	NUMBER
+	private int rnum;
 	public HotNew() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public HotNew(int hotnew_no, String hotnew_name, String user_id, Date write_hotnew_date, int click_hotnew_no,
 			String hotnew_value, String originfile_hotnew, String renamefile_hotnew, int ref, int reply_ref,
-			int reply_lev, int reply_seq, int like_no) {
+			int reply_lev, int reply_seq, int like_no, int rnum) {
 		super();
 		this.hotnew_no = hotnew_no;
 		this.hotnew_name = hotnew_name;
@@ -40,6 +41,7 @@ public class HotNew implements java.io.Serializable {
 		this.reply_lev = reply_lev;
 		this.reply_seq = reply_seq;
 		this.like_no = like_no;
+		this.rnum = rnum;
 	}
 	public int getHotnew_no() {
 		return hotnew_no;
@@ -119,6 +121,12 @@ public class HotNew implements java.io.Serializable {
 	public void setLike_no(int like_no) {
 		this.like_no = like_no;
 	}
+	public int getRnum() {
+		return rnum;
+	}
+	public void setRnum(int rnum) {
+		this.rnum = rnum;
+	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -128,7 +136,7 @@ public class HotNew implements java.io.Serializable {
 				+ ", write_hotnew_date=" + write_hotnew_date + ", click_hotnew_no=" + click_hotnew_no
 				+ ", hotnew_value=" + hotnew_value + ", originfile_hotnew=" + originfile_hotnew + ", renamefile_hotnew="
 				+ renamefile_hotnew + ", ref=" + ref + ", reply_ref=" + reply_ref + ", reply_lev=" + reply_lev
-				+ ", reply_seq=" + reply_seq + ", like_no=" + like_no + "]";
+				+ ", reply_seq=" + reply_seq + ", like_no=" + like_no + ", rnum=" + rnum + "]";
 	}
 	
 }

@@ -153,10 +153,11 @@ body{
                 <c:forEach items="${ list }" var="nn">
                 	<li>
                 		<ul>
-                			<li>${ nn.hotnew_no }</li>
+                			<li>${ nn.rnum }</li>
                 			<c:url var="newdt" value="/hotnewdetail.do">
 								<c:param name="hotnew_no" value="${ nn.hotnew_no }" />
-								<c:param name="page" value="${ currentPage }" />
+								<c:param name="hotnew_name" value="${ nn.hotnew_name }" />
+								<c:param name="user_id" value="${ nn.user_id }" />
 							</c:url>
                             <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">

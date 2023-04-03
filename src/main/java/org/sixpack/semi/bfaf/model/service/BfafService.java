@@ -3,6 +3,7 @@ package org.sixpack.semi.bfaf.model.service;
 import java.util.ArrayList;
 
 import org.sixpack.semi.bfaf.model.vo.Bfaf;
+import org.sixpack.semi.bfaf.model.vo.LikeBfaf;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
@@ -22,4 +23,16 @@ public interface BfafService {
 	ArrayList<Bfaf> selectSearchWriter(Searchs searchs);
 	ArrayList<Bfaf> selectSearchValue(Searchs searchs);
 	int selectSearchListCount(CountSearch countSearch);
+	ArrayList<Bfaf> selectRepleList(int bfaf_no);
+	int deleteBfafBoard(int bfaf_no);
+	int deleteReple(Bfaf bfaf);
+	int insertReple(Bfaf bfaf);
+	int updateReple(Bfaf bfaf);
+	int insertReple2(Bfaf bfaf);
+	int insertLikeBfaf(Bfaf bfaf);
+	int updatePBfafLikeNo(Bfaf bfaf);
+	int deleteLikeBfaf(Bfaf bfaf);
+	int updateMBfafLikeNo(Bfaf bfaf);
+	LikeBfaf selectLikeBfaf(Bfaf bfaf);
+	int updateMBoardCount(Bfaf bfaf);
 }

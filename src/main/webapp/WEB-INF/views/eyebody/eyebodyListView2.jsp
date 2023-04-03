@@ -150,29 +150,30 @@ body{
                         </ul>
                     </li>
                     <!-- 게시물이 출력될 영역 -->
-                <c:forEach items="${ list }" var="e">
+                <c:forEach items="${ list }" var="eb">
                 	<li>
                 		<ul>
-                			<li>${ e.eyebody_no }</li>
-                			<c:url var="edt" value="/edetail.do">
-								<c:param name="eyebody_no" value="${ e.eyebody_no }" />
+                			<li>${ eb.eyebody_no }</li>
+                			<c:url var="edt" value="/eyebodydetail.do">
+								<c:param name="eyebody_no" value="${ eb.eyebody_no }" />
 								<c:param name="page" value="${ currentPage }" />
+								<c:param name="user_id" value="${ sessionScope.loginMember.user_id }" />
 							</c:url>
                             <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">
-								<a class="eyebodya" href="${ edt }">${ e.eyebody_name }</a>
+								<a class="eyebodya" href="${ edt }">${ eb.eyebody_name }</a>
 							</c:if>
 							<c:if test="${ empty sessionScope.loginMember }">
-								${ e.eyebody_name }
+								${ eb.eyebody_name }
 							</c:if>
                             </li>
                             <li>
-                            	<c:if test="${ !empty e.originfile_eyebody }">◎</c:if>
-								<c:if test="${ empty e.originfile_eyebody }">Empty</c:if>
+                            	<c:if test="${ !empty eb.originfile_eyebody }">◎</c:if>
+								<c:if test="${ empty eb.originfile_eyebody }">Empty</c:if>
                             </li>
-                            <li>${e.write_eyebody_date}</li>
-                            <li>${e.user_id}</li>
-                            <li> &nbsp; &nbsp;${e.click_eyebody_no}&nbsp; &nbsp; </li>
+                            <li>${eb.write_eyebody_date}</li>
+                            <li>${eb.user_id}</li>
+                            <li> &nbsp; &nbsp;${eb.click_eyebody_no}&nbsp; &nbsp; </li>
                 		</ul>
                 	</li>
                 </c:forEach>                       
@@ -191,9 +192,9 @@ body{
             	<form action="eyebodysearch.do?page=1" method="post">
                 <div>
                     <select name="searchtype" >
-                        <option value="ename">제목</option>
-                        <option value="evalue">내용</option>
-                        <option value="eid">작성자</option>
+                        <option value="ebname">제목</option>
+                        <option value="ebvalue">내용</option>
+                        <option value="ebid">작성자</option>
                     </select>
                     <input type="search" name="keyword">
                     <input type="submit" value="검색">

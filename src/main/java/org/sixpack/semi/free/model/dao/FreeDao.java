@@ -8,6 +8,7 @@ import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.free.model.vo.Free;
+import org.sixpack.semi.free.model.vo.LikeFree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -104,5 +105,29 @@ public class FreeDao {
 
 	public int insertReple2(Free free) {
 		return session.insert("freeMapper.insertReple2", free);
+	}
+
+	public int insertLikeFree(Free free) {
+		return session.insert("freeMapper.insertLikeFree", free);
+	}
+
+	public int updatePFreeLikeNo(Free free) {
+		return session.update("freeMapper.updatePFreeLikeNo", free);
+	}
+
+	public int deleteLikeFree(Free free) {
+		return session.delete("freeMapper.deleteLikeFree", free);
+	}
+
+	public int updateMFreeLikeNo(Free free) {
+		return session.update("freeMapper.updateMFreeLikeNo", free);
+	}
+
+	public LikeFree selectLikeFree(Free free) {
+		return session.selectOne("freeMapper.selectLikeFree", free);
+	}
+
+	public int updateMBoardCount(Free free) {
+		return session.update("freeMapper.updateMBoardCount", free);
 	}
 }

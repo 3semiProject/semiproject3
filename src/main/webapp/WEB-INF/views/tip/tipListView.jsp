@@ -157,6 +157,7 @@ body{
                 			<c:url var="tdt" value="/tipdetail.do">
 								<c:param name="tip_no" value="${ t.tip_no }" />
 								<c:param name="page" value="${ currentPage }" />
+								<c:param name="user_id" value="${ sessionScope.loginMember.user_id }" />
 							</c:url>
                             <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">

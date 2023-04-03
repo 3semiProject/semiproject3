@@ -44,14 +44,14 @@ body{
 		<p id="title">게시글 수정</p>
 	</div>
 	<div>
-		<form action="freeupdate.do" method="post"
+		<form action="eyebodyupdate.do" method="post"
 			enctype="multipart/form-data" name="boardform">
-			<input type="hidden" name="free_no" value="${ free.free_no }">
+			<input type="hidden" name="eyebody_no" value="${ eyebody.eyebody_no }">
 			<table width="100%" border="1px solid" cellpadding="0"
 				cellspacing="0">
 				<tr>
 					<th>게시판 종류</th>
-					<td align="center">FREE</td>
+					<td align="center">EYEBODY</td>
 				</tr>
 				<tr height="40">
 					<th>작성자</th>
@@ -60,20 +60,20 @@ body{
 				</tr>
 				<tr height="40">
 					<th>제목</th>
-					<td><input name="free_name" type="text" value="${ free.free_name }" style="width: 90%;" /></td>
+					<td><input name="eyebody_name" type="text" value="${ eyebody.eyebody_name }" style="width: 90%;" /></td>
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td><textarea name="free_value" style="width: 90%; height: 200px;">
-					${ free.free_value }
+					<td><textarea name="eyebody_value" style="width: 90%; height: 200px;">
+					${ eyebody.eyebody_value }
 					</textarea>
 					</td>
 				</tr>
 				<tr height="40">
 					<th>FILE</th>
 					<td>
-					<c:if test="${ !empty free.originfile_free }">
-					${ free.originfile_free } &nbsp; 
+					<c:if test="${ !empty eyebody.originfile_eyebody }">
+					${ eyebody.originfile_eyebody } &nbsp; 
 					<input type="checkbox" name="delflag" value="yes"> 파일삭제
 					<br>
 					</c:if>

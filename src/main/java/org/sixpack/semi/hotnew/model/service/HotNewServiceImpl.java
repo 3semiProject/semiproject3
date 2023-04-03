@@ -110,4 +110,24 @@ public class HotNewServiceImpl implements HotNewService {
 	public int selectSearchListCount(CountSearch countSearch) {
 		return hotNewDao.selectSearchListCount(countSearch);
 	}
+
+	@Override
+	public HotNew selectFree(HotNew hotnew) {
+		return hotNewDao.selectFree(hotnew);
+	}
+
+	@Override
+	public HotNew selectTip(HotNew hotnew) {
+		return hotNewDao.selectTip(hotnew);
+	}
+
+	@Override
+	public HotNew selectEyebody(HotNew hotnew) {
+		return hotNewDao.selectEyebody(hotnew);
+	}
+
+	@Override
+	public HotNew selectBfaf(HotNew hotnew) {
+		return hotNewDao.selectBfaf(hotnew);
+	}
 }
