@@ -14,11 +14,6 @@ public class MemberServiceImpl implements MemberService{
 	private MemberDao memberDao;
 
 	@Override
-	public Member selectLogin(Member member) {
-		return memberDao.selectLogin(member);
-	}
-
-	@Override
 	public Member selectFindIdPhone(Member member) {
 		return memberDao.selectFindIdPhone(member);
 	}

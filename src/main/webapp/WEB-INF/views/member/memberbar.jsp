@@ -66,11 +66,12 @@ body {
 <body>
 <hr>
 <div id="tab2">
-	<div class="round"><a style="border-bottom-left-radius: 35px; border-top-left-radius: 35px;" href="${ pageContext.servletContext.contextPath }/myinfo.do">회원정보보기</a></div>
+	<div class="round"><a style="border-bottom-left-radius: 35px; border-top-left-radius: 35px;" href="myinfo.do">회원정보보기</a></div>
 	<div><a href="${ pageContext.servletContext.contextPath }/pwCheckPopUp.do">회원정보수정</a></div>
 	<div><a href="${ pageContext.servletContext.contextPath }//diary.do">다이어리보기</a></div>
 	<div><a href="${ pageContext.servletContext.contextPath }/tiplist.do?page=1">다이어리작성</a></div>
 	<div class="round"><a style="border-bottom-right-radius: 35px; border-top-right-radius: 35px;" href="${ pageContext.servletContext.contextPath }/bfaflist.do?page=1">통계보기</a></div>
+	
 </div>
 </body>
 </html>

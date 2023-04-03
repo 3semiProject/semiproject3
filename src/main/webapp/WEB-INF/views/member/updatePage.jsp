@@ -4,23 +4,24 @@
 <head>
 <title>마이페이지</title>
 <style>
-
 .home_a {
 	display: block;
 	text-decoration: none;
 	color: #01CD88;
 	border: 1px solid #01CD88;
 }
+
 body {
 	width: 1200px;
 	height: 1200px;
 }
 
- h1 {
- 	color: #A4A4A4;
- 	font-weight: 800;
- 	font-size: 30pt;
- }
+h1 {
+	color: #A4A4A4;
+	font-weight: 800;
+	font-size: 30pt;
+}
+
 #enroll_form {
 	text-align: center;
 	font-size: 15pt;
@@ -38,6 +39,7 @@ body {
 	display: inline-block;
 	margin: 0;
 }
+
 #enroll_form #text {
 	display: flex;
 	color: #D96969;
@@ -45,10 +47,9 @@ body {
 
 .join_e {
 	border-bottom: 2px solid #D1D1D1;
-	height: 110px;
+	height: 100px;
 	width: 600px;
 	display: flex;
-
 }
 
 .join_item {
@@ -59,17 +60,17 @@ body {
 	border-right: 2px solid #D1D1D1;
 }
 
-.join_item2{
+.join_item2 {
+	height: 100px;
 	display: flex;
 	padding: 30px;
-}
-.join_item2 > * {
-	
-	height: 30px;
-	vertical-align: middle;
-	
+	display: flex;
 }
 
+.join_item2>* {
+	height: 30px;
+	vertical-align: middle;
+}
 
 #title {
 	display: inline-block;
@@ -82,32 +83,80 @@ body {
 }
 
 .api_join_item2 {
-	padding: 10px 30px;
+	padding: 5px 30px;
 }
 
+/* .api_join_item2 > div {
+	height: 50px;
+}
+ */
 .button_box {
 	padding: 0 20px;
 	width: 500px;
 	display: flex;
-	justify-content:space-between;
+	justify-content: space-between;
 	font-size: x-large;
-	margin-bottom: 20px;
 	position: relative;
 	left: 300px;
-
 }
 
 .button_box_form {
 	display: flex;
 }
-
-
-
 </style>
 <script
 	src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 
 <script type="text/javascript">
+function readImage(input) {
+	const reader = new FileReader();
+	
+	if(input.files && input.files[0]) {
+	
+	reader.onload = e => {
+        const previewImage = document.getElementById("showprofile");
+        previewImage.src = e.target.result;
+    }
+	
+	//이미지 읽기
+	reader.readAsDataURL(input.files[0]);
+	}
+
+}
+
+function changeImg(input) {
+	readImage(input);
+	
+}
+
+
+/* function previewImage(){	
+	var input = document.getElementById("profile").value;
+	
+	$("#showprofile").attr("src", "input");
+
+}
+
+function previewImage(FILE_ELEMENT, CALLBACK){ 	
+	const READER = new FileReader(); 	 	
+	READER.onload = function () { 		
+		CALLBACK(READER.result); 	
+	} 	 	
+	READER.readAsText(FILE_ELEMENT.files[0], "EUC-KR"); 
+}  */
+/* 
+function readURL(obj) {
+    let reader = new FileReader();
+    if(!obj.files.length) {
+        return;
+    }
+    reader.readAsDataURL(obj.files[0]);
+    reader.onload = function (e) {
+        let img = $('<img />');
+        $(img).attr('src', e.target.result);
+        $('#showprofile').append(img);
+    }
+} */
 
         function validate() {
             // 유효성 검사
@@ -234,7 +283,7 @@ body {
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/menubar.jsp" />
-	<c:import url="/WEB-INF/views/member/memberbar.jsp"/>
+	<c:import url="/WEB-INF/views/member/memberbar.jsp" />
 	<hr>
 	<div id="enroll_form">
 		<h1 align="center" id="title">회원정보 수정</h1>
@@ -245,88 +294,115 @@ body {
 					<input type="hidden" name="user_id" value="${ member.user_id }" />
 					<input type="reset" value="취소" onclick="history.go(-2)">
 				</form>
-				<button type="button" style="height: 23px; margin-left: 10px;" onclick="form_submit();">수정완료</button>
+				<button type="button" style="height: 23px; margin-left: 10px;"
+					onclick="form_submit();">수정완료</button>
 			</div>
 		</div>
 	</div>
-	<form action="mupdate.do" method="post" name="updateMember" id="mupdate_form">
-			<div id="join_box" align="center">
-				<div class="join_e">
-					<div class="join_item">ID</div>
-					<div class="join_item2">
-						<input type="hidden" name="user_id" id="user_id" value="${ member.user_id }"/>
-						<div>${ member.user_id }</div>
+	<form action="mupdate.do" method="post" name="updateMember"
+		id="mupdate_form" enctype="multipart/form-data">
+		<div id="join_box" align="center">
+			<div class="join_e">
+				<div class="join_item">Profile</div>
+				<div align="center" class="join_item2 profile"
+					style="margin: 0; padding: 0; display: flex;">
+					<div>
+						<img id="showprofile"
+							style="height: 90px; width: 110px; border-radius: 25px; border: 2px solid #D1D1D1;"
+							src="resources/profile_upfiles/${ member.profile_renamefile }"
+							alt="profile" />
 					</div>
-				</div>
-				<div class="join_e">
-					<div class="join_item">PW</div>
-					<div class="join_item2">
-						<input type="password" name="user_pw" id="user_pw" value="${ member.user_pw }" onfocus="this.value=''" required>
-					</div>
-				</div>
-				<div class="join_e">
-					<div class="join_item">PW CHECK</div>
-					<div class="join_item2">
-						<input type="password" id="user_pw2" required> &nbsp; &nbsp;
-						<input type="button" value="중복확인" onclick="return validate();">
-					</div>
-				</div>
-				<div class="join_e">
-					<div class="join_item">이름</div>
-					<div class="join_item2">
-						<div>${ member.user_name }</div>
-					</div>
-				</div>
-				<div class="join_e">
-					<div class="join_item">닉네임</div>
-					<div class="join_item2">
-						<div>${ member.user_nickname }</div>
-					</div>
-				</div>
-				<div class="join_e">
-					<div class="join_item">생년월일</div>
-					<div class="join_item2">
-						<div>${ member.birth }</div>
-					</div>
-				</div>
-				<div class="join_e">
-					<div class="join_item">성별</div>
-					<div class="join_item2">
-							<c:if test="${ member.gender eq 'M' }">
-								<div>남자</div>
-							</c:if>
-							<c:if test="${ member.gender eq 'F' }">
-								<div>여자</div>
-							</c:if>				
-					</div>
-				</div>
-				<div class="join_e">
-					<div class="join_item">전화번호</div>
-					<div class="auto_number api">
-						<div class="join_item2 api_join_item2">
-							<input type="tel" name="phone" id="phone" value="${ member.phone }" onfocus="this.value=''" required> &nbsp; &nbsp;
-							<input type="button" value="인증번호받기" onclick="return phoneAuth();">
-						</div>
-						<div class="join_item2 api_join_item2" id="authBox">
-							<input type="tel" id="authNumber" value="인증번호 입력하세요." onfocus="this.value=''" required /> &nbsp; &nbsp;
-							<input type="button" value="인증번호확인" onclick="return authNumberChek();" />
-						</div>						
-					</div>
-				</div>
-				<div class="join_e">
-					<div class="join_item">이메일</div>
-					<div class="auto_number api">
-						<div class="join_item2 api_join_item2">
-							<input type="email" name="email" id="email" value="${ member.email }" onfocus="this.value=null" required> &nbsp; &nbsp;
-							<input type="button" value="인증메일전송" onclick="return emailAuth();">
-						</div>
-						<div class="join_item2 api_join_item2" id="authBox">
-							<input type="email" id="authEmail" value="이메일인증코드 입력하세요." onfocus="this.value=null" required /> &nbsp; &nbsp;
-							<input type="button" value="인증번호확인" onclick="return authEmailChek();" />
-						</div>						
+					<div>
+						<input style="width: 70px;" type="file" id="profile"
+							name="upProfile" onchange="changeImg(this);" />
 					</div>
 				</div>
 			</div>
-			</form>
+			<div class="join_e">
+				<div class="join_item">ID</div>
+				<div class="join_item2">
+					<input type="hidden" name="user_id" id="user_id"
+						value="${ member.user_id }" />
+					<div>${ member.user_id }</div>
+				</div>
+			</div>
+			<div class="join_e">
+				<div class="join_item">PW</div>
+				<div class="join_item2">
+					<input type="password" name="user_pw" id="user_pw"
+						onfocus="this.value=''" min="6" max="12" required>
+				</div>
+			</div>
+			<div class="join_e">
+				<div class="join_item">PW CHECK</div>
+				<div class="join_item2">
+					<input type="password" id="user_pw2" required> &nbsp;
+					&nbsp; <input type="button" value="중복확인"
+						onclick="return validate();">
+				</div>
+			</div>
+			<div class="join_e">
+				<div class="join_item">이름</div>
+				<div class="join_item2">
+					<div>${ member.user_name }</div>
+				</div>
+			</div>
+			<div class="join_e">
+				<div class="join_item">닉네임</div>
+				<div class="join_item2">
+					<div>${ member.user_nickname }</div>
+				</div>
+			</div>
+			<div class="join_e">
+				<div class="join_item">생년월일</div>
+				<div class="join_item2">
+					<div>${ member.birth }</div>
+				</div>
+			</div>
+			<div class="join_e">
+				<div class="join_item">성별</div>
+				<div class="join_item2">
+					<c:if test="${ member.gender eq 'M' }">
+						<div>남자</div>
+					</c:if>
+					<c:if test="${ member.gender eq 'F' }">
+						<div>여자</div>
+					</c:if>
+				</div>
+			</div>
+			<div class="join_e">
+				<div class="join_item">전화번호</div>
+				<div class="auto_number api">
+					<div class="api_join_item2">
+						<input type="tel" name="phone" id="phone"
+							value="${ member.phone }" onfocus="this.value=''" required>
+						&nbsp; &nbsp; <input type="button" value="인증번호받기"
+							onclick="return phoneAuth();">
+					</div>
+					<div class="api_join_item2" id="authBox">
+						<input type="tel" id="authNumber" value="인증번호 입력하세요."
+							onfocus="this.value=''" required /> &nbsp; &nbsp; <input
+							type="button" value="인증번호확인" onclick="return authNumberChek();" />
+					</div>
+				</div>
+			</div>
+			<div class="join_e">
+				<div class="join_item">이메일</div>
+				<div class="auto_number api">
+					<div class="api_join_item2">
+						<input type="email" name="email" id="email"
+							value="${ member.email }" onfocus="this.value=null" required>
+						&nbsp; &nbsp; <input type="button" value="인증메일전송"
+							onclick="return emailAuth();">
+					</div>
+					<div class="api_join_item2" id="authBox">
+						<input type="email" id="authEmail" value="이메일인증코드 입력하세요."
+							onfocus="this.value=null" required />&nbsp; &nbsp; <input
+							type="button" value="인증번호확인" onclick="return authEmailChek();" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 </body>
 </html>

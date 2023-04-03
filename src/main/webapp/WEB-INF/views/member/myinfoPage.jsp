@@ -38,10 +38,6 @@ body {
 	display: inline-block;
 	margin: 0;
 }
-#enroll_form #text {
-	display: flex;
-	color: #D96969;
-}
 
 .join_e {
 	border-bottom: 2px solid #D1D1D1;
@@ -87,8 +83,6 @@ body {
 .button_box {
 	padding: 0 20px;
 	width: 500px;
-	display: flex;
-	justify-content:space-between;
 	font-size: x-large;
 	margin-bottom: 20px;
 	position: relative;
@@ -98,11 +92,14 @@ body {
 
 .button_box_form {
 	display: flex;
-	justify-content: center;
-	align-content: center;
 }
 
 
+.basic {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
 
 </style>
 <script
@@ -122,7 +119,15 @@ function form_submit() {
 	<div id="enroll_form">
 		<h1 align="center" id="title">회원정보 보기</h1>
 		<div class="button_box">
-			<div id="text">기본정보</div>
+			<div id="join_box" align="center" style="height: 200px; width: 200px">
+				<div class="join_e" style="height: 200px; width: 200px">
+					<img
+						style="height: 200px; width: 200px; border-radius: 25px; border: 2px solid #D1D1D1;"
+						src="resources/profile_upfiles/${ member.profile_renamefile }" alt="profile" />
+				</div>
+			</div>
+			<div class="basic">
+			<div id="text" style="color: #D96969; ">기본정보</div>
 			<div class="button_box_form">
 			<form action="deletePage.do" method="post" name="deleteMember">
 				<input type="hidden" name="user_id" value="${ member.user_id }" />
@@ -130,11 +135,12 @@ function form_submit() {
 			</form>
 			<button type="button" style="height: 23px; margin-left: 10px;" onclick="form_submit();">수정하기</button>
 			</div>
+			</div>
 		</div>
 	</div>
 	<form action="pwCheckPopUp.do" method="post" name="updateMember" id="pwCheckPopUp_form">
 			<div id="join_box" align="center">
-				<div class="join_e">
+			<div class="join_e">
 					<div class="join_item">ID</div>
 					<div class="join_item2">
 						<input type="hidden" name="user_id" id="user_id" value="${ member.user_id }"/>
@@ -144,7 +150,7 @@ function form_submit() {
 				<div class="join_e">
 					<div class="join_item">PW</div>
 					<div class="join_item2">
-						<input type="password" name="user_pw" id="user_pw" value="${ member.user_pw }" readonly="readonly">
+						<input type="password" name="user_pw" id="user_pw" readonly="readonly">
 					</div>
 				</div>
 				<div class="join_e">

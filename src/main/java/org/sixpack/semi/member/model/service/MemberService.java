@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.sixpack.semi.member.model.vo.Member;
 
 public interface MemberService {
-	Member selectLogin(Member member);
 	Member selectFindIdPhone(Member member);
 	Member selectFindIdEmail(Member member);
 	Member selectFindPwId(Member member);
