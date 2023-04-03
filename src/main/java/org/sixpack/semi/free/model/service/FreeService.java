@@ -6,6 +6,7 @@ import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.free.model.vo.Free;
+import org.sixpack.semi.free.model.vo.LikeFree;
 
 public interface FreeService {
 	ArrayList<Free> selectTop5();
@@ -29,4 +30,10 @@ public interface FreeService {
 	int insertReple(Free free);
 	int updateReple(Free free);
 	int insertReple2(Free free);
+	int insertLikeFree(Free free);
+	int updatePFreeLikeNo(Free free);
+	int deleteLikeFree(Free free);
+	int updateMFreeLikeNo(Free free);
+	LikeFree selectLikeFree(Free free);
+	int updateMBoardCount(Free free);
 }

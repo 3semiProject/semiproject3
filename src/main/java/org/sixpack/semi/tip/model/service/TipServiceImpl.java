@@ -6,6 +6,7 @@ import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.tip.model.dao.TipDao;
+import org.sixpack.semi.tip.model.vo.LikeTip;
 import org.sixpack.semi.tip.model.vo.Tip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,5 +83,68 @@ public class TipServiceImpl implements TipService {
 	@Override
 	public int selectSearchListCount(CountSearch countSearch) {
 		return tipDao.selectSearchListCount(countSearch);
+	}
+	
+	@Override
+	public int deleteTipBoard(int tip_no) {
+		return tipDao.deleteTipBoard(tip_no);
+	}
+	
+	@Override
+	public ArrayList<Tip> selectRepleList(int tip_no) {
+		return tipDao.selectRepleList(tip_no);
+	}
+	
+	@Override
+	public int deleteReple(Tip tip) {
+		return tipDao.deleteReple(tip);
+	}
+
+	@Override
+	public int insertReple(Tip tip) {
+		return tipDao.insertReple(tip);
+	}
+
+	@Override
+	public int updateReple(Tip tip) {
+		return tipDao.updateReple(tip);
+	}
+
+	@Override
+	public int insertReple2(Tip tip) {
+		return tipDao.insertReple2(tip);
+	}
+
+	@Override
+	public int insertLikeTip(Tip tip) {
+		return tipDao.insertLikeTip(tip);
+	}
+
+	@Override
+	public int updatePTipLikeNo(Tip tip) {
+		return tipDao.updatePTipLikeNo(tip);
+		
+	}
+
+	@Override
+	public int deleteLikeTip(Tip tip) {
+		return tipDao.deleteLikeTip(tip);
+		
+	}
+
+	@Override
+	public int updateMTipLikeNo(Tip tip) {
+		return tipDao.updateMTipLikeNo(tip);
+		
+	}
+
+	@Override
+	public LikeTip selectLikeTip(Tip tip) {
+		return tipDao.selectLikeTip(tip);
+	}
+
+	@Override
+	public int updateMBoardCount(Tip tip) {
+		return tipDao.updateMBoardCount(tip);
 	}
 }

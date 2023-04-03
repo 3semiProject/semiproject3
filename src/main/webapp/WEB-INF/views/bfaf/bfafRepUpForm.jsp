@@ -41,49 +41,28 @@ body{
 	<c:import url="/WEB-INF/views/common/commubar.jsp" />
 	<hr>
 	<div>
-		<p id="title">게시글 수정</p>
+		<p id="title">댓글 수정</p>
 	</div>
 	<div>
-		<form action="freeupdate.do" method="post"
+		<form action="bfafrepupdate.do" method="post"
 			enctype="multipart/form-data" name="boardform">
-			<input type="hidden" name="free_no" value="${ free.free_no }">
+			<input type="hidden" name="bfaf_no" value="${ bfaf.bfaf_no }">
+			<input type="hidden" name="bfaf_ref" value="${ bfaf.bfaf_ref }">
+			<input type="hidden" name="bfaf_name" value="${ bfaf.bfaf_name }">
 			<table width="100%" border="1px solid" cellpadding="0"
 				cellspacing="0">
-				<tr>
-					<th>게시판 종류</th>
-					<td align="center">FREE</td>
-				</tr>
 				<tr height="40">
 					<th>작성자</th>
 					<td><input name="user_id"
 						value="${ sessionScope.loginMember.user_id }" readonly /></td>
 				</tr>
 				<tr height="40">
-					<th>제목</th>
-					<td><input name="free_name" type="text" value="${ free.free_name }" style="width: 90%;" /></td>
-				</tr>
-				<tr>
 					<th>내용</th>
-					<td><textarea name="free_value" style="width: 90%; height: 200px;">
-					${ free.free_value }
-					</textarea>
-					</td>
-				</tr>
-				<tr height="40">
-					<th>FILE</th>
-					<td>
-					<c:if test="${ !empty free.originfile_free }">
-					${ free.originfile_free } &nbsp; 
-					<input type="checkbox" name="delflag" value="yes"> 파일삭제
-					<br>
-					</c:if>
-					새로 첨부 : <input type="file" name="upfile">
+					<td align="left"><textarea name="bfaf_value" style="width: 90%;">${ bfaf.bfaf_value }</textarea>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" align="right">
-						<input type="submit" value="수정하기"> &nbsp; 
-						<input type="reset" value="수정취소"> &nbsp; 
+					<td colspan="2" align="right"><input type="submit" value="등록">
 						<input type="button" value="뒤로가기"
 						onclick="javascript:history.go(-1)"></td>
 				</tr>
@@ -91,9 +70,6 @@ body{
 		</form>
 	</div>
 <hr>
-<script type="text/javascript">
-CKEDITOR.replace("free_value", { height: 100 });
-</script>
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

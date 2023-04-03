@@ -6,6 +6,7 @@ import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
+import org.sixpack.semi.eyebody.model.vo.LikeEyebody;
 
 public interface EyebodyService {
 	int selectListCount();	//총 게시글 갯수 조회용 (페이지 수 계산용)
@@ -22,4 +23,16 @@ public interface EyebodyService {
 	ArrayList<Eyebody> selectSearchWriter(Searchs searchs);
 	ArrayList<Eyebody> selectSearchValue(Searchs searchs);
 	int selectSearchListCount(CountSearch countSearch);
+	ArrayList<Eyebody> selectRepleList(int eyebody_no);
+	int deleteEyebodyBoard(int eyebody_no);
+	int deleteReple(Eyebody eyebody);
+	int insertReple(Eyebody eyebody);
+	int updateReple(Eyebody eyebody);
+	int insertReple2(Eyebody eyebody);
+	int insertLikeEyebody(Eyebody eyebody);
+	int updatePEyebodyLikeNo(Eyebody eyebody);
+	int deleteLikeEyebody(Eyebody eyebody);
+	int updateMEyebodyLikeNo(Eyebody eyebody);
+	LikeEyebody selectLikeEyebody(Eyebody eyebody);
+	int updateMBoardCount(Eyebody eyebody);
 }

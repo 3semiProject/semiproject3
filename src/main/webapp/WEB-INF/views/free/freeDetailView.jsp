@@ -42,7 +42,7 @@ body{
 	<c:import url="/WEB-INF/views/common/commubar.jsp" />
 	<hr>
 	<div>
-		<p id="title">게시글 상세보기</p>
+		<p id="title">FREE 게시글 상세보기</p>
 	</div>
 	<div>
 			<table width="100%" border="1px solid" cellpadding="0"
@@ -107,12 +107,20 @@ body{
 				</tr>
 				<tr height="100">
 					<th>게시글 추천</th>
-					<td>
-					&nbsp; &nbsp; 
-					${free.free_like_no} &nbsp; &nbsp;
+					<td><!-- likeFree -->
+					<c:if test="${!empty likeFree.user_id and likeFree.user_id eq sessionScope.loginMember.user_id}">
+					&nbsp; <img src="${ pageContext.servletContext.contextPath }/resources/images/fullheart.png" width="30" height="30" alt="fullheart"> &nbsp; 
+					좋아요 ${free.free_like_no}개 &nbsp; &nbsp;
+					</c:if>
+					<c:if test="${empty likeFree.user_id or likeFree.user_id ne sessionScope.loginMember.user_id}">
+					&nbsp; <img src="${ pageContext.servletContext.contextPath }/resources/images/heart.png" width="30" height="30" alt="heart"> &nbsp; 
+					좋아요 ${free.free_like_no}개 &nbsp; &nbsp;
+					</c:if>
 					<c:if test="${ !empty sessionScope.loginMember }">
 					<c:url var="fflikein" value="/freelike.do">
+					<c:param name="user_id" value="${sessionScope.loginMember.user_id }" />
 					<c:param name="free_no" value="${free.free_no }" />
+					<c:param name="free_like_no" value="${free.free_like_no }" />
 					</c:url>
 					<a href="${ fflikein }">[추천하기]</a>
 					</c:if>
@@ -129,7 +137,7 @@ body{
 					</c:if>
 					</td>
 				</tr>
-				<c:forEach items="${ list }" var="f" varStatus="status">
+				<c:forEach items="${ list }" var="f">
 				<tr height="35">
 					<c:if test="${ f.free_reply_lev eq 2 }">
 					<th>${f.user_id}</th>

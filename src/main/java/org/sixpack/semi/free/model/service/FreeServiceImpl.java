@@ -7,6 +7,7 @@ import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.free.model.dao.FreeDao;
 import org.sixpack.semi.free.model.vo.Free;
+import org.sixpack.semi.free.model.vo.LikeFree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -119,6 +120,39 @@ public class FreeServiceImpl implements FreeService{
 	@Override
 	public int insertReple2(Free free) {
 		return freeDao.insertReple2(free);
+	}
+
+	@Override
+	public int insertLikeFree(Free free) {
+		return freeDao.insertLikeFree(free);
+	}
+
+	@Override
+	public int updatePFreeLikeNo(Free free) {
+		return freeDao.updatePFreeLikeNo(free);
+		
+	}
+
+	@Override
+	public int deleteLikeFree(Free free) {
+		return freeDao.deleteLikeFree(free);
+		
+	}
+
+	@Override
+	public int updateMFreeLikeNo(Free free) {
+		return freeDao.updateMFreeLikeNo(free);
+		
+	}
+
+	@Override
+	public LikeFree selectLikeFree(Free free) {
+		return freeDao.selectLikeFree(free);
+	}
+
+	@Override
+	public int updateMBoardCount(Free free) {
+		return freeDao.updateMBoardCount(free);
 	}
 	
 }

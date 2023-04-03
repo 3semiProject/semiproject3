@@ -7,6 +7,7 @@ import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.eyebody.model.dao.EyebodyDao;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
+import org.sixpack.semi.eyebody.model.vo.LikeEyebody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +65,6 @@ public class EyebodyServiceImpl implements EyebodyService {
 	public int deleteBoard(Eyebody eyebody) {
 		return eyebodyDao.deleteBoard(eyebody);
 	}
-
 	@Override
 	public ArrayList<Eyebody> selectSearchTitle(Searchs searchs) {
 		return eyebodyDao.selectSearchTitle(searchs);
@@ -83,5 +83,68 @@ public class EyebodyServiceImpl implements EyebodyService {
 	@Override
 	public int selectSearchListCount(CountSearch countSearch) {
 		return eyebodyDao.selectSearchListCount(countSearch);
+	}
+	
+	@Override
+	public int deleteEyebodyBoard(int eyebody_no) {
+		return eyebodyDao.deleteEyebodyBoard(eyebody_no);
+	}
+	
+	@Override
+	public ArrayList<Eyebody> selectRepleList(int eyebody_no) {
+		return eyebodyDao.selectRepleList(eyebody_no);
+	}
+	
+	@Override
+	public int deleteReple(Eyebody eyebody) {
+		return eyebodyDao.deleteReple(eyebody);
+	}
+
+	@Override
+	public int insertReple(Eyebody eyebody) {
+		return eyebodyDao.insertReple(eyebody);
+	}
+
+	@Override
+	public int updateReple(Eyebody eyebody) {
+		return eyebodyDao.updateReple(eyebody);
+	}
+
+	@Override
+	public int insertReple2(Eyebody eyebody) {
+		return eyebodyDao.insertReple2(eyebody);
+	}
+
+	@Override
+	public int insertLikeEyebody(Eyebody eyebody) {
+		return eyebodyDao.insertLikeEyebody(eyebody);
+	}
+
+	@Override
+	public int updatePEyebodyLikeNo(Eyebody eyebody) {
+		return eyebodyDao.updatePEyebodyLikeNo(eyebody);
+		
+	}
+
+	@Override
+	public int deleteLikeEyebody(Eyebody eyebody) {
+		return eyebodyDao.deleteLikeEyebody(eyebody);
+		
+	}
+
+	@Override
+	public int updateMEyebodyLikeNo(Eyebody eyebody) {
+		return eyebodyDao.updateMEyebodyLikeNo(eyebody);
+		
+	}
+
+	@Override
+	public LikeEyebody selectLikeEyebody(Eyebody eyebody) {
+		return eyebodyDao.selectLikeEyebody(eyebody);
+	}
+
+	@Override
+	public int updateMBoardCount(Eyebody eyebody) {
+		return eyebodyDao.updateMBoardCount(eyebody);
 	}
 }
