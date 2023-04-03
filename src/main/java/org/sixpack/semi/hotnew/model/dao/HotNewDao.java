@@ -106,4 +106,20 @@ public class HotNewDao {
 	public int selectSearchListCount(CountSearch countSearch) {
 		return session.selectOne("hotnewMapper.selectSearchListCount", countSearch);
 	}
+
+	public HotNew selectFree(HotNew hotnew) {
+		return session.selectOne("hotnewMapper.selectFree", hotnew);
+	}
+
+	public HotNew selectTip(HotNew hotnew) {
+		return session.selectOne("hotnewMapper.selectTip", hotnew);
+	}
+
+	public HotNew selectEyebody(HotNew hotnew) {
+		return session.selectOne("hotnewMapper.selectEyebody", hotnew);
+	}
+
+	public HotNew selectBfaf(HotNew hotnew) {
+		return session.selectOne("hotnewMapper.selectBfaf", hotnew);
+	}
 }

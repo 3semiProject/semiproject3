@@ -48,7 +48,7 @@ body{
 			<table width="100%" border="1px solid" cellpadding="0"
 				cellspacing="0">
 				<tr>
-				<c:if test="${ requestScope.free.user_id eq sessionScope.loginMember.user_id }">
+				<c:if test="${ requestScope.free.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 				<th>게시물 관리</th><td align="center">
 				<c:url var="ffup" value="/freeupmove.do">
 					<c:param name="free_no" value="${ free.free_no }" />
@@ -56,7 +56,7 @@ body{
 				<a href="${ ffup }">[글수정]</a> &nbsp; &nbsp;
 				</c:if>
 				
-				<c:if test="${ requestScope.free.user_id eq sessionScope.loginMember.user_id }">
+				<c:if test="${ requestScope.free.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 				<c:url var="ffde" value="/freedelete.do">
 					<c:param name="free_no" value="${ free.free_no }" />
 				</c:url>
@@ -92,7 +92,7 @@ body{
 					<th>FILE</th>
 					<td>
 					<!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 -->
-					<c:if test="${ !empty free.originfile_free }">
+					<c:if test="${ !empty free.originfile_free and !empty sessionScope.loginMember}">
 						<c:url var="ffd" value="/freedown.do">
 							<c:param name="ofile" value="${ free.originfile_free }" />
 							<c:param name="rfile" value="${ free.renamefile_free }" />
@@ -129,7 +129,7 @@ body{
 				<tr height="50">
 					<th>댓글 작성자</th>
 					<td align="center" >댓글내용 &nbsp; &nbsp; 
-					<c:if test="${ !empty sessionScope.loginMember.user_id }">
+					<c:if test="${ !empty sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 					<c:url var="ffrein" value="/movefreerepin.do">
 						<c:param name="free_no" value="${free.free_no }" />
 					</c:url>
@@ -142,13 +142,13 @@ body{
 					<c:if test="${ f.free_reply_lev eq 2 }">
 					<th>${f.user_id}</th>
 					<td>&nbsp; &nbsp; ${f.free_value} &nbsp;
-					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id }">
+					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 					<c:url var="ffreup" value="/movefreerepup.do">
 						<c:param name="free_no" value="${f.free_no }" />
 					</c:url>
 					<a href="${ ffreup }">[댓글 수정하기]</a> &nbsp;
 					</c:if>
-					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id }">
+					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 					<c:url var="ffrede" value="/freerepdelete.do">
 						<c:param name="free_no" value="${ f.free_no }" />
 						<c:param name="free_ref" value="${ f.free_ref }" />
@@ -158,24 +158,26 @@ body{
 					</c:url>
 					<a href="${ ffrede }">[댓글 삭제하기]</a> &nbsp;
 					</c:if>
+					<c:if test="${!empty sessionScope.loginMember}">
 					<c:url var="ffrereup" value="/movefreerepin2.do">
 						<c:param name="free_ref" value="${f.free_ref }" />
 						<c:param name="free_reply_ref" value="${f.free_reply_ref }" />
 						<c:param name="free_reply_lev" value="${f.free_reply_lev }" />
 					</c:url>
 					<a href="${ ffrereup }">[대댓글등록]</a>
+					</c:if>
 					</td>
 					</c:if>
 					<c:if test="${ f.free_reply_lev eq 3 }">
 					<th>${f.user_id}</th>
 					<td>&nbsp; &nbsp; &nbsp; &nbsp; ▶ ${f.free_value}
-					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id }">
+					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 					<c:url var="ffreup2" value="/movefreerepup.do">
 						<c:param name="free_no" value="${f.free_no }" />
 					</c:url>
 					<a href="${ ffreup2 }">[댓글 수정하기]</a> &nbsp;
 					</c:if>
-					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id }">
+					<c:if test="${ f.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 					<c:url var="ffrede2" value="/freerepdelete.do">
 						<c:param name="free_no" value="${ f.free_no }" />
 						<c:param name="free_ref" value="${ f.free_ref }" />
@@ -189,6 +191,16 @@ body{
 					</c:if>
 				</tr>
 				</c:forEach>
+				<tr>
+					<td colspan="2" align="right">
+						<c:if test="${empty sessionScope.loginMember}">
+						* 메인페이지의 TOP5 게시글 상세보기 이외의 모든 기능을 이용하시려면 로그인해주세요 *
+						</c:if>
+						<input type="button" value="메인페이지"
+						onclick="location.href='main.do'">
+						<input type="button" value="뒤로가기"
+						onclick="javascript:history.go(-1)"></td>
+				</tr>
 			</table>
 	</div>
 	<br>

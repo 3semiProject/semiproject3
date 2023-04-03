@@ -29,4 +29,8 @@ public interface HotNewService {
 	ArrayList<HotNew> hotSelectSearchValue(Searchs searchs);
 	ArrayList<HotNew> hotnewSelectTop5();
 	int selectSearchListCount(CountSearch countSearch);
+	HotNew selectFree(HotNew hotnew);
+	HotNew selectTip(HotNew hotnew);
+	HotNew selectEyebody(HotNew hotnew);
+	HotNew selectBfaf(HotNew hotnew);
 }
