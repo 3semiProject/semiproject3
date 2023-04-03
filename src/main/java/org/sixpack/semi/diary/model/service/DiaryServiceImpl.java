@@ -1,10 +1,13 @@
 package org.sixpack.semi.diary.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.sixpack.semi.act.model.vo.Move;
 import org.sixpack.semi.diary.model.dao.DiaryDao;
 import org.sixpack.semi.diary.model.vo.DateData;
 import org.sixpack.semi.diary.model.vo.Diary;
+import org.sixpack.semi.eat.model.vo.Food;
 import org.sixpack.semi.goal.model.vo.Goal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,4 +58,14 @@ public class DiaryServiceImpl implements DiaryService {
 		return null;
 	}
 
+
+	@Override
+	public int insertFoodData(List<Food> datalist) {
+		return diaryDao.insertFoodData(datalist);
+	}
+
+	@Override
+	public int insertMoveData(List<Move> datalist) {
+		return diaryDao.insertMoveData(datalist);
+	}
 }

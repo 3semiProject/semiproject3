@@ -1,11 +1,13 @@
 package org.sixpack.semi.diary.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.sixpack.semi.act.model.vo.Move;
 import org.sixpack.semi.diary.model.vo.DateData;
 import org.sixpack.semi.diary.model.vo.Diary;
+import org.sixpack.semi.eat.model.vo.Food;
 import org.sixpack.semi.goal.model.vo.Goal;
-import org.springframework.stereotype.Service;
 
 public interface DiaryService {
 	//goalBar 출력용
@@ -35,4 +37,8 @@ public interface DiaryService {
 
 	// 다이어리 삭제
 	public int deleteDiary(Diary diary);
+
+	int insertFoodData(List<Food> datalist);
+
+	int insertMoveData(List<Move> datalist);
 }

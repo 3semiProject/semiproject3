@@ -63,48 +63,6 @@
     <script type="text/javascript"
             src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 
-    <script type="text/javascript">
-
-        var actStats;
-
-        $(function () {
-
-            // if (sessionStorage.getItem('loginMember') != null) {
-                $.ajax({
-                    url: "diary_ActStats.do",
-                    data:
-                        {statsRange: "3"},
-                    dataType: "json",
-                    success: function (data) {
-                        var jsonStr = JSON.stringify(data);
-                        console.log("통계 json : " + jsonStr);
-
-                        actStats = JSON.parse(jsonStr);
-                        console.log("parse json : " + actStats);
-
-
-                        $('#actCount').text(actStats.tot_act_val + " 회");
-                        $('#actTime').text(actStats.tot_act_time + " 분");
-                        $('#maxDay').text(actStats.maxDay_actName);
-                        $('#maxKcal').text(actStats.maxKcal_actName);
-                        $('#maxTime').text(actStats.maxTime_actName);
-                        $('#avgTime').text(actStats.avg_act_one + " 분");
-                        $('#weakTime').text(actStats.tot_weak_time + " 분");
-                        $('#middleTime').text(actStats.tot_middle_time + " 분");
-                        $('#strongTime').text(actStats.tot_strong_time + " 분");
-
-                    }, //success
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log("diary_ActStats.do error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
-                    }
-                }); // .ajax
-            <%-- else {--%>
-            <%--    location.href="${pageContext.servletContext.contextPath}/loginPage.do";--%>
-            <%--}--%>
-
-        }); // document.ready
-    </script>
-
 
 </head>
 <body style="width: 1280px">
@@ -122,32 +80,6 @@
     <canvas id="actChart"></canvas>
 </div>
 
-
-<script>
-    const ctx = document.getElementById('actChart');
-
-    new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: "운동 일주일 통계",
-                datasets: [{
-                    type: 'bar',
-                    label: 'Dataset 1',
-                    backgroundColor: "pink",
-                    borderColor: "red",
-                    data: [1, 2, 3, 4, 5, 6, 7]
-                }, {
-                    type: 'line',
-                    label: 'Dataset 3',
-                    backgroundColor: "green",
-                    borderColor: "black",
-                    fill: false,
-                    data: [1, 9, 2, 8, 3, 4, 6]
-                }]
-            },
-        }
-    );
-</script>
 
 <hr>
 
@@ -211,23 +143,6 @@ My 다이어리 분석
             <canvas id="actStatsChart"></canvas>
         </div>
 
-        <script>
-            setTimeout(function () {
-                const ctxStats = document.getElementById('actStatsChart');
-                new Chart(ctxStats, {
-                        type: 'pie',
-                        data: {
-                            labels: ['저강도', '중강도', '고강도'],
-                            datasets: [{
-                                label: '총 운동시간 (분)',
-                                backgroundColor: ['rgba(150,255,150,1)', 'rgba(255,255,50,1)', 'rgba(255,100,50,1)'],
-                                data: [Number(actStats.tot_weak_time), Number(actStats.tot_middle_time), Number(actStats.tot_strong_time)]
-                            }]
-                        }, option: {}
-                    }
-                );
-            }, 500)
-        </script>
 
         <div style="display: flex;align-items: center;">
             <table class="intensity">
@@ -245,8 +160,6 @@ My 다이어리 분석
                 </tr>
             </table>
         </div>
-
-
     </div>
 
 
@@ -255,5 +168,115 @@ My 다이어리 분석
 <c:import url="/WEB-INF/views/diary/common/actRec.jsp"/>
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
+
+
+<script type="text/javascript">
+    var actStats;
+    var barLineChart;
+    var pieChart;
+    const ctxStats = document.getElementById('actStatsChart');
+    const ctx = document.getElementById('actChart');
+
+    function actResult(range) {
+        $.ajax({
+            url: "diary_ActStats.do",
+            data:
+                {statsRange: range},
+            dataType: "json",
+            success: function (data) {
+                var jsonStr = JSON.stringify(data);
+                console.log("통계 json : " + jsonStr);
+
+                actStats = JSON.parse(jsonStr);
+                console.log("parse json : " + actStats);
+
+
+                $('#actCount').text(actStats.tot_act_val + " 회");
+                $('#actTime').text(actStats.tot_act_time + " 분");
+                $('#maxDay').text(actStats.maxDay_actName);
+                $('#maxKcal').text(actStats.maxKcal_actName);
+                $('#maxTime').text(actStats.maxTime_actName);
+                $('#avgTime').text(actStats.avg_act_one + " 분");
+                $('#weakTime').text(actStats.tot_weak_time + " 분");
+                $('#middleTime').text(actStats.tot_middle_time + " 분");
+                $('#strongTime').text(actStats.tot_strong_time + " 분");
+
+
+                if (barLineChart !== undefined) {
+                    barLineChart.destroy();
+                    pieChart.destroy();
+                }
+
+
+                barLineChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["1", "2", "3", "4", "5", "6", "7"],
+                        datasets: [{
+                            type: 'bar',
+                            label: '운동 시간',
+                            backgroundColor: "pink",
+                            borderColor: "red",
+                            yAxisID: 'y-axis-left',
+                            data: [420, 2, 3, 4, 5, 6, 7]
+
+                        }, {
+                            type: 'line',
+                            label: '소비 칼로리',
+                            backgroundColor: "green",
+                            borderColor: "black",
+                            yAxisID: 'y-axis-right',
+                            fill: false,
+                            data: [2000, 2700, 2350, 1700, 2300, 1400, 1900]
+                        }]
+                    },
+                    option: {
+                        scale: {
+                            y: {
+                                id: 'y-axis-right',
+                                position: 'right'
+                            }
+                        }
+                    }
+                });
+
+
+                pieChart = new Chart(ctxStats, {
+                    type: 'pie',
+                    data: {
+                        labels: ['저강도', '중강도', '고강도'],
+                        datasets: [{
+                            label: '총 운동시간 (분)',
+                            backgroundColor: ['rgba(150,255,150,1)', 'rgba(255,255,50,1)', 'rgba(255,100,50,1)'],
+                            data: [Number(actStats.tot_weak_time), Number(actStats.tot_middle_time), Number(actStats.tot_strong_time)]
+                        }]
+                    }, option: {}
+                });
+
+
+            }, //success
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("diary_ActStats.do error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
+            }
+        })
+        ; // .ajax
+    }
+
+
+    $(function () {
+
+        actResult(1);
+
+        // if (sessionStorage.getItem('loginMember') != null) {
+        $('input[type="radio"]').change(function () {
+
+            actResult(this.value);
+
+        }) //onchange
+
+    });// document.ready
+
+</script>
+
 </body>
 </html>
