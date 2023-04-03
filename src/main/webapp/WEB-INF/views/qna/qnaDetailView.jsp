@@ -65,7 +65,7 @@ body {
 				</c:if>
 
 				<c:if
-					test="${ requestScope.qna.user_id eq sessionScope.loginMember.user_id }">
+					test="${ requestScope.qna.user_id eq sessionScope.loginMember.user_id || loginMember.admin_ck eq 'Y' }">
 					<c:url var="qqde" value="/qdel.do">
 						<c:param name="qna_no" value="${ qna.qna_no }" />
 					</c:url>

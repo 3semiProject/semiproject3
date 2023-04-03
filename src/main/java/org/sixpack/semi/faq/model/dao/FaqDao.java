@@ -19,22 +19,23 @@ public class FaqDao {
 		return (ArrayList<Faq>)list;
 	}
 
-	public int writeFaq(Faq faq) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertFaq(Faq faq) {
+		return session.insert("faqMapper.insertFaq", faq);
 	}
 
 	public int updateFaq(Faq faq) {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.update("faqMapper.updateFaq", faq);
 	}
 
 	public int deleteFaq(int faq_no) {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.delete("faqMapper.deleteFaq", faq_no);
 	}
 
 	public int selectListCount() {
 		return session.selectOne("faqMapper.selectListCount");
+	}
+
+	public Faq selectFaq(int faq_no) {
+		return session.selectOne("faqMapper.selectFaq", faq_no);
 	}
 }

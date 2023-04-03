@@ -54,17 +54,19 @@ $(function(){
 				font-size:14pt;
 				}
         .clearfix:after{content: "";display: block;clear: both;}
-        h1{text-align: center;padding: 20px 0;}
         .f_question1>ul>li,.f_answer1>ul>li{float: left;}
-        .fnq{width: 70%;line-height:300%;margin:left;}
+        .fnq{width: 1000px;line-height:50px;margin:left;}
         .f_question1{position: relative}
         .f_answer1{background: white;display: none;}
         .f_answer1.on{display: block;}
-        .f_question1>ul>li:nth-child(1){width: 7%;text-align: center;}
-        .f_answer1>ul>li:nth-child(1){width: 7%;text-align: center;}
-        .f_question1>ul>li:nth-child(2){width: 13%;text-align: center;}
-        .f_question1>ul>li:nth-child(3){width:75%; }
-        .f_question1>ul>li:nth-child(4){width:5%; }
+        .f_answer1>ul>li:nth-child(1){width: 10%;text-align: center;}
+        .f_answer1>ul>li:nth-child(2){width: 15%;text-align: center;}
+        .f_answer1>ul>li:nth-child(3){width: 61%; text-align: center;}
+        .f_answer1>ul>li:nth-child(4){width: 7%; text-align: center;}
+        .f_answer1>ul>li:nth-child(5){width: 7%; text-align: center;}
+        .f_question1>ul>li:nth-child(1){width: 10%;text-align: center;}
+        .f_question1>ul>li:nth-child(2){width: 15%;text-align: center;}
+        .f_question1>ul>li:nth-child(3){width: 61%; }
         .f_q_link{width: 100%;height: 100%;position:absolute;top: 0;left: 0;}
        #title{
 	text-decoration: none;
@@ -82,23 +84,7 @@ $(function(){
             border: 1px solid;
         
 	}
-    #ulTable > li:first-child > ul > li {
-        background-color:#01CD88;
-        font-weight:bold;
-        text-align:center;
-}
-    #ulTable > li > ul {
-        clear:both;
-        padding:0px auto;
-        position:relative;
-        min-width:40px;
-}
-    #ulTable > li > ul > li { 
-        float:left;
-        font-size:10pt;
-        border-bottom:1px solid silver;
-        vertical-align:baseline;
-}  
+
 
 </style>
 </head>
@@ -107,16 +93,25 @@ $(function(){
 	
 	<c:import url="/WEB-INF/views/common/csbar.jsp" />
 <hr>
-<div id="qnaWrapper">
+
+<div>
 
 		<ul>
         	<li id="title">FAQ</li>
         	<br>
+		<form action="fwform.do" method="post" align="left">
+			<div>
+				<c:if test="${ loginMember.admin_ck eq 'Y'}">
+					<input id="qri" type=submit value="글쓰기">
+				</c:if>
+			</div>
+		</form>
+		<br>
        <c:forEach items="${ list }" var="f">
 	    <ul class="fnq">
         <li class="f_question1">
             <ul class="clearfix" style="font-weight:bold; background-color:#01CD88;">
-                <li>F </li>
+                <li>F</li>
                 <li>${ f.faq_cat }</li>
                 <li>${ f.faq_title }</li>
                 <li><i class="fa fa-angle-double-up"></i></li>
@@ -126,8 +121,24 @@ $(function(){
         <li class="f_answer1">
             <ul class="clearfix">
                 <li>A</li>
+                <li>${ f.faq_cat }</li>
                 <li>${ f.faq_content }</li>
-                <li></li>
+                <li>
+				<c:if test="${ loginMember.admin_ck eq 'Y' }">
+					<c:url var="ffup" value="/faqupview.do">
+						<c:param name="faq_no" value="${ f.faq_no }" />
+					</c:url>
+					<a href="${ ffup }">[수정]</a> &nbsp; &nbsp;
+				</c:if>
+                </li>
+                <li>
+				<c:if test="${ loginMember.admin_ck eq 'Y' }">
+					<c:url var="ffde" value="/faqdel.do">
+						<c:param name="faq_no" value="${ f.faq_no }" />
+					</c:url>
+					<a href="${ ffde }">[삭제]</a> &nbsp; &nbsp;
+				</c:if>
+                </li>
             </ul>
         </li>
     </ul>

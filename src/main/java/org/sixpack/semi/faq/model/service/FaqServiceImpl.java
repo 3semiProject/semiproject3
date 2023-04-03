@@ -19,8 +19,8 @@ public class FaqServiceImpl implements FaqService{
 	}
 
 	@Override
-	public int writeFaq(Faq faq) {
-		return faqDao.writeFaq(faq);
+	public int insertFaq(Faq faq) {
+		return faqDao.insertFaq(faq);
 	}
 
 	@Override
@@ -36,5 +36,10 @@ public class FaqServiceImpl implements FaqService{
 	@Override
 	public int selectListCount() {
 		return faqDao.selectListCount();
+	}
+
+	@Override
+	public Faq selectFaq(int faq_no) {
+		return faqDao.selectFaq(faq_no);
 	}
 }

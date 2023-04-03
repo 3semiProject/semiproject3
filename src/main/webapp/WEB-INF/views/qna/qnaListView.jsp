@@ -162,7 +162,7 @@
 							</c:url>
 							<li class="center">  
 							<c:if test="${ q.qna_lev eq 2 }">&nbsp; ┗ Re : </c:if>
-                            <c:if test="${ q.qna_lev eq 3 }">&nbsp; &nbsp; &nbsp; &nbsp; Re : </c:if>
+                            <c:if test="${ q.qna_lev eq 3 }">&nbsp; &nbsp; ┗ Re : </c:if>
 					        <c:if test="${q.qna_private eq 'N'}" >
 
 					            <c:choose>
@@ -214,7 +214,7 @@
             <li id='liSearchOption'>
             <form action="qwform.do" method="post">
             	<div>
-            	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y'}">
+            	<c:if test="${ !empty sessionScope.loginMember }">
              		<input id="qri" type=submit value="글쓰기">
              	</c:if>
             	</div>
