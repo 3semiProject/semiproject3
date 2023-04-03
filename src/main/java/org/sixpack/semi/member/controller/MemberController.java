@@ -1,5 +1,6 @@
 package org.sixpack.semi.member.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.ict.first.common.FileNameChange;
 import org.sixpack.semi.member.model.service.MemberService;
 import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -35,13 +38,16 @@ public class MemberController {
 
 	// login 처리용 메소드
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
-	public String loginMethod(Member member, HttpSession session, Model model) {
-		logger.info("login.do : " + member);
+	public String loginMethod(@RequestParam("user_id") String user_id, @RequestParam("user_pw") String user_pw, Model model,
+			HttpSession session) {
+		logger.info("login.do : " + user_id);
+		
+		//로그인 요청한 회원의 아이디 존재유무 체크 및 변수에 저장
+		Member loginMember = memberService.selectMember(user_id);
 
-		Member loginMember = memberService.selectLogin(member);
-
-		if (loginMember != null) {
+		if (loginMember != null && this.bcryptPasswordEncder.matches(user_pw, loginMember.getUser_pw())) {
 			session.setAttribute("loginMember", loginMember);
+			logger.info(loginMember.getUser_id());
 			return "common/main";
 		} else {
 			model.addAttribute("message", "로그인 실패 : 아이디나 암호 확인하세요.<br>" + "또는 로그인 제한된 회원인지 관리자에게 문의하세요.");
@@ -109,18 +115,22 @@ public class MemberController {
 	
 	//회원정보 수정 페이지 요청 전, 비밀번호 체크 팝업창 내보내기용 메소드
 	@RequestMapping(value = "pwCheckPopUp.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView movePwCheckPopUp(@RequestParam("user_id") String user_id, ModelAndView mv) {
-		Member member = (Member)memberService.selectMember(user_id);
+	public ModelAndView movePwCheckPopUp(/*@RequestParam("user_id") String user_id,*/ ModelAndView mv, HttpSession session) {
+		Member member = ((Member)session.getAttribute("loginMember"));
+				//(Member)memberService.selectMember(user_id)
+				String user_id = member.getUser_id();
+		//Member member = (Member)memberService.selectMember(user_id);
 		
 		if (member != null) {
 			mv.addObject("user_id", user_id);
 			mv.addObject("user_nickname", member.getUser_nickname());
 			mv.setViewName("member/pwCheckPopUp");
-		} else {
-			mv.addObject("user_id", user_id);
-//			mv.setViewName("common/error");
-			mv.setViewName("redirect:myinfo.do?user_id=" + user_id);
 		}
+//		} else {
+//			mv.addObject("user_id", user_id);
+////			mv.setViewName("common/error");
+//			mv.setViewName("redirect:myinfo.do?user_id=" + user_id);
+//		}
 		
 		return mv;
 	}
@@ -325,7 +335,7 @@ public class MemberController {
 		Member member = memberService.selectMember(user_id);
 	
 		if (member != null) {
-			if(member.getUser_pw().equals(user_pw)) {
+			if(this.bcryptPasswordEncder.matches(user_pw, member.getUser_pw())) {
 				mv.addObject("member", member);
 				mv.setViewName("member/updatePage"); 
 				
@@ -360,9 +370,11 @@ public class MemberController {
 
 	// 마이페이지 클릭시 내 정보 보기 요청 처리용 메소드
 	@RequestMapping(value = "myinfo.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView showMypageMethod(/*@RequestParam("user_id") String user_id,*/ ModelAndView mv, HttpServletRequest request) {
+	public ModelAndView showMypageMethod(/*@RequestParam("user_id") String user_id,*/ ModelAndView mv, HttpSession session) {
 		// 서비스로 아이디 전달하고, 해당 회원정보 받기
-		String user_id = request.getParameter("user_id");
+		String user_id = ((Member)session.getAttribute("loginMember")).getUser_id();
+				
+		//String user_id = request.getParameter("user_id");
 		logger.info("user_id : " + user_id);
 		Member member = (Member)memberService.selectMember(user_id);
 		
@@ -397,18 +409,62 @@ public class MemberController {
 	//회원정보 수정 처리용 : 수정 성공시 myinfoPage.jsp 로 이동
 	@RequestMapping(value="mupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String memberUpdateMethod(@RequestParam("user_id") String user_id, @RequestParam("user_pw") String new_user_pw,
-									@RequestParam("phone") String new_phone, @RequestParam("email") String new_email, Model model) {
+									@RequestParam("phone") String new_phone, @RequestParam("email") String new_email,
+									@RequestParam(name="upProfile", required = false) MultipartFile newProfile
+									 ,Model model, HttpServletRequest request) {
 		
 		Member member = memberService.selectMember(user_id);
 		String origin_user_pw = member.getUser_pw();
 		String origin_phone = member.getPhone();
 		String origin_email = member.getPhone();
-
+		
+		//프로필 첨부파일 저장 폴더 경로 지정
+		String savePath = request.getSession().getServletContext().getRealPath(
+							"resources/profile_upfiles");
 		
 		logger.info("origin_user_pw : " + origin_user_pw);
 		logger.info("new_user_pw : " + new_user_pw);
 		logger.info("new_phone : " + new_phone);
 		logger.info("new_email : " + new_email);
+		logger.info(newProfile.toString());
+		
+		//새로운 프로필 존재시,
+		if(!newProfile.isEmpty()) {
+			
+			//기존 프로필 존재시,
+			if(member.getProfile_originfile() != null) {
+				new File(savePath +"/" + member.getProfile_renamefile()).delete();
+				member.setProfile_originfile(null);
+				member.setProfile_renamefile(null);
+			}
+			
+			//프로필이름 추출하기
+			String profileName = newProfile.getOriginalFilename();
+			
+			//이름 중복으로 덮어쓰기 방지하기 위해 이름 변경하기
+			if(profileName != null && profileName.length() > 0) {
+				String renameProfile = FileNameChange.change(profileName, "yyyyMMddHHmmss");
+				
+				//check
+				logger.info("profile name check : " + profileName +
+						"renaming profile : " + renameProfile);
+				
+				//폴더에 저장
+				try {
+					newProfile.transferTo(new File(
+							savePath + "/" + renameProfile));
+				}catch (Exception e) {
+					e.printStackTrace();
+					model.addAttribute("message", "프로필 첨부파일 저장 실패!");
+					return "common/error";
+				}
+				//db 저장
+				member.setProfile_originfile(profileName);
+				member.setProfile_renamefile(renameProfile);
+			}
+		}
+		
+		
 		//새로운 암호 전송 받을 시, 패스워드 암호화 처리
 //		//사용시 공백 자동 제거되게해야 오류 발생 안됨
 //		String user_pw = member.getUser_pw().trim();
@@ -419,12 +475,11 @@ public class MemberController {
 		//새로운 비밀번호 입력시,
 		if(new_user_pw != null && new_user_pw.length() > 0) {//userpwd에 값이 들어왔다면,
 			//암호화된 기존의 패스워드 !== 새로운 패스워드O
-//			if(!this.bcryptPasswordEncder.matches(new_user_pw, origin_user_pw)) {
-//				//member에 새로운 패스워드 암호화해서 기록
-//				member.setUser_pw(bcryptPasswordEncder.encode(new_user_pw));
-//			}
+			if(!this.bcryptPasswordEncder.matches(new_user_pw, origin_user_pw)) {
+				//member에 새로운 패스워드 암호화해서 기록
+				member.setUser_pw(bcryptPasswordEncder.encode(new_user_pw));
+			}
 	
-			member.setUser_pw(new_user_pw);
 			logger.info(member.getUser_pw());
 		} else {	//새 암호가 들어오지 않은 경우
 			//새로운 패스워드 값이 존재하지 않을 시, member에 원래 패스워드 기록

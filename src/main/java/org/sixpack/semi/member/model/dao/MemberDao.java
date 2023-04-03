@@ -13,10 +13,6 @@ public class MemberDao {
 	@Autowired
 	private SqlSessionTemplate session;
 
-	public Member selectLogin(Member member) {
-		 return session.selectOne("memberMapper.selectLogin", member);
-
-	}
 
 	public Member selectFindIdPhone(Member member) {
 		// TODO Auto-generated method stub
@@ -63,8 +59,8 @@ public class MemberDao {
 	}
 
 	public int insertMember(Member member) {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.insert("memberMapper.insertMember", member);
+
 	}
 
 	public int updatePw(Member member) {

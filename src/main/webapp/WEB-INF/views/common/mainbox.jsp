@@ -202,7 +202,7 @@ border: 1px solid #D1D1D1;
 		</c:if>
 
 		<!-- -------------------------------------------------------------------------------------------------------------- -->
-		>
+		
 
 
 
@@ -220,11 +220,11 @@ border: 1px solid #D1D1D1;
 					<div>내가 쓴 댓글 ${ loginMember.user_id } 개</div>
 				</div>
 				<div id="userBox_info">
-				<form class="pofile" action="myinfo.do" method="post">
+				<form class="profile" action="myinfo.do" method="post">
 					<input type="hidden" name="user_id"
 						value="${ loginMember.user_id }" /> <input type="image"
 						alt="memberProfile"
-						src="${ pageContext.servletContext.contextPath }/resources/images/profile.jpeg" />
+						src="resources/profile_upfiles/${ loginMember.profile_renamefile }" />
 				</form>
 				<div id="loginA">
 					<div id="user_nickname">${ loginMember.user_nickname }님</div>
