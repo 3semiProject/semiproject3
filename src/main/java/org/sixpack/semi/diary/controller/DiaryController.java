@@ -1,12 +1,14 @@
 package org.sixpack.semi.diary.controller;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 import javax.servlet.http.HttpSession;
 
 import org.sixpack.semi.diary.model.service.DiaryService;
 import org.sixpack.semi.diary.model.vo.DateData;
 import org.sixpack.semi.diary.model.vo.Diary;
+import org.sixpack.semi.goal.model.vo.Goal;
 import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller("diaryCon")
@@ -24,69 +27,81 @@ public class DiaryController {
 	@Autowired
 	private DiaryService diaryService;
 	
-	private static final Logger logger = 
-			LoggerFactory.getLogger(DiaryController.class);
+	private static final Logger logger = LoggerFactory.getLogger(DiaryController.class);
 	
 	//메인->다이어리로 화면전환시 회원정보전달용
-	@RequestMapping(value="diary.do", method=RequestMethod.GET)
-	public String showFirstDiary(RedirectAttributes redirect,
+	@RequestMapping(value="diary.do", method={ RequestMethod.GET, RequestMethod.POST })
+	public String showFirstDiary( RedirectAttributes redirect,
 			HttpSession session, Diary diary) {
-		if(session!=null) {
-		//회원id로 오늘날짜의 식단을 입력한 diary 정보만 전달
-		Member loginMember = (Member)session.getAttribute("loginMember");
-		diary.setUser_id(loginMember.getUser_id());
-		
-		diary.setDiary_post_date(new Date(new java.util.Date().getTime()));
-		diary.setDiary_category("eat");
+		String user_id = ((Member)session.getAttribute("loginMember")).getUser_id();
+		if(user_id!=null) { //로그인상태 목표정보확인
+			Goal goal;
+			//Date today = new Date(new java.util.Date().getTime());
+			//test용 날짜값 변경
+			Date today = java.sql.Date.valueOf("2023-03-01"); //test
+			diary.setUser_id(((Member)session.getAttribute("loginMember")).getUser_id());
+			diary.setDiary_post_date(today);
+
+			//goal 최근작성일이 오늘기준 한달이전 goal을 조회
+			//한달이내 goal이 없으면 목표관리 페이지로 이동
+			//goal 목표 종료일이 오늘 이전이면 목표관리 페이지로 이동(이동 후 팝업안내창띄우기)
+			goal = diaryService.selectCurrentGoal(diary);
+			if(goal==null || goal.getGoal_date().before(today)) {
+				redirect.addFlashAttribute("diary", diary);
+				return "redirect:diary_showGoalModify.do";
+			}
+			
+			//목표정보 있으면 식단다이어리 보기화면
+			redirect.addFlashAttribute("diary", diary);
+			return "redirect:diary_showEatDiary.do";
 		}
-		//test용 data입력
-		if(session==null) {
-			diary.setUser_id("USER01");
-			diary.setDiary_post_date(new Date(2023-1900,3-1,4));
-			diary.setDiary_category("eat");			
-		}
 		
-		redirect.addFlashAttribute("diary", diary);
-		return "redirect:diary_showEatDiary.do";
+		//비로그인 상태면 로그인 페이지로 이동
+			return "redirect:loginPage.do";
 	}
 	
 	
 	//날짜네비게이션 날짜 이동처리용
-	@RequestMapping("diary_moveWeekVar.do")
-	public String moveWeekvarMethod(Model model,
-			@RequestParam("week")DateData data, Diary diary) {
-		if(data==null) {
-			model.addAttribute("message","전달정보가 없어 날짜이동 실패");
-			return "common/error";
-		}
+	@RequestMapping("diary_moveWeekDiary.do")
+	public String moveWeekDiary(RedirectAttributes redirect,
+			HttpSession session,
+			@RequestParam("ago") int ago,
+			@RequestParam("week")Date day) {
+		//기준일로 부터 몇일 전 날짜로 이동할지
+		String user_id = ((Member)session.getAttribute("loginMember")).getUser_id();
+		DateData move = new DateData(day, user_id, ago);
 		
-		//전달받은 값으로 출력할 다이어리 값 셋팅
-		diary.setUser_id(data.getUser_id());
-		diary.setDiary_post_date(data.getDate());		
-		if(data.getEats()>0) {
-			diary.setDiary_category("eat");
-		}else if(data.getActs()>0) {
-			diary.setDiary_category("act");
-		}else {
-			diary.setDiary_category("body");
-		}
-		//다이어리 조회, model에 담기
-		diary = diaryService.selectOneDiary(diary);
-		model.addAttribute("diary",diary);
+		Diary diary = diaryService.selectMoveDiary(move);
+		redirect.addFlashAttribute("diary", diary);
 		
 		//카테고리에 따라 controller 지정
 		//diary 없으면 빈 식단화면으로 나옴
 		if(diary.getDiary_category().equals("act")){
-			return "diary_showBodyView.do";						
+			return "redirect:diary_showActDiary.do";
 		}else if(diary.getDiary_category().equals("body")){
-			return "diary_showActView.do";						
+			return "redirect:diary_showBodyDiary.do";
 		}else {
-			//diary.getDiary_catagory().equals("eat")
-			return "diary_showEatView.do";			
+			return "redirect:diary_showEatDiary.do";
 		}
 	}
-
-
+//	//탭버든 날짜 이동처리용
+//	@RequestMapping(value="diary_moveTapDiary.do", method= {RequestMethod.GET, RequestMethod.POST})
+//	public String moveTapDiary(RedirectAttributes redirect,
+//			//HttpSession session,
+//			@RequestParam(value="diaryTap", required=false)Diary diary) {
+//		
+//		redirect.addFlashAttribute("diary", diary);
+//		//카테고리에 따라 controller 지정
+//		//diary 없으면 빈 식단화면으로 나옴
+//		if(diary.getDiary_category().equals("act")){
+//			return "redirect:diary_showActDiary.do";
+//		}else if(diary.getDiary_category().equals("body")){
+//			return "redirect:diary_showBodyDiary.do";
+//		}else {
+//			return "redirect:diary_showEatDiary.do";
+//		}
+//	}
+	
 //	//캘린더 출력용
 //	@RequestMapping(value = "diary_showCalendar.do", method = RequestMethod.GET)
 //	public String calendar(Model model, HttpServletRequest request, DateData dateData){

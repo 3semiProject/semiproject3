@@ -31,18 +31,20 @@ display: inline-block;
 <body>
 <br><c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
 <br><c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--다이어리 메뉴바-->
+
+
 <br><c:import url="/WEB-INF/views/diary/common/weekBar.jsp" />		<!--날짜이동바-->
 <br><c:import url="/WEB-INF/views/diary/common/diaryTap.jsp" />		<!--식단/운동/식단 탭-->
-<br><c:import url="/WEB-INF/views/diary/common/target.jsp" />		<!--목표 표시-->
+<br><c:import url="/WEB-INF/views/diary/common/goalBar.jsp" />		<!--목표 표시-->
 <hr>
 
 <h2> diary_showAct.do -> actDiaryView : 운동다이어리 보기</h2>
-보낼값 : diary
+보낼값 : ${ diary}
+<br>${acts}
 
 
 
-<div>
-<lable>운동다이어리</lable>
+<%-- <div>
 <ul><li><ol>
 	<li>운동이름 : ${act[0].actname}</li>
 	<li>운동한 시간 : ${act[0].act_mm}</li>
@@ -54,8 +56,7 @@ display: inline-block;
 	<li>운동한 시간 : ${act[1].act_mm} }</li>
 	<li>소모 칼로리 : ${act[1].act_kacl} }</li>
 </ol></li></ul>
-<ol>
-</div>
+</div> --%>
 <hr>
 <div>
 운동추천 ajax화면

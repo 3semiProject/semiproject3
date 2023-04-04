@@ -16,13 +16,27 @@ public class DiaryServiceImpl implements DiaryService {
 	private DiaryDao diaryDao;
 
 	@Override
+	public Goal selectlastGoal(Diary diary) {
+		return diaryDao.selectlastGoal(diary);
+	}
+
+	@Override
 	public Goal selectGoal(Diary diary) {
 		return diaryDao.selectGoal(diary);
 	}
 	
 	@Override
+	public Goal selectCurrentGoal(Diary diary) {
+		return diaryDao.selectCurrentGoal(diary);
+	}
+
+	@Override
 	public Diary selectOneDiary(Diary diary) {
 		return diaryDao.selectOneDiary(diary);
+	}
+	
+	public Diary selectMoveDiary(DateData move) {
+		return diaryDao.selectMoveDiary(move);
 	}
 
 	@Override
@@ -54,5 +68,6 @@ public class DiaryServiceImpl implements DiaryService {
 	public Diary selectDiaryNo(int diary_no) {
 		return null;
 	}
+
 
 }

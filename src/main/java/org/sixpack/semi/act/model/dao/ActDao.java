@@ -17,9 +17,9 @@ public class ActDao {
 	@Autowired //root-context.xml 에서 생성한 객체와 자동연결
 	private SqlSessionTemplate session; //의존성 주입됨(DI)
 	
-	public ArrayList<Act> selectOneDiary(Diary diary) {
-		List<Act> list = session.selectList("actMapper.selectOneDiary", diary);
-		return (ArrayList<Act>)list;
-	}
+	//하루치 운동목록 조회
+	public ArrayList<Act> selectDayAct(Diary diary) {
+		List<Act> list = session.selectList("actMapper.selectDayAct", diary);
+		return (ArrayList<Act>)list;	}
 		
 }

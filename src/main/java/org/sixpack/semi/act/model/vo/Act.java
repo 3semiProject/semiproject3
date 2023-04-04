@@ -2,32 +2,30 @@ package org.sixpack.semi.act.model.vo;
 
 public class Act implements java.io.Serializable{	
 	private static final long serialVersionUID = -1122694301283848688L;
-	//주석만 수정
+	//4.4 수정
 	private int diary_no;	//다이어리번호
 	private String act_seq;		//운동 순번
-	private String move_code; 	//운동 일련번호
+	private String move_code; 	//운동 일련번호 : 출력시에는 운동이름
 	private int act_mm; 		//운동한 시간(m)
 	private int act_kcal; 		//소모칼로리량(kcal)
-	private String move_name;	//운동 이름 :출력용
 	
-	protected Act() {
+	public Act() {
 		super();	
 	}
 
-	protected Act(int diary_no, String act_seq, String move_code, int act_mm, int act_kcal, String move_name) {
+	public Act(int diary_no, String act_seq, String move_code, int act_mm, int act_kcal) {
 		super();
 		this.diary_no = diary_no;
 		this.act_seq = act_seq;
 		this.move_code = move_code;
 		this.act_mm = act_mm;
 		this.act_kcal = act_kcal;
-		this.move_name = move_name;
 	}
 
 	@Override
 	public String toString() {
 		return "Act [diary_no=" + diary_no + ", act_seq=" + act_seq + ", move_code=" + move_code + ", act_mm=" + act_mm
-				+ ", act_kcal=" + act_kcal + ", move_name=" + move_name + "]";
+				+ ", act_kcal=" + act_kcal + "]";
 	}
 
 	public int getDiary_no() {
@@ -68,14 +66,6 @@ public class Act implements java.io.Serializable{
 
 	public void setAct_kcal(int act_kcal) {
 		this.act_kcal = act_kcal;
-	}
-
-	public String getMove_name() {
-		return move_name;
-	}
-
-	public void setMove_name(String move_name) {
-		this.move_name = move_name;
 	}
 
 	public static long getSerialversionuid() {

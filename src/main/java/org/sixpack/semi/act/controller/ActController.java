@@ -23,30 +23,18 @@ public class ActController {
 	@Autowired
 	private DiaryService diaryService;
 	//로그객체 생성구문 넣어야함
+
 	//운동다이어리 화면출력용
+	//diary 전달값은 없을 수 없음
 	@RequestMapping("diary_showActDiary.do")
-	public String showActDiary() {
-		return "diary/act/actDiary";			
-	}
-	
-	//운동다이어리 화면출력용
-	//diary 전달값은 없을 수 없음. 날짜라도 받아야함.
-	@RequestMapping("")
-	public String show(ModelAndView mv,
-			@RequestParam("diary") Diary diary, 
-			ArrayList<Act> acts) {
+	public ModelAndView showActDiary(ModelAndView mv, Diary diary) {
 		
-		//diary 전달값이 있으면 다이어리 번호로 해당 운동다이어리를 보여줌
+		ArrayList<Act> acts;
+		mv.addObject("diary", diary);
 		acts = actService.selectDayAct(diary);
-		
-		if(acts !=null && acts.size()>0) {
-			mv.addObject("acts", acts);
-			
-			return "diary/act/actDiary";
-		}else {
-			mv.addObject("message","다이어리 조회 실패");
-			return "common/error";
-		}
+		mv.addObject("acts", acts);			
+		mv.setViewName("diary/act/actDiary");
+		return mv;			
 	}
 	
 	//운동다이어리 작성 화면출력용

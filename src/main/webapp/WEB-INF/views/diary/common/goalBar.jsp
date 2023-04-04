@@ -48,11 +48,11 @@ width: 120px;
 <img alt="목표체중 표시바" src="${ pageContext.servletContext.contextPath }/resources/images/diary/goalLine.png">
 <table>
 	<tr>
-		<td>목표체중 ${param.target_weight}kg</td>
- 		<td>현재체중 ${param.current_weight}kg</td>
+		<td>목표체중 ${param.goal.target_weight}kg</td>
+ 		<td>현재체중 ${param.goal.current_weight}kg</td>
 		
-		<td>목표까지 <fmt:formatNumber value="${param.target_weight - param.current_weight}" pattern="0.0#"/>kg</td>
-		<td rowspan="2" class="dday">d${param.dday}</td>
+		<td>목표까지 <fmt:formatNumber value="${param.goal.target_weight - param.goal.current_weight}" pattern="0.0#"/>kg</td>
+		<td rowspan="2" class="dday">d${param.goal.dday}</td>
 	</tr>
 	<tr>
 	<td></td>

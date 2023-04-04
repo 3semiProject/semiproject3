@@ -15,9 +15,16 @@ public class DiaryDao {
 	
 	@Autowired
 	private SqlSessionTemplate session;
-	
+
+	public Goal selectlastGoal(Diary diary) {
+		return session.selectOne("diaryMapper.selectlastGoal",diary);
+	}
 	public Goal selectGoal(Diary diary) {
 		return session.selectOne("diaryMapper.selectGoal",diary);
+	}
+
+	public Goal selectCurrentGoal(Diary diary) {
+		return session.selectOne("diaryMapper.selectCurrentGoal",diary);
 	}
 
 	public ArrayList<DateData> selectWeekDiary(Diary diary) {
@@ -34,6 +41,11 @@ public class DiaryDao {
 		return (ArrayList<Diary>)list;
 
 	}
+	public Diary selectMoveDiary(DateData move) {
+		return session.selectOne("diaryMapper.selectMoveDiary", move);
+	}
+
+
 	
 	
 	

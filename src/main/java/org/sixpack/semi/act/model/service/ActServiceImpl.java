@@ -13,16 +13,11 @@ import org.springframework.stereotype.Service;
 public class ActServiceImpl implements ActService {
 	
 	@Autowired
-	private ActDao dao;
+	private ActDao actDao;
 
 	@Override
 	public ArrayList<Act> selectDayAct(Diary diary) {
-		return null;
-	}
-
-	@Override
-	public int insertOneAct(Act act) {
-		return 0;
+		return actDao.selectDayAct(diary);
 	}
 
 	@Override
@@ -43,6 +38,11 @@ public class ActServiceImpl implements ActService {
 	@Override
 	public Move selectMoveName(String move_name) {
 		return null;
+	}
+
+	@Override
+	public int insertOneAct(Act act) {
+		return 0;
 	}
 
 

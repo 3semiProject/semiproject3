@@ -8,9 +8,13 @@ import org.sixpack.semi.goal.model.vo.Goal;
 import org.springframework.stereotype.Service;
 
 public interface DiaryService {
-	//goalBar 출력용
+	//가장마지막 goal 조회
+	public Goal selectlastGoal(Diary diary);	
+	//기준일로 goal 조회
 	public Goal selectGoal(Diary diary);
-	
+	//한달이내 goal 최신값 조회
+	public Goal selectCurrentGoal(Diary diary);
+
 	// 입력한 diary값과 일치하는 다이어리 하나 조회 : 조건)null인 값 제외
 	Diary selectOneDiary(Diary diary);
 	
@@ -35,4 +39,7 @@ public interface DiaryService {
 
 	// 다이어리 삭제
 	public int deleteDiary(Diary diary);
+	
+	public Diary selectMoveDiary(DateData move);
+
 }
