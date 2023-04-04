@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,6 +16,7 @@ import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.sixpack.semi.free.model.vo.Free;
 import org.sixpack.semi.hotnew.model.service.HotNewService;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
+import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,7 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 	//hotnewdetail.do
 	@RequestMapping(value="hotnewdetail.do", method={ RequestMethod.GET, RequestMethod.POST })
 	public String selectDetailMethod(@RequestParam("hotnew_no") int hotnew_no, Model model,
+			HttpSession session,
 			@RequestParam("hotnew_name") String hotnew_name, @RequestParam("user_id") String user_id) {
 		HotNew hotnew = new HotNew();
 		hotnew.setHotnew_no(hotnew_no);
@@ -42,16 +45,20 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 		hotnew.setUser_id(user_id);
 		System.out.println(hotnew);
 		if(hotNewService.selectFree(hotnew) != null) {
-			return "redirect:freedetail.do?free_no=" + hotnew.getHotnew_no();
+			return "redirect:freedetail.do?free_no=" + hotnew.getHotnew_no() 
+				+ "&user_id=" + ((Member)session.getAttribute("loginMember")).getUser_id();
 		}
 		else if(hotNewService.selectTip(hotnew) != null) {
-			return "redirect:tipdetail.do?tip_no=" + hotnew.getHotnew_no();
+			return "redirect:tipdetail.do?tip_no=" + hotnew.getHotnew_no() 
+				+ "&user_id=" + ((Member)session.getAttribute("loginMember")).getUser_id();
 		}
 		else if(hotNewService.selectEyebody(hotnew) != null) {
-			return "redirect:eyebodydetail.do?eyebody_no=" + hotnew.getHotnew_no();
+			return "redirect:eyebodydetail.do?eyebody_no=" + hotnew.getHotnew_no() 
+				+ "&user_id=" + ((Member)session.getAttribute("loginMember")).getUser_id();
 		}
 		else if(hotNewService.selectBfaf(hotnew) != null) {
-			return "redirect:bfafdetail.do?bfaf_no=" + hotnew.getHotnew_no();
+			return "redirect:bfafdetail.do?bfaf_no=" + hotnew.getHotnew_no() 
+				+ "&user_id=" + ((Member)session.getAttribute("loginMember")).getUser_id();
 		}else {
 			model.addAttribute("message", hotnew.getHotnew_no() + "번 게시물 조회 실패");
 			return "common/error";
@@ -74,6 +81,7 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 			job.put("hotnew_name", URLEncoder.encode(hotNew.getHotnew_name(), "utf-8"));
 			job.put("write_hotnew_date", hotNew.getWrite_hotnew_date().toString());
 			job.put("user_id", hotNew.getUser_id());
+			job.put("click_hotnew_no", hotNew.getClick_hotnew_no());
 			jarr.add(job);
 		}
 		sendJson.put("list", jarr);
@@ -176,11 +184,14 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 				
 				mv.setViewName("hot/hotListView2");
 			}
-		}else {
-			mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
-			mv.setViewName("common/error");
 		}
-		return mv;
+		if(mv.isEmpty()) {
+			mv.addObject("searchs", searchs);
+			mv.setViewName("hot/hotListView2");
+			return mv;
+		}else {
+			return mv;
+		}
 	}
 	
 	@RequestMapping(value="newsearch.do", method={ RequestMethod.GET, RequestMethod.POST })
@@ -229,10 +240,13 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 				
 				mv.setViewName("new/newListView2");
 			}
-		}else {
-			mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
-			mv.setViewName("common/error");
 		}
-		return mv;
+		if(mv.isEmpty()) {
+			mv.addObject("searchs", searchs);
+			mv.setViewName("new/newListView2");
+			return mv;
+		}else {
+			return mv;
+		}
 	}
 }

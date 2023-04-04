@@ -49,7 +49,7 @@ body {
 		<table width="100%" border="1px solid" cellpadding="0" cellspacing="0">
 			<tr>
 				<c:if
-					test="${ requestScope.eyebody.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+					test="${ requestScope.eyebody.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 					<th>게시물 관리</th>
 					<td align="center"><c:url var="eyeup"
 							value="/eyebodyupmove.do">
@@ -58,7 +58,7 @@ body {
 				</c:if>
 
 				<c:if
-					test="${ requestScope.eyebody.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+					test="${ requestScope.eyebody.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 					<c:url var="eyede" value="/eyebodydelete.do">
 						<c:param name="eyebody_no" value="${ eyebody.eyebody_no }" />
 					</c:url>
@@ -87,20 +87,26 @@ body {
 			</tr>
 			<tr height="100">
 				<th>내용</th>
-				<td>&nbsp; &nbsp; ${eyebody.eyebody_value}</td>
+				<td>
+				<c:if test="${ !empty eyebody.renamefile_eyebody and !empty sessionScope.loginMember}">
+					<br>
+					&nbsp; &nbsp; <img src="${ pageContext.servletContext.contextPath }/resources/eyebody_upfiles/${eyebody.renamefile_eyebody}" width="400" alt="upfile">
+					<br>
+				</c:if>
+				&nbsp; &nbsp; ${eyebody.eyebody_value}</td>
 			</tr>
 			<tr height="40">
 				<th>FILE</th>
 				<td>
 					<!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 --> <c:if
-						test="${ !empty eyebody.originfile_eyebody and !empty sessionScope.loginMember}}">
+						test="${ !empty eyebody.originfile_eyebody and !empty sessionScope.loginMember}">
 						<c:url var="eyebd" value="/eyebodydown.do">
 							<c:param name="ofile" value="${ eyebody.originfile_eyebody }" />
 							<c:param name="rfile" value="${ eyebody.renamefile_eyebody }" />
 						</c:url>
 						&nbsp; &nbsp; &nbsp; <a href="${ eyebd }">${ eyebody.originfile_eyebody }</a> &nbsp;
 					</c:if> <!-- 첨부파일이 없다면, Empty 처리 --> <c:if
-						test="${ empty eyebody.originfile_eyebody and !empty sessionScope.loginMember}}">
+						test="${ empty eyebody.originfile_eyebody}">
 						 &nbsp; &nbsp; Empty
 					</c:if>
 				</td>
@@ -148,13 +154,13 @@ body {
 					<c:if test="${ eb.eyebody_reply_lev eq 2 }">
 						<th>${eb.user_id}</th>
 						<td>&nbsp; &nbsp; ${eb.eyebody_value} &nbsp; <c:if
-								test="${ eb.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+								test="${ eb.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 								<c:url var="eyereup" value="/moveeyebodyrepup.do">
 									<c:param name="eyebody_no" value="${eb.eyebody_no }" />
 								</c:url>
 								<a href="${ eyereup }">[댓글 수정하기]</a> &nbsp;
 					</c:if> <c:if
-								test="${ eb.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+								test="${ eb.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 								<c:url var="eyerede" value="/eyebodyrepdelete.do">
 									<c:param name="eyebody_no" value="${ eb.eyebody_no }" />
 									<c:param name="eyebody_ref" value="${ eb.eyebody_ref }" />
@@ -180,13 +186,13 @@ body {
 					<c:if test="${ eb.eyebody_reply_lev eq 3 }">
 						<th>${eb.user_id}</th>
 						<td>&nbsp; &nbsp; &nbsp; &nbsp; ▶ ${eb.eyebody_value} <c:if
-								test="${ eb.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+								test="${ eb.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 								<c:url var="eyereup2" value="/moveeyebodyrepup.do">
 									<c:param name="eyebody_no" value="${eb.eyebody_no }" />
 								</c:url>
 								<a href="${ eyereup2 }">[댓글 수정하기]</a> &nbsp;
 					</c:if> <c:if
-								test="${ eb.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+								test="${ eb.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 								<c:url var="eyerede2" value="/eyebodyrepdelete.do">
 									<c:param name="eyebody_no" value="${ eb.eyebody_no }" />
 									<c:param name="eyebody_ref" value="${ eb.eyebody_ref }" />
@@ -203,13 +209,19 @@ body {
 				</tr>
 			</c:forEach>
 			<tr>
-				<td colspan="2" align="right"><c:if
-						test="${empty sessionScope.loginMember}">
+					<td colspan="2" align="right">
+						<c:if test="${empty sessionScope.loginMember}">
 						* 메인페이지의 TOP5 게시글 상세보기 이외의 모든 기능을 이용하시려면 로그인해주세요 *
-						</c:if> <input type="button" value="메인페이지"
-					onclick="location.href='main.do'"> <input type="button"
-					value="뒤로가기" onclick="javascript:history.go(-1)"></td>
-			</tr>
+						<input type="button" value="로그인이동"
+						onclick="location.href='loginPage.do'">
+						</c:if>
+						<c:if test="${!empty sessionScope.loginMember}">
+						<input type="button" value="메인페이지"
+						onclick="location.href='main.do'">
+						</c:if>
+						<input type="button" value="뒤로가기"
+						onclick="javascript:history.go(-1)"></td>
+				</tr>
 		</table>
 	</div>
 	<br>

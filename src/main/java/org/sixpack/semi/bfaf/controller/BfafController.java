@@ -398,10 +398,14 @@ public class BfafController {
 
 				mv.setViewName("bfaf/bfafListView2");
 			}
-		} else {
-			mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
-			mv.setViewName("common/error");
+		} 
+		
+		if(mv.isEmpty()) {
+			mv.addObject("searchs", searchs);
+			mv.setViewName("bfaf/bfafListView2");
+			return mv;
+		}else {
+			return mv;
 		}
-		return mv;
 	}
 }

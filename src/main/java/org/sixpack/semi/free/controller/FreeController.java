@@ -354,6 +354,7 @@ public class FreeController {
 			job.put("free_name", URLEncoder.encode(free.getFree_name(), "utf-8"));
 			job.put("write_free_date", free.getWrite_free_date().toString());
 			job.put("user_id", free.getUser_id());
+			job.put("click_free_no", free.getClick_free_no());
 			jarr.add(job);
 		}
 		sendJson.put("list", jarr);
@@ -431,10 +432,14 @@ public class FreeController {
 
 				mv.setViewName("free/freeListView2");
 			}
-		} else {
-			mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
-			mv.setViewName("common/error");
 		}
-		return mv;
+		
+		if(mv.isEmpty()) {
+			mv.addObject("searchs", searchs);
+			mv.setViewName("free/freeListView2");
+			return mv;
+		}else {
+			return mv;
+		}
 	}
 }

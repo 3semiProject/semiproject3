@@ -49,7 +49,7 @@ body {
 		<table width="100%" border="1px solid" cellpadding="0" cellspacing="0">
 			<tr>
 				<c:if
-					test="${ requestScope.bfaf.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+					test="${ requestScope.bfaf.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 					<th>게시물 관리</th>
 					<td align="center"><c:url var="baup" value="/bfafupmove.do">
 							<c:param name="bfaf_no" value="${ bfaf.bfaf_no }" />
@@ -57,7 +57,7 @@ body {
 				</c:if>
 
 				<c:if
-					test="${ requestScope.bfaf.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+					test="${ requestScope.bfaf.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 					<c:url var="bade" value="/bfafdelete.do">
 						<c:param name="bfaf_no" value="${ bfaf.bfaf_no }" />
 					</c:url>
@@ -85,20 +85,26 @@ body {
 			</tr>
 			<tr height="100">
 				<th>내용</th>
-				<td>&nbsp; &nbsp; ${bfaf.bfaf_value}</td>
+				<td>
+				<c:if test="${ !empty bfaf.renamefile_bfaf and !empty sessionScope.loginMember}">
+					<br>
+					&nbsp; &nbsp; <img src="${ pageContext.servletContext.contextPath }/resources/bfaf_upfiles/${bfaf.renamefile_bfaf}" width="400" alt="upfile">
+					<br>
+				</c:if>
+				&nbsp; &nbsp; ${bfaf.bfaf_value}</td>
 			</tr>
 			<tr height="40">
 				<th>FILE</th>
 				<td>
 					<!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 --> <c:if
-						test="${ !empty bfaf.originfile_bfaf and !empty sessionScope.loginMember}}">
+						test="${ !empty bfaf.originfile_bfaf and !empty sessionScope.loginMember}">
 						<c:url var="babd" value="/bfafdown.do">
 							<c:param name="ofile" value="${ bfaf.originfile_bfaf }" />
 							<c:param name="rfile" value="${ bfaf.renamefile_bfaf }" />
 						</c:url>
 						&nbsp; &nbsp; &nbsp; <a href="${ babd }">${ bfaf.originfile_bfaf }</a> &nbsp;
 					</c:if> <!-- 첨부파일이 없다면, Empty 처리 --> <c:if
-						test="${ empty bfaf.originfile_bfaf and !empty sessionScope.loginMember}}">
+						test="${ empty bfaf.originfile_bfaf}">
 						 &nbsp; &nbsp; Empty
 					</c:if>
 				</td>
@@ -145,13 +151,13 @@ body {
 					<c:if test="${ ba.bfaf_reply_lev eq 2 }">
 						<th>${ba.user_id}</th>
 						<td>&nbsp; &nbsp; ${ba.bfaf_value} &nbsp; <c:if
-								test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+								test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 								<c:url var="bareup" value="/movebfafrepup.do">
 									<c:param name="bfaf_no" value="${ba.bfaf_no }" />
 								</c:url>
 								<a href="${ bareup }">[댓글 수정하기]</a> &nbsp;
 					</c:if> <c:if
-								test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+								test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 								<c:url var="barede" value="/bfafrepdelete.do">
 									<c:param name="bfaf_no" value="${ ba.bfaf_no }" />
 									<c:param name="bfaf_ref" value="${ ba.bfaf_ref }" />
@@ -173,13 +179,13 @@ body {
 					<c:if test="${ ba.bfaf_reply_lev eq 3 }">
 						<th>${ba.user_id}</th>
 						<td>&nbsp; &nbsp; &nbsp; &nbsp; ▶ ${ba.bfaf_value} <c:if
-								test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+								test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 								<c:url var="bareup2" value="/movebfafrepup.do">
 									<c:param name="bfaf_no" value="${ba.bfaf_no }" />
 								</c:url>
 								<a href="${ bareup2 }">[댓글 수정하기]</a> &nbsp;
 					</c:if> <c:if
-								test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+								test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 								<c:url var="barede2" value="/bfafrepdelete.do">
 									<c:param name="bfaf_no" value="${ ba.bfaf_no }" />
 									<c:param name="bfaf_ref" value="${ ba.bfaf_ref }" />
@@ -194,13 +200,19 @@ body {
 				</tr>
 			</c:forEach>
 			<tr>
-				<td colspan="2" align="right"><c:if
-						test="${empty sessionScope.loginMember}">
+					<td colspan="2" align="right">
+						<c:if test="${empty sessionScope.loginMember}">
 						* 메인페이지의 TOP5 게시글 상세보기 이외의 모든 기능을 이용하시려면 로그인해주세요 *
-						</c:if> <input type="button" value="메인페이지"
-					onclick="location.href='main.do'"> <input type="button"
-					value="뒤로가기" onclick="javascript:history.go(-1)"></td>
-			</tr>
+						<input type="button" value="로그인이동"
+						onclick="location.href='loginPage.do'">
+						</c:if>
+						<c:if test="${!empty sessionScope.loginMember}">
+						<input type="button" value="메인페이지"
+						onclick="location.href='main.do'">
+						</c:if>
+						<input type="button" value="뒤로가기"
+						onclick="javascript:history.go(-1)"></td>
+				</tr>
 		</table>
 	</div>
 	<br>

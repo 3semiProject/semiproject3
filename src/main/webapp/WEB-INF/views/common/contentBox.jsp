@@ -10,7 +10,11 @@
 * {
 	color: #01CD88;
 }
-
+.cona:hover {
+		text-decoration: none;
+		color: black;
+		font-weight: bold;
+	}
 #mainTextBox {
 	width: 1200px;
 	height: 500px;
@@ -107,14 +111,15 @@ div[name="youtube"] {
 				var json = JSON.parse(jsonStr);
 
 				for ( var i in json.list) {
-					values += "</td><td>"
-							+ "<a href='freedetail.do?free_no="
+					values += "<tr><td>"
+							+ "<a class='cona' href='freedetail.do?free_no="
 							+ json.list[i].free_no
 							+ "'>"
 							+ decodeURIComponent(json.list[i].free_name)
 									.replace(/\+/gi, " ") + "</a></td><td>"
 							+ json.list[i].user_id + "</td><td>"
-							+ json.list[i].write_free_date + "</td></tr>";
+							+ json.list[i].write_free_date + "</td><td>"
+							+ json.list[i].click_free_no + "</td></tr>";
 				}
 				$('#new_topN').html(values);
 			},
@@ -140,7 +145,7 @@ div[name="youtube"] {
 				var json = JSON.parse(jsonStr);
 
 				for ( var i in json.list) {
-					values += "</td><td><a href='hotnewdetail.do?hotnew_no="
+					values += "<tr><td><a class='cona' href='hotnewdetail.do?hotnew_no="
 							+ json.list[i].hotnew_no
 							+ "&hotnew_name="
 							+ json.list[i].hotnew_name
@@ -150,7 +155,8 @@ div[name="youtube"] {
 							+ decodeURIComponent(json.list[i].hotnew_name)
 									.replace(/\+/gi, " ") + "</a></td><td>"
 							+ json.list[i].user_id + "</td><td>"
-							+ json.list[i].write_hotnew_date + "</td></tr>";
+							+ json.list[i].write_hotnew_date + "</td><td>"
+							+ json.list[i].click_hotnew_no + "</td></tr>";
 				}
 				$('#hot_topN').html(values);
 			},
@@ -173,10 +179,10 @@ div[name="youtube"] {
 				<table id="hot_topN" align="center" border="1"
 					style="width: 95%; margin-top: 50px;">
 					<tr>
-						<th style="width: 60%">제목</th>
+						<th style="width: 45%">제목</th>
 						<th style="width: 20%">글쓴이</th>
 						<th style="width: 20%">날짜</th>
-
+						<th style="width: 15%">조회수</th>
 					</tr>
 
 				</table>
@@ -186,10 +192,10 @@ div[name="youtube"] {
 				<table id="new_topN" align="center" border="1"
 					style="width: 95%; margin-top: 50px;">
 					<tr>
-						<th style="width: 60%">제목</th>
+						<th style="width: 45%">제목</th>
 						<th style="width: 20%">글쓴이</th>
 						<th style="width: 20%">날짜</th>
-
+						<th style="width: 15%">조회수</th>
 					</tr>
 				</table>
 

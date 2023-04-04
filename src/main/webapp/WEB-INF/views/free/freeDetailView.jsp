@@ -84,8 +84,12 @@ body{
 				<tr height="100">
 					<th>내용</th>
 					<td>
-					&nbsp; &nbsp; 
-					${free.free_value}
+					<c:if test="${ !empty free.renamefile_free and !empty sessionScope.loginMember}">
+					<br>
+					&nbsp; &nbsp; <img src="${ pageContext.servletContext.contextPath }/resources/free_upfiles/${free.renamefile_free}" width="400" alt="upfile">
+					<br>
+					</c:if>
+					&nbsp; &nbsp; ${free.free_value}
 					</td>
 				</tr>
 				<tr height="40">
@@ -112,7 +116,7 @@ body{
 					&nbsp; <img src="${ pageContext.servletContext.contextPath }/resources/images/fullheart.png" width="30" height="30" alt="fullheart"> &nbsp; 
 					좋아요 ${free.free_like_no}개 &nbsp; &nbsp;
 					</c:if>
-					<c:if test="${empty likeFree.user_id or likeFree.user_id ne sessionScope.loginMember.user_id}">
+					<c:if test="${empty likeFree.user_id}">
 					&nbsp; <img src="${ pageContext.servletContext.contextPath }/resources/images/heart.png" width="30" height="30" alt="heart"> &nbsp; 
 					좋아요 ${free.free_like_no}개 &nbsp; &nbsp;
 					</c:if>
@@ -195,9 +199,13 @@ body{
 					<td colspan="2" align="right">
 						<c:if test="${empty sessionScope.loginMember}">
 						* 메인페이지의 TOP5 게시글 상세보기 이외의 모든 기능을 이용하시려면 로그인해주세요 *
+						<input type="button" value="로그인이동"
+						onclick="location.href='loginPage.do'">
 						</c:if>
+						<c:if test="${!empty sessionScope.loginMember}">
 						<input type="button" value="메인페이지"
 						onclick="location.href='main.do'">
+						</c:if>
 						<input type="button" value="뒤로가기"
 						onclick="javascript:history.go(-1)"></td>
 				</tr>
