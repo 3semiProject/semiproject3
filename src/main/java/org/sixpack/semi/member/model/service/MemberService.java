@@ -2,6 +2,7 @@ package org.sixpack.semi.member.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.kakao.model.vo.Kakao;
 import org.sixpack.semi.member.model.vo.Member;
 
 public interface MemberService {

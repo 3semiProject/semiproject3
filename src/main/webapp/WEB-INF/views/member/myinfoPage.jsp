@@ -121,9 +121,16 @@ function form_submit() {
 		<div class="button_box">
 			<div id="join_box" align="center" style="height: 200px; width: 200px">
 				<div class="join_e" style="height: 200px; width: 200px">
+					<c:if test="${ empty member.profile_renamefile }">
+						<img
+						style="height: 200px; width: 200px; border-radius: 25px; border: 2px solid #D1D1D1;"
+						src="resources/profile_upfiles/profile.jpeg" alt="profile" />
+					</c:if>
+					<c:if test="${ !empty member.profile_renamefile}">
 					<img
 						style="height: 200px; width: 200px; border-radius: 25px; border: 2px solid #D1D1D1;"
 						src="resources/profile_upfiles/${ member.profile_renamefile }" alt="profile" />
+					</c:if>
 				</div>
 			</div>
 			<div class="basic">

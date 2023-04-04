@@ -108,14 +108,20 @@ h1 {
 	src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 
 <script type="text/javascript">
+
+//----- 프로필 이미지 미리보기 관련 function ----------
+//FileReader() 객체는 비동기적으로 파일의 내용을 읽어들이는 데 사용
+const reader = new FileReader();
+
 function readImage(input) {
-	const reader = new FileReader();
 	
 	if(input.files && input.files[0]) {
 	
 	reader.onload = e => {
-        const previewImage = document.getElementById("showprofile");
+ 
+	const previewImage = document.getElementById("showprofile");
         previewImage.src = e.target.result;
+        console.log(previewImage.src);
     }
 	
 	//이미지 읽기
@@ -130,33 +136,27 @@ function changeImg(input) {
 }
 
 
-/* function previewImage(){	
-	var input = document.getElementById("profile").value;
-	
-	$("#showprofile").attr("src", "input");
 
-}
+//드래그 드랍으로 파일 form에 저장하고 해당 내용 이미지 미리보기에 출력하기
+$(document).on("dragover drop", function(e) {
+    e.preventDefault();
+}).on("drop", function(e) {
+    $("input[type='file']")
+        .prop("files", e.originalEvent.dataTransfer.files) //프로퍼티 추가
+    
+        const previewImage = document.getElementById("showprofile");	//이미지 출력되는 공간 지정
+       
+          $(reader).on('load', function () {	//fileReader이용하여 객체가 로드될때, 이미치 출력공간에 결과물 넣기
+			$('#showprofile').attr('src', reader.result);
+		});
+          
+        reader.readAsDataURL(e.originalEvent.dataTransfer.files[0]);	//추가된 src의 url 읽어오기.
+        
+});
 
-function previewImage(FILE_ELEMENT, CALLBACK){ 	
-	const READER = new FileReader(); 	 	
-	READER.onload = function () { 		
-		CALLBACK(READER.result); 	
-	} 	 	
-	READER.readAsText(FILE_ELEMENT.files[0], "EUC-KR"); 
-}  */
-/* 
-function readURL(obj) {
-    let reader = new FileReader();
-    if(!obj.files.length) {
-        return;
-    }
-    reader.readAsDataURL(obj.files[0]);
-    reader.onload = function (e) {
-        let img = $('<img />');
-        $(img).attr('src', e.target.result);
-        $('#showprofile').append(img);
-    }
-} */
+
+//--------------------------------------------------------------------
+
 
         function validate() {
             // 유효성 검사
@@ -272,11 +272,6 @@ function readURL(obj) {
 			$('#mupdate_form').submit();
 			
 		}
-		
-		<%-- 			<input type="hidden" name="user_id" value="${ member.user_id }" />
-					<input type="hidden" name="user_pw" value="${ member.user_pw }" />
-					<input type="hidden" name="phone" value="${ member.phone }" />
-					<input type="hidden" name="email" value="${ member.email }" /> --%>
 					
         
     </script>
@@ -302,19 +297,26 @@ function readURL(obj) {
 	<form action="mupdate.do" method="post" name="updateMember"
 		id="mupdate_form" enctype="multipart/form-data">
 		<div id="join_box" align="center">
-			<div class="join_e">
+			<div class="join_e dropzone" id="drop_box">
 				<div class="join_item">Profile</div>
 				<div align="center" class="join_item2 profile"
 					style="margin: 0; padding: 0; display: flex;">
 					<div>
-						<img id="showprofile"
-							style="height: 90px; width: 110px; border-radius: 25px; border: 2px solid #D1D1D1;"
-							src="resources/profile_upfiles/${ member.profile_renamefile }"
-							alt="profile" />
+						<c:if test="${ empty member.profile_renamefile }">
+							<img id="showprofile"
+								style="height: 90px; width: 110px; border-radius: 25px; border: 2px solid #D1D1D1;"
+								src="resources/profile_upfiles/profile.jpeg" alt="profile" />
+						</c:if>
+						<c:if test="${ !empty member.profile_renamefile}">
+							<img id="showprofile"
+								style="height: 90px; width: 110px; border-radius: 25px; border: 2px solid #D1D1D1;"
+								src="resources/profile_upfiles/${ member.profile_renamefile }"
+								alt="profile" />
+						</c:if>
 					</div>
 					<div>
 						<input style="width: 70px;" type="file" id="profile"
-							name="upProfile" onchange="changeImg(this);" />
+							name="upProfile" onchange="changeImg(this);"/>
 					</div>
 				</div>
 			</div>
@@ -380,7 +382,7 @@ function readURL(obj) {
 							onclick="return phoneAuth();">
 					</div>
 					<div class="api_join_item2" id="authBox">
-						<input type="tel" id="authNumber" value="인증번호 입력하세요."
+						<input type="text" id="authNumber" value="인증번호 입력하세요."
 							onfocus="this.value=''" required /> &nbsp; &nbsp; <input
 							type="button" value="인증번호확인" onclick="return authNumberChek();" />
 					</div>
@@ -396,7 +398,7 @@ function readURL(obj) {
 							onclick="return emailAuth();">
 					</div>
 					<div class="api_join_item2" id="authBox">
-						<input type="email" id="authEmail" value="이메일인증코드 입력하세요."
+						<input type="text" id="authEmail" value="이메일인증코드 입력하세요."
 							onfocus="this.value=null" required />&nbsp; &nbsp; <input
 							type="button" value="인증번호확인" onclick="return authEmailChek();" />
 					</div>

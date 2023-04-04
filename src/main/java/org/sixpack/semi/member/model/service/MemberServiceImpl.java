@@ -2,6 +2,7 @@ package org.sixpack.semi.member.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.kakao.model.vo.Kakao;
 import org.sixpack.semi.member.model.dao.MemberDao;
 import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.member.model.vo.PhoneSns;
@@ -128,6 +129,7 @@ public class MemberServiceImpl implements MemberService{
 		return  memberDao.insertQuitMember(member);
 	}
 
+	
 	
 	
 }

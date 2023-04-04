@@ -9,7 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.ict.first.common.FileNameChange;
+import org.codehaus.jackson.JsonNode;
+import org.sixpack.semi.common.FileNameChange;
+import org.sixpack.semi.kakao.controller.KakaoController;
+import org.sixpack.semi.kakao.model.service.KakaoService;
+import org.sixpack.semi.kakao.model.vo.Kakao;
 import org.sixpack.semi.member.model.service.MemberService;
 import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;
@@ -36,6 +40,10 @@ public class MemberController {
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncder;
 
+	@Autowired
+	private KakaoService kakaoService;
+	
+	
 	// login 처리용 메소드
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public String loginMethod(@RequestParam("user_id") String user_id, @RequestParam("user_pw") String user_pw, Model model,
@@ -44,7 +52,7 @@ public class MemberController {
 		
 		//로그인 요청한 회원의 아이디 존재유무 체크 및 변수에 저장
 		Member loginMember = memberService.selectMember(user_id);
-
+		logger.info(loginMember.getProfile_renamefile());
 		if (loginMember != null && this.bcryptPasswordEncder.matches(user_pw, loginMember.getUser_pw())) {
 			session.setAttribute("loginMember", loginMember);
 			logger.info(loginMember.getUser_id());
@@ -75,6 +83,123 @@ public class MemberController {
 	public String moveLoginPage() {
 		return "member/loginPage";
 	}
+	
+
+//	// 소셜로그인이 포함된 로그인 페이지 내보내기용 메소드
+//	@RequestMapping(value = "loginPage.do", method = { RequestMethod.GET, RequestMethod.POST })
+//	public String moveLoginPage(Model model, HttpSession session) {
+//		// 카카오 로그인 접속을 위한 인증 url 정보 생성
+//		String kakaoAuthURL = KakaoController.getAuthorizationUrl(session);
+//
+//		// 네이버 로그인 접속을 위한 인증 url 정보 생성
+//		String naverAuthURL = KakaoController.getAuthorizationUrl(session);
+//
+//		// 구글 로그인 접속을 위한 인증 url 정보 생성
+//		String googleAuthURL = KakaoController.getAuthorizationUrl(session);
+//
+//		// 모델에 각각의 url 정보 저장
+//		model.addAttribute("kakaourl", kakaoAuthURL);
+//		model.addAttribute("googleourl", googleAuthURL);
+//		model.addAttribute("naverurl", naverAuthURL);
+//
+//		return "member/loginPage";
+//	}
+//
+//	// 카카오 로그인 요청 처리용
+//	// (카카오 로그인 클릭시 전달된 kakaourl 에 의해 실행됨)
+//	@RequestMapping(value = "kcallback.do", produces = "application/json", method = { RequestMethod.GET,
+//			RequestMethod.POST })
+//	public String kakaoLogin(@RequestParam String code,
+//			Model model, HttpSession session) {
+//		logger.info("0. kcallback.do : " + code);
+//		
+//		//로그인 결과값을 node에 담아줌
+//		JsonNode node = KakaoController.getAccessToken(code);
+//		logger.info("1. kcallback.do : " + node);
+//		// accessToken에 사용자의 로그인한 모든 정보가 들어있음
+//		JsonNode accessToken = node.get("access_token");
+//		logger.info("2. kcallback.do : " + accessToken);
+//		// 사용자 정보 추출
+//		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken);
+//		logger.info("3. kcallback.do : " + userInfo);
+//		
+//		// db table 에 기록할 회원정보 추출함 : 카카오 회원가입시
+//		//userInfo 에서 properties 정보 추출
+//		JsonNode properties = node.get("properties");
+//		logger.info("4. kcallback.do : " + properties);
+//		
+//		JsonNode kakao_account = userInfo.path("kakao_account");
+//		String kid = userInfo.path("id").asText();
+//		logger.info("5. kcallback.do : " + kakao_account);
+//		
+//		//등록된 카카오 회원 테이블에서 회원 정보 조회해 옴
+//		Kakao kmember = 
+//				kakaoService.selectKakaoLogin(kid);		
+//		
+//		Member loginMember = null; 
+//		
+//		//처음 로그인 요청시 카카오 회원 테이블에 회원 정보 저장
+//		if(kmember == null) {
+//			Kakao kakao = new Kakao();
+//			//properties 에서 하나씩 꺼내서 member 에 저장 처리
+//			kakao.setKakao_id(kid);
+//			kakao.setKakao_name((String)properties.get("kakao_name").asText());
+//			kakao.setEmail((String)kakao_account.get("email").asText());
+//				
+//			logger.info("6. kcallback.do : " + kakao);
+//			
+//			kakaoService.insertKakaoMember(kakao);
+//			loginMember = kakao;
+//		}else {
+//			loginMember = kmember;
+//		}
+//				
+//		if (loginMember != null) {
+//			// 카카오 로그인 성공시
+//			session.setAttribute("loginMember", loginMember);
+//			return "redirect:main.do";
+//		} else {
+//			model.addAttribute("message", "카카오 로그인 실패!");
+//			return "common/error";
+//		}
+//	}
+//
+//	// 네이버 로그인 요청 처리용
+//	// (네이버 로그인 클릭시 전달된 naverurl 에 의해 실행됨)
+//	@RequestMapping(value = "ncallback.do", 
+//			method = { RequestMethod.GET, 	RequestMethod.POST })
+//	public String naverLogin(Model model, HttpSession session) {
+//
+//		Member loginMember = null;
+//		
+//		if (loginMember != null) {
+//			// 카카오 로그인 성공시
+//			session.setAttribute("loginMember", loginMember);
+//			return "redirect:main.do";
+//		} else {
+//			model.addAttribute("message", "카카오 로그인 실패!");
+//			return "common/error";
+//		}
+//	}
+//
+//	// 구글 로그인 요청 처리용
+//	// (구글 로그인 클릭시 전달된 googleurl 에 의해 실행됨)
+//	@RequestMapping(value = "gcallback.do", 
+//			method = { RequestMethod.GET, 	RequestMethod.POST })
+//	public String googleLogin(
+//			Model model, HttpSession session) {
+//
+//		Member loginMember = null;
+//		
+//		if (loginMember != null) {
+//			// 카카오 로그인 성공시
+//			session.setAttribute("loginMember", loginMember);
+//			return "redirect:main.do";
+//		} else {
+//			model.addAttribute("message", "카카오 로그인 실패!");
+//			return "common/error";
+//		}
+//	}
 
 	// 회원가입 페이지 내보내기용 메소드
 	@RequestMapping(value = "enrollPage.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -377,7 +502,7 @@ public class MemberController {
 		//String user_id = request.getParameter("user_id");
 		logger.info("user_id : " + user_id);
 		Member member = (Member)memberService.selectMember(user_id);
-		
+		logger.info(member.getProfile_renamefile());
 		if (member != null) {
 			mv.addObject("member", member); // requestSetAttribute("member", member) 와 같음
 			// Model 또는 ModelAndView 에 저장하는 것은
