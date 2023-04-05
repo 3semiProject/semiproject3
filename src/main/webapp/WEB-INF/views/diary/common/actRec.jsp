@@ -52,13 +52,16 @@
             width: 1200px;
             height: 1200px;
             position: relative;
+            text-align: center;
         }
-
+        #actRecDiv div{
+            display: inline-block;
+            margin-left: 100px;
+        }
         fieldset[name="actRec"]{
             text-align: center;
-            margin: auto;
-            float: left;
             border: none;
+
         }
 
         fieldset[name="actRec"] img{

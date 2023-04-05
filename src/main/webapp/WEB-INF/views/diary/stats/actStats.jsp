@@ -83,19 +83,7 @@
 
 <hr>
 
-<pre>
-
-받은 값 : diary, term
-보낼 값 : diary, term
-
-diary_ActGraph.do -> ajax : graphs, period, title -> 그래프 ajax
-diary_ActStats ->ajax : stats -> 분석내용, top3
-
-
-</pre>
 My 다이어리 분석
-
-
 <hr class="horizontalBar" style="width: 100%">
 <div id="stats" style="height: 300px; display: flex;">
     <div style="width: 50%">
