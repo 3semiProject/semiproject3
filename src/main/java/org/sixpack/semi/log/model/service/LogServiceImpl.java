@@ -21,5 +21,24 @@ public class LogServiceImpl implements LogService{
 	public int insertLog(String userid, String ip) {
 		return logDao.insertLog(userid, ip);
 	}
+
+	//하루, 월, 월평균 접속자수 카운트 메소드
+	@Override
+	public int visitIpCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int visitIpCountMonth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int visitIpCountAvg() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

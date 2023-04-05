@@ -6,5 +6,8 @@ public interface LogService {
 	
 	int selectLogCount(Date date);
 	int insertLog(String userid, String ip);
+	int visitIpCount();
+	int visitIpCountMonth();
+	int visitIpCountAvg();
 
 }

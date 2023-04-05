@@ -28,11 +28,12 @@ a {
 }
 
 #adminBox #user_visit, #border_mgt {
-   width: 580px;
+   width: 500px;
    height: 300px;
    text-align: center;
    border: 1px solid #D1D1D1;
    border-radius: 35px;
+   margin: 0 10px;
    /*    border: 1px solid #D1D1D1;
    position: relative;
    float: left;
@@ -52,8 +53,8 @@ a {
    align-items: center;
 }
 
-#adminBox #user_visit #visit_count {
-   width: 550px;
+#adminBox #user_visit #visit_count, #adminBox #user_visit #visit_count {
+   width: 500px;
    height: 240px;
 }
 
@@ -65,6 +66,34 @@ a {
 #adminBox #border_mgt #board_count div {
    display: flex;
    height: 80px;
+}
+
+#login_Box {
+	width: 120px;
+	height: 300px;
+    border: 1px solid #D1D1D1;
+    border-radius: 35px;
+    margin: auto;
+}
+
+#login_Box div {
+	align-items: center;
+	margin-top: 30px;
+}
+
+
+#login_Box #login_join {
+	width: 100px;
+	height: 100px;
+	margin: 10px;
+	line-height: 100px;
+	background-color: #01CD88;
+}
+
+#login_Box #login_join div {
+	margin: 30px 0;
+	text-align: center;
+	justify-content: center;
 }
 
 #userBox #userBox_intro {
@@ -170,6 +199,10 @@ border: 1px solid #D1D1D1;
       //버튼 클릭시, 로그인 페이지로 이동하는 controller 요청
       location.href = "loginPage.do";
    }
+   
+   function logout() {
+	   location.href ="logout.do";
+}
 </script>
 </head>
 <body>
@@ -247,6 +280,7 @@ border: 1px solid #D1D1D1;
       <!-- 로그인 했을 때 : 관리자인 경우 -->
       <c:if
          test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
+         <form action="adminBox.do">
          <div id="adminBox">
             <div id="user_visit">
                <div>접속자 분류</div>
@@ -278,15 +312,17 @@ border: 1px solid #D1D1D1;
                   </div>
                </div>
             </div>
-            <div>
-               <div id="login_join">
-                  <a href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
+            <div id="login_Box" align="center">
+            	<div style="padding: 10px 0; height: 40px;">
+            	관리자<br>${ loginMember.user_nickname } 님 </div>
+              	<div id="login_join" onclick="logout();">
+                  <a style="color: white;" 
+                  href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
                </div>
             </div>
          </div>
+         </form>
       </c:if>
-
-
    </div>
 </body>
 </html>

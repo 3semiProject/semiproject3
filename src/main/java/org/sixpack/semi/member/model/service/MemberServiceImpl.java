@@ -128,6 +128,13 @@ public class MemberServiceImpl implements MemberService{
 	public int insertQuitMember(Member member) {
 		return  memberDao.insertQuitMember(member);
 	}
+	
+	//신규회원 조회용 메서드
+	@Override
+	public ArrayList<Member> selectNewMemberList() {
+		return memberDao.selectNewMemberList();
+
+	}
 
 	
 	

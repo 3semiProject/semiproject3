@@ -18,6 +18,7 @@ public class Member implements Serializable{
     private String admin_ck;		//관리자여부
     private String profile_originfile;	//프로필원본파일
     private String profile_renamefile;	//프로필수정파일
+    private Date join_date; ; //가입일
     
 
 
@@ -28,7 +29,8 @@ public class Member implements Serializable{
 
 
 	public Member(String user_id, String user_pw, String user_name, String user_nickname, String phone, Date birth,
-			String gender, String email, String admin_ck, String profile_originfile, String profile_renamefile) {
+			String gender, String email, String admin_ck, String profile_originfile, String profile_renamefile,
+			Date join_date) {
 		super();
 		this.user_id = user_id;
 		this.user_pw = user_pw;
@@ -41,6 +43,7 @@ public class Member implements Serializable{
 		this.admin_ck = admin_ck;
 		this.profile_originfile = profile_originfile;
 		this.profile_renamefile = profile_renamefile;
+		this.join_date = join_date;
 	}
 
 
@@ -177,14 +180,29 @@ public class Member implements Serializable{
 
 
 
+	public Date getJoin_date() {
+		return join_date;
+	}
+
+
+
+	public void setJoin_date(Date join_date) {
+		this.join_date = join_date;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "Member [user_id=" + user_id + ", user_pw=" + user_pw + ", user_name=" + user_name + ", user_nickname="
 				+ user_nickname + ", phone=" + phone + ", birth=" + birth + ", gender=" + gender + ", email=" + email
 				+ ", admin_ck=" + admin_ck + ", profile_originfile=" + profile_originfile + ", profile_renamefile="
-				+ profile_renamefile + "]";
+				+ profile_renamefile + ", join_date=" + join_date + "]";
 	}
 
+
+
+	
    
 
 }
