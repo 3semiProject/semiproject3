@@ -6,7 +6,7 @@ public class Diary implements java.io.Serializable{
 	private static final long serialVersionUID = 185627232181389972L;
 	
 	private String user_id;					//작성자 아이디
-	private java.sql.Date diary_post_date;	//작성일시
+	private Date diary_post_date;	//작성일시
 	private int diary_no;				//다이어리번호
 	private String diary_category;				//카테고리
 	private String diary_memo;				//메모
@@ -30,10 +30,10 @@ public class Diary implements java.io.Serializable{
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-	public java.sql.Date getDiary_post_date() {
+	public Date getDiary_post_date() {
 		return diary_post_date;
 	}
-	public void setDiary_post_date(java.sql.Date diary_post_date) {
+	public void setDiary_post_date(Date diary_post_date) {
 		this.diary_post_date = diary_post_date;
 	}
 	public int getDiary_no() {

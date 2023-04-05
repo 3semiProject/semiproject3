@@ -42,8 +42,8 @@ public class MemberController {
 
 	@Autowired
 	private KakaoService kakaoService;
-	
-	
+
+
 	// login 처리용 메소드
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public String loginMethod(@RequestParam("user_id") String user_id, @RequestParam("user_pw") String user_pw, Model model,
@@ -83,7 +83,7 @@ public class MemberController {
 	public String moveLoginPage() {
 		return "member/loginPage";
 	}
-	
+
 
 //	// 소셜로그인이 포함된 로그인 페이지 내보내기용 메소드
 //	@RequestMapping(value = "loginPage.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -112,7 +112,7 @@ public class MemberController {
 //	public String kakaoLogin(@RequestParam String code,
 //			Model model, HttpSession session) {
 //		logger.info("0. kcallback.do : " + code);
-//		
+//
 //		//로그인 결과값을 node에 담아줌
 //		JsonNode node = KakaoController.getAccessToken(code);
 //		logger.info("1. kcallback.do : " + node);
@@ -122,22 +122,22 @@ public class MemberController {
 //		// 사용자 정보 추출
 //		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken);
 //		logger.info("3. kcallback.do : " + userInfo);
-//		
+//
 //		// db table 에 기록할 회원정보 추출함 : 카카오 회원가입시
 //		//userInfo 에서 properties 정보 추출
 //		JsonNode properties = node.get("properties");
 //		logger.info("4. kcallback.do : " + properties);
-//		
+//
 //		JsonNode kakao_account = userInfo.path("kakao_account");
 //		String kid = userInfo.path("id").asText();
 //		logger.info("5. kcallback.do : " + kakao_account);
-//		
+//
 //		//등록된 카카오 회원 테이블에서 회원 정보 조회해 옴
-//		Kakao kmember = 
-//				kakaoService.selectKakaoLogin(kid);		
-//		
-//		Member loginMember = null; 
-//		
+//		Kakao kmember =
+//				kakaoService.selectKakaoLogin(kid);
+//
+//		Member loginMember = null;
+//
 //		//처음 로그인 요청시 카카오 회원 테이블에 회원 정보 저장
 //		if(kmember == null) {
 //			Kakao kakao = new Kakao();
@@ -145,15 +145,15 @@ public class MemberController {
 //			kakao.setKakao_id(kid);
 //			kakao.setKakao_name((String)properties.get("kakao_name").asText());
 //			kakao.setEmail((String)kakao_account.get("email").asText());
-//				
+//
 //			logger.info("6. kcallback.do : " + kakao);
-//			
+//
 //			kakaoService.insertKakaoMember(kakao);
 //			loginMember = kakao;
 //		}else {
 //			loginMember = kmember;
 //		}
-//				
+//
 //		if (loginMember != null) {
 //			// 카카오 로그인 성공시
 //			session.setAttribute("loginMember", loginMember);
@@ -166,12 +166,12 @@ public class MemberController {
 //
 //	// 네이버 로그인 요청 처리용
 //	// (네이버 로그인 클릭시 전달된 naverurl 에 의해 실행됨)
-//	@RequestMapping(value = "ncallback.do", 
+//	@RequestMapping(value = "ncallback.do",
 //			method = { RequestMethod.GET, 	RequestMethod.POST })
 //	public String naverLogin(Model model, HttpSession session) {
 //
 //		Member loginMember = null;
-//		
+//
 //		if (loginMember != null) {
 //			// 카카오 로그인 성공시
 //			session.setAttribute("loginMember", loginMember);
@@ -184,13 +184,13 @@ public class MemberController {
 //
 //	// 구글 로그인 요청 처리용
 //	// (구글 로그인 클릭시 전달된 googleurl 에 의해 실행됨)
-//	@RequestMapping(value = "gcallback.do", 
+//	@RequestMapping(value = "gcallback.do",
 //			method = { RequestMethod.GET, 	RequestMethod.POST })
 //	public String googleLogin(
 //			Model model, HttpSession session) {
 //
 //		Member loginMember = null;
-//		
+//
 //		if (loginMember != null) {
 //			// 카카오 로그인 성공시
 //			session.setAttribute("loginMember", loginMember);
@@ -502,7 +502,7 @@ public class MemberController {
 		//String user_id = request.getParameter("user_id");
 		logger.info("user_id : " + user_id);
 		Member member = (Member)memberService.selectMember(user_id);
-		logger.info(member.getProfile_renamefile());
+		
 		if (member != null) {
 			mv.addObject("member", member); // requestSetAttribute("member", member) 와 같음
 			// Model 또는 ModelAndView 에 저장하는 것은

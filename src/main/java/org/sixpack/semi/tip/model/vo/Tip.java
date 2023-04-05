@@ -9,7 +9,7 @@ public class Tip implements java.io.Serializable {
 	private int tip_no;	//글번호	NUMBER
 	private String tip_name;	//글제목	VARCHAR2(200 BYTE)
 	private String user_id;	//작성자	VARCHAR2(50 BYTE)
-	private java.sql.Date write_tip_date;	//작성일	DATE
+	private Date write_tip_date;	//작성일	DATE
 	private int click_tip_no;	//조회수	NUMBER
 	private String tip_value;	//글내용	VARCHAR2(4000 BYTE)
 	private String originfile_tip;	//파일원본이름	VARCHAR2(200 BYTE)
@@ -59,10 +59,10 @@ public class Tip implements java.io.Serializable {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-	public java.sql.Date getWrite_tip_date() {
+	public Date getWrite_tip_date() {
 		return write_tip_date;
 	}
-	public void setWrite_tip_date(java.sql.Date write_tip_date) {
+	public void setWrite_tip_date(Date write_tip_date) {
 		this.write_tip_date = write_tip_date;
 	}
 	public int getClick_tip_no() {

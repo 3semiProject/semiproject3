@@ -9,7 +9,7 @@ public class Bfaf implements java.io.Serializable {
 	private int bfaf_no;	//글번호	NUMBER
 	private String bfaf_name;	//글제목	VARCHAR2(200 BYTE)
 	private String user_id;	//작성자	VARCHAR2(50 BYTE)
-	private java.sql.Date write_bfaf_date;	//작성일	DATE
+	private Date write_bfaf_date;	//작성일	DATE
 	private int click_bfaf_no;	//조회수	NUMBER
 	private String bfaf_value;	//글내용	VARCHAR2(4000 BYTE)
 	private String originfile_bfaf;	//파일원본이름	VARCHAR2(200 BYTE)
@@ -59,10 +59,10 @@ public class Bfaf implements java.io.Serializable {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-	public java.sql.Date getWrite_bfaf_date() {
+	public Date getWrite_bfaf_date() {
 		return write_bfaf_date;
 	}
-	public void setWrite_bfaf_date(java.sql.Date write_bfaf_date) {
+	public void setWrite_bfaf_date(Date write_bfaf_date) {
 		this.write_bfaf_date = write_bfaf_date;
 	}
 	public int getClick_bfaf_no() {

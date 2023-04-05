@@ -9,7 +9,7 @@ public class Free implements java.io.Serializable{
 	private int free_no;	//글번호	NUMBER
 	private String free_name;	//글제목	VARCHAR2(200 BYTE)
 	private String user_id;	//작성자	VARCHAR2(50 BYTE)
-	private java.sql.Date write_free_date;	//작성일	DATE
+	private Date write_free_date;	//작성일	DATE
 	private int click_free_no;	//조회수	NUMBER
 	private String free_value;	//글내용	VARCHAR2(4000 BYTE)
 	private String originfile_free;	//파일원본이름	VARCHAR2(200 BYTE)
@@ -67,10 +67,10 @@ public class Free implements java.io.Serializable{
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-	public java.sql.Date getWrite_free_date() {
+	public Date getWrite_free_date() {
 		return write_free_date;
 	}
-	public void setWrite_free_date(java.sql.Date write_free_date) {
+	public void setWrite_free_date(Date write_free_date) {
 		this.write_free_date = write_free_date;
 	}
 	public int getClick_free_no() {

@@ -9,7 +9,7 @@ public class HotNew implements java.io.Serializable {
 	private int hotnew_no;	//글번호	NUMBER
 	private String hotnew_name;	//글제목	VARCHAR2(200 BYTE)
 	private String user_id;	//작성자	VARCHAR2(50 BYTE)
-	private java.sql.Date write_hotnew_date;	//작성일	DATE
+	private Date write_hotnew_date;	//작성일	DATE
 	private int click_hotnew_no;	//조회수	NUMBER
 	private String hotnew_value;	//글내용	VARCHAR2(4000 BYTE)
 	private String originfile_hotnew;	//파일원본이름	VARCHAR2(200 BYTE)
@@ -61,10 +61,10 @@ public class HotNew implements java.io.Serializable {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-	public java.sql.Date getWrite_hotnew_date() {
+	public Date getWrite_hotnew_date() {
 		return write_hotnew_date;
 	}
-	public void setWrite_hotnew_date(java.sql.Date write_hotnew_date) {
+	public void setWrite_hotnew_date(Date write_hotnew_date) {
 		this.write_hotnew_date = write_hotnew_date;
 	}
 	public int getClick_hotnew_no() {
