@@ -401,10 +401,13 @@ public class EyebodyController {
 
 				mv.setViewName("eyebody/eyebodyListView2");
 			}
-		} else {
-			mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
-			mv.setViewName("common/error");
 		}
-		return mv;
+		if(mv.isEmpty()) {
+			mv.addObject("searchs", searchs);
+			mv.setViewName("eyebody/eyebodyListView2");
+			return mv;
+		}else {
+			return mv;
+		}
 	}
 }

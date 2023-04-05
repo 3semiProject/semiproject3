@@ -49,7 +49,7 @@ body {
 		<table width="100%" border="1px solid" cellpadding="0" cellspacing="0">
 			<tr>
 				<c:if
-					test="${ requestScope.tip.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+					test="${ requestScope.tip.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 					<th>게시물 관리</th>
 					<td align="center"><c:url var="ttup" value="/tipupmove.do">
 							<c:param name="tip_no" value="${ tip.tip_no }" />
@@ -57,7 +57,7 @@ body {
 				</c:if>
 
 				<c:if
-					test="${ requestScope.tip.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+					test="${ requestScope.tip.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 					<c:url var="ttde" value="/tipdelete.do">
 						<c:param name="tip_no" value="${ tip.tip_no }" />
 					</c:url>
@@ -85,20 +85,26 @@ body {
 			</tr>
 			<tr height="100">
 				<th>내용</th>
-				<td>&nbsp; &nbsp; ${tip.tip_value}</td>
+				<td>
+				<c:if test="${ !empty tip.renamefile_tip and !empty sessionScope.loginMember}">
+					<br>
+					&nbsp; &nbsp; <img src="${ pageContext.servletContext.contextPath }/resources/tip_upfiles/${tip.renamefile_tip}" width="400" alt="upfile">
+					<br>
+				</c:if>
+				&nbsp; &nbsp; ${tip.tip_value}</td>
 			</tr>
 			<tr height="40">
 				<th>FILE</th>
 				<td>
 					<!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 --> <c:if
-						test="${ !empty tip.originfile_tip and !empty sessionScope.loginMember}}">
+						test="${ !empty tip.originfile_tip and !empty sessionScope.loginMember}">
 						<c:url var="ttd" value="/tipdown.do">
 							<c:param name="ofile" value="${ tip.originfile_tip }" />
 							<c:param name="rfile" value="${ tip.renamefile_tip }" />
 						</c:url>
 						&nbsp; &nbsp; &nbsp; <a href="${ ttd }">${ tip.originfile_tip }</a> &nbsp;
 					</c:if> <!-- 첨부파일이 없다면, Empty 처리 --> <c:if
-						test="${ empty tip.originfile_tip and !empty sessionScope.loginMember}}">
+						test="${ empty tip.originfile_tip}">
 						 &nbsp; &nbsp; Empty
 					</c:if>
 				</td>
@@ -132,7 +138,7 @@ body {
 			<tr height="50">
 				<th>댓글 작성자</th>
 				<td align="center">댓글내용 &nbsp; &nbsp; <c:if
-						test="${ !empty sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+						test="${ !empty sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 						<c:url var="ttrein" value="/movetiprepin.do">
 							<c:param name="tip_no" value="${tip.tip_no }" />
 						</c:url>
@@ -145,13 +151,13 @@ body {
 					<c:if test="${ t.tip_reply_lev eq 2 }">
 						<th>${t.user_id}</th>
 						<td>&nbsp; &nbsp; ${t.tip_value} &nbsp; <c:if
-								test="${ t.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+								test="${ t.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 								<c:url var="ttreup" value="/movetiprepup.do">
 									<c:param name="tip_no" value="${t.tip_no }" />
 								</c:url>
 								<a href="${ ttreup }">[댓글 수정하기]</a> &nbsp;
 					</c:if> <c:if
-								test="${ t.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+								test="${ t.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 								<c:url var="ttrede" value="/tiprepdelete.do">
 									<c:param name="tip_no" value="${ t.tip_no }" />
 									<c:param name="tip_ref" value="${ t.tip_ref }" />
@@ -173,13 +179,13 @@ body {
 					<c:if test="${ t.tip_reply_lev eq 3 }">
 						<th>${t.user_id}</th>
 						<td>&nbsp; &nbsp; &nbsp; &nbsp; ▶ ${t.tip_value} <c:if
-								test="${ t.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+								test="${ t.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 								<c:url var="ttreup2" value="/movetiprepup.do">
 									<c:param name="tip_no" value="${t.tip_no }" />
 								</c:url>
 								<a href="${ ttreup2 }">[댓글 수정하기]</a> &nbsp;
 					</c:if> <c:if
-								test="${ t.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}}">
+								test="${ t.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
 								<c:url var="ttrede2" value="/tiprepdelete.do">
 									<c:param name="tip_no" value="${ t.tip_no }" />
 									<c:param name="tip_ref" value="${ t.tip_ref }" />
@@ -194,13 +200,19 @@ body {
 				</tr>
 			</c:forEach>
 			<tr>
-				<td colspan="2" align="right"><c:if
-						test="${empty sessionScope.loginMember}">
+					<td colspan="2" align="right">
+						<c:if test="${empty sessionScope.loginMember}">
 						* 메인페이지의 TOP5 게시글 상세보기 이외의 모든 기능을 이용하시려면 로그인해주세요 *
-						</c:if> <input type="button" value="메인페이지"
-					onclick="location.href='main.do'"> <input type="button"
-					value="뒤로가기" onclick="javascript:history.go(-1)"></td>
-			</tr>
+						<input type="button" value="로그인이동"
+						onclick="location.href='loginPage.do'">
+						</c:if>
+						<c:if test="${!empty sessionScope.loginMember}">
+						<input type="button" value="메인페이지"
+						onclick="location.href='main.do'">
+						</c:if>
+						<input type="button" value="뒤로가기"
+						onclick="javascript:history.go(-1)"></td>
+				</tr>
 		</table>
 	</div>
 	<br>

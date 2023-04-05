@@ -39,7 +39,7 @@ body{
 		$('#ebdiv').css('display', 'none');
 		$('#ttdiv').css('display', 'none');
 		$('#badiv').css('display', 'none');
-
+		
 		$('select[name=searchtype]').on("change", function() {
 			$('#ffdiv').css('display', 'none');
 			$('#ebdiv').css('display', 'none');
@@ -57,9 +57,33 @@ body{
 
 		}); //onchange
 
-		
-
 	}); //ready
+
+
+</script>
+
+<script type="text/javascript">
+function fileCheck(obj) {
+    pathpoint = obj.value.lastIndexOf('.');
+    filepoint = obj.value.substring(pathpoint+1,obj.length);
+    filetype = filepoint.toLowerCase();
+    if(filetype=='jpg' || filetype=='gif' || filetype=='png' || filetype=='jpeg' || filetype=='bmp') {
+
+        // 정상적인 이미지 확장자 파일일 경우 ...
+
+    } else {
+        alert('이미지 파일만 선택할 수 있습니다.');
+
+        parentObj  = obj.parentNode
+        node = parentObj.replaceChild(obj.cloneNode(true),obj);
+
+        return false;
+    }
+    if(filetype=='bmp') {
+        upload = confirm('BMP 파일은 웹상에서 사용하기엔 적절한 이미지 포맷이 아닙니다.\n그래도 계속 하시겠습니까?');
+        if(!upload) return false;
+    }
+}
 
 </script>
 <title></title>
@@ -72,8 +96,8 @@ body{
 		<p id="title">게시글 작성</p>
 		<select name="searchtype">
 			<option value="#ffdiv" selected>FREE</option>
-			<option value="#ebdiv">EYEBODY</option>
 			<option value="#ttdiv">TIP</option>
+			<option value="#ebdiv">EYEBODY</option>
 			<option value="#badiv">BF & AF</option>
 		</select>
 	</div>
@@ -93,18 +117,19 @@ body{
 				</tr>
 				<tr height="40">
 					<th>제목</th>
-					<td><input name="free_name" type="text" style="width: 90%;" /></td>
+					<td><input name="free_name" type="text" style="width: 90%;" required/></td>
 				</tr>
 				<tr>
 					<th>내용</th>
 					<td><textarea name="free_value"
-							style="width: 90%; height: 200px;"></textarea>
+							style="width: 90%; height: 200px;"required></textarea>
 	
 					</td>
 				</tr>
 				<tr height="40">
 					<th>FILE</th>
-					<td><input name="upfile" type="file" /></td>
+					<td><input name="upfile" type="file" 
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/></td>
 				</tr>
 				<tr>
 					<td colspan="2" align="right"><input type="submit" value="등록">
@@ -130,17 +155,18 @@ body{
 				</tr>
 				<tr height="40">
 					<th>제목</th>
-					<td><input name="eyebody_name" type="text" style="width: 90%;" /></td>
+					<td><input name="eyebody_name" type="text" style="width: 90%;" required/></td>
 				</tr>
 				<tr>
 					<th>내용</th>
 					<td><textarea name="eyebody_value"
-							style="width: 90%; height: 200px;"></textarea>
+							style="width: 90%; height: 200px;" required></textarea>
 					</td>
 				</tr>
 				<tr height="40">
 					<th>FILE</th>
-					<td><input name="upfile" type="file" /></td>
+					<td><input name="upfile" type="file" 
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/></td>
 				</tr>
 				<tr>
 					<td colspan="2" align="right"><input type="submit" value="등록">
@@ -167,17 +193,18 @@ body{
 				</tr>
 				<tr height="40">
 					<th>제목</th>
-					<td><input name="tip_name" type="text" style="width: 90%;" /></td>
+					<td><input name="tip_name" type="text" style="width: 90%;" required/></td>
 				</tr>
 				<tr>
 					<th>내용</th>
 					<td><textarea name="tip_value"
-							style="width: 90%; height: 200px;"></textarea>
+							style="width: 90%; height: 200px;" required></textarea>
 					</td>
 				</tr>
 				<tr height="40">
 					<th>FILE</th>
-					<td><input name="upfile" type="file" /></td>
+					<td><input name="upfile" type="file" 
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/></td>
 				</tr>
 				<tr>
 					<td colspan="2" align="right"><input type="submit" value="등록">
@@ -203,17 +230,18 @@ body{
 				</tr>
 				<tr height="40">
 					<th>제목</th>
-					<td><input name="bfaf_name" type="text" style="width: 90%;" /></td>
+					<td><input name="bfaf_name" type="text" style="width: 90%;" required/></td>
 				</tr>
 				<tr>
 					<th>내용</th>
 					<td><textarea name="bfaf_value"
-							style="width: 90%; height: 200px;"></textarea>
+							style="width: 90%; height: 200px;" required></textarea>
 					</td>
 				</tr>
 				<tr height="40">
 					<th>FILE</th>
-					<td><input name="upfile" type="file" /></td>
+					<td><input name="upfile" type="file" 
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/></td>
 				</tr>
 				<tr>
 					<td colspan="2" align="right"><input type="submit" value="등록">
