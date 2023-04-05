@@ -1,10 +1,13 @@
 package org.sixpack.semi.member.model.vo;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Member {
+public class Member implements Serializable{
 
-    private String user_id;			//회원아이디
+	private static final long serialVersionUID = -5501979043866700812L;
+	
+	private String user_id;			//회원아이디
     private String user_pw;			//회원패스워드
     private String user_name;		//회원이름
     private String user_nickname;	//회원닉네임
