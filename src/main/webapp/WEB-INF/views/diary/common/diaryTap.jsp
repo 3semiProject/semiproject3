@@ -8,16 +8,20 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css"
- href="${ pageContext.servletContext.contextPath }/resources/css/diarytab.css" >
+ href="${ pageContext.servletContext.contextPath }/resources/css/diarytab2.css" >
+<script type="text/javascript">
+var today = new Date(); 
+</script>
 </head>
 <body>
-	<div class="tabs">
-		<c:url var="moveeat" value="/diary_showEatDiary.do">
-			<c:param name="movedate" value="${param.diary_post_date}"/>
-		</c:url>
-		<a href="${moveeat}" class="tabs left">식단</a>
-		<a href="${ pageContext.servletContext.contextPath }/diary_showActDiary.do?diary_no=${param.moveno}" class="tabs center">운동</a>
-		<a href="${ pageContext.servletContext.contextPath }/diary_showBodyDiary.do?diary_no=${param.moveno}" class="tabs right">체형</a>
+<form method="post" name="diary">
+	<input type="hidden" name="user_id" value="${sessionScope.loginMember.user_id}">
+ 	<input type="hidden" name="diary_post_date" value="${today}">	
+ 	<div class="tabs">
+    <input class="tabs" id="left" type="submit" value="식단" onclick="javascript: form.action='${ pageContext.servletContext.contextPath }/diary_showEatDiary.do';"/>
+    <input class="tabs" id="center" type="submit" value="운동" onclick="javascript: form.action='${ pageContext.servletContext.contextPath }/diary_moveTabEat.do';"/>
+    <input class="tabs" id="right" type="submit" value="체형" onclick="javascript: form.action='${ pageContext.servletContext.contextPath }/diary_showBodyDiary.do';"/>
 	</div>
+</form>
 </body>
 </html>

@@ -14,13 +14,20 @@ import org.springframework.stereotype.Repository;
 
 @Repository("diaryDao")
 public class DiaryDao {
+	
+	@Autowired
+	private SqlSessionTemplate session;
 
-    @Autowired
-    private SqlSessionTemplate session;
-
+	public Goal selectlastGoal(Diary diary) {
+		return session.selectOne("diaryMapper.selectlastGoal",diary);
+	}
     public Goal selectGoal(Diary diary) {
         return session.selectOne("diaryMapper.selectGoal", diary);
     }
+
+	public Goal selectCurrentGoal(Diary diary) {
+		return session.selectOne("diaryMapper.selectCurrentGoal",diary);
+	}
 
     public ArrayList<DateData> selectWeekDiary(Diary diary) {
         List<DateData> list = session.selectList("diaryMapper.selectWeekDiary", diary);
@@ -35,9 +42,14 @@ public class DiaryDao {
         List<Diary> list = session.selectList("diaryMapper.selectDayDiary", diary);
         return (ArrayList<Diary>) list;
 
-    }
+	}
+	public Diary selectMoveDiary(DateData move) {
+		return session.selectOne("diaryMapper.selectMoveDiary", move);
+	}
 
 
+
+	
     public int insertFoodData(List<Food> datalist) {
         return session.update("insertDataMapper.insertFood", datalist);
     }

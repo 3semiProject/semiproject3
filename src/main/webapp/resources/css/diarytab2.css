@@ -1,0 +1,50 @@
+@charset "UTF-8";
+/*다이어리 tab에 적용될 css*/
+form.tabs{
+	display: inline;
+	padding: 0px;
+	margin: 0px;
+}
+div.tabs{
+	margin: auto;
+	padding: 0px;
+	height: 40px;
+	text-align: center;
+	font-size:0;
+	display: inline;
+}
+#center{
+	border-left: 1px solid #868e96;
+	border-right: 1px solid #868e96;
+	border-radius: 0px;
+}
+#left{
+	border-radius: 7px 0px 0px 7px;	
+}
+#right{
+	border-radius: 0px 7px 7px 0px;	
+}
+input.tabs{
+	border: 1px solid #868e96;
+	display: inline;
+	margin: 0px;
+	padding: 0px;
+	width:150px;
+	height:40px;
+	background-color: white;
+	border-bottom: 3px solid rgba(134, 142, 150,0.5);
+
+	color: #797979;
+	line-height: 40px;
+	text-align: center;
+	text-decoration: none;
+	font-size: large;
+	font-weight: 600;
+	text-shadow: 1px 1px 2px rgba(0,0,0,0.3);	
+	border-bottom: 3px solid gray;
+}
+
+input.tabs:hover{
+	background-color: rgba(130, 201, 18, 0.5);
+	border-bottom: 3px solid rgba(86,140,8,0.5);
+}
