@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +15,7 @@ div.lineBox {
 
 div#all {
 	margin: auto;
-	display:table
+	display: table
 }
 
 div#imageBox {
@@ -91,99 +91,92 @@ a#memo {
 footer {
 	text-align: center;
 }
-
 </style>
 
 </head>
 
 <body>
-<h2>
-diary_showBodyModify -> bodyModify : 체형다이어리 수정화면
-</h2>
-받은값 diary : 어떤날짜에 누구의 어떤 다이어리를 수정하는건지
-	body : 화면에 띄울 기존 다이어리 정보
-
-
-입력	이미지수정
-	메모수정
-	체형 4가지 수정
-	
-	저장버튼 -> diary_modifyBody.do 
-		-> updateOneDiary, insertBody, updateBody
-		-> diary_showBody.do -> bodyView : 체형 다이어리 보기
-
-보낼값 diary, body
-
 	<div id="all">
+		<!-- 입력 및 저장  -->
+		<!-- 하단값은 입력값에 맞춰 출력ajax -->
 		<!-- body minbox  -->
 		<div id="minBox" class="lineBox">
 			<br>
 			<div class="textBox">
 				<h3>BMI</h3>
-				<label><input class="a" type="text" size=1 maxlength=4></label>
-				<br> <a>미달</a> &nbsp;
+				<label><input class="a" type="text" size=1 maxlength=4
+					value="${ body.body_bmi }"></label>
 			</div>
 		</div>
 		<div id="minBox" class="lineBox">
 			<br>
 			<div class="textBox">
 				<h3>Bmr</h3>
-				<label><input class="a" type="text" size=1 maxlength=4></label>
+				<label><input class="a" type="text" size=1 maxlength=4
+					value="${ body.body_bmr }"></label>
 			</div>
 		</div>
 		<div id="minBox" class="lineBox">
 			<br>
 			<div class="textBox">
 				<h3>체중</h3>
-				<label><input class="a" type="text" size=1 maxlength=4>kg</label>
-				<br> <a>미달</a> &nbsp;
+				<label><input class="a" type="text" size=1 maxlength=4
+					value="${ body.body_weight }">kg</label>
 			</div>
 		</div>
 		<div id="minBox" class="lineBox">
 			<br>
 			<div class="textBox">
 				<h3>체지방량</h3>
-				<label><input class="a" type="text" size=1 maxlength=4>g</label>
-				<br> <a>표준</a> &nbsp;
+				<label><input class="a" type="text" size=1 maxlength=4
+					value="${ body.body_fat }">g</label>
 			</div>
 		</div>
 		<div id="minBox" class="lineBox">
 			<br>
 			<div class="textBox">
 				<h3>골격근량</h3>
-				<label><input class="a" type="text" size=1 maxlength=4>g</label>
-				<br> <a>미달</a> &nbsp;
+				<label><input class="a" type="text" size=1 maxlength=4
+					value="${ body.body_muscle }">g</label>
 			</div>
 		</div>
 		<div id="minBox" class="lineBox">
 			<br>
 			<div class="textBox">
 				<h3>허리둘레</h3>
-				<label><input class="a" type="text" size=1 maxlength=4>cm</label>
-				<br> <a>미달</a> &nbsp;
+				<label><input class="a" type="text" size=1 maxlength=4
+					value="${ body.body_waistline }">cm</label>
 			</div>
 		</div>
-		<div id="minBox">
-		</div>
+		<div id="minBox"></div>
 		<!-- Image Box -->
+		<!-- 첨부하고싶은 사진을 등록 하고 저장 -->
 		<div id="imageBox" class="lineBox">
 			<div id="image">
 				<br>
 				<h1>image</h1>
+				<img src="${ diary.diary_image }">
+				<!--  <img src="${ pageContext.servletContext.contextPath }/resources/images/photo2.jpg"> -->
+				<c:if test="${ !empty body.original_filepath }">${ body.original_filepath } &nbsp; <input
+						type="checkbox" name="delflag" value="yes"> 사진삭제<br>
+				</c:if>
 			</div>
 		</div>
+		<!-- 메모를 입력하고 저장 -->
 		<!-- Memo Box -->
 		<div>
 			<a id="memo">Memo</a>
 			<center>
-				<textarea class="memobox" style="width: 480px; height: 170px; font-size: 11px;" maxlength=587></textarea>
+				<textarea class="memobox"
+					style="width: 480px; height: 170px; font-size: 11px;" maxlength=587>${ diary.diary_memo }</textarea>
 			</center>
 		</div>
-		<!-- 수정 버튼 -->
+		<!-- 수정완료 버튼 -->
 		<footer>
-			<button onclick="Page()">수정</button>
+			<input type="submit" value="수정"> <a href="bodyDiary.do">시작페이지로
+				이동</a>
 		</footer>
 	</div>
-
+	</form>
 </body>
 </html>
