@@ -171,10 +171,20 @@ body {
 	left: 300px;
 
 }
+.mail_input_box{
+	padding: 10px 30px;
+	display: flex;
+}
+.mail_check_input_box{
+	padding: 10px 30px;
+	display: flex;
+}
+
 
 .button_box_form {
 	display: flex;
 }
+
 </style>
 <script
 	src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
@@ -257,29 +267,32 @@ body {
             return false;
         }
 
+// ----------------------------------------------------------------------------------
+// 전화번호 인증
         
-        var checknum=0;
         
-        //전화번호 인증
+        var checknum; //문자전송 인증번호 저장위한 코드
+        
         function phoneAuth() {
         	alert("인증번호 발송되었습니다.\n휴대폰에서 인증번호를 확인해주세요.");
+        	
 			$.ajax({
 				url:"authNumber.do",
 				type: "POST",
 				data: {phone : $('#phone').val()},
 				dataType: "text",
 				success: function(data) {
-					alert("테스트");
-					console.log("success : " + data);
-					if(data !="no") {
-						alert("테스트2");
+					console.log("data : " + data);
+					if(data !="0") {
                         $('#authNumber').focus();
                         checknum = data;
+				}else{
+					alert("휴대폰 번호가 올바르지 않습니다.\n다시 입력해주세요.");
 					}
 				},
 				error: function (jqXHR, textStatujs, errorThrown) {
                     console.log("error : " + jqXHR + ", " + textStatujs + ", " + errorThrown);
-                    alert("휴대폰 번호가 올바르지 않습니다.\n다시 입력해주세요.");
+                    alert("에러 발생.");
 					$('#phone').focus();
 				}
 			});
@@ -288,63 +301,65 @@ body {
 		function authNumberChek() {
 	        // 유효성 검사 / 인증번호 확인
             var authNumber = $('#authNumber').val();
-
-            if (checknum !== authNumber) {
-                alert("인증 번호가 일치하지 않습니다.");
-                $('#authNumber').select();
-                return false;
-            }
             
-            if (checknum == authNumber){
-           		alert("인증 번호가 일치합니다.");
+	        if ((checknum != null) && (checknum == authNumber)){
+           		alert("인증번호가 일치합니다.");
            		$('#email').select();
             	return true;
-            }
+            }else{
+                alert("인증번호가 일치하지 않습니다1.");
+                $('#authNumber').select();
+                return false;
+            }  
 		}
+	
+// --------------------------------------------------------------------------
+// 이메일인증
 		
-		
-        var chekcode=0;
-        
-        //이메일 인증
-        function emailAuth() {
-        	alert("인증코드 발송되었습니다.\n이메일에서 인증코드를 확인해주세요.");
-			$.ajax({
-				url:"authEmail.do	",
-				type: "POST",
-				data: {phone : $('#email').val()},
-				dataType: "text",
-				success: function(data) {
-					alert("테스트");
-					console.log("success : " + data);
-					if(data !="no") {
-						alert("테스트2");
-                        $('#authEmail').focus();
-                        chekcode = data;
-					}
-				},
-				error: function (jqXHR, textStatujs, errorThrown) {
-                    console.log("error : " + jqXHR + ", " + textStatujs + ", " + errorThrown);
-                    alert("이메일 주소가 올바르지 않습니다.\n다시 입력해주세요.");
-					$('#email').focus();
-				}
+		var code;	 //이메일전송 인증번호 저장위한 코드
+
+		$(function(){	
+			/* 인증번호 이메일 전송 */
+			$(".mail_check_button").click(function(){
+				alert("인증번호 발송되었습니다.\n이메일에서 인증번호를 확인해주세요.");
+			    
+				var email = $(".mail_input").val();        // 입력한 이메일
+			    var cehckBox = $(".mail_check_input");        // 인증번호 입력란
+			    var boxWrap = $(".mail_check_input_box");    // 인증번호 입력란 박스 
+			    $.ajax({
+			        
+			        type:"GET",
+			        url:"mailCheck.do?email=" + email,
+			        success:function(data){
+			            
+			            cehckBox.attr("disabled",false);
+			            boxWrap.attr("id", "mail_check_input_box_true");
+			            code = data;
+			        }      
+			    });
+			    
 			});
-		}
+		}); //document.ready
         
-		function authEmailChek() {
-	        // 유효성 검사 / 인증번호 확인
-            var authEmail = $('#authEmail').val();
+		//이메일인증번호 확인
+		function emailck(){
+			/* 인증번호 비교 */
+			/* $(".mail_check_input").blur(function(){ */
+			    
+			    var inputCode = $(".mail_check_input").val();   // 입력코드    
+ 
+			 // 일치할 경우
+			    if((code != null) && (inputCode == code)){
+			    	alert("인증번호가 일치합니다.");
+			    	return true;
+			    // 일치하지 않을 경우
+			    } else {
+			    	alert("인증번호를 다시 확인해주세요2. ");
+			    	return false;
 
-            if (chekcode !== authEmail) {
-                alert("인증 코드가 일치하지 않습니다.");
-                $('#authNumber').select();
-                return false;
-            }
-            
-            if (chekcode == authEmail){
-           		alert("인증 번호가 일치합니다.");
-           		$('#email').select();
-            	return true;
-            }
+			    }    
+			    
+			/* }); */
 		}
 		
 
@@ -409,7 +424,7 @@ body {
 						<input type="radio" name="gender" value="F"> 여자
 					</div>
 				</div>
-							<div class="join_e">
+				<div class="join_e">
 					<div class="join_item">전화번호</div>
 					<div class="auto_number api">
 						<div class="join_item2 api_join_item2">
@@ -424,18 +439,19 @@ body {
 				</div>
 				<div class="join_e">
 					<div class="join_item">이메일</div>
-					<div class="auto_number api">
-						<div class="join_item2 api_join_item2">
-							<input type="email" name="email" id="email" required> &nbsp; &nbsp;
-							<input type="button" value="인증메일전송" onclick="return emailAuth();">
+					<div class="mail_api">
+						<div class="mail_input_box">
+							<input class="mail_input" name="memberMail"> &nbsp; &nbsp;
+							<input class="mail_check_button" type="button" value="인증번호전송">
 						</div>
-						<div class="join_item2 api_join_item2" id="authBox">
-							<input type="email" id="authEmail" value="이메일인증코드 입력하세요." onfocus="this.value=null" required /> &nbsp; &nbsp;
-							<input type="button" value="인증번호확인" onclick="return authEmailChek();" />
-						</div>						
+						<div class="mail_check_wrop">
+							<div class="mail_check_input_box">
+								<input class="mail_check_input" value="인증번호 입력하세요." onfocus="this.value=null" /> &nbsp; &nbsp;
+								<input type="button" value="인증번호확인" onclick="emailck(); return false;" />
+							</div>
+						</div>
 					</div>
 				</div>
-
 				<div class="join_button">
 					<div>
 						<input type="submit" value="가입"> &nbsp; &nbsp; 
@@ -445,5 +461,6 @@ body {
 			</div>
 		</form>
 	</div>
+	<br><br><br><br>
 </body>
 </html>

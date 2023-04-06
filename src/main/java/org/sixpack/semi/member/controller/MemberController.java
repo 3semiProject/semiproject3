@@ -4,21 +4,22 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Random;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.codehaus.jackson.JsonNode;
 import org.sixpack.semi.common.FileNameChange;
-import org.sixpack.semi.kakao.controller.KakaoController;
 import org.sixpack.semi.kakao.model.service.KakaoService;
-import org.sixpack.semi.kakao.model.vo.Kakao;
 import org.sixpack.semi.member.model.service.MemberService;
 import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,9 +38,15 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	//암호화
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncder;
-
+	
+	//이메일 인증 api
+	@Autowired
+    private JavaMailSender mailSender;
+	
+	//소셜로그인 카카오 api
 	@Autowired
 	private KakaoService kakaoService;
 
@@ -325,74 +332,22 @@ public class MemberController {
 
 	}
 	
-	//ajax 통신으로 핸드폰 인증번호 요청 처리용 메소드(naver cloud)
-	@RequestMapping(value = "authNumber.do",  method = { RequestMethod.GET, RequestMethod.POST })
+	// ajax 통신으로 핸드폰 인증번호 요청 처리용 메소드(naver cloud)
+	@RequestMapping(value = "authNumber.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String phoneAuth(@RequestParam("phone") String phone, HttpSession session) {
 
-	    try { // 이미 가입된 전화번호가 있으면
-	        if(memberService.selectPhoneCount(phone) > 0) 
-	            return "no"; 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+		try { // 이미 가입된 전화번호가 있으면
+			if (memberService.selectPhoneCount(phone) > 0)
+				return "0";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-	    String code = memberService.sendRandomMsg(phone);
-	    session.setAttribute("randomNum", code);
-	    
-	    return "ok";
+		String code = memberService.sendRandomMsg(phone);
+		return code;
 	}
 
-	
-	//ajax 통신으로 이메일 인증번호 요청 처리용 메소드(naver cloud)
-	@RequestMapping(value = "authEmail.do",  method = { RequestMethod.GET, RequestMethod.POST })
-	@ResponseBody
-	public String emailAuth(@RequestParam("email") String email, HttpSession session) {
-
-	    try { // 이미 가입된 이메일이 있으면
-	        if(memberService.selectPhoneCount(email) > 0) 
-	            return "no"; 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-	    String code = memberService.sendRandomMsg(email);
-	    session.setAttribute("randomNum", code);
-	    
-	    return "ok";
-	}
-	
-
-//	// ajax 통신으로 핸드폰 인증번호 요청 처리용 메소드
-//	@RequestMapping(value = "authNumber.do", method = RequestMethod.POST) // 전송방식 틀리면 405 에러
-//	@ResponseBody
-//	public String authPhoneMethod(@RequestParam("phone") String phone)
-//
-//
-//		System.out.println("실행전 : " +phone);
-//
-//		String api_key = "NCSL0GK6MED8AM1K";
-//		String api_secret = "TH5SWZ2TULUDGTVY6COZLAH8XNQXGHL6";
-//		Message coolsms = new Message(api_key, api_secret);
-//		System.out.println("asdfasdf" + coolsms);
-//
-//		// param(to, from, type, text)
-//		HashMap<String, String> params = new HashMap<String, String>();
-//		params.put("to", phone); // 수신번호
-//		params.put("from", "01095326547"); // 발신번호
-//		params.put("type", "SMS");
-//		params.put("text", "[인증번호]\n" + randomNumber + "\n입니다.");
-//		params.put("app_version", "test app 1.2"); // application name and version
-//
-//		try {
-//			JSONObject obj = (JSONObject) coolsms.send(params);
-//			System.out.println(obj.toString());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//			return Integer.toString(randomNumber);
-//	}
 
 	// 회원가입 요청 처리용 메소드
 	@RequestMapping(value = "enroll.do",  method = { RequestMethod.GET, RequestMethod.POST })
@@ -696,5 +651,51 @@ public class MemberController {
 			return "common/error";
 		}
 	}
+	
+//------------------------------------------------------------------------------
+    /* 이메일 인증 */
+    @RequestMapping(value="mailCheck.do", method=RequestMethod.GET)
+    @ResponseBody
+    public String mailCheckGET(String email) throws Exception{
+        
+        /* 뷰(View)로부터 넘어온 데이터 확인 */
+        logger.info("이메일 데이터 전송 확인");
+        logger.info("인증번호 : " + email);
+        
+        /* 인증번호(난수) 생성 */
+        Random random = new Random();
+        int checkNum = random.nextInt(888888) + 111111;
+        logger.info("인증번호 : " + checkNum);
+        
+        /* 이메일 보내기 */
+        String setFrom = "hjm8686@naver.com";
+        String toMail = email;
+        String title = "회원가입 인증 이메일 입니다.";
+        String content = 
+                "다뮤니티를 방문해주셔서 감사합니다." +
+                "<br><br>" + 
+                "인증 번호는 " + checkNum + "입니다." + 
+                "<br>" + 
+                "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+        
+        try {
+            
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+            helper.setFrom(setFrom);
+            helper.setTo(toMail);
+            helper.setSubject(title);
+            helper.setText(content,true);
+            mailSender.send(message);
+            
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        
+        String num = Integer.toString(checkNum);
+        
+        return num;
+        
+    }
 
 }
