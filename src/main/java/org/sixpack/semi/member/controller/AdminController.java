@@ -3,8 +3,9 @@ package org.sixpack.semi.member.controller;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Map;
 
-
+import org.apache.commons.collections.map.HashedMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.sixpack.semi.banner.model.service.BannerService;
@@ -24,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -77,6 +79,7 @@ public class AdminController {
 		return "admin/boardMgtPage";
 	}
 	
+
 	
 	
 	
@@ -84,8 +87,7 @@ public class AdminController {
 	
 	
 	
-	
-	
+	//------------------------------------------------------------
 	
 	
 	//기능관련 메소드
@@ -118,17 +120,21 @@ public class AdminController {
 		return sendJson.toJSONString();
 	}
 	
+	
+	
+	
+	
 	//회원 작성 총 게시물 카운트 메소드
 	@RequestMapping(value="adminBox.do", method={ RequestMethod.GET, RequestMethod.POST })
-	public String adminBoxShowMethod() {
+	public String adminBoxShowMethod(Model model) {
 		//오늘 접속자 수
-		String visitorsT = Integer.toString(logService.visitIpCount());
+		String visitorsT = Integer.toString(logService.visitCount());
 		
 		//월 접속자 수(해당 달 총 접속자수=> 데일리로 누적됨)
-		String visitorsM = Integer.toString(logService.visitIpCountMonth());
+		String visitorsM = Integer.toString(logService.visitCountMonth());
 		
 		//월평균 접속자 수(한달 평균 접속자수)
-		String visitorsAvg = Integer.toString(logService.visitIpCountAvg());
+		String visitorsAvg = Integer.toString(logService.visitCountAvg());
 		
 		
 		//총게시물 수 
@@ -140,9 +146,19 @@ public class AdminController {
 		
 		
 		//map이든 list든 받아서 넘겨주고 프론트단에서 출력하기
+//		Map<String, String> countBox = new HashedMap ();
+//		countBox.put("visitorsT", visitorsT);
+//		countBox.put("visitorsM", visitorsM);
+//		countBox.put("visitorsAvg", visitorsAvg);
+//		
+//		model.addAttribute("countBox", countBox);
 		
+		model.addAttribute("visitorsT", visitorsT);
+		model.addAttribute("visitorsM", visitorsM);
+		model.addAttribute("visitorsAvg", visitorsAvg);
 		
-		return null;
+		logger.info("adminBox.do 실행");
+		return "common/mainbox";
 		
 	}
 	

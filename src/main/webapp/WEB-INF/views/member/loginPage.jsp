@@ -133,8 +133,8 @@ body #loginForm {
 <img class="img1" alt="logo" src="${ pageContext.servletContext.contextPath }/resources/images/mainLogo.jpg" />
  <form action="login.do" method="post">
  	<div class="login_box">
-      <input type="text" name="user_id" class="pos" placeholder="아이디">
-      <input type="password" name="user_pw" class="pos" placeholder="비밀번호">
+      <input type="text" name="user_id" class="pos" placeholder="아이디" />
+      <input type="password" name="user_pw" class="pos" placeholder="비밀번호" />
  	</div>
  	<div class="login_submit">
       <input type="submit" value="로그인">

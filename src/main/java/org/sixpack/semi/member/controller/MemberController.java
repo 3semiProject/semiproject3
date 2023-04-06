@@ -3,6 +3,10 @@ package org.sixpack.semi.member.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +18,9 @@ import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.kakao.controller.KakaoController;
 import org.sixpack.semi.kakao.model.service.KakaoService;
 import org.sixpack.semi.kakao.model.vo.Kakao;
+import org.sixpack.semi.log.controller.LogController;
+import org.sixpack.semi.log.model.service.LogService;
+import org.sixpack.semi.log.model.vo.Log;
 import org.sixpack.semi.member.model.service.MemberService;
 import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;
@@ -38,6 +45,12 @@ public class MemberController {
 	private MemberService memberService;
 	
 	@Autowired
+	private LogService logService;
+	
+	@Autowired
+	private LogController logController;
+	
+	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncder;
 
 	@Autowired
@@ -47,7 +60,7 @@ public class MemberController {
 	// login 처리용 메소드
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public String loginMethod(@RequestParam("user_id") String user_id, @RequestParam("user_pw") String user_pw, Model model,
-			HttpSession session) {
+			HttpSession session, HttpServletRequest request) throws UnknownHostException {
 		logger.info("login.do : " + user_id);
 		
 		//로그인 요청한 회원의 아이디 존재유무 체크 및 변수에 저장
@@ -55,8 +68,37 @@ public class MemberController {
 		logger.info(loginMember.getProfile_renamefile());
 		if (loginMember != null && this.bcryptPasswordEncder.matches(user_pw, loginMember.getUser_pw())) {
 			session.setAttribute("loginMember", loginMember);
+			
+			//해당 멤버의 정보 변수명에 저장
+			String visit_ip = logController.getClientIP(request);
+			
+			SimpleDateFormat time = new SimpleDateFormat("yyyyMMddHHmmss");
+			String visit_time = time.format(session.getCreationTime());
+			//SimpleDateFormat time = new SimpleDateFormat();
+			//Date time = new Date(session.getCreationTime());
+			//SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+//			Date date = new Date();
+			//Date visit_time = sdf.parse(session.getCreationTime());
+			//logger.info(sdf.format(session.getCreationTime()));
+			
+			
+			//check
 			logger.info(loginMember.getUser_id());
-			return "common/main";
+//			logger.info("visit_ip :" + visit_ip + " , visit_time : " + visit_time);
+			
+			Log log = new Log();
+			log.setUser_id(loginMember.getUser_id());
+			log.setVisit_ip(visit_ip);
+			log.setVisit_time(visit_time);
+			
+			if(logService.insertLog(log) > 0) {
+				return "common/main";
+			}else {
+				logger.info("접속자 로그 테이블 저장 실패. 확입바랍니다.");
+//				model.addAttribute("message", "로그 저장 실패 : 재로그인 부<br>" + "또는 로그인 제한된 회원인지 관리자에게 문의하세요.");
+				return "common/error";
+			}
+			
 		} else {
 			model.addAttribute("message", "로그인 실패 : 아이디나 암호 확인하세요.<br>" + "또는 로그인 제한된 회원인지 관리자에게 문의하세요.");
 			return "common/error";

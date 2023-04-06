@@ -199,6 +199,8 @@ border: 1px solid #D1D1D1;
       //버튼 클릭시, 로그인 페이지로 이동하는 controller 요청
       location.href = "loginPage.do";
    }
+
+ 
    
    function logout() {
 	   location.href ="logout.do";
@@ -235,7 +237,7 @@ border: 1px solid #D1D1D1;
       </c:if>
 
       <!-- -------------------------------------------------------------------------------------------------------------- -->
-      >
+      
 
 
 
@@ -277,17 +279,17 @@ border: 1px solid #D1D1D1;
 
 
 
-      <!-- 로그인 했을 때 : 관리자인 경우 -->
+      <!-- 로그인 했을 때 : 관리자인 경우  ajax로 해얄듯? 갱신되어야함-->
       <c:if
          test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
-         <form action="adminBox.do">
+         <form id="adminForm" action="adminBox.do">
          <div id="adminBox">
             <div id="user_visit">
                <div>접속자 분류</div>
                <div id="visit_count">
                   <div id="today">
                      <div>오늘 접속자 수</div>
-                     <div></div>
+                     <div>${ visitorsT }</div>
                   </div>
                   <div id="month">
                      <div>월 접속자 수</div>
