@@ -9,7 +9,107 @@
 <meta charset="UTF-8">
 <title>Diary</title>
 <style type="text/css">
-ul{
+div.lineBox {
+	height: 100px;
+	border-bottom: 1px;
+	float: left;
+	position: relative;
+	left: 100px;
+	margin: 5px;
+	padding: 3px;
+	background-color: #ffffff;
+	text-align: right;
+}
+
+div#all {
+	margin: auto;
+	display: table
+}
+
+div#imageBox {
+	border-radius: 10px;
+	border: 1.5px solid black;
+	padding: 15px;
+	width: 170px;
+	height: 170px;
+	text-align: right;
+	margin-left: 280px;
+	margin-right: 150px;
+	margin-bottom: 35px;
+}
+
+div#textmove {
+	text-align: left;
+	width: 300px;
+	height: 0px;
+	position: relative;
+	top: 60%;
+	left: 45%;
+	transform: translate(-50%, -50%);
+	border-bottom: 0.1em solid grey;
+	
+}
+
+div#totmove {
+	text-align: left;
+	width: 300px;
+	height: 0px;
+	position: relative;
+	top: 60%;
+	left: 45%;
+	transform: translate(-50%, -50%);
+	border-top: 0.1em solid grey;
+	
+}
+
+div.textBox {
+	padding: 5px 10px;
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100px;
+	height: 70px;
+}
+
+input.a {
+	font-size: .2em;
+	border: 1.5px solid grey;
+	text-align: justify;
+	background-color: #e2e2e2;
+}
+
+a#memo {
+	font-size: 15px;
+	margin: 20px;
+	font-weight: bold;
+	margin-top: 35px;
+	margin-left: 110px;
+}
+
+input:focus {
+	outline: none;
+}
+
+.memobox {
+	text-align: justify;
+	border: 1.3px solid black;
+	resize: none;
+	outline: none;
+}
+
+body {
+	font-family: Copperplate, Papyrus, fantasy;
+	font-size: .5em;
+	text-align: justify;
+	font-weight: bold;
+}
+
+a {
+	font-size: 20px;
+}
+/* ul{
 padding: 0;}
 ol{
 padding:0;}
@@ -19,7 +119,7 @@ display: inline-block;
 #footer {
     position: relative;
     transform: translatY(-100%);
-} 
+}  */
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
@@ -29,7 +129,7 @@ display: inline-block;
 </script>
 </head>
 <body>
-<br><c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
+<%-- <br><c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
 <br><c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--다이어리 메뉴바-->
 
 
@@ -44,7 +144,7 @@ display: inline-block;
 
 
 
-<%-- <div>
+<div>
 <ul><li><ol>
 	<li>운동이름 : ${act[0].actname}</li>
 	<li>운동한 시간 : ${act[0].act_mm}</li>
@@ -56,7 +156,7 @@ display: inline-block;
 	<li>운동한 시간 : ${act[1].act_mm} }</li>
 	<li>소모 칼로리 : ${act[1].act_kacl} }</li>
 </ol></li></ul>
-</div> --%>
+</div>
 <hr>
 <div>
 운동추천 ajax화면
@@ -86,7 +186,46 @@ display: inline-block;
 
 
 </pre>
-<hr>
+<hr> --%>
+	<div id="all">
+		<!-- 운동 추가시 -->
+		<div style="width: 75%; height: 150px;">
+			<br> <br> <br> <br>
+			<div id="textmove">
+				<a>운동1</a> &nbsp; <label><input class="a" type="text" size=1
+					maxlength=3></label> <a>분(m)=></a> &nbsp; <a>00kcal</a>
+			</div>
+			<br> <br> <br>
+			<div id="textmove">
+				<a>운동2</a> &nbsp; <label><input class="a" type="text" size=1
+					maxlength=3></label> <a>분(m)=></a> &nbsp; <a>00kcal</a>
+			</div>
+			<br> <br> <br>
+			<div id="textmove">
+				<a>운동3</a> &nbsp; <label><input class="a" type="text" size=1
+					maxlength=3></label> <a>분(m)=></a> &nbsp; <a>00kcal</a>
+			</div>
+			<br> <br> <br> <br> <br>
+
+			<div id="totmove">
+				<a>총 소모칼로리 =></a> &nbsp; <a>kcal</a>
+			</div>
+		</div>
+		<div id="imageBox" class="lineBox">
+			<br>
+			<div class="textBox">
+				<br>
+				<h2>image</h2>
+			</div>
+		</div>
+		<div>
+			<a id="memo"> Memo</a>
+			<center>
+				<textarea class="memobox"
+					style="width: 430px; height: 80px; font-size: 0.5em;"></textarea>
+			</center>
+		</div>
+	</div>
 <div id="footer">
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </div>
