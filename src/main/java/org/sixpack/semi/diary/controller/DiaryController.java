@@ -29,78 +29,63 @@ public class DiaryController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DiaryController.class);
 	
-	//메인->다이어리로 화면전환시 회원정보전달용
+	//정보전달 없이 다이어리화면 띄울때,
 	@RequestMapping(value="diary.do", method={ RequestMethod.GET, RequestMethod.POST })
 	public String showFirstDiary( RedirectAttributes redirect,
-			HttpSession session, Diary diary) {
-		String user_id = ((Member)session.getAttribute("loginMember")).getUser_id();
-		if(user_id!=null) { //로그인상태 목표정보확인
-			Goal goal;
-			//Date today = new Date(new java.util.Date().getTime());
-			//test용 날짜값 변경
-			Date today = java.sql.Date.valueOf("2023-03-01"); //test
-			diary.setUser_id(((Member)session.getAttribute("loginMember")).getUser_id());
-			diary.setDiary_post_date(today);
-
-			//goal 최근작성일이 오늘기준 한달이전 goal을 조회
-			//한달이내 goal이 없으면 목표관리 페이지로 이동
-			//goal 목표 종료일이 오늘 이전이면 목표관리 페이지로 이동(이동 후 팝업안내창띄우기)
-			goal = diaryService.selectCurrentGoal(diary);
-			if(goal==null || goal.getGoal_date().before(today)) {
-				redirect.addFlashAttribute("diary", diary);
-				return "redirect:diary_showGoalModify.do";
-			}
+			HttpSession session) {
+		if(session==null) {
+			//비로그인 상태면 로그인 페이지로 이동
+			return "redirect:loginPage.do";
 			
-			//목표정보 있으면 식단다이어리 보기화면
-			redirect.addFlashAttribute("diary", diary);
-			return "redirect:diary_showEatDiary.do";
+			//정보 없을때 test용 날짜값 변경
+			//Diary diary= new Diary("dd", java.sql.Date.valueOf("2023-03-01"), 0, "eat", null, null );
+			//redirect.addFlashAttribute("diary", diary);
+			//return "redirect:diary_showEatDiary.do";			
 		}
 		
-		//비로그인 상태면 로그인 페이지로 이동
-			return "redirect:loginPage.do";
+		//다이어리에 회원정보담기
+		String user_id = ((Member)session.getAttribute("loginMember")).getUser_id();
+		Date today = new Date(new java.util.Date().getTime());
+		Diary diary= new Diary(user_id, today, 0, "eat", null, null );
+		
+		//다이어리 전환 전, 목표정보 있는지 확인
+		/* 목표관리페이지 아직 미완성
+		 * Goal goal; goal = diaryService.selectCurrentGoal(diary); //1달이내 정보조회
+		 * if(goal==null || goal.getGoal_date().before(today)) { //조회값이 없거나, 목표일이 끝났을때
+		 * redirect.addFlashAttribute("diary", diary);
+		 * redirect.addFlashAttribute("message", "목표정보가 없습니다. 목표를 설정해주세요"); return
+		 * "redirect:diary_showGoalWrite.do"; //목표작성화면으로 이동 }
+		 */
+		
+		//식단 다이어리화면으로 이동
+		redirect.addFlashAttribute("diary", diary);
+		return "redirect:diary_showEatDiary.do";
 	}
 	
-	
-	//날짜네비게이션 날짜 이동처리용
-	@RequestMapping("diary_moveWeekDiary.do")
-	public String moveWeekDiary(RedirectAttributes redirect,
-			HttpSession session,
-			@RequestParam("ago") int ago,
-			@RequestParam("week")Date day) {
-		//기준일로 부터 몇일 전 날짜로 이동할지
-		String user_id = ((Member)session.getAttribute("loginMember")).getUser_id();
-		DateData move = new DateData(day, user_id, ago);
-		
-		Diary diary = diaryService.selectMoveDiary(move);
+	//다이어리 화면내 id, date, category 정보로 다이어리간 이동
+	@RequestMapping(value="diary_moveDiary.do", method={ RequestMethod.GET, RequestMethod.POST })
+	public String showMoveDiary( RedirectAttributes redirect, Diary diary) {
+		//diary 정보 없을때 test용 날짜값 변경
+		logger.info(diary.toString());
+		if(diary.getDiary_post_date()==null) {			
+			diary.setDiary_post_date(java.sql.Date.valueOf("2023-03-01"));
+			diary.setUser_id("dd");
+			diary.setDiary_category("eat");
+		}
 		redirect.addFlashAttribute("diary", diary);
 		
-		//카테고리에 따라 controller 지정
-		//diary 없으면 빈 식단화면으로 나옴
-		if(diary.getDiary_category().equals("act")){
-			return "redirect:diary_showActDiary.do";
-		}else if(diary.getDiary_category().equals("body")){
-			return "redirect:diary_showBodyDiary.do";
-		}else {
+		//카테고리별 이동
+		if(diary.getDiary_category()==null || 
+			diary.getDiary_category().equals("eat")){
 			return "redirect:diary_showEatDiary.do";
+		}else if(diary.getDiary_category().equals("act")){
+			return "redirect:diary_showActDiary.do";
+		}else{
+			return "redirect:diary_showBodyDiary.do";
 		}
 	}
-//	//탭버든 날짜 이동처리용
-//	@RequestMapping(value="diary_moveTapDiary.do", method= {RequestMethod.GET, RequestMethod.POST})
-//	public String moveTapDiary(RedirectAttributes redirect,
-//			//HttpSession session,
-//			@RequestParam(value="diaryTap", required=false)Diary diary) {
-//		
-//		redirect.addFlashAttribute("diary", diary);
-//		//카테고리에 따라 controller 지정
-//		//diary 없으면 빈 식단화면으로 나옴
-//		if(diary.getDiary_category().equals("act")){
-//			return "redirect:diary_showActDiary.do";
-//		}else if(diary.getDiary_category().equals("body")){
-//			return "redirect:diary_showBodyDiary.do";
-//		}else {
-//			return "redirect:diary_showEatDiary.do";
-//		}
-//	}
+			
+	
 	
 //	//캘린더 출력용
 //	@RequestMapping(value = "diary_showCalendar.do", method = RequestMethod.GET)

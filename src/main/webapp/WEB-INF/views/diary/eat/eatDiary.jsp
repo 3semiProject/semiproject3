@@ -9,10 +9,23 @@
 <meta charset="UTF-8">
 <title>Diary</title>
 <link rel="stylesheet" type="text/css"
- href="${ pageContext.servletContext.contextPath }/resources/css/diarytab2.css" >
+ href="${ pageContext.servletContext.contextPath }/resources/css/vars.css" >
+<link rel="stylesheet" type="text/css"
+ href="${ pageContext.servletContext.contextPath }/resources/css/diarytab.css" >
+ <link rel="stylesheet" type="text/css"
+ href="${ pageContext.servletContext.contextPath }/resources/css/button_div.css" >
+
 <style type="text/css">
+<link rel="preload" href="https://cdn.dribbble.com/assets/neue-haas-grotesk/NeueHaasGrotTextRound-75Bold-Web-f2ff2f34217e3fdab82c30ef689f5be3fb86a8e4218a1906a9399d0354a95d45.woff2" as="font" crossorigin="anonymous">
+@font-face{
+	font-family: 'dfont';
+	src: url("${ pageContext.servletContext.contextPath }/resources/fonts/NimbusSansNovusT-UltraLight.woff");
+}
+div#diaryPart{
+font-family: dfont;
+}
 /* 다이어리출력용 */
-#mainContain {
+#mainContain{
 	margin: auto;
 	width: 1200px;
 	height: 80%;
@@ -26,26 +39,43 @@
 	font-size: 16px;
 }
 
-#footer {
-	position: relative;
-	transform: translateY(-100%);
-}
-
 #E_ {
 	color: inherit;
 	font-weight: 400;
 	box-sizing: border-box;
 }
 
-#modifybtn {
-	width: 55px;
-	height: 30px;
-	border: 1px solid #827482;
-	background-color: white;
-	color: #827482;
-	border-radius: 7px;
+button{
+	height: 40px;
+    padding: 10px 16px;
+	border: none;
+	background: #f3f3f4;
+    color: #0d0c22;
+	border-radius: 8px;
+	text-align: center;
+	font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    box-sizing: border-box;
+}
+button:hover, button:focus {
+    background-color: #e7e7e9;
 }
 
+div.noneD {
+	margin: 40px auto 40px auto;
+	width: 900px;
+	height: 150px;
+	padding: 50px;
+	border-radius: 34px 34px 34px 34px;
+	-moz-border-radius: 34px 34px 34px 34px;
+	-webkit-border-radius: 34px 34px 34px 34px;
+	border: 1px solid #827482;
+	justify-content: center;
+	box-shadow: 3px 4px 3px -2px gray;
+	text-align: center;
+	Vertical-align: middle
+}
 div.D {
 	width: 900px;
 	border-radius: 34px 34px 34px 34px;
@@ -81,7 +111,7 @@ width: 500px;
 border-bottom: 2px solid rgba(92, 148, 13, 0.5);
 }
 
-img{
+.dimg img{
 	width: 350px;
 	height: 350px;
 	border-radius: 27px;
@@ -117,9 +147,10 @@ table.E td.even-row {
 	padding-bottom: 20px;
 }
 
-table.dtotal {
+table.dtotal{
 	margin: auto;
 	width: 900px;
+	height: 50px;
 	font-size: 15pt;
 	text-align: center;
 	border-bottom: 2px solid rgba(92, 148, 13, 0.5);
@@ -130,94 +161,33 @@ table.T img {
 	height: 200px;
 	border-radius: 7px;
 }
-
-table.T {
+table.T{
 	width: 750px;
 	text-align: center;
 	margin: auto;
 }
-
-table.T th {
-	width: 250px;
+table.T th{
+	height: 40px;
+	vertical-align: bottom;
 }
-</style>
-<style>
-/* 네비게이터 출력용 */
-    .calendar {
-        margin: auto;
-        text-align: center;
-    }
-    .calendar a{
-        text-decoration: none;
-        color: black;
-    }
-    .navigation{
-        margin: auto;
-        text-align: center;
-    }
-    div.navigation a{
-        color: #797979;
-        padding: 20px;
-
-        vertical-align: middle;
-        text-decoration: none;
-        font-size: 40px;
-        text-align: center;
-        font-weight: bold;
-    }
-    a.today {
-        display: inline-block;
-        width:50px;
-        height:50px;
-        border: 1px solid rgba(86,140,8,0.5);
-        border-radius: 50%;
-        background-color: rgba(130, 201, 18, 0.5);
-        text-align: center;
-    }
-</style>
-<style type="text/css">
-/* 목표바 출력용 */
-div.target{
-	width: 900px;
-	margin: auto;
-	position: relative
-}
-div.target img{
-height: 123px;
-width: 934px;
-position: absolute;
-}
-div.target table {
-margin: 0px;
-padding: 0px;
-width: 934px;
-transform: translate( 0%, 0% );
-text-align: center;
-}
-div.target td{
-height: 55px;
-width: 270px;
-color: #39464e;
-vertical-align: bottom;	
-}
-div.target td.dday{
-height: 55px;
-width: 120px;
-	color: #5c940d;
-	text-shadow: 1px 1px #82c912;
-	font-weight: bold;
-	font-size: 40px;
-	vertical-align: middle;	
+table.T td{
+	height: 240px;
+	vertical-align: top;
+	padding: 0px 0px 20px 0px;
 }
 </style>
 <style type="text/css">
-form.tabs{
-	display: inline;
+   .vars {
+   		display: flex;
+   		flex-direction: column;
+   		justify-content: center;
+   }
+form.tabs {
+	display: block;
 	padding: 0px;
 	margin: 0px;
 }
 </style>
-
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 </head>
 <body>
@@ -226,61 +196,65 @@ form.tabs{
 <br><c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
 <br><c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp"/> <!--다이어리 메뉴바-->
 <br>
+
+
+<div class="vars">
 <div class="calendar">
-    <a href=""> ${week[3].post_date}</a>
+	<form action="diary.do?" id="moveCalendar">
+	<input type="date" id="calendarDate" name="diary_post_date" value="${diary.diary_post_date}">
+	<input type="hidden" name="user_id" value="${diary.user_id}">	
+	<input type="hidden" name="diary_category" value="${diary.diary_category}">
+	</form>
+	<script type="text/javascript">
+		$(function(){
+			$('#calendarDate').on('change', function(event){
+				$("#moveCalendar").submit();
+			});
+		});
+	</script>
     <br>
 </div>
 <div class="navigation">
-    <a>
-        <!-- <이전 --> &lt; &nbsp;
-    </a>
-    <a class="three" href="diary_moveWeekDiary.do?week=${diary.diary_post_date}&ago=-3">
-        <!-- 삼일전 --> 
-        <fmt:formatDate value="${week[0].post_date}" pattern="d"/>
-        <c:if test="${week[0].ago >0}">◆</c:if>
-    </a>
-    <a class="two" href="diary_moveWeekDiary.do?week=${diary.diary_post_date}&ago=-2">
-        <!-- 이틀전 --> 
-        <fmt:formatDate value="${week[1].post_date}" pattern="d"/>
-        <c:if test="${week[1].ago >0}">◆</c:if>
-    </a>
-    <a class="one" href="diary_moveWeekDiary.do?week=${diary.diary_post_date}&ago=-1">
-        <!-- 전날 --> 
-        <fmt:formatDate value="${week[2].post_date}" pattern="d"/>
-        <c:if test="${week[2].ago >0}">◆</c:if>
-    </a>
-
-    <a class="today"> <fmt:formatDate value="${week[3].post_date}" pattern="d"/>&nbsp; </a>
-        
-
-    <a class="one" href="diary_moveWeekDiary.do?week=${diary.diary_post_date}&ago=1">
-        <!-- 다음날 -->  
-        <fmt:formatDate type="date" value="${week[4].post_date}" pattern="d"/>
-        <c:if test="${week[4].ago >0}">◆</c:if>
-    </a>
-    <a class="two" href="diary_moveWeekDiary.do?week=${diary.diary_post_date}&ago=2">
-        <!-- 이틀 뒤 -->  
-        <fmt:formatDate value="${week[5].post_date}" pattern="d"/>
-        <c:if test="${week[5].ago >0}">◆</c:if>
-        
-    </a>
-    <a class="three" href="diary_moveWeekDiary.do?week=${diary.diary_post_date}&ago=3">
-        <!-- 삼일 뒤 --> 
-        <fmt:formatDate value="${week[6].post_date}" pattern="d"/>
-        <c:if test="${week[6].ago >0}">◆</c:if>
-        
-    </a>
-    <a>
+	<div>
+		<img id="img_today"alt="today 강조" src="${ pageContext.servletContext.contextPath }/resources/images/diary/today.jpg">
+	</div>
+	<!-- 이전 -->
+	<div class="date">
+		<a class="one" href="diary_moveDiary.do?week=${diary.diary_post_date}&ago=-1">
+		         &lt; &nbsp;
+	    </a>
+    </div>
+    
+    <c:forEach var="w" items="${week}" varStatus="status" >
+		<div>
+			<div class="date">
+ 				<a href="diary_moveDiary.do?user_id=${w.user_id}&diary_post_date=${w.diary_post_date}&diary_category=${w.diary_category}">
+					<fmt:formatDate value="${w.diary_post_date}" pattern="d" />
+				</a>
+			</div>
+			<c:if test="${!empty w.diary_category}">
+				<div class="dia1"><img id="weekDia"alt="해당일 diary 존재" src="${ pageContext.servletContext.contextPath }/resources/images/diary/weekDia.jpg"></div>
+			</c:if>
+			<c:if test="${empty w.diary_category}">
+				<div class="dia2"><img id="weekDia"src=""/></div>
+			</c:if>
+		</div>
+	</c:forEach>
+	<div class="date">
+    <a href="diary_moveWeekDiary.do?week=${diary.diary_post_date}&ago=1">
         <!-- 이후> --> &nbsp; &gt;
     </a>
+	</div>
+    
 </div><br>
+
+
 <div class="target">
 <img alt="목표체중 표시바" src="${ pageContext.servletContext.contextPath }/resources/images/diary/goalLine.png">
 <table>
 	<tr>
 		<td>목표체중 ${goal.target_weight}kg</td>
  		<td>현재체중 ${goal.current_weight}kg</td>
-		
 		<td>목표까지 <fmt:formatNumber value="${goal.target_weight - goal.current_weight}" pattern="0.0#"/>kg</td>
 		<td rowspan="2" class="dday">d${goal.dday}</td>
 	</tr>
@@ -292,25 +266,14 @@ form.tabs{
 </table>
 </div>
 <br>
- 	<div class="tabs">
-<form class="tabs" method="get" name="diary" action="diary_showEatDiary.do">
-	<input type="hidden" name="user_id" value="${sessionScope.loginMember.user_id}">
- 	<input type="hidden" name="diary_post_date" value="${diary.diary_post_date}">	
- 	<input class="tabs" id="left" type="submit" value="식단" />
-</form>
-<form class="tabs" method="get" name="diary" action="diary_showActDiary.do">
-	<input type="hidden" name="user_id" value="${sessionScope.loginMember.user_id}">
- 	<input type="hidden" name="diary_post_date" value="${diary.diary_post_date}">	
-    <input class="tabs" id="center" type="submit" value="운동"/>
-</form>
-<form class="tabs" method="get" name="diary" action="diary_showBodyDiary.do">
-	<input type="hidden" name="user_id" value="${sessionScope.loginMember.user_id}">
- 	<input type="hidden" name="diary_post_date" value="${diary.diary_post_date}">	
-    <input class="tabs" id="right" type="submit" value="체형"/>
-</form>
-	</div>
-<%-- <c:import url="/WEB-INF/views/diary/common/diaryTap.jsp" /><!--식단/운동/식단 탭-->--%>
 
+<div class="tabs">
+<c:set var="moveURL" value="diary_moveDiary.do?user_id=${sessionScope.loginMember.user_id}&diary_post_date=${diary.diary_post_date}&diary_category="/>
+ 		<a class="tabs left" href="${moveURL}eat">식단</a>
+ 		<a class="tabs center" href="${moveURL}act">운동</a>
+ 		<a class="tabs right" href="${moveURL}body">체형</a>
+	</div>
+</div>
 <%--  <pre>보낼값----
 메뉴바 : ${diary}
 네비게이터 : ${week}
@@ -320,6 +283,8 @@ form.tabs{
 음식정보 : ${eats}
 식단별 소계 및 총합계 : ${sums}
  </pre> --%>
+<div id="diaryPart">
+<c:if test="${diary.diary_no ne 0}">
 <c:set var="recommandKcal" value="${(goal.standard_weight * goal.energy_demand)+(goal.current_weight - goal.standard_weight)*7000/goal.dday * 3/5}"/>
 <c:forEach var="sum" items="${sums}" varStatus="status">
 <c:if test="${status.last}"><c:set var="currentKcal" value="${sum.eat_kcal}"/>
@@ -330,8 +295,19 @@ form.tabs{
 			<td>현재 섭취 칼로리 <fmt:formatNumber value="${currentKcal}" pattern="0"/>kcal &nbsp;</td>
 			<td>&nbsp; ⇒ &nbsp; 잔여 <fmt:formatNumber value="${recommandKcal-currentKcal}" pattern="0.#"/>kcal</td>
 </tr></table>
+</c:if>
 <br>
-<c:forEach var="D" items="${diarys}" varStatus="status">
+<c:if test="${diary.diary_no eq 0}">
+	<div class="noneD">
+		<h3>다이어리가 없네요, 작성하시겠습니까?</h3>
+		<div>
+			<button id="writebtn">글쓰기</button>
+		</div>
+	</div>
+</c:if>
+<br>
+<c:if test="${diary.diary_no ne 0}">
+	<c:forEach var="D" items="${diarys}" varStatus="status">
 	<div class="D">
 		<table class="D">
 		<tr class="dbtn"><td colspan="3"><button id="modifybtn">수정</button></td></tr>			
@@ -382,64 +358,17 @@ form.tabs{
 					<th>지방 &nbsp; &nbsp; ${sum.eat_fat} / 54g</th>
 				</tr>
 				<tr>
-					<th><img alt="탄수화물관련 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg"></th>
-					<th><img alt="단백질관련 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg"></th>
-					<th><img alt="단백질관련 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg"></th>
+					<td><img alt="탄수화물관련 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg"></td>
+					<td><img alt="단백질관련 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg"></td>
+					<td><img alt="단백질관련 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg"></td>
 				</tr>			
 				</table>
 				</c:if>
 			
 			</c:forEach>
-<pre>
-<!-- 총 섭취량 / 권장 섭취칼로리 : 
-top3------------------------------var url if문으로 출력
-하루 총 탄수화물 섭취량g : 
-미달/초과 이미지, 링크
-하루 총 단백질 섭취량g : 
-미달/초과 이미지, 링크
-하루 총 지방 섭취량g : 
-미달/초과 이미지, 링크
-
-작성버튼 -> diary_showEatWrite.do -> eatWrite : 식단다이어리 작성화면
-	받은값 diary : 어떤날짜에 누가 작성하는건지
-	시간입력
-	이미지입력
-	메모입력
-	먹은양g 입력
-	식단삭제
-	식단추가 ; ajax 음식검색용기능 음식이름-> diary_serarchFood.do
-			-> ajax : food -> 음식 추가, kcal계산시 사용
-			
-	보낼값 diary, eats
-	저장버튼 -> diary_insertEat.do 
-			->insertDiary, selectOneDiary, 
-			insertOneEat -> diary_showEat.do -> eatView
-	 
-수정버튼 ->diary_showEatModify -> eatModify : 식단다이어리 수정화면
-	받은값 diary : 어떤날짜에 누구의 어떤 다이어리를 수정하는건지
-	eat : 화면에 띄울 기존 다이어리 정보
-
-	시간수정
-	이미지수정
-	메모수정
-	식단 g 변경
-	식단 삭제 : 화면의 총합계값이 줄어야함.
-	식단추가 ; ajax 음식검색용기능 음식이름-> diary_serarchFood.do
-			-> ajax : food -> 음식 추가, kcal계산시 사용
-			
-	보낼값 diary, eat
-	저장버튼 -> diary_modifyEat.do 
-		-> updateOneDiary, insertEat, updateEat
-		-> diary_showEat.do -> eatView : 식단 다이어리 보기
-		
-보낼값 diary
-삭제버튼 -> diary_delEat.do -> deleteOneDiary, deleteAllEat ->
-	-> diary_showEat.do -> eatView :식단 다이어리 보기
-	
-추천없음 -->
-</pre>
+			</c:if>
 </div>
-
+</div>
 <div id="footer">
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </div>

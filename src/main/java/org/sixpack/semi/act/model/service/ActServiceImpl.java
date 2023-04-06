@@ -19,6 +19,11 @@ public class ActServiceImpl implements ActService {
 	public ArrayList<Act> selectDayAct(Diary diary) {
 		return actDao.selectDayAct(diary);
 	}
+	
+	@Override
+	public java.lang.Integer selectSumAct(Diary diary) {
+		return actDao.selectSumAct(diary);
+	}
 
 	@Override
 	public int deleteAllAct(Diary diaryno) {

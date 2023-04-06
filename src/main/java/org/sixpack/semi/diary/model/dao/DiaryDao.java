@@ -29,9 +29,9 @@ public class DiaryDao {
 		return session.selectOne("diaryMapper.selectCurrentGoal",diary);
 	}
 
-    public ArrayList<DateData> selectWeekDiary(Diary diary) {
-        List<DateData> list = session.selectList("diaryMapper.selectWeekDiary", diary);
-        return (ArrayList<DateData>) list;
+    public ArrayList<Diary> selectWeekDiary(Diary diary) {
+        List<Diary> list = session.selectList("diaryMapper.selectWeekDiary", diary);
+        return (ArrayList<Diary>) list;
     }
 
     public Diary selectOneDiary(Diary diary) {

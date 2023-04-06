@@ -1,0 +1,24 @@
+@charset "UTF-8";
+/* 다이어리 공용 버튼과 div  */
+#modifybtn{
+	width: 55px;
+	height: 30px;
+	border: 1px solid #827482;
+	background-color: white;
+	color: #827482;
+	border-radius: 7px;
+}
+div.noneD {
+	margin: 40px auto 40px auto;
+	width: 900px;
+	height: 150px;
+	padding: 50px;
+	border-radius: 34px 34px 34px 34px;
+	-moz-border-radius: 34px 34px 34px 34px;
+	-webkit-border-radius: 34px 34px 34px 34px;
+	border: 1px solid #827482;
+	justify-content: center;
+	box-shadow: 3px 4px 3px -2px gray;
+	text-align: center;
+	Vertical-align: middle
+}

@@ -18,7 +18,7 @@ public interface DiaryService {
 	//한달이내 goal 최신값 조회
 	public Goal selectCurrentGoal(Diary diary);
 
-	// 입력한 diary값과 일치하는 다이어리 하나 조회 : 조건)null인 값 제외
+	// 입력한 diary값과 일치하는 다이어리 하나 조회 : null이면 입력값 반환
 	Diary selectOneDiary(Diary diary);
 	
 	//다이어리no로 이동할 다이어리 조회
@@ -31,7 +31,7 @@ public interface DiaryService {
 	//ArrayList<Calendar> selectPeriodAct(Period period);
 
 	//오늘기준 앞뒤로 일주일 diary 조회
-	ArrayList<DateData> selectWeekDiary(Diary diary);
+	ArrayList<Diary> selectWeekDiary(Diary diary);
 	
 	
 	// 다이어리 생성

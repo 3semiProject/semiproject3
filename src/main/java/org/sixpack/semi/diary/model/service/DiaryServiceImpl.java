@@ -60,11 +60,11 @@ public class DiaryServiceImpl implements DiaryService {
 
 	@Override
 	public Diary selectMoveDiary(DateData move) {
-		return null;
+		return diaryDao.selectMoveDiary(move);
 	}
 
 	@Override
-	public ArrayList<DateData> selectWeekDiary(Diary diary) {
+	public ArrayList<Diary> selectWeekDiary(Diary diary) {
 		return diaryDao.selectWeekDiary(diary);
 	}
 
