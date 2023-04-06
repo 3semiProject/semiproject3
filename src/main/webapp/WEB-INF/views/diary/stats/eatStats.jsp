@@ -56,7 +56,7 @@
             width: 400px;
         }
 
-        .intensity tr {
+        .tandanzi tr {
             height: 50px
         }
     </style>
@@ -91,11 +91,11 @@ My 다이어리 분석
             <table>
                 <tr>
                     <td class="lefttd">권장 칼로리 섭취량 :</td>
-                    <td id="actCount"></td>
+                    <td id="recommendKcal"></td>
                 </tr>
                 <tr>
                     <td class="lefttd">평균 칼로리 섭취량 :</td>
-                    <td id="actTime"></td>
+                    <td id="averageKcal"></td>
                 </tr>
             </table>
         </div>
@@ -105,7 +105,7 @@ My 다이어리 분석
             <table>
                 <tr>
                     <td class="lefttd">대비 :</td>
-                    <td id="maxDay"></td>
+                    <td id="contrastKcal"></td>
                 </tr>
             </table>
 
@@ -116,23 +116,23 @@ My 다이어리 분석
 
 
         <div style="width: 290px;">
-            <canvas id="actStatsChart"></canvas>
+            <canvas id="eatStatsChart"></canvas>
         </div>
 
 
         <div style="display: flex;align-items: center;">
-            <table class="intensity">
+            <table class="tandanzi">
                 <tr>
-                    <td>저강도 :</td>
-                    <td id="weakTime"></td>
+                    <td>탄수화물 :</td>
+                    <td id="tan_g"></td>
                 </tr>
                 <tr>
-                    <td>중강도 :</td>
-                    <td id="middleTime"></td>
+                    <td>단백질 :</td>
+                    <td id="dan_g"></td>
                 </tr>
                 <tr>
-                    <td>고강도 :</td>
-                    <td id="strongTime"></td>
+                    <td>지방 :</td>
+                    <td id="zi_g"></td>
                 </tr>
             </table>
         </div>
@@ -141,19 +141,17 @@ My 다이어리 분석
 
 </div>
 <hr class="horizontalBar" style="width: 100%">
-<c:import url="/WEB-INF/views/diary/common/actRec.jsp"/>
-<hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 
 
 <script type="text/javascript">
-    var actStats;
+    var eatStats;
     var barLineChart;
     var pieChart;
     const ctxStats = document.getElementById('eatStatsChart');
     const ctx = document.getElementById('eatChart');
 
-    function actResult(range) {
+    function eatResult(range) {
         $.ajax({
             url: "diary_EatStats.do",
             data:
@@ -163,20 +161,20 @@ My 다이어리 분석
                 var jsonStr = JSON.stringify(data);
                 console.log("통계 json : " + jsonStr);
 
-                actStats = JSON.parse(jsonStr);
-                console.log("parse json : " + actStats);
+                eatStats = JSON.parse(jsonStr);
+                console.log("parse json : " + eatStats);
+
+                $('#recommendKcal').text(eatStats.rec_eat + " Kcal");
+                $('#averageKcal').text(eatStats.avg_eat + " Kcal");
+                $('#contrastKcal').text(eatStats.contrast_eat + " Kcal");
+
+                $('#avgTime').text(eatStats.many_food + " 분");
+                $('#weakTime').text(eatStats.many_food + " 분");
 
 
-                $('#actCount').text(actStats.tot_act_val + " 회");
-                $('#actTime').text(actStats.tot_act_time + " 분");
-                $('#maxDay').text(actStats.maxDay_actName);
-                $('#maxKcal').text(actStats.maxKcal_actName);
-                $('#maxTime').text(actStats.maxTime_actName);
-                $('#avgTime').text(actStats.avg_act_one + " 분");
-                $('#weakTime').text(actStats.tot_weak_time + " 분");
-                $('#middleTime').text(actStats.tot_middle_time + " 분");
-                $('#strongTime').text(actStats.tot_strong_time + " 분");
-
+                $('#tan_g').text(eatStats.tan_g + "g");
+                $('#dan_g').text(eatStats.dan_g + "g");
+                $('#zi_g').text(eatStats.zi_g + "g");
 
                 if (barLineChart !== undefined) {
                     barLineChart.destroy();
@@ -220,11 +218,11 @@ My 다이어리 분석
                 pieChart = new Chart(ctxStats, {
                     type: 'pie',
                     data: {
-                        labels: ['저강도', '중강도', '고강도'],
+                        labels: ['탄수화물', '단백질', '지방'],
                         datasets: [{
-                            label: '총 운동시간 (분)',
+                            label: 'Kcal',
                             backgroundColor: ['rgba(150,255,150,1)', 'rgba(255,255,50,1)', 'rgba(255,100,50,1)'],
-                            data: [Number(actStats.tot_weak_time), Number(actStats.tot_middle_time), Number(actStats.tot_strong_time)]
+                            data: [Number(eatStats.tan_g) * 4, Number(eatStats.dan_g) * 4, Number(eatStats.zi_g) * 9]
                         }]
                     }, option: {}
                 });
@@ -232,7 +230,7 @@ My 다이어리 분석
 
             }, //success
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log("diary_ActStats.do error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
+                console.log("diary_eatStats.do error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
             }
         })
         ; // .ajax
@@ -241,12 +239,12 @@ My 다이어리 분석
 
     $(function () {
 
-        actResult(1);
+        eatResult(1);
 
         // if (sessionStorage.getItem('loginMember') != null) {
         $('input[type="radio"]').change(function () {
 
-            actResult(this.value);
+            eatResult(this.value);
 
         }) //onchange
 

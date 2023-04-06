@@ -87,7 +87,7 @@ public class StatsEatController {
     }
 
     //식단통계 분석내용과 식단top3 ajax
-    @RequestMapping("diary_eatStats.do")
+    @RequestMapping("diary_EatStats.do")
     @ResponseBody
     public String actStatsMethod(ModelAndView mv,
                                  @RequestParam(value = "statsRange", required = false) String statsRange,
@@ -99,21 +99,22 @@ public class StatsEatController {
                 ((Member) session.getAttribute("loginMember")).getUser_id(),
                 Integer.parseInt(statsRange));
 
+        System.out.println(statsDate);
+
         EatStats eatStatsResult = statsEatService.eatStatsTotal(statsDate);
 
 
         JSONObject sendJSON = new JSONObject();
 
 
-//        sendJSON.put("tot_act_val", actStatsResult.getTot_act_val());
-//        sendJSON.put("tot_act_time", actStatsResult.getTot_act_time());
-//        sendJSON.put("avg_act_one", actStatsResult.getAvg_act_one());
-//        sendJSON.put("tot_weak_time", actStatsResult.getTot_weak_time());
-//        sendJSON.put("tot_middle_time", actStatsResult.getTot_middle_time());
-//        sendJSON.put("tot_strong_time", actStatsResult.getTot_strong_time());
-//        sendJSON.put("maxDay_actName", actStatsResult.getMaxDay_actName());
-//        sendJSON.put("maxKcal_actName", actStatsResult.getMaxKcal_actName());
-//        sendJSON.put("maxTime_actName", actStatsResult.getMaxTime_actName());
+        sendJSON.put("rec_eat", eatStatsResult.getRec_eat());
+        sendJSON.put("avg_eat", eatStatsResult.getAvg_eat());
+        sendJSON.put("contrast_eat", eatStatsResult.getContrast_eat());
+        sendJSON.put("tan_g", eatStatsResult.getTan_g());
+        sendJSON.put("dan_g", eatStatsResult.getDan_g());
+        sendJSON.put("zi_g", eatStatsResult.getZi_g());
+        sendJSON.put("many_food", eatStatsResult.getMany_food());
+        sendJSON.put("maxKcal_food", eatStatsResult.getMaxKcal_food());
 
         System.out.println("sendJSON : " + sendJSON);
         return sendJSON.toJSONString();
