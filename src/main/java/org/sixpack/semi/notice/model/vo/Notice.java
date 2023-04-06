@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class Notice implements java.io.Serializable {
 	
+	private static final long serialVersionUID = -5186065698359976362L;
 	private int notice_no;				//공지사항 글번호
 	private String notice_title;		//공지사항 제목
 	private String user_id;				//공지사항 작성자

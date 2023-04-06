@@ -1,8 +1,10 @@
 package org.sixpack.semi.member.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.sixpack.semi.hotnew.model.vo.HotNew;
 import org.sixpack.semi.member.model.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -108,6 +110,12 @@ public class MemberDao {
 	//회원탈퇴시, 기본테이블 null값으로 변경(delete 대신 null처리 pk라서 삭제가 불가능함)
 	public int deleteMember(String user_id) {
 		return session.update("memberMapper.deleteMember", user_id);
+	}
+	
+	//새회원 리스트 출력. admin main에 출력되는 list
+	public ArrayList<Member> selectNewMemberList() {
+		List<Member> list = session.selectList("memberMapper.selectNewMemberList");
+		return (ArrayList<Member>)list;
 	}
 
 

@@ -10,18 +10,23 @@
 * {
 	color: #01CD88;
 }
+
 .cona:hover {
 		text-decoration: none;
-		color: black;
-		font-weight: bold;
+		font-weight: bolder;
+		color: #01CD88;
 	}
 #mainTextBox {
 	width: 1200px;
-	height: 500px;
 	border-radius: 35px;
 	height: 800px;
 	float: left;
 	margin-bottom: 50px;
+}
+
+#mainTextBox #tab1 {
+	width: 600px;
+	height: 800px;
 }
 
 #mainTextBox_topN {
@@ -93,6 +98,17 @@ div[name="youtube"] {
 	font-weight: bold;
 	text-shadow: 1px 1px 2px #D1D1D1;
 }
+
+th {
+	font-size: x-large;
+}
+
+td, .cona {
+	font-size: large;
+	color : black;
+}
+
+
 </style>
 <script type="text/javascript"
 	src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
@@ -167,9 +183,68 @@ div[name="youtube"] {
 		});
 
 	}); //document ready
+	
+	
+	//신규 가입자 리스트
+	$(function() {
+		var values = $('#newMember').html();
+		console.log("values : " + values);
+		$.ajax({
+			url : "newMember.do",
+			type : "post",
+			dataType : "json",
+			success : function(data) {
+				console.log("success : " + data);
+
+				var jsonStr = JSON.stringify(data);
+				var json = JSON.parse(jsonStr);
+
+				for ( var i in json.list) {
+					values += "<tr><td><a class='cona' href='myinfo.do?user_id="
+							+ json.list[i].user_id
+							+ "&user_name="
+							+ json.list[i].user_name
+							+ "&user_nickname="
+							+ json.list[i].user_nickname
+							+ "&phone="
+							+ json.list[i].phone
+							+ "&birth="
+							+ json.list[i].birth
+							+ "&gender="
+							+ json.list[i].gender
+							+ "&email="
+							+ json.list[i].email
+							+ "&join_date="
+							+ json.list[i].join_date
+							+ "'>"
+							+ json.list[i].user_id + "</td><td>"
+							+ decodeURIComponent(json.list[i].user_name)
+									.replace(/\+/gi, " ") + "</a></td><td>"
+							+ decodeURIComponent(json.list[i].user_nickname)
+									.replace(/\+/gi, " ") + "</td><td>"
+							+ json.list[i].phone + "</td><td>"
+							+ json.list[i].birth + "</td><td>"
+							+ json.list[i].gender + "</td><td>"
+							+ json.list[i].email + "</td><td>"
+							+ json.list[i].join_date + "</td></tr>";
+				}
+				$('#newMember').html(values);
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				console.log("newMember.do error : " + jqXHR + ", " + textStatus
+						+ ", " + errorThrown);
+			}
+		});
+
+	}); //document ready
+	
+	
+	//<----- admin page table ----->
+	
 </script>
 </head>
 <body>
+<c:if test="${ loginMember.admin_ck ne 'Y' }">
 	<hr style="clear: both; border: none">
 	<%-- hot/new & article / youtube --%>
 	<div id="mainTextBox">
@@ -205,7 +280,6 @@ div[name="youtube"] {
 
 		<div id="mainTextBox_banner">
 			<div id="banner_article">
-
 				<div name="article">article1</div>
 				<div name="article">article2</div>
 				<div name="article">article3</div>
@@ -223,5 +297,37 @@ div[name="youtube"] {
 			</div>
 		</div>
 	</div>
+</c:if>
+<c:if test="${ !empty loginMember && loginMember.admin_ck eq 'Y' }">
+<hr style="clear: both; border: none">
+		<div id="mainTextBox"
+			style="border: 1px solid #D1D1D1; margin-top: 20px;">
+			<div id="tab1" style="border: 1px solid #D1D1D1; width:1200px; height: 800px; border-radius: 30px;">
+				<h1 style="text-align: center">신규가입자</h1>
+				<table id="newMember" align="center" border="1"
+					style="width: 95%; margin-top: 50px;">
+					<tr>
+						<th style="width: 10%">회원아이디</th>
+						<th style="width: 10%">회원이름</th>
+						<th style="width: 15%">회원닉네임</th>
+						<th style="width: 15%">회원전화번호</th>
+						<th style="width: 10%">회원생일</th>
+						<th style="width: 10%">회원성별</th>
+						<th style="width: 20%">회원이메일</th>
+						<th style="width: 10%">가입일자</th>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</c:if>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
