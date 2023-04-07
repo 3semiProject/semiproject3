@@ -1,10 +1,7 @@
 package org.sixpack.semi.stats.model.dao;
 
 import org.mybatis.spring.SqlSessionTemplate;
-import org.sixpack.semi.stats.model.vo.ActRec;
-import org.sixpack.semi.stats.model.vo.ActStats;
-import org.sixpack.semi.stats.model.vo.EatStats;
-import org.sixpack.semi.stats.model.vo.StatsDate;
+import org.sixpack.semi.stats.model.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -42,20 +39,32 @@ public class StatsDao {
 
     public EatStats eatStatsTotal(StatsDate statsDate) {
 
-        EatStats eatStats = new EatStats();
-
-
-        EatStats eatAvg = session.selectOne("eatStatsMapper.avgKcal", statsDate);
-        eatStats.setAvg_eat(eatAvg.getAvg_eat());
-        eatStats.setTan_g(eatAvg.getTan_g());
-        eatStats.setDan_g(eatAvg.getDan_g());
-        eatStats.setZi_g(eatAvg.getZi_g());
-
-        eatStats.setRec_eat( (int)(session.selectOne("eatStatsMapper.setRec_eat", statsDate)));
+        EatStats eatStats = session.selectOne("eatStatsMapper.avgKcal", statsDate);
+        eatStats.setRec_eat((int) (session.selectOne("eatStatsMapper.setRec_eat", statsDate)));
         eatStats.setContrast_eat(eatStats.getRec_eat() - eatStats.getAvg_eat());
         eatStats.setMany_food(session.selectOne("eatStatsMapper.eatMaxDay", statsDate));
         eatStats.setMaxKcal_food(session.selectOne("eatStatsMapper.eatMaxKcal", statsDate));
 
         return eatStats;
+    }
+
+    public BodyStats bodyStatsTotal(StatsDate statsDate) {
+
+
+        BodyStats bodyStats = session.selectOne("bodyStatsMapper.bodyTotal", statsDate);
+
+        BodyStats bodyAvg = session.selectOne("bodyStatsMapper.bodyAvg", statsDate);
+
+        bodyStats.setAverage_weight(bodyAvg.getAverage_weight());
+        bodyStats.setAverage_fat(bodyAvg.getAverage_fat());
+        bodyStats.setAverage_muscle(bodyAvg.getAverage_muscle());
+
+        return bodyStats;
+
+    }
+
+    public ArrayList<BodyChart> bodyChartList(StatsDate statsDate) {
+        List<BodyChart> result = session.selectList("bodyStatsMapper.bodyChartList",statsDate);
+        return (ArrayList<BodyChart>) result;
     }
 }
