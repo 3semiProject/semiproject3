@@ -33,6 +33,27 @@ body{
 <script type="text/javascript"
 	src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
+function fileCheck(obj) {
+    pathpoint = obj.value.lastIndexOf('.');
+    filepoint = obj.value.substring(pathpoint+1,obj.length);
+    filetype = filepoint.toLowerCase();
+    if(filetype=='jpg' || filetype=='gif' || filetype=='png' || filetype=='jpeg' || filetype=='bmp') {
+
+        // 정상적인 이미지 확장자 파일일 경우 ...
+
+    } else {
+        alert('이미지 파일만 선택할 수 있습니다.');
+
+        parentObj  = obj.parentNode
+        node = parentObj.replaceChild(obj.cloneNode(true),obj);
+
+        return false;
+    }
+    if(filetype=='bmp') {
+        upload = confirm('BMP 파일은 웹상에서 사용하기엔 적절한 이미지 포맷이 아닙니다.\n그래도 계속 하시겠습니까?');
+        if(!upload) return false;
+    }
+}
 </script>
 <title></title>
 </head>
@@ -47,6 +68,8 @@ body{
 		<form action="eyebodyupdate.do" method="post"
 			enctype="multipart/form-data" name="boardform">
 			<input type="hidden" name="eyebody_no" value="${ eyebody.eyebody_no }">
+			<input type="hidden" name="originfile_eyebody" value="${ eyebody.originfile_eyebody }">
+			<input type="hidden" name="renamefile_eyebody" value="${ eyebody.renamefile_eyebody }">
 			<table width="100%" border="1px solid" cellpadding="0"
 				cellspacing="0">
 				<tr>
@@ -72,12 +95,20 @@ body{
 				<tr height="40">
 					<th>FILE</th>
 					<td>
-					<c:if test="${ !empty eyebody.originfile_eyebody }">
-					${ eyebody.originfile_eyebody } &nbsp; 
-					<input type="checkbox" name="delflag" value="yes"> 파일삭제
+					<c:forEach items="${ ofile }" var="of" varStatus="status">
+					<c:if test="${ !empty of }">
+					${ of } &nbsp; 
+					<input type="checkbox" name="delflag" value="${ rfile[status.index] }"> 파일삭제
 					<br>
 					</c:if>
-					새로 첨부 : <input type="file" name="upfile">
+					</c:forEach>
+					새로 첨부 : <input type="file" name="upfile"
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"><br>
+					새로 첨부 : <input type="file" name="upfile"
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"><br>
+					새로 첨부 : <input type="file" name="upfile"
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"><br>
+					* 신규파일 첨부시 기존 첨부파일은 삭제됩니다 *
 					</td>
 				</tr>
 				<tr>
@@ -92,7 +123,7 @@ body{
 	</div>
 <hr>
 <script type="text/javascript">
-CKEDITOR.replace("free_value", { height: 100 });
+CKEDITOR.replace("eyebody_value", { height: 100 });
 </script>
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
