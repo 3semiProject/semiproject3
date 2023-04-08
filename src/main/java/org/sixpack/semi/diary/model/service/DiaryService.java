@@ -49,4 +49,7 @@ public interface DiaryService {
 	int insertFoodData(List<Food> datalist);
 
 	int insertMoveData(List<Move> datalist);
+	
+	//시퀀스로 생성할 diary_no 받아오기
+	public int getDiaryNo();
 }

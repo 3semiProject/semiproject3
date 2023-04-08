@@ -6,6 +6,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.diary.model.vo.Diary;
 import org.sixpack.semi.eat.model.vo.Eat;
+import org.sixpack.semi.eat.model.vo.Food;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,5 +23,11 @@ public class EatDao {
 
 	public ArrayList<Eat> selectSumAllEats(Diary diary) {
 		List<Eat> list = session.selectList("eatMapper.selectSumAllEats", diary);
-		return (ArrayList<Eat>)list;	}
+		return (ArrayList<Eat>)list;	
+	}
+
+	public ArrayList<Food> selectSearchFoodlist(String food_name) {
+		List<Food> list = session.selectList("eatMapper.selectSearchFoodlist", food_name);
+		return (ArrayList<Food>)list;		
+	}
 }

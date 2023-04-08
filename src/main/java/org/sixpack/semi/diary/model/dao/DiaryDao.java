@@ -46,6 +46,10 @@ public class DiaryDao {
 	public Diary selectMoveDiary(DateData move) {
 		return session.selectOne("diaryMapper.selectMoveDiary", move);
 	}
+	
+	public int getDiaryNo() {
+		return session.selectOne("diaryMapper.getDiaryNo");
+	}
 
 
 
@@ -57,4 +61,5 @@ public class DiaryDao {
     public int insertMoveData(List<Move> datalist) {
         return session.update("insertDataMapper.insertMove", datalist);
     }
+
 }
