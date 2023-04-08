@@ -29,9 +29,9 @@ public class DiaryDao {
 		return session.selectOne("diaryMapper.selectCurrentGoal",diary);
 	}
 
-    public ArrayList<DateData> selectWeekDiary(Diary diary) {
-        List<DateData> list = session.selectList("diaryMapper.selectWeekDiary", diary);
-        return (ArrayList<DateData>) list;
+    public ArrayList<Diary> selectWeekDiary(Diary diary) {
+        List<Diary> list = session.selectList("diaryMapper.selectWeekDiary", diary);
+        return (ArrayList<Diary>) list;
     }
 
     public Diary selectOneDiary(Diary diary) {
@@ -46,6 +46,10 @@ public class DiaryDao {
 	public Diary selectMoveDiary(DateData move) {
 		return session.selectOne("diaryMapper.selectMoveDiary", move);
 	}
+	
+	public int getDiaryNo() {
+		return session.selectOne("diaryMapper.getDiaryNo");
+	}
 
 
 
@@ -57,4 +61,5 @@ public class DiaryDao {
     public int insertMoveData(List<Move> datalist) {
         return session.update("insertDataMapper.insertMove", datalist);
     }
+
 }

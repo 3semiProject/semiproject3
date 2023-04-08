@@ -42,6 +42,11 @@ public class DiaryServiceImpl implements DiaryService {
 	public ArrayList<Diary> selectDayDiary(Diary diary) {
 		return diaryDao.selectDayDiary(diary);
 	}
+	
+	@Override
+	public int getDiaryNo() {
+		return diaryDao.getDiaryNo();
+	}
 
 	@Override
 	public int insertDiary(Diary diary) {
@@ -60,11 +65,11 @@ public class DiaryServiceImpl implements DiaryService {
 
 	@Override
 	public Diary selectMoveDiary(DateData move) {
-		return null;
+		return diaryDao.selectMoveDiary(move);
 	}
 
 	@Override
-	public ArrayList<DateData> selectWeekDiary(Diary diary) {
+	public ArrayList<Diary> selectWeekDiary(Diary diary) {
 		return diaryDao.selectWeekDiary(diary);
 	}
 
@@ -83,5 +88,7 @@ public class DiaryServiceImpl implements DiaryService {
 	public int insertMoveData(List<Move> datalist) {
 		return diaryDao.insertMoveData(datalist);
 	}
+
+
 
 }

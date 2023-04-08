@@ -21,5 +21,9 @@ public class ActDao {
 	public ArrayList<Act> selectDayAct(Diary diary) {
 		List<Act> list = session.selectList("actMapper.selectDayAct", diary);
 		return (ArrayList<Act>)list;	}
+
+	public java.lang.Integer selectSumAct(Diary diary) {
+		return session.selectOne("actMapper.selectSumAct",diary);
+	}
 		
 }

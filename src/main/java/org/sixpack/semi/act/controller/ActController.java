@@ -2,12 +2,11 @@ package org.sixpack.semi.act.controller;
 
 import java.util.ArrayList;
 
-import org.json.simple.JSONObject;
 import org.sixpack.semi.act.model.service.ActService;
 import org.sixpack.semi.act.model.vo.Act;
-import org.sixpack.semi.act.model.vo.Move;
 import org.sixpack.semi.diary.model.service.DiaryService;
 import org.sixpack.semi.diary.model.vo.Diary;
+import org.sixpack.semi.goal.model.vo.Goal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,10 +28,30 @@ public class ActController {
 	@RequestMapping("diary_showActDiary.do")
 	public ModelAndView showActDiary(ModelAndView mv, Diary diary) {
 		
-		ArrayList<Act> acts;
-		mv.addObject("diary", diary);
-		acts = actService.selectDayAct(diary);
-		mv.addObject("acts", acts);			
+		//다이어리 조회, 없어도 기본정보전달
+		 //화면출력을 위한 memo,image
+		Diary selectD = diaryService.selectOneDiary(diary);
+		if(selectD !=null) {
+			mv.addObject("diary", selectD);			
+		}else {			
+			mv.addObject("diary", diary);
+		}
+		
+		//목표정보, 날짜정보 조회 없어도 내보냄, 빈칸출력
+		Goal goal = diaryService.selectlastGoal(diary);//가장 최신 목표정보
+		ArrayList<Diary> week = diaryService.selectWeekDiary(diary); // 일주일날짜에 대한 다이어리 정보
+		mv.addObject("goal", goal);
+		mv.addObject("week", week);
+		
+		//운동정보 조회 있을때만 내보냄
+		ArrayList<Act> acts = actService.selectDayAct(diary);
+		if(acts.size()>0) {
+			mv.addObject("acts", acts);	 // 하루치 운동정보 목록
+			//int sum = actService.selectSumAct(diary).intValue(); //오류 제외
+			//mv.addObject("sum", sum);	 // 하루치 운동합계 : 오류 제외
+		}
+		
+		
 		mv.setViewName("diary/act/actDiary");
 		return mv;			
 	}

@@ -24,22 +24,29 @@ public class EatServiceImpl implements EatService {
 		public ArrayList<Eat> selectSumAllEats(Diary diary) {
 			return eatDao.selectSumAllEats(diary);
 		}
-		
+
 		@Override
-		public Food selectFoodName(String food_name) {
-			return null;
+		public ArrayList<Food> selectSearchFoodlist(String food_name) {
+			return eatDao.selectSearchFoodlist(food_name);
+		}
+		
+		
+
+		@Override
+		public int insertOneEat(Eat eat) {
+			return 0;
 		}
 
 		@Override
-		public int insertAllEat(ArrayList<Eat> eats) {
-			return 0;
+		public Eat deleteOneEat(String food_name) {
+			return null;
 		}
 
 		@Override
 		public int updateAllEat(ArrayList<Eat> eats) {
 			return 0;
 		}
-		
+
 		@Override
 		public int deleteAllEat(Diary diary) {
 			return 0;
