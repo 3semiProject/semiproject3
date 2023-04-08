@@ -129,7 +129,12 @@ function fileCheck(obj) {
 				<tr height="40">
 					<th>FILE</th>
 					<td><input name="upfile" type="file" 
-					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/></td>
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/><br>
+					<input name="upfile" type="file" 
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/><br>
+					<input name="upfile" type="file" 
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/>
+					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="right"><input type="submit" value="등록">
@@ -166,7 +171,12 @@ function fileCheck(obj) {
 				<tr height="40">
 					<th>FILE</th>
 					<td><input name="upfile" type="file" 
-					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/></td>
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/><br>
+					<input name="upfile" type="file" 
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/><br>
+					<input name="upfile" type="file" 
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/>
+					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="right"><input type="submit" value="등록">
@@ -204,7 +214,12 @@ function fileCheck(obj) {
 				<tr height="40">
 					<th>FILE</th>
 					<td><input name="upfile" type="file" 
-					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/></td>
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/><br>
+					<input name="upfile" type="file" 
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/><br>
+					<input name="upfile" type="file" 
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/>
+					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="right"><input type="submit" value="등록">
@@ -241,7 +256,12 @@ function fileCheck(obj) {
 				<tr height="40">
 					<th>FILE</th>
 					<td><input name="upfile" type="file" 
-					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/></td>
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/><br>
+					<input name="upfile" type="file" 
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/><br>
+					<input name="upfile" type="file" 
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)"/>
+					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="right"><input type="submit" value="등록">

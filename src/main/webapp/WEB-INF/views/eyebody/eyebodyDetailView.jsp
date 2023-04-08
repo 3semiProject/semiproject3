@@ -88,25 +88,30 @@ body {
 			<tr height="100">
 				<th>내용</th>
 				<td>
-				<c:if test="${ !empty eyebody.renamefile_eyebody and !empty sessionScope.loginMember}">
+				<c:forEach items="${ rfile }" var="rf">
+					<c:if test="${ !empty rf and !empty sessionScope.loginMember}">
 					<br>
-					&nbsp; &nbsp; <img src="${ pageContext.servletContext.contextPath }/resources/eyebody_upfiles/${eyebody.renamefile_eyebody}" width="400" alt="upfile">
+					&nbsp; &nbsp; <img src="${ pageContext.servletContext.contextPath }/resources/eyebody_upfiles/${rf}" width="400" alt="upfile">
 					<br>
 				</c:if>
+				</c:forEach>
 				&nbsp; &nbsp; ${eyebody.eyebody_value}</td>
 			</tr>
 			<tr height="40">
 				<th>FILE</th>
 				<td>
-					<!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 --> <c:if
-						test="${ !empty eyebody.originfile_eyebody and !empty sessionScope.loginMember}">
-						<c:url var="eyebd" value="/eyebodydown.do">
-							<c:param name="ofile" value="${ eyebody.originfile_eyebody }" />
-							<c:param name="rfile" value="${ eyebody.renamefile_eyebody }" />
+					<!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 -->
+					<c:forEach items="${ ofile }" var="of" varStatus="status">
+					<c:if test="${ !empty of and !empty sessionScope.loginMember}">
+						<c:url var="eyed" value="/eyebodydown.do">
+							<c:param name="ofile" value="${ of }" />
+							<c:param name="rfile" value="${ rfile[status.index] }" />
 						</c:url>
-						&nbsp; &nbsp; &nbsp; <a href="${ eyebd }">${ eyebody.originfile_eyebody }</a> &nbsp;
-					</c:if> <!-- 첨부파일이 없다면, Empty 처리 --> <c:if
-						test="${ empty eyebody.originfile_eyebody}">
+						&nbsp; &nbsp; &nbsp; <a href="${ eyed }">${ of }</a> &nbsp;
+					</c:if>
+					</c:forEach>
+					 <!-- 첨부파일이 없다면, Empty 처리 --> 
+					 <c:if test="${ empty eyebody.originfile_eyebody}">
 						 &nbsp; &nbsp; Empty
 					</c:if>
 				</td>
