@@ -190,16 +190,6 @@ border: 1px solid #D1D1D1;
    height: 100px;
    margin: 10px;
 }
-
-#todayVisitors, #monthVisitors, #avgVisitors, #postCount, #blackPostCount {
-	width: 300px;
-	font-size: xx-large;
-	margin: auto;
-	justify-content: center;
-	color: black;
-}
-
-
 </style>
 
 <script type="text/javascript"
@@ -214,45 +204,29 @@ border: 1px solid #D1D1D1;
 	   location.href ="logout.do";
 }
    
-  //setInterval로 접속자수 갱
- /*   $(document).ready(function() {
-
-		setInterval(
-
-		AjaxCall() , 1000)
-
-
-
-	});  */
-	
-	
+   
    //adminBox에서 접속자수, 게시물수 get
-   $(function (){
-
-  setInterval(function() {
-		 
+   $(function(){
   $.ajax({
 	  url: "adminBox.do",
 	  type: "post",
 	  dataType: "json",
 	  success: function(jsonData) {
 		  console.log("jsonData sending ");
+		  
+		var objStr = JSON.stringify(jsonData);	//JSON객체 => String
+		var jsonObj = JSON.parse(objStr); //String => json Object
 		
-		$('#todayVisitors').html(jsonData.visitorsT + ' 명');
-		$('#monthVisitors').html(jsonData.visitorsM + ' 명');
-		$('#avgVisitors').html(jsonData.visitorsAvg + ' 명');
-		$('#postCount').html(jsonData.postCount + ' 명');
-		//$('#blackPostCount').html(jsonData.blackPostCount + ' 명');
-
+		$('#visitors').html(jsonObj.value(visitorsT));
+		//$('#visitorsT').html(jsonData.visitorsT);
 	},
 	error: function(request, status, errorData){
 		console.log("error code : " + request.status
 				+ "\nMessage : " + request.responseText
 				+ "\nError : " + errorData);
-	} 
+	}
+	  
   });//adminBox ajax close;
-  
-  }, 1000);	//setInterval() close;
    
    });//function close;
 </script>
@@ -338,15 +312,15 @@ border: 1px solid #D1D1D1;
                <div id="visit_count">
                   <div id="today">
                      <div>오늘 접속자 수</div>
-                     <div id="todayVisitors"></div>
+                     <div id="visitors">${ visitorsT }</div>
                   </div>
                   <div id="month">
                      <div>월 접속자 수</div>
-                     <div id="monthVisitors"></div>
+                     <div></div>
                   </div>
                   <div id="year">
                      <div>월 평균 접속자 수</div>
-                     <div id="avgVisitors"></div>
+                     <div></div>
                   </div>
                </div>
             </div>
@@ -355,11 +329,11 @@ border: 1px solid #D1D1D1;
                <div id="board_count">
                   <div id="total_post">
                      <div>총 게시물 수</div>
-                     <div id="postCount"></div>
+                     <div></div>
                   </div>
                   <div id="total_coment">
-                     <div>총 유해게시물 수</div>
-                     <div id="blackPostCount"></div>
+                     <div>총 코멘트 수</div>
+                     <div></div>
                   </div>
                </div>
             </div>

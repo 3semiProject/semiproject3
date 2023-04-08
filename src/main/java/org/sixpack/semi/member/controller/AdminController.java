@@ -1,13 +1,21 @@
 package org.sixpack.semi.member.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionBindingEvent;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.banner.model.service.BannerService;
 import org.sixpack.semi.bfaf.model.service.BfafService;
 import org.sixpack.semi.event.model.service.EventService;
@@ -37,6 +45,7 @@ public class AdminController {
 	
 	@Autowired
 	private MemberService memberService;
+	
 	
 	//관리자 전용 board
 	@Autowired
@@ -126,7 +135,8 @@ public class AdminController {
 	
 	//회원 작성 총 게시물 카운트 메소드
 	@RequestMapping(value="adminBox.do", method={ RequestMethod.GET, RequestMethod.POST })
-	public String adminBoxShowMethod(Model model) {
+	@ResponseBody
+	public String adminBoxShowMethod(HttpServletResponse response) {
 		//오늘 접속자 수
 		String visitorsT = Integer.toString(logService.visitCount());
 		
@@ -134,31 +144,62 @@ public class AdminController {
 		String visitorsM = Integer.toString(logService.visitCountMonth());
 		
 		//월평균 접속자 수(한달 평균 접속자수)
-		String visitorsAvg = Integer.toString(logService.visitCountAvg());
-		
-		
+		//월접속자수를 view단에서 일수로 나누기. => if문 사용
+		// <c:if test="new Date().substring(4, 6) == '02'">
+		 Date date = new Date();
+		 String visitorsAvg;
+		 if(date.toString().substring(4, 6) == "02") {
+			visitorsAvg  = Integer.toString(logService.visitCountMonth()/28);
+		 }else if(date.toString().substring(4, 6) == "04" || date.toString().substring(4, 6) == "06" ||
+				 date.toString().substring(4, 6) == "09" || date.toString().substring(4, 6) == "11") {
+				visitorsAvg  = Integer.toString(logService.visitCountMonth()/30);
+
+		 }else {
+				visitorsAvg  = Integer.toString(logService.visitCountMonth()/31);
+
+		 }
+
 		//총게시물 수 
-		//String postCount = hotNewService.selectTotalPostCount();
+		String postCount = String.valueOf(freeService.selectListCount() + tipService.selectListCount() 
+						+ eyebodyService.selectListCount() + bfafService.selectListCount());
+ 		
+		
+		//총 유해게시물 수
+		String blackPostCount;
+		
+		//mimiType
+		response.setContentType("application/json; charset=utf-8");
+		
+		JSONObject job = new JSONObject();
+		
+		job.put("visitorsT", visitorsT);
+		job.put("visitorsM", visitorsM);
+		job.put("visitorsAvg", visitorsAvg);
+		job.put("postCount", postCount);
 		
 		
-		//총 코멘트수
-		//String commentCount = hotNewService.selectTotalCommentCount();
 		
-		
-		//map이든 list든 받아서 넘겨주고 프론트단에서 출력하기
+//		map이든 list든 받아서 넘겨주고 프론트단에서 출력하기
 //		Map<String, String> countBox = new HashedMap ();
 //		countBox.put("visitorsT", visitorsT);
 //		countBox.put("visitorsM", visitorsM);
-//		countBox.put("visitorsAvg", visitorsAvg);
+		//countBox.put("visitorsAvg", visitorsAvg);
 //		
 //		model.addAttribute("countBox", countBox);
-		
-		model.addAttribute("visitorsT", visitorsT);
-		model.addAttribute("visitorsM", visitorsM);
-		model.addAttribute("visitorsAvg", visitorsAvg);
-		
+//		
+//		model.addAttribute("visitorsT", "100");
+//		model.addAttribute("visitorsM", visitorsM);
+		//model.addAttribute("visitorsAvg", visitorsAvg);
+		//PrintWriter out = response.getWriter();
+//		
+//		out.append(visitorsT);
+//		out.append(visitorsM);
+//		out.flush();
+//		out.close();
 		logger.info("adminBox.do 실행");
-		return "common/mainbox";
+		
+		
+		return job.toJSONString();
 		
 	}
 	
