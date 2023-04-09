@@ -102,7 +102,7 @@ $(function() {
 
     var selectFile = function(files) {
         // input file 영역에 드랍된 파일들로 대체
-        if(files.length > 0 && $file.files.length < 3){
+        if(files.length < 4 && $file.files.length < 4){
 	        $file.files = files;
 		    showFiles($file.files);
         }else{
