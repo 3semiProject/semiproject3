@@ -133,6 +133,18 @@ public class MemberController {
 	public String moveLoginPage() {
 		return "member/loginPage";
 	}
+	
+	// 아이디 찾는 페이지 내보내기용 메소드
+	@RequestMapping(value = "findId.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String moveFindIdPage() {
+		return "member/findIdPage";
+	}
+	
+	// 비밀번호 찾는 페이지 내보내기용 메소드
+	@RequestMapping(value ="findPw.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String moveFindPwPage() {
+		return "member/findPwPage";
+	}
 
 //	// 소셜로그인이 포함된 로그인 페이지 내보내기용 메소드
 //	@RequestMapping(value = "loginPage.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -404,6 +416,9 @@ public class MemberController {
 			return "common/error";
 		}
 	}
+	
+	//[find]------------------------------------------------------------------
+	
 
 	@RequestMapping("findIdPhone.do")
 	public String findIdPhoneMethod(HttpServletResponse response, Member member, Model model) {

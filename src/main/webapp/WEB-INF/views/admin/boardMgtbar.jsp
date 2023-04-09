@@ -113,8 +113,7 @@
             
             color: #01CD88;
             font-weight: bold;
-            width:1200px;
-    		height:1200px;
+            
             text-shadow: 1px 1px 2px #D1D1D1;
             font-size: 20pt;
             border: 1px solid;
@@ -123,30 +122,13 @@
 
 
 </style>
-<!-- 토글 선택시, 해당 뷰 리스트가 보임. 뷰리스트 이동은 토글로 지정하고 위에 펑션 사용.
-해당 페이지별 관리자 메소드드들 생성하기.
- -->
-
-    <title>게시글통합관리</title>
-
     <script type="text/javascript"
             src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
-    <script type="text/javascript">
-   function elist() {
-      //버튼 클릭시, 로그인 페이지로 이동하는 controller 요청
-      location.href = "nlist.do";
-   }
-   
-   
-   
-
-
-    </script>
+    <script type="text/javascript"></script>
 </head>
 <body>
 <%--관리자 접속시--%>
 <c:if test="${sessionScope.loginMember.admin_ck eq 'Y'}" >
-<c:import url="/WEB-INF/views/common/menubar.jsp" />
 <hr>
 <br>
 <%--검색 항목--%>
@@ -155,17 +137,18 @@
 	<div style="width: 30%; border: 1px solid #D1D1D1;">게시판별 보기</div>
 	<div style="width: 60%;">
 		<select id="optionLink" name="searchtype" onchange="if(this.value) location.href=(this.value);">
-			<option value="boardMgt.do?page=1" selected="selected">유해게시글관리</option>
+			<option value="black" selected="selected">유해게시글관리</option>
 			<option value="adHotlist.do?page=1">HOT</option>
 			<option value="adNewlist.do?page=1">NEW</option>
-			<option value="adFreelist.do?page=1">FREE</option>
-			<option value="adTiplist.do?page=1">TIP</option>
-			<option value="adEyelist.do?page=1">EYEBODY</option>
-			<option value="adBFlist.do?page=1">BF&AF</option>
+			<option value="commu.do?page=1">FREE</option>
+			<option value="tiplist.do?page=1">TIP</option>
+			<option value="eyebodylist.do?page=1">EYEBODY</option>
+			<option value="bfaflist.do?page=1">BF&AF</option>
 			<option value="nlist.do?page=1">공지사항</option>
 			<option value="elist.do?page=1">이벤트</option>
 			<option value="qnalist.do">FAQ</option>
 			<option value="faqlist.do?page=1">QNA</option>
+			
 		</select>
 	</div>
 </div>	
@@ -183,64 +166,9 @@
 		</div>
 	</div>
 	</form>
-<c:import url="/WEB-INF/views/notice/noticepaging.jsp" />
 </div>
 <br>
 </center>
-
-<div id="nocietWrapper">
-
-        <ul>
-            <!-- 게시판 목록  -->
-            <li>
-                <ul id ="ulTable">
-                    <li>
-                        <ul>
-                            <li><input type="checkbox"/></li>
-                            <li>No</li>
-                            <li class="center">제목</li>
-                            <li>첨부파일</li>
-                            <li>작성자</li>
-                            <li>작성일</li>
-                            <li>조회</li>
-                            <li>수정</li>
-                            <li>삭제</li>            
-                        </ul>
-                    </li>
-                    <!-- 게시물이 출력될 영역 -->
-                   <li>
-                <c:forEach items="${ list }" var="n">
-                      <ul>
-                      	<li><input type="checkbox"/></li>
-                         <li>${ n.notice_no }</li>
-                         <c:url var="ndt" value="/ndetail.do?page=1">
-                        <c:param name="notice_no" value="${ n.notice_no }" />
-                        <c:param name="page" value="${ currentPage }" />
-                     </c:url>
-                            <li class="center">
-                            <c:if test="${ !empty sessionScope.loginMember }">
-                        <a class="yy" href="${ ndt }">${ n.notice_title }</a>
-                     </c:if>
-                     <c:if test="${ empty sessionScope.loginMember }">
-                        ${ n.notice_title }
-                     </c:if>
-                            </li>
-                            <li>
-                               <c:if test="${ !empty n.notice_originfile }">◎</c:if>
-                        <c:if test="${ empty n.notice_originfile }">Empty</c:if>
-                            </li>
-                            <li>${n.write_notice_date}</li>
-                            <li>${n.user_id}</li>
-                            <li class="center"> &nbsp; ${n.notice_views}</li>
-                      </ul>
-                </c:forEach>                       
-                   </li>
-                </ul>
-            </li>
-        </ul> 
-     </div>     
-<hr>
-   <c:import url="/WEB-INF/views/common/footer.jsp" />
 </c:if>
 </body>
 </html>
