@@ -75,7 +75,7 @@ public class MemberController {
 		// 로그인 요청한 회원의 아이디 존재유무 체크 및 변수에 저장
 		Member loginMember = memberService.selectMember(user_id);
 		logger.info(loginMember.getProfile_renamefile());
-		if (loginMember != null && this.bcryptPasswordEncder.matches(user_pw, loginMember.getUser_pw())) {
+		if ((loginMember != null && this.bcryptPasswordEncder.matches(user_pw, loginMember.getUser_pw())) && (loginMember.getLogin_ok().equals("Y"))){
 			session.setAttribute("loginMember", loginMember);
 
 			// 해당 멤버의 정보 변수명에 저장
@@ -111,6 +111,7 @@ public class MemberController {
 			model.addAttribute("message", "로그인 실패 : 아이디나 암호 확인하세요.<br>" + "또는 로그인 제한된 회원인지 관리자에게 문의하세요.");
 			return "common/error";
 		}
+		
 	}
 
 	// logout 처리용 메소드
@@ -664,21 +665,22 @@ public class MemberController {
 		return mv;
 
 	}
-
-//	---------------------------------------------------------------------------
-	// 회원 전체 출력???
-	@RequestMapping("memberList.do")
-	public String showMmeberListMethod(Model model) {
-		ArrayList<Member> list = memberService.selectMemberList();
-
-		if (list != null && list.size() > 0) {
-			model.addAttribute("list", list);
-			return "member/memberListView";
+	
+	// 관리자 기능 : 회원 로그인 제한/가능 처리용 메소드
+	@RequestMapping("loginok.do")
+	public ModelAndView changeLoginOkMethod(Member member, ModelAndView mv) {
+		logger.info("loginok.do : " + member.getUser_id() + ", " + member.getLogin_ok());
+		if (memberService.updateLoginok(member) > 0) { // 수정 성공시
+			mv.setViewName("redirect:memberlist.do");
 		} else {
-			model.addAttribute("message", "회원 정보가 존재하지 않습니다.");
-			return "common/error";
+			mv.addObject("message", "로그인 제한/허용 처리 오류 발생!");
+			mv.setViewName("common/error");
 		}
+
+		return mv;
 	}
+
+
 
 //------------------------------------------------------------------------------
 	/* 이메일 인증 */

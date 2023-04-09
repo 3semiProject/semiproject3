@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.banner.model.service.BannerService;
 import org.sixpack.semi.bfaf.model.service.BfafService;
+import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.event.model.service.EventService;
 import org.sixpack.semi.eyebody.model.service.EyebodyService;
 import org.sixpack.semi.faq.model.service.FaqService;
@@ -28,6 +29,7 @@ import org.sixpack.semi.member.model.service.MemberService;
 import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.notice.model.service.NoticeService;
 import org.sixpack.semi.qna.model.service.QnaService;
+import org.sixpack.semi.qna.model.vo.Qna;
 import org.sixpack.semi.tip.model.service.TipService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +38,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AdminController {
@@ -203,7 +207,36 @@ public class AdminController {
 		
 	}
 	
-	
+	//리스트 출력
+	@RequestMapping("memberlist.do")
+	@ResponseBody
+	public ModelAndView showMemberListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		int limit = 10;
+		
+		int listCount = memberService.selectListCount();
+		Paging paging = new Paging(listCount, currentPage, limit);
+		paging.calculator();
+		
+		ArrayList<Member> list = memberService.selectList(paging);
+		
+		if(list != null && list.size() > 0) {
+			mv.addObject("list", list);
+			mv.addObject("paging", paging);
+			
+			
+			mv.setViewName("admin/memberAllList");
+		}else {
+			mv.addObject("message","Member가 없습니다.");
+			mv.setViewName("common/error");
+		}
+		return mv;
+	}
 	
 	
 	

@@ -1,13 +1,24 @@
 package org.sixpack.semi.member.model.service;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
-import org.sixpack.semi.kakao.model.vo.Kakao;
+import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.member.model.dao.MemberDao;
 import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.member.model.vo.PhoneSns;
+import org.sixpack.semi.qna.model.vo.Qna;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService{
@@ -135,6 +146,24 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.selectNewMemberList();
 
 	}
+
+	@Override
+	public int selectListCount() {
+		return memberDao.selectListCount();
+	}
+
+	@Override
+	public ArrayList<Member> selectList(Paging page) {
+		return memberDao.selectList(page);
+	}
+
+	@Override
+	public int updateLoginok(Member member) {
+		return memberDao.updateLoginok(member);
+	}
+
+
+
 
 	
 	

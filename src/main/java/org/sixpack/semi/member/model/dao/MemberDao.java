@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
+import org.sixpack.semi.member.controller.MemberController;
 import org.sixpack.semi.member.model.vo.Member;
+import org.sixpack.semi.qna.model.vo.Qna;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +20,7 @@ public class MemberDao {
 	@Autowired
 	private SqlSessionTemplate session;
 
+	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
 	public Member selectFindIdPhone(Member member) {
 		// TODO Auto-generated method stub
@@ -117,6 +123,21 @@ public class MemberDao {
 		List<Member> list = session.selectList("memberMapper.selectNewMemberList");
 		return (ArrayList<Member>)list;
 	}
+
+	public int selectListCount() {
+		return session.selectOne("memberMapper.selectListCount");
+	}
+
+	public ArrayList<Member> selectList(Paging page) {
+		List<Member> list = session.selectList("memberMapper.selectList", page);
+		return (ArrayList<Member>)list;
+	}
+
+	public int updateLoginok(Member member) {
+		return session.update("memberMapper.updateLoginok", member);
+	}
+
+
 
 
 
