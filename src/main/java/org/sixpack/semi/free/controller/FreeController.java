@@ -169,7 +169,7 @@ public class FreeController {
 	@RequestMapping(value = "freedetail.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView boardDetailMethod(ModelAndView mv, @RequestParam("free_no") int free_no,
 			@RequestParam(name = "user_id", required = false) String user_id,
-			@RequestParam(name = "page", required = false) String page) {
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page) {
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = Integer.parseInt(page);
@@ -424,7 +424,7 @@ public class FreeController {
 	// 리스트
 	@RequestMapping(value = "commu.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public ModelAndView freeListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+	public ModelAndView freeListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = Integer.parseInt(page);
