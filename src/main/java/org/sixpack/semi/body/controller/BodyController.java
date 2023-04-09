@@ -32,38 +32,43 @@ public class BodyController {
 	//체형다이어리 화면출력용
 	@RequestMapping("diary_showBodyDiary.do")
 	public String showBodyDiary(Model model, Diary diary, HttpSession session) {			
-		Diary move = null;
+	Diary move = null;
+		
+		//diary_no 있을때 바로이동
 		if(diary.getDiary_no()>0) {
 			move = diaryService.selectDiaryNo(diary.getDiary_no());
 		}else {
-			//id 없을때 : 비로그인 상태면 로그인 페이지로 이동
-			if(session==null) {
-				return "redirect:loginPage.do";
+		//diary_no없을때 id, date, category로 조회
+			if(diary.getUser_id()!=null || diary.getDiary_post_date()!=null || diary.getDiary_category()!=null) {
+			    move = diaryService.selectDiaryOne(diary);			
+			}
+		//id 없을때 비로그인 상태면 로그인 페이지로 이동
+			if(session==null|| session.getAttribute("loginMember") == null) {				
+				return "redirect:loginPage.do";	
 			}else {
 				String id =((Member)session.getAttribute("loginMember")).getUser_id();
 				diary.setUser_id(id);
-				if(id==null) {diary.setUser_id("dd");} //test용 비로그인시에도 확인가능
+				diary.setUser_id("dd"); //test용
 			}					
-			//date 없을때 현재날짜로
+		//date 없을때 현재날짜로
 			if(diary.getDiary_post_date()==null) {
-				Date today = new Date(new java.util.Date().getTime());
-				//today =java.sql.Date.valueOf("2023-03-01"); //test용
-				diary.setDiary_post_date(today);
+	            diary.setDiary_post_date(new Date(new java.util.Date().getTime()));
 			}					
-			//category 없을때
+			//category 없을때 식단우선
 			if(diary.getDiary_category()==null) {
-				diary.setDiary_category("body");
+				diary.setDiary_category("eat");
 			}			
 			//id, date, category 일치하는 diary 있는지 조회
-			if(!(diary.getUser_id()==null&& diary.getDiary_post_date()==null&&diary.getDiary_category()==null)) {
-				move = diaryService.selectDiaryOne(diary);			
-			}
-			//조회된 move 없으면 그냥 빈 다이어리 화면 띄우기
+	        move = diaryService.selectDiaryOne(diary);
+
+			//조회된 move 없으면 그냥 빈 식단화면 띄우기
 			if(move ==null) {
-				logger.info("빈 다이어리 화면 띄우기"+ diary.toString());
+				logger.info("빈 운동화면 띄우기"+ diary.toString());
 				move=diary;
 			}
 		}
+
+		model.addAttribute("diary", move);	
 			//목표정보, 날짜정보 조회
 			Goal goal = diaryService.selectlastGoal(diary);//가장 최신 목표정보
 			ArrayList<Diary> week = diaryService.selectWeekDiary(diary); // 일주일날짜에 대한 다이어리 정보
