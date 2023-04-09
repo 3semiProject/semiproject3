@@ -1,6 +1,7 @@
 package org.sixpack.semi.eat.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.sixpack.semi.diary.model.vo.Diary;
 import org.sixpack.semi.eat.model.dao.EatDao;
@@ -29,6 +30,10 @@ public class EatServiceImpl implements EatService {
 		public ArrayList<Food> selectSearchFoodlist(String food_name) {
 			return eatDao.selectSearchFoodlist(food_name);
 		}
+		@Override
+		public int insertAllEat(List<Eat> eats) {
+			return eatDao.insertAllEat(eats);
+		}
 		
 		
 
@@ -51,4 +56,6 @@ public class EatServiceImpl implements EatService {
 		public int deleteAllEat(Diary diary) {
 			return 0;
 		}
+
+
 }

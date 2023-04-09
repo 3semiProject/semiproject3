@@ -189,6 +189,25 @@ form.tabs {
 }
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.writebtn').on('click', function (){
+		window.location.href = 'diary_showEatWrite.do';
+		
+	});//writebtn
+	
+	$('#eatPart').on('click', '.modifyBtn',function (){
+		 var dn = $(this).attr('id');
+		window.location.href = 'diary_showEatModify.do?diary_no='+dn;
+		
+	});//writebtn
+	
+	$('#calendarDate').on('change', function(event){
+		$("#moveCalendar").submit();
+	});//calendarDate
+	
+});//document.ready
+</script>
 </head>
 <body>
 
@@ -200,17 +219,27 @@ form.tabs {
 
 <div class="vars">
 <div class="calendar">
-	<form action="diary.do?" id="moveCalendar">
 	<input type="date" id="calendarDate" name="diary_post_date" value="${diary.diary_post_date}">
-	<input type="hidden" name="user_id" value="${diary.user_id}">	
-	<input type="hidden" name="diary_category" value="${diary.diary_category}">
-	</form>
+	<button id="moveBtn" onclick="moveCal();">이동</button>
+	
 	<script type="text/javascript">
-		$(function(){
-			$('#calendarDate').on('change', function(event){
-				$("#moveCalendar").submit();
-			});
-		});
+	var eat_no = ${diary.diary_no};
+	var previousDate = '${diary.diary_post_date}'; //현재페이지 날짜 저장 : 날짜는 문자열로 저장
+    var xhr;
+	
+		function moveCal() { //전송이 안됨 : 수정예정
+		    var selectedDate = $('#calendarDate').val(); // 새로 선택된 날짜 저장
+		        console.log("calendar Move!!" + selectedDate + previousDate);
+		    if (selectedDate !== previousDate) { // 선택된 날짜와 다이어리 날짜값이 다른 경우에만 폼 전송
+		    	
+		    	var href ='diary_eatCalendar.do'
+		    	+"?diary_no=" +  eat_no + "&diary_post_date="+ selectedDate;
+		    // 새로 선택된 날짜 사용
+		       
+		        location.href = href;
+		        previousDate = selectedDate; // 이전 날짜 변수 값 업데이트
+		      }
+		  }
 	</script>
     <br>
 </div>
@@ -301,49 +330,53 @@ form.tabs {
 	<div class="noneD">
 		<h3>다이어리가 없네요, 작성하시겠습니까?</h3>
 		<div>
-			<button id="writebtn">글쓰기</button>
+			<button class="writebtn">글쓰기</button>
 		</div>
+		
 	</div>
 </c:if>
-<br>
+<br> 
 <c:if test="${diary.diary_no ne 0}">
-	<c:forEach var="D" items="${diarys}" varStatus="status">
-	<div class="D">
-		<table class="D">
-		<tr class="dbtn"><td colspan="3"><button id="modifybtn">수정</button></td></tr>			
-		<tr class="dimg"><td rowspan="3">
-			<c:if test="${empty D.diary_image}">
-			<img alt="${D.diary_no}의 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg">
-			</c:if>
-			<c:if test="${!empty D.diary_image}">
-			<img alt="${D.diary_no}의 이미지" src="${ pageContext.servletContext.contextPath }/resources/diary_upfile/${D.diary_image}">
-			</c:if>
-			</td>
-		<th id="dtime"><h3> 🍴 &nbsp;<fmt:formatDate value="${D.diary_post_date}" type="date" pattern="a HH:mm" /></h3>
-		</th></tr>
-			<tr><td><table class="E">
-					<c:forEach var="eat" items="${eats}"><c:if test="${eat.diary_no eq D.diary_no}">
-				<tr><td><b>${eat.food_code}</b> &nbsp; ${eat.eat_g}g &nbsp; &nbsp; &nbsp; &nbsp;</td>
-					<td>⇒ ${eat.eat_kcal} kcal </td></tr>
-				<tr><td colspan="2" class="even-row">↳ 탄수화물 ${eat.eat_carbohydrate}g &nbsp; 단백질 ${eat.eat_protein}g &nbsp; 지방 ${eat.eat_fat}g &nbsp;&nbsp;</td></tr>
-					</c:if></c:forEach>
-				</table>
-			</td>
-		</tr>
-		<tr class="etotal"><c:forEach var="sum" items="${sums}"><c:if test="${sum.diary_no eq D.diary_no}">
-									<td>총 탄수화물 ${sum.eat_carbohydrate}g &nbsp; 총 단백질
-										${sum.eat_protein}g &nbsp; 총 지방 ${sum.eat_fat}g &nbsp; &nbsp;
-									<span id="sum"> &nbsp; &nbsp; ⇒ ${sum.eat_kcal}kcal</span></td>
-							</c:if></c:forEach>
-		</tr>
-		<tr class="dmemo"><td colspan="2"><textarea rows="5" cols="100">${D.diary_memo}</textarea>
-			</td>
-		</tr>
-	</table>
-	</div>
-	<br><br>
-</c:forEach>
-		
+<div  style="align:right;" >
+<button class="writebtn">글쓰기</button>
+</div>
+<div id="eatPart">
+		<c:forEach var="D" items="${diarys}" varStatus="status">
+		<div class="D">
+			<table class="D">
+			<tr class="dbtn"><td colspan="3"><button type="button" class="modifyBtn" id="${D.diary_no}">${D.diary_no}수정</button></td></tr>			
+			<tr class="dimg"><td rowspan="3">
+				<c:if test="${empty D.diary_image}">
+				<img alt="${D.diary_no}의 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg">
+				</c:if>
+				<c:if test="${!empty D.diary_image}">
+				<img alt="${D.diary_no}의 이미지" src="${ pageContext.servletContext.contextPath }/resources/diary_upfile/${D.diary_image}">
+				</c:if>
+				</td>
+			<th id="dtime"><h3> 🍴 &nbsp;<fmt:formatDate value="${D.diary_post_date}" type="date" pattern="a HH:mm" /></h3>
+			</th></tr>
+				<tr><td><table class="E">
+						<c:forEach var="eat" items="${eats}"><c:if test="${eat.diary_no eq D.diary_no}">
+					<tr><td><b>${eat.food_code}</b> &nbsp; ${eat.eat_g}g &nbsp; &nbsp; &nbsp; &nbsp;</td>
+						<td>⇒ ${eat.eat_kcal} kcal </td></tr>
+					<tr><td colspan="2" class="even-row">↳ 탄수화물 ${eat.eat_carbohydrate}g &nbsp; 단백질 ${eat.eat_protein}g &nbsp; 지방 ${eat.eat_fat}g &nbsp;&nbsp;</td></tr>
+						</c:if></c:forEach>
+					</table>
+				</td>
+			</tr>
+			<tr class="etotal"><c:forEach var="sum" items="${sums}"><c:if test="${sum.diary_no eq D.diary_no}">
+										<td>총 탄수화물 ${sum.eat_carbohydrate}g &nbsp; 총 단백질
+											${sum.eat_protein}g &nbsp; 총 지방 ${sum.eat_fat}g &nbsp; &nbsp;
+										<span id="sum"> &nbsp; &nbsp; ⇒ ${sum.eat_kcal}kcal</span></td>
+								</c:if></c:forEach>
+			</tr>
+			<tr class="dmemo"><td colspan="2"><textarea rows="5" cols="100">${D.diary_memo}</textarea>
+				</td>
+			</tr>
+		</table>
+		</div><br><br>
+	</c:forEach>
+</div>		
 			<br>
 			<c:forEach var="sum" items="${sums}" varStatus="status">
 				<c:if test="${status.last}">

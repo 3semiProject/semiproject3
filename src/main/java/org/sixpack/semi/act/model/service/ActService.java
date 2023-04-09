@@ -1,6 +1,7 @@
 package org.sixpack.semi.act.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.sixpack.semi.act.model.vo.Act;
 import org.sixpack.semi.act.model.vo.Move;
@@ -23,5 +24,8 @@ public interface ActService {
 	int deleteOneAct(Act act);	
 	
 	//운동이름 조회
-	Move selectMoveName(String move_name);
+	ArrayList<Move> selectSearchMovelist(String move_name);
+	
+	//운동모두 추가
+	int insertAllAct(List<Act> acts);
 }
