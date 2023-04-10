@@ -116,7 +116,7 @@ body{
 				<tr height="100">
 					<th>게시글 추천</th>
 					<td><!-- likeFree -->
-					<c:if test="${!empty likeFree.user_id and likeFree.user_id eq sessionScope.loginMember.user_id}">
+					<c:if test="${!empty likeFree.user_id}">
 					&nbsp; <img src="${ pageContext.servletContext.contextPath }/resources/images/fullheart.png" width="30" height="30" alt="fullheart"> &nbsp; 
 					좋아요 ${free.free_like_no}개 &nbsp; &nbsp;
 					</c:if>
