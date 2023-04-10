@@ -135,6 +135,26 @@ button:hover, button:focus {
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
+
+$(function(){
+	$('#writebtn').on('click', function (){
+		var act_date = $(this).attr("name");
+		window.location.href = 'diary_showActWrite.do?diary_post_date='+act_date;
+		
+	});//writebtn
+	
+	$('#eatPart').on('click', '.modifyBtn',function (){
+		 var dn = $(this).attr('id');
+		window.location.href = 'diary_showActModify.do?diary_no='+dn;
+		
+	});//writebtn
+	
+	$('#calendarDate').on('change', function(event){
+		$("#moveCalendar").submit();
+	});//calendarDate
+	
+});//document.ready
+
 	//운동추천 화면출력용 ajax
 	//diary_showActRec.do실행
 	//
@@ -148,15 +168,28 @@ button:hover, button:focus {
 <div class="calendar">
 	<form action="diary.do?" id="moveCalendar">
 	<input type="date" id="calendarDate" name="diary_post_date" value="${diary.diary_post_date}">
-	<input type="hidden" name="user_id" value="${diary.user_id}">	
+	<input type="hidden" id="id" name="user_id" value="${diary.user_id}">	
 	<input type="hidden" name="diary_category" value="${diary.diary_category}">
 	</form>
 	<script type="text/javascript">
-		$(function(){
-			$('#calendarDate').on('change', function(event){
-				$("#moveCalendar").submit();
-			});
-		});
+	$(function() {
+		  var previousDate = $('#calendarDate').val(); //현재페이지 날짜 저장
+
+		  $('#calendarDate').on('change', function(event) {
+		    var selectedDate = $(this).val(); // 새로 선택된 날짜 저장
+
+		    if (selectedDate !== previousDate) { // 이전에 선택된 날짜와 값이 다른 경우에만 폼 전송
+		      var formData = new FormData();
+		      formData.append("diary_no", ${diary.diary_no});
+		      formData.append("diary_post_date", selectedDate); // 새로 선택된 날짜 사용
+		      submit(formData);
+		      
+		      var xhr = new XMLHttpRequest();
+		      xhr.open('POST', 'diary_actCalendar.do');
+		      xhr.send(formData);
+		    }
+		    }); //calendar event
+		  });//doc.ready
 	</script>
     <br>
 </div>
@@ -223,7 +256,8 @@ button:hover, button:focus {
 		<div class="noneD">
 			<h3>다이어리가 없네요, 작성하시겠습니까?</h3>
 			<div>
-				<button id="writebtn">글쓰기</button>
+				<button id="writebtn" name="${diary.diary_post_date}">글쓰기</button>
+				
 			</div>
 		</div>
 	</c:if>
