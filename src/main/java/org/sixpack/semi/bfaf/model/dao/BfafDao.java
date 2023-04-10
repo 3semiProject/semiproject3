@@ -9,7 +9,6 @@ import org.sixpack.semi.bfaf.model.vo.LikeBfaf;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
-import org.sixpack.semi.free.model.vo.Free;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

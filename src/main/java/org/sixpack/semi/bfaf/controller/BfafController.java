@@ -11,7 +11,6 @@ import org.sixpack.semi.bfaf.model.service.BfafService;
 import org.sixpack.semi.bfaf.model.vo.Bfaf;
 import org.sixpack.semi.bfaf.model.vo.LikeBfaf;
 import org.sixpack.semi.common.CountSearch;
-import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.common.FileNameChange2;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;

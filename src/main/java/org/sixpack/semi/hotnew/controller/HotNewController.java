@@ -12,8 +12,6 @@ import org.json.simple.JSONObject;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
-import org.sixpack.semi.eyebody.model.vo.Eyebody;
-import org.sixpack.semi.free.model.vo.Free;
 import org.sixpack.semi.hotnew.model.service.HotNewService;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
 import org.sixpack.semi.member.model.vo.Member;
