@@ -4,7 +4,6 @@ import org.sixpack.semi.diary.model.vo.Period;
 import org.sixpack.semi.stats.model.dao.StatsDao;
 import org.sixpack.semi.stats.model.vo.BodyChart;
 import org.sixpack.semi.stats.model.vo.BodyStats;
-import org.sixpack.semi.stats.model.vo.Graph;
 import org.sixpack.semi.stats.model.vo.StatsDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

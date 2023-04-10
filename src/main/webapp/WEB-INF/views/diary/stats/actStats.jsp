@@ -162,6 +162,8 @@ My 다이어리 분석
     var actStats;
     var barLineChart;
     var pieChart;
+    var actChart;
+
     const ctxStats = document.getElementById('actStatsChart');
     const ctx = document.getElementById('actChart');
 
@@ -190,43 +192,9 @@ My 다이어리 분석
                 $('#strongTime').text(actStats.tot_strong_time + " 분");
 
 
-                if (barLineChart !== undefined) {
-                    barLineChart.destroy();
+                if (pieChart !== undefined) {
                     pieChart.destroy();
                 }
-
-
-                barLineChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ["1", "2", "3", "4", "5", "6", "7"],
-                        datasets: [{
-                            type: 'bar',
-                            label: '운동 시간',
-                            backgroundColor: "pink",
-                            borderColor: "red",
-                            yAxisID: 'y-axis-left',
-                            data: [420, 2, 3, 4, 5, 6, 7]
-
-                        }, {
-                            type: 'line',
-                            label: '소비 칼로리',
-                            backgroundColor: "green",
-                            borderColor: "black",
-                            yAxisID: 'y-axis-right',
-                            fill: false,
-                            data: [2000, 2700, 2350, 1700, 2300, 1400, 1900]
-                        }]
-                    },
-                    option: {
-                        scale: {
-                            y: {
-                                id: 'y-axis-right',
-                                position: 'right'
-                            }
-                        }
-                    }
-                });
 
 
                 pieChart = new Chart(ctxStats, {
@@ -248,6 +216,86 @@ My 다이어리 분석
             }
         })
         ; // .ajax
+
+
+        $.ajax({
+            url: "diary_ActChart.do",
+            data:
+                {statsRange: range},
+            dataType: "json",
+            success: function (data) {
+
+
+                var jsonStr = JSON.stringify(data);
+                console.log("차트통계 json : " + jsonStr);
+                actChart = JSON.parse(jsonStr);
+                console.log("parse json : " + actChart);
+
+                var dateX = new Array();
+
+                for (var i in actChart.list) {
+                    dateX[i] = actChart.list[i].date;
+                }
+
+                var a_k = new Array();
+
+                for (var i in actChart.list) {
+                    a_k[i] = actChart.list[i].act_kcal;
+                }
+
+                var a_m = new Array();
+
+                for (var i in actChart.list) {
+                    a_m[i] = actChart.list[i].act_mm;
+                }
+
+                if (barLineChart !== undefined) {
+                    barLineChart.destroy();
+                }
+
+
+                barLineChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: dateX,
+                        datasets: [
+                            {
+                                type: 'line',
+                                label: '소비 칼로리 (kcal)',
+                                backgroundColor: "green",
+                                borderColor: "rgba(244,174,75,0.7)",
+                                fill: false,
+                                data: a_k
+                            },
+
+                            {
+                                type: 'bar',
+                                label: '운동 시간 (분)',
+                                backgroundColor: 'rgba(86, 180, 50, 0.7)',
+                                yAxisID: 'y-axis-left',
+                                data: a_m
+
+                            }
+                        ]
+                    },
+                    option: {
+                        scale: {
+                            y: {
+                                id: 'y-axis-right',
+                                position: 'right'
+                            }
+                        }
+                    }
+                });
+
+
+            }, //success
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("diary_actChart.do error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
+            }
+        }); // .ajax
+
+
     }
 
 

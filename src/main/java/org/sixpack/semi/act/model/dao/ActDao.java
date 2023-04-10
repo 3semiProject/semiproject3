@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.act.model.vo.Act;
+import org.sixpack.semi.act.model.vo.Move;
 import org.sixpack.semi.diary.model.vo.Diary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,10 +21,20 @@ public class ActDao {
 	//하루치 운동목록 조회
 	public ArrayList<Act> selectDayAct(Diary diary) {
 		List<Act> list = session.selectList("actMapper.selectDayAct", diary);
-		return (ArrayList<Act>)list;	}
+		return (ArrayList<Act>)list;
+	}
 
 	public java.lang.Integer selectSumAct(Diary diary) {
 		return session.selectOne("actMapper.selectSumAct",diary);
+	}
+
+	public ArrayList<Move> selectSearchMovelist(String move_name) {
+		List<Move> list = session.selectList("actMapper.selectSearchMovelist", move_name);
+		return (ArrayList<Move>)list;
+	}
+
+	public int insertAllAct(List<Act> acts) {
+		return session.insert("actMapper.insertAllAct", acts);
 	}
 		
 }

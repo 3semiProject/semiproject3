@@ -1,8 +1,5 @@
 package org.sixpack.semi.goal.model.service;
 
-import java.sql.Date;
-
-import org.sixpack.semi.diary.model.vo.Diary;
 import org.sixpack.semi.goal.model.dao.GoalDao;
 import org.sixpack.semi.goal.model.vo.Goal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +12,8 @@ public class GoalServiceImpl implements GoalService {
 	private GoalDao goalDao;
 
 	@Override
-	public Goal selectRecentGoal(Diary diary) {
-		return null;
+	public Goal selectRecentGoal(String diary) {
+		return goalDao.selectRecentGoal(diary);
 	}
 
 	@Override

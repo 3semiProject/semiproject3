@@ -33,15 +33,39 @@ public class DiaryServiceImpl implements DiaryService {
 		return diaryDao.selectCurrentGoal(diary);
 	}
 
+	
+	
 	@Override
-	public Diary selectOneDiary(Diary diary) {
-		return diaryDao.selectOneDiary(diary);
+	public Diary selectDiaryNo(int diary_no) {
+		return diaryDao.selectDiaryNo(diary_no);
 	}
+
+	@Override
+	public Diary selectDiaryOne(Diary diary) {
+		return diaryDao.selectDiaryOne(diary);
+	}
+
+	@Override
+	public Diary selectDiaryDate(DateData move) {
+		return diaryDao.selectDiaryDate(move);
+	}
+
+	@Override
+	public ArrayList<Diary> selectWeekDiary(Diary diary) {
+		return diaryDao.selectWeekDiary(diary);
+	}
+
 
 	@Override
 	public ArrayList<Diary> selectDayDiary(Diary diary) {
 		return diaryDao.selectDayDiary(diary);
 	}
+	
+	
+	
+	
+	
+	
 	
 	@Override
 	public int getDiaryNo() {
@@ -50,7 +74,7 @@ public class DiaryServiceImpl implements DiaryService {
 
 	@Override
 	public int insertDiary(Diary diary) {
-		return 0;
+		return  diaryDao.insertDiary(diary);
 	}
 
 	@Override
@@ -63,21 +87,6 @@ public class DiaryServiceImpl implements DiaryService {
 		return 0;
 	}
 
-	@Override
-	public Diary selectMoveDiary(DateData move) {
-		return diaryDao.selectMoveDiary(move);
-	}
-
-	@Override
-	public ArrayList<Diary> selectWeekDiary(Diary diary) {
-		return diaryDao.selectWeekDiary(diary);
-	}
-
-	@Override
-	public Diary selectDiaryNo(int diary_no) {
-		return null;
-	}
-
 
 	@Override
 	public int insertFoodData(List<Food> datalist) {
@@ -88,6 +97,8 @@ public class DiaryServiceImpl implements DiaryService {
 	public int insertMoveData(List<Move> datalist) {
 		return diaryDao.insertMoveData(datalist);
 	}
+
+
 
 
 

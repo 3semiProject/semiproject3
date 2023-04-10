@@ -1,9 +1,8 @@
 package org.sixpack.semi.stats.model.service;
 
-import org.sixpack.semi.diary.model.vo.Period;
 import org.sixpack.semi.stats.model.dao.StatsDao;
+import org.sixpack.semi.stats.model.vo.BodyChart;
 import org.sixpack.semi.stats.model.vo.EatStats;
-import org.sixpack.semi.stats.model.vo.Graph;
 import org.sixpack.semi.stats.model.vo.StatsDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,18 +16,8 @@ public class StatsEatServiceImpl implements StatsEatService {
     StatsDao statsDao;
 
     @Override
-    public EatStats selectPeriodEat(Period period) {
-        return null;
-    }
-
-    @Override
-    public EatStats selectPeriodTop3Eat(Period period) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<Graph> selectGraphEat(Period period) {
-        return null;
+    public ArrayList<EatStats> eatChartList(StatsDate statsDate) {
+        return statsDao.eatChartList(statsDate);
     }
 
     @Override

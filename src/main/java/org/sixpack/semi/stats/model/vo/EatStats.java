@@ -1,5 +1,7 @@
 package org.sixpack.semi.stats.model.vo;
 
+import java.sql.Date;
+
 public class EatStats implements java.io.Serializable {
 
     private static final long serialVersionUID = 4109721404398390725L;
@@ -16,6 +18,8 @@ public class EatStats implements java.io.Serializable {
     private double zi_g; // 지방 섭취비율
     private String many_food; // 가장자주 먹은 식단
     private String maxKcal_food; // 총 kcal 가장 높은 식단
+
+    private Date date;
 
     //회원정보와 조회할 기간을 전달
     //ArrayLsit<Eat>로 받아서 가공후
@@ -36,6 +40,7 @@ public class EatStats implements java.io.Serializable {
                 ", zi_g=" + zi_g +
                 ", many_food='" + many_food + '\'' +
                 ", maxKcal_food='" + maxKcal_food + '\'' +
+                ", date=" + date +
                 '}';
     }
 
@@ -103,10 +108,18 @@ public class EatStats implements java.io.Serializable {
         this.maxKcal_food = maxKcal_food;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public EatStats() {
     }
 
-    public EatStats(int rec_eat, int avg_eat, int contrast_eat, double tan_g, double dan_g, double zi_g, String many_food, String maxKcal_food) {
+    public EatStats(int rec_eat, int avg_eat, int contrast_eat, double tan_g, double dan_g, double zi_g, String many_food, String maxKcal_food, Date date) {
         this.rec_eat = rec_eat;
         this.avg_eat = avg_eat;
         this.contrast_eat = contrast_eat;
@@ -115,5 +128,6 @@ public class EatStats implements java.io.Serializable {
         this.zi_g = zi_g;
         this.many_food = many_food;
         this.maxKcal_food = maxKcal_food;
+        this.date = date;
     }
 }

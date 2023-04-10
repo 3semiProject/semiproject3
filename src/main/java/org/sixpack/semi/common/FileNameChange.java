@@ -23,9 +23,9 @@ public class FileNameChange {
     public static String diaryChange(int diary_no,
     		String fileName) {
     	//바꿀 파일명에 대한 문자열 만들기
-    	//다이어리 등록 | 수정 요청시점의 날짜시간정보를 이용함(오라클날짜포맷)
+    	//다이어리 등록 | 수정 요청시점의 날짜시간정보를 이용함
     	SimpleDateFormat sdf =
-    			new SimpleDateFormat("YYYY-MM-DD HH24:MI:SS");
+    			new SimpleDateFormat("yyyyMMddHHmmss");
     	//변경할 파일명 만들기
     	String renameFileName = diary_no +"&"+ sdf.format(
     			new java.sql.Date(System.currentTimeMillis()));

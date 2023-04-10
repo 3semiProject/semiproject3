@@ -1,109 +1,103 @@
 package org.sixpack.semi.kakao.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
-import javax.servlet.http.HttpSession;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.stereotype.Component;
+import org.sixpack.semi.kakao.model.service.KakaoService;
+import org.sixpack.semi.member.controller.MemberController;
+import org.sixpack.semi.member.model.service.MemberService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
-@Component("KakaoController")
+@Controller
+@RequestMapping(value="/member/*")
 public class KakaoController {
-	//자바스크립트 앱키
-		private final static String K_CLIENT_ID = 
-				"4bde9909d444437dead06610384e9dbe";
-		//카카오 개발자에 등록된 로그인용 redirect uri
-		private final static String K_REDIRECT_URI = 
-				"http://localhost:8888/first/kcallback.do";
-		
-		//카카오 로그인 요청시 카카오 로그인 페이지로 이동 url 리턴용
-		public static String getAuthorizationUrl(HttpSession session) {
-			String kakaoURL = 
-					"https://kauth.kakao.com/oauth/authorize?"
-					+ "client_id=" + K_CLIENT_ID 
-					+ "&redirect_uri=" + K_REDIRECT_URI
-					+ "&response_type=code";
-			
-			return kakaoURL;
-		}
-		
-		//카카오 api 서버 접근 토큰 얻어와서 리턴용
-		public static JsonNode getAccessToken(String authorize_code) {
-			final String RequestURL = 
-					"https://kauth.kakao.com/oauth/token";
-			final List<NameValuePair> postParams = 
-					new ArrayList<NameValuePair>();
-			
-			postParams.add(new BasicNameValuePair(
-					"grant_type", "authorization_code"));
-			postParams.add(new BasicNameValuePair(
-					"client_id", K_CLIENT_ID));
-			postParams.add(new BasicNameValuePair(
-					"redirect_uri", K_REDIRECT_URI));
-			postParams.add(new BasicNameValuePair(
-					"code", authorize_code));
-			
-			final HttpClient client = HttpClientBuilder.create().build();
-			final HttpPost post = new HttpPost(RequestURL);
-			
-			JsonNode returnNode = null;
-			
-			try {
-				post.setEntity(new UrlEncodedFormEntity(postParams));
-				final HttpResponse response = client.execute(post);
-				ObjectMapper mapper = new ObjectMapper();
-				returnNode = mapper.readTree(response.getEntity().getContent());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			return returnNode;
-		}
-		
-		//사용자 정보 얻어오기
-		public static JsonNode getKakaoUserInfo(
-				JsonNode accessToken) {
-			//url 버전 변경됨 v2로
-			final String RequestURL = 
-					"https://kapi.kakao.com/v2/user/scopes";
-			final HttpClient client = HttpClientBuilder.create().build();
-			final HttpPost post = new HttpPost(RequestURL);
-			
-			//add header
-			//** 주의 : accessToken 값은 JsonNode 형이어야 함
-			// Bearer 뒤에 스페이스바 꼭 추가
-			post.addHeader("Authorization", "Bearer " + accessToken);
-			
-			JsonNode returnNode = null;
-			
-			try {
-				final HttpResponse response = 
-						client.execute(post);
-				ObjectMapper mapper = new ObjectMapper();
-				returnNode = mapper.readTree(
-						response.getEntity().getContent());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			return returnNode;
-		}
-		
-		//카카오 로그아웃 처리용
-		public void logout() {
-			String url = "https://kauth.kakao.com/oauth/logout?"
-					+ "client_id=" + K_CLIENT_ID
-					+ "&logout_redirect_uri=http://localhost:8888/first/logout.do";		
-		}
-		
+    private KakaoService kakaoService;
+    private MemberService memberService;
+    private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+
+//    @RequestMapping("kakao_login.do")
+//    public String kakaoLogin() {
+//        StringBuffer loginUrl = new StringBuffer();
+//        loginUrl.append("https://kauth.kakao.com/oauth/authorize?client_id=");
+//        loginUrl.append("3205654a3e1700ef0d67201d929a9c56"); 
+//        loginUrl.append("&redirect_uri=");
+//        loginUrl.append("http://localhost:8889/semi/kakao_login.do"); 
+//        loginUrl.append("&response_type=code");
+//        
+//        return "redirect:"+loginUrl.toString();
+//    }
+//    	private final static String K_CLIENT_ID = 
+//    			"3205654a3e1700ef0d67201d929a9c56";
+//    	//카카오 개발자에 등록된 로그인용 redirect uri
+//    	private final static String K_REDIRECT_URI = 
+//    			"http://localhost:8889/semi/kakao_callback.do";
+    	
+    	@RequestMapping(value="kakao_callback.do", method=RequestMethod.GET)
+    	public String kakaoLogin(@RequestParam(value = "code", required = false) String code) throws Exception {
+    		System.out.println("#########" + code);
+    		String access_Token = kakaoService.getAccessToken(code);
+    		HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token);
+    		System.out.println("###access_Token#### : " + access_Token);
+    		System.out.println("###nickname#### : " + userInfo.get("nickname"));
+    		System.out.println("###email#### : " + userInfo.get("email"));
+    		return "redirect:/";
+        	}
+
+    	
+    	
+    	
+    	
+    	//카카오 로그인 요청시 카카오 로그인 페이지로 이동 url 리턴용
+//    	public String getAuthorizationUrl(HttpSession session) {
+//    		String kakaoURL = 
+//    				"https://kauth.kakao.com/oauth/authorize?"
+//    				+ "client_id=" + K_CLIENT_ID 
+//    				+ "&redirect_uri=" + K_REDIRECT_URI
+//    				+ "&response_type=code";
+//    		
+//    		return kakaoURL;
+//    	}
+//    
+//    @RequestMapping(value = "kakao_callback.do", method = RequestMethod.GET)
+//    public String redirectkakao(@RequestParam String code, HttpSession session) throws IOException {
+//            System.out.println(code);
+//            
+//            //접속토큰 get
+//            String kakaoToken = kakaoService.getReturnAccessToken(code);
+//            
+//            //접속자 정보 get
+//            Map<String,Object> result = kakaoService.getUserInfo(kakaoToken);
+//            System.out.println("컨트롤러 출력"+result.get("nickname")+result.get("email"));
+//            SessionConfigVO configVO =new SessionConfigVO();
+//            configVO.setUser_name((String)result.get("nickname"));
+//            configVO.setUser_id((String)result.get("email"));
+//            
+//            
+//            session.setAttribute("sessionConfigVO", configVO);
+//            /*로그아웃 처리 시, 사용할 토큰 값*/
+//            session.setAttribute("kakaoToken", kakaoToken);
+//        return "redirect:/";
+//    }
+
+//    @RequestMapping(value="/login/logout_proc")
+//    public String logout(ModelMap modelMap, HttpSession session)throws IOException {
+////        if(SystemUtil.EmptyCheck((String)session.getAttribute("kakaoToken"))){
+////        }else {
+////            kakaoService.getLogout((String)session.getAttribute("kakaoToken"));
+////        }
+////        session.setAttribute("sessionConfigVO", null);
+////        HashMap<String, String> message = new HashMap<>();
+////        message.put("title", "로그아웃");
+////        message.put("script", "location.href='/'");
+////        message.put("msg", "로그아웃 되었습니다");
+////        message.put("type","alert");
+////        modelMap.addAttribute("message",message);
+////        return "/comm/alert_message";
+//    }
+
 }

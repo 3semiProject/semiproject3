@@ -18,11 +18,10 @@ public interface DiaryService {
 	//한달이내 goal 최신값 조회
 	public Goal selectCurrentGoal(Diary diary);
 
-	// 입력한 diary값과 일치하는 다이어리 하나 조회 : null이면 입력값 반환
-	Diary selectOneDiary(Diary diary);
-	
-	//다이어리no로 이동할 다이어리 조회
-	Diary selectDiaryNo(int diary_no);
+	//다이어리 이동용
+	Diary selectDiaryNo(int diary_no); 
+	public Diary selectDiaryOne(Diary diary); //id, date, category
+	public Diary selectDiaryDate(DateData move); //id, date, category
 	
 	// 하루치 모든 다이어리 조회 : 식단일 때
 	ArrayList<Diary> selectDayDiary(Diary diary);
@@ -43,7 +42,7 @@ public interface DiaryService {
 	// 다이어리 삭제
 	public int deleteDiary(Diary diary);
 
-	public Diary selectMoveDiary(DateData move);
+	
 
 
 	int insertFoodData(List<Food> datalist);

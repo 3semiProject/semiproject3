@@ -104,6 +104,7 @@ body #loginForm {
 	height: 100px;
 	align-items: center;
 }
+
 /* 
 
 
@@ -126,6 +127,11 @@ body #loginForm {
 	margin: auto;
 } */
 </style>
+<!-- 카카오 로그인 -->
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script type="text/javascript">
+
+</script>
 </head>
 <body>
 <!-- <h1 align="center">다뮤니티 로그인</h1> -->
@@ -144,8 +150,8 @@ body #loginForm {
 <div class="social_login">
 <!-- 카카오 로그인 창으로 이동 -->
 <div id="kakao_login" style="text-align: center;">
-	<a href="<c:url value="${ requestScope.kakaourl }"/>" class="cp" >
-		<img class="img2"  alt="카카오 로그인" src="${ pageContext.servletContext.contextPath }/resources/images/kakao_login.png" />
+	<a href="https://kauth.kakao.com/oauth/authorize?client_id=3205654a3e1700ef0d67201d929a9c56&redirect_uri=http://localhost:8889/semi/kakao_callback.do&response_type=code">
+		<img class="img2"  alt="카카오 로그인" src="${ pageContext.servletContext.contextPath }/resources/images/kakao_login.png" onclick="kakaoLogin();"/>
 	</a>
 </div>
 <!-- 네이버 로그인 창으로 이동 -->

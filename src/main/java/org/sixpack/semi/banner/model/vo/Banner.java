@@ -4,23 +4,23 @@ import java.sql.Date;
 
 public class Banner {
 
-	private int number_no;
-	private String user_id;
-	private Date banner_post_date;
-	private Date banner_last_post_date;
-	private String banner_title;
-	private String banner_item;
-	private String banner_link_adrress;
-	private String banner_img;
+	private int banner_no;					//배너번호
+	private String user_id;					//관리자
+	private Date banner_post_date;			//배너등록일
+	private Date banner_last_post_date;		//배너게시종료일
+	private String banner_title;			//배너제목
+	private String banner_item;				//배너항목
+	private String banner_link_adrress;		//배너주소
+	private String banner_img;				//배너이미지
 	
 	public Banner() {
 		super();
 	}
 
-	public Banner(int number_no, String user_id, Date banner_post_date, Date banner_last_post_date,
+	public Banner(int banner_no, String user_id, Date banner_post_date, Date banner_last_post_date,
 			String banner_title, String banner_item, String banner_link_adrress, String banner_img) {
 		super();
-		this.number_no = number_no;
+		this.banner_no = banner_no;
 		this.user_id = user_id;
 		this.banner_post_date = banner_post_date;
 		this.banner_last_post_date = banner_last_post_date;
@@ -30,12 +30,12 @@ public class Banner {
 		this.banner_img = banner_img;
 	}
 
-	public int getNumber_no() {
-		return number_no;
+	public int getBanner_no() {
+		return banner_no;
 	}
 
-	public void setNumber_no(int number_no) {
-		this.number_no = number_no;
+	public void setBanner_no(int banner_no) {
+		this.banner_no = banner_no;
 	}
 
 	public String getUser_id() {
@@ -96,7 +96,7 @@ public class Banner {
 
 	@Override
 	public String toString() {
-		return "AdminBanner [number_no=" + number_no + ", user_id=" + user_id + ", banner_post_date=" + banner_post_date
+		return "AdminBanner [banner_no=" + banner_no + ", user_id=" + user_id + ", banner_post_date=" + banner_post_date
 				+ ", banner_last_post_date=" + banner_last_post_date + ", banner_title=" + banner_title
 				+ ", banner_item=" + banner_item + ", banner_link_adrress=" + banner_link_adrress + ", banner_img="
 				+ banner_img + "]";

@@ -30,4 +30,8 @@ public class EatDao {
 		List<Food> list = session.selectList("eatMapper.selectSearchFoodlist", food_name);
 		return (ArrayList<Food>)list;		
 	}
+
+	public int insertAllEat(List<Eat> eats) {
+		return session.insert("eatMapper.insertAllEat", eats);
+	}
 }

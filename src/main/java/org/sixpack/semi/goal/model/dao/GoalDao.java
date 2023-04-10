@@ -9,9 +9,12 @@ import org.springframework.stereotype.Repository;
 @Repository("goalDao")
 
 public class GoalDao {
-	
-	@Autowired
-	private SqlSessionTemplate session; //의존성 주입됨(DI)
-	
 
+    @Autowired
+    private SqlSessionTemplate session; //의존성 주입됨(DI)
+
+
+    public Goal selectRecentGoal(String diary) {
+        return session.selectOne("diaryMapper.selectlastGoal", diary);
+    }
 }

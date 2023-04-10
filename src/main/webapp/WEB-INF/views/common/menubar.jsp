@@ -95,9 +95,9 @@ hr { clear: both;}
 	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
 		<ul id="menubar">
 			<li><a href="${ pageContext.servletContext.contextPath }/boardMgt.do">게시판관리</a></li>
-			<li><a href="${ pageContext.servletContext.contextPath }/commu.do">회원관리</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/memberlist.do">회원관리</a></li>
 			<!-- cs.do = customer service center -->
-			<li><a href="${ pageContext.servletContext.contextPath }/cs.do">배너관리</a></li>
+			<li><a href="${ pageContext.servletContext.contextPath }/bannerlist.do">배너관리</a></li>
 		</ul>
 	</c:if>
 	

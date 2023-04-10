@@ -159,10 +159,8 @@ My 다이어리 분석
             dataType: "json",
             success: function (data) {
                 var jsonStr = JSON.stringify(data);
-                console.log("통계 json : " + jsonStr);
 
                 eatStats = JSON.parse(jsonStr);
-                console.log("parse json : " + eatStats);
 
                 $('#recommendKcal').text(eatStats.rec_eat + " Kcal");
                 $('#averageKcal').text(eatStats.avg_eat + " Kcal");
@@ -176,43 +174,10 @@ My 다이어리 분석
                 $('#dan_g').text(eatStats.dan_g + "g");
                 $('#zi_g').text(eatStats.zi_g + "g");
 
-                if (barLineChart !== undefined) {
-                    barLineChart.destroy();
+                if (pieChart !== undefined) {
                     pieChart.destroy();
                 }
 
-
-                barLineChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ["1", "2", "3", "4", "5", "6", "7"],
-                        datasets: [{
-                            type: 'bar',
-                            label: '운동 시간',
-                            backgroundColor: "pink",
-                            borderColor: "red",
-                            yAxisID: 'y-axis-left',
-                            data: [420, 2, 3, 4, 5, 6, 7]
-
-                        }, {
-                            type: 'line',
-                            label: '소비 칼로리',
-                            backgroundColor: "green",
-                            borderColor: "black",
-                            yAxisID: 'y-axis-right',
-                            fill: false,
-                            data: [2000, 2700, 2350, 1700, 2300, 1400, 1900]
-                        }]
-                    },
-                    option: {
-                        scale: {
-                            y: {
-                                id: 'y-axis-right',
-                                position: 'right'
-                            }
-                        }
-                    }
-                });
 
 
                 pieChart = new Chart(ctxStats, {
@@ -234,6 +199,99 @@ My 다이어리 분석
             }
         })
         ; // .ajax
+
+
+
+
+
+        $.ajax({
+            url: "diary_EatChart.do",
+            data:
+                {statsRange: range},
+            dataType: "json",
+            success: function (data) {
+
+
+                var jsonStr = JSON.stringify(data);
+                console.log("차트통계 json : " + jsonStr);
+                eatChart = JSON.parse(jsonStr);
+                console.log("parse json : " + eatChart);
+
+                var dateX = new Array();
+
+                for (var i in eatChart.list) {
+                    dateX[i] = eatChart.list[i].date;
+                }
+
+                var a_e = new Array();
+
+                for (var i in eatChart.list) {
+                    a_e[i] = eatChart.list[i].avg_eat;
+                }
+
+                var r_e = new Array();
+
+                for (var i in eatChart.list) {
+                    r_e[i] = eatChart.list[i].rec_eat;
+                }
+
+                if (barLineChart !== undefined) {
+                    barLineChart.destroy();
+                }
+
+
+                barLineChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: dateX,
+
+
+                        datasets: [
+
+
+                            {
+                                type: 'line',
+                                label: '권장 칼로리 섭쉬량',
+                                backgroundColor: "pink",
+                                borderColor: "rgba(244,174,75,0.7)",
+                                yAxisID: 'y-axis-left',
+                                data: r_e
+
+                            },
+
+                            {
+                                type: 'bar',
+                                label: '칼로리 섭취량',
+                                backgroundColor: 'rgba(86, 180, 50, 0.7)',
+                                yAxisID: 'y-axis-right',
+                                data: a_e
+                            },
+                          ]
+                    },
+                    option: {
+                        scale: {
+                            y: {
+                                id: 'y-axis-right',
+                                position: 'right'
+                            }
+                        }
+                    }
+                });
+
+
+            }, //success
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("diary_eatChart.do error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
+            }
+        }); // .ajax
+
+
+
+
+
+
+
+
     }
 
 
