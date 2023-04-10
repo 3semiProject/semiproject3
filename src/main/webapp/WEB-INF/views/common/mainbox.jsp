@@ -2,6 +2,7 @@
    pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -200,6 +201,28 @@ border: 1px solid #D1D1D1;
 }
 
 
+<!-- input type date의 placeholder 없애기-->
+/* input[type=month]::-webkit-datetime-edit-text { 
+  -webkit-appearance: none; 
+  display: none; 
+} 
+
+input[type=month]::-webkit-datetime-edit-month-field{ 
+  -webkit-appearance: none; 
+  display: none; 
+} 
+
+input[type=month]::-webkit-datetime-edit-day-field {
+  -webkit-appearance: none; 
+  display: none; 
+} 
+
+input[type=month]::-webkit-datetime-edit-year-field { 
+  -webkit-appearance: none; 
+  display: none; 
+} */
+
+
 </style>
 
 <script type="text/javascript"
@@ -213,18 +236,7 @@ border: 1px solid #D1D1D1;
    function logout() {	
 	   location.href ="logout.do";
 }
-   
-  //setInterval로 접속자수 갱
- /*   $(document).ready(function() {
-
-		setInterval(
-
-		AjaxCall() , 1000)
-
-
-
-	});  */
-	
+ 
 	
    //adminBox에서 접속자수, 게시물수 get
    $(function (){
@@ -241,7 +253,7 @@ border: 1px solid #D1D1D1;
 		$('#todayVisitors').html(jsonData.visitorsT + ' 명');
 		$('#monthVisitors').html(jsonData.visitorsM + ' 명');
 		$('#avgVisitors').html(jsonData.visitorsAvg + ' 명');
-		$('#postCount').html(jsonData.postCount + ' 명');
+		$('#postCount').html(jsonData.postCount + ' 개');
 		//$('#blackPostCount').html(jsonData.blackPostCount + ' 명');
 
 	},
@@ -329,15 +341,23 @@ border: 1px solid #D1D1D1;
 
 
 
-      <!-- 로그인 했을 때 : 관리자인 경우  ajax로 해얄듯? 갱신되어야함-->
+      <!-- 로그인 했을 때 : 관리자인 경우 -->
       <c:if
          test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
          <div id="adminBox">
             <div id="user_visit">
+           <form action="visitSearch.do">
                <div>접속자 분류</div>
+               <div style="display: flex;">
+               <div style="width: 30%;">기간</div>
+              	<c:set var="now" value="<%=new java.util.Date()%>" />
+				<c:set var="sys"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
+               <input style="width: 60%; text-align: center;" type="month" value="년 / 월"/>
+               </div>
+           </form>
                <div id="visit_count">
                   <div id="today">
-                     <div>오늘 접속자 수</div>
+                     <div>접속자 수</div>
                      <div id="todayVisitors"></div>
                   </div>
                   <div id="month">

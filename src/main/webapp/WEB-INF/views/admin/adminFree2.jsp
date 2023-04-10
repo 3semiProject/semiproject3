@@ -1,6 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="listCount" value="${ requestScope.paging.listCount }" />
+<c:set var="currentPage" value="${ requestScope.paging.currentPage }" />
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -18,12 +22,12 @@
         margin:0;
 }
 
-    #nocietWrapper{
+    #freeWrapper{
         width: 1200px;
         height: 1200px;
     }
 
-    #nocietWrapper > ul > li:first-child {
+    #freeWrapper > ul > li:first-child {
         text-align: center;
         font-size:14pt;
         height:40px;
@@ -51,18 +55,16 @@
         font-size:10pt;
         border-bottom:1px solid silver;
         vertical-align:baseline;
-       
 }    
 
-	#ulTable > li > ul > li:first-child               			  {width:5%;} /*체크박스 열 크기*/
+    #ulTable > li > ul > li:first-child               			  {width:5%;} /*체크박스 열 크기*/
     #ulTable > li > ul > li:first-child +li           			  {width:5%;}  /*No 열 크기*/
     #ulTable > li > ul > li:first-child +li+li        			  {width:35%;} /*제목 열 크기*/
     #ulTable > li > ul > li:first-child +li+li+li    			  {width:10%;} /*첨부파일 열 크기*/
     #ulTable > li > ul > li:first-child +li+li+li+li  			  {width:15%;} /*작성자 열 크기*/
 	#ulTable > li > ul > li:first-child +li+li+li+li+li  		  {width:10%;} /*작성일 열 크기*/
 	#ulTable > li > ul > li:first-child +li+li+li+li+li+li  	  {width:10%;} /*조회수 열 크기*/
-	#ulTable > li > ul > li:first-child +li+li+li+li+li +li+li 	  {width:5%;} /*수정버튼 열 크기*/
-	#ulTable > li > ul > li:first-child +li+li+li+li+li+li+li+li  {width:5%;} /*삭제버 열 크기*/
+	#ulTable > li > ul > li:first-child +li+li+li+li+li +li+li 	  {width:5%;} /*삭제버튼 열 크기*/
     #divPaging {
           clear:both; 
         margin:0 auto; 
@@ -77,9 +79,7 @@
         text-align:center;
 }
 
-    #liSearchOption {
-    clear:both;
-    }
+    #liSearchOption {clear:both;}
     #liSearchOption > div {
         margin:0 auto; 
         margin-top: 30px; 
@@ -88,60 +88,47 @@
 
 }
 
-    .center {
-        text-align : center;
+    .left {
+        text-align : left;
 }
-   .yy {
-      text-decoration: none;
-      color: black;
-   }
-   
-   .yy:hover {
-      text-decoration: none;
-      color: black;
-      font-weight: bold;
-   }
-
-   
-   #title{
-   text-decoration: none;
+	#title{
+	text-decoration: none;
             width: 200px;
             height: 200px;
             display: block;
             background-color: white;
-            text-align: center;
+            text-align: left;
             
             color: #01CD88;
             font-weight: bold;
-            width:1200px;
-    		height:1200px;
+            
             text-shadow: 1px 1px 2px #D1D1D1;
             font-size: 20pt;
             border: 1px solid;
         
-   }
-
+	}
+	
+	.freea {
+		text-decoration: none;
+		color: black;
+	}
+	
+	.freea:hover {
+		text-decoration: none;
+		color: black;
+		font-weight: bold;
+	}
+	#wri{
+		align: center;
+	}
 
 </style>
-<!-- 토글 선택시, 해당 뷰 리스트가 보임. 뷰리스트 이동은 토글로 지정하고 위에 펑션 사용.
-해당 페이지별 관리자 메소드드들 생성하기.
- -->
-
-    <title>게시글통합관리</title>
-
-    <script type="text/javascript"
+<script type="text/javascript"
             src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
-    <script type="text/javascript">
-   function elist() {
-      //버튼 클릭시, 로그인 페이지로 이동하는 controller 요청
-      location.href = "nlist.do";
-   }
-   
-   
-   
-
-
-    </script>
+<script type="text/javascript">
+	
+</script>
+<title></title>
 </head>
 <body>
 <%--관리자 접속시--%>
@@ -155,10 +142,10 @@
 	<div style="width: 30%; border: 1px solid #D1D1D1;">게시판별 보기</div>
 	<div style="width: 60%;">
 		<select id="optionLink" name="searchtype" onchange="if(this.value) location.href=(this.value);">
-			<option value="boardMgt.do?page=1" selected="selected">유해게시글관리</option>
+			<option value="boardMgt.do?page=1">유해게시글관리</option>
 			<option value="adHotlist.do?page=1">HOT</option>
 			<option value="adNewlist.do?page=1">NEW</option>
-			<option value="adFreelist.do?page=1">FREE</option>
+			<option value="adFreelist.do?page=1" selected="selected">FREE</option>
 			<option value="adTiplist.do?page=1">TIP</option>
 			<option value="adEyelist.do?page=1">EYEBODY</option>
 			<option value="adBFlist.do?page=1">BF&AF</option>
@@ -170,27 +157,27 @@
 	</div>
 </div>	
 <div id="liSearchOption">
-	<form action="nsearch.do?page=1" method="post">
+	<form action="adFreesearch.do?page=1" method="post">
 	<div style="display: flex; border: 1px solid #D1D1D1;">
 		<div style="width: 30%; border: 1px solid #D1D1D1;">키워드 검색</div>
 		<div style="width: 60%;">
 			<select name="searchtype">
-				<option value="nname">제목</option>
-				<option value="ncontent">내용</option>
-				<option value="nid">작성자</option>
+				<option value="fname">제목</option>
+				<option value="fvalue">내용</option>
+				<option value="fid">작성자</option>
 			</select> <input type="search" name="keyword"> <input
 				type="submit" value="검색">
 		</div>
 	</div>
 	</form>
-<c:import url="/WEB-INF/views/notice/noticepaging.jsp" />
 </div>
 <br>
 </center>
-
-<div id="nocietWrapper">
+<div id="freeWrapper">
 
         <ul>
+            <!-- 게시판 제목 -->
+            <li id="title">FREE 게시판</li>
             <!-- 게시판 목록  -->
             <li>
                 <ul id ="ulTable">
@@ -203,44 +190,50 @@
                             <li>작성자</li>
                             <li>작성일</li>
                             <li>조회</li>
-                            <li>수정</li>
-                            <li>삭제</li>            
+                            <li>삭제</li>
                         </ul>
                     </li>
                     <!-- 게시물이 출력될 영역 -->
-                   <li>
-                <c:forEach items="${ list }" var="n">
-                      <ul>
-                      	<li><input type="checkbox"/></li>
-                         <li>${ n.notice_no }</li>
-                         <c:url var="ndt" value="/ndetail.do?page=1">
-                        <c:param name="notice_no" value="${ n.notice_no }" />
-                        <c:param name="page" value="${ currentPage }" />
-                     </c:url>
-                            <li class="center">
+                <c:forEach items="${ list }" var="f">
+                	<li>
+                		<ul>
+                			<li><input type="checkbox"/></li>
+                			<li>${ f.free_no }</li>
+                			<c:url var="fdt" value="/adFreedetail.do">
+								<c:param name="free_no" value="${ f.free_no }" />
+								<c:param name="page" value="${ currentPage }" />
+								<c:param name="user_id" value="${ sessionScope.loginMember.user_id }" />
+							</c:url>
+                            <li class="left">
                             <c:if test="${ !empty sessionScope.loginMember }">
-                        <a class="yy" href="${ ndt }">${ n.notice_title }</a>
-                     </c:if>
-                     <c:if test="${ empty sessionScope.loginMember }">
-                        ${ n.notice_title }
-                     </c:if>
+								<a class="freea" href="${ fdt }">${ f.free_name }</a>
+							</c:if>
+							<c:if test="${ empty sessionScope.loginMember }">
+								${ f.free_name }
+							</c:if>
                             </li>
                             <li>
-                               <c:if test="${ !empty n.notice_originfile }">◎</c:if>
-                        <c:if test="${ empty n.notice_originfile }">Empty</c:if>
+                            	<c:if test="${ !empty f.originfile_free }">◎</c:if>
+								<c:if test="${ empty f.originfile_free }">Empty</c:if>
                             </li>
-                            <li>${n.write_notice_date}</li>
-                            <li>${n.user_id}</li>
-                            <li class="center"> &nbsp; ${n.notice_views}</li>
-                      </ul>
-                </c:forEach>                       
-                   </li>
+                            <li>${f.user_id}</li>
+                            <li>${f.write_free_date}</li>
+                            <li> &nbsp; &nbsp;${f.click_free_no}&nbsp; &nbsp; </li>
+                            <li><input type="button" value="삭제"></li> 
+                		</ul>
+                	</li>
+                </c:forEach>
                 </ul>
             </li>
-        </ul> 
-     </div>     
+            </ul>
+           <br>
+        <br>
+        <!-- 페이징 처리 -->
+<c:import url="/WEB-INF/views/admin/freesearchpaging.jsp" />    
+</div>
+ <br>
 <hr>
-   <c:import url="/WEB-INF/views/common/footer.jsp" />
+<c:import url="/WEB-INF/views/common/footer.jsp"/>
 </c:if>
 </body>
 </html>
