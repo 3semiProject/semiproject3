@@ -19,7 +19,7 @@ public class StatsDao {
         return session.selectOne("actStatsMapper.actRec", recActLev);
     }
 
-    public ActStats selectActStatsTotal(StatsDate statsDate) {
+    public ActStats actStatsTotal(StatsDate statsDate) {
         ActStats actStats = new ActStats();
 
         ActStats actTotal = session.selectOne("actStatsMapper.actTotal", statsDate);
@@ -37,6 +37,12 @@ public class StatsDao {
         return actStats;
     }
 
+    public ArrayList<ActChart> actChartList(StatsDate statsDate) {
+        List<ActChart> result = session.selectList("actStatsMapper.actChartList", statsDate);
+        return (ArrayList<ActChart>) result;
+    }
+
+
     public EatStats eatStatsTotal(StatsDate statsDate) {
 
         EatStats eatStats = session.selectOne("eatStatsMapper.avgKcal", statsDate);
@@ -46,6 +52,12 @@ public class StatsDao {
         eatStats.setMaxKcal_food(session.selectOne("eatStatsMapper.eatMaxKcal", statsDate));
 
         return eatStats;
+    }
+
+
+    public ArrayList<EatStats> eatChartList(StatsDate statsDate) {
+        List<EatStats> result = session.selectList("eatStatsMapper.eatChartList", statsDate);
+        return (ArrayList<EatStats>) result;
     }
 
     public BodyStats bodyStatsTotal(StatsDate statsDate) {
@@ -64,7 +76,8 @@ public class StatsDao {
     }
 
     public ArrayList<BodyChart> bodyChartList(StatsDate statsDate) {
-        List<BodyChart> result = session.selectList("bodyStatsMapper.bodyChartList",statsDate);
+        List<BodyChart> result = session.selectList("bodyStatsMapper.bodyChartList", statsDate);
         return (ArrayList<BodyChart>) result;
     }
+
 }

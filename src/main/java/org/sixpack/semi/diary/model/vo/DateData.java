@@ -22,11 +22,20 @@ public class DateData implements java.io.Serializable{
 		this.ago = ago;
 	}
 
-	public java.sql.Date getPost_date() {
+	@Override
+	public String toString() {
+		return "DateData{" +
+				"post_date=" + post_date +
+				", user_id='" + user_id + '\'' +
+				", ago=" + ago +
+				'}';
+	}
+
+	public Date getPost_date() {
 		return post_date;
 	}
 
-	public void setPost_date(java.sql.Date post_date) {
+	public void setPost_date(Date post_date) {
 		this.post_date = post_date;
 	}
 
@@ -45,22 +54,6 @@ public class DateData implements java.io.Serializable{
 	public void setAgo(int ago) {
 		this.ago = ago;
 	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	@Override
-	public String toString() {
-		return "DateData [post_date=" + post_date + ", user_id=" + user_id + ", ago=" + ago + "]";
-	}
-
-
-	
-
-	
-
-	
 }
 
 

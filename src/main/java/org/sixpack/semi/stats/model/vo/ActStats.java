@@ -8,7 +8,7 @@ public class ActStats implements java.io.Serializable {
     private int avg_act_one;        //1회 평균 운동시간(분)
     private int tot_weak_time;    //저강도 총시간(분)
     private int tot_middle_time;    //중강도 총시간(분)
-    private int tot_strong_time;        //고강도 총시간(분)
+    private int tot_strong_time;      //고강도 총시간(분)
 
     private String maxDay_actName;    //가장 많이한 운동 :
     private String maxKcal_actName; //최대 소모 kcal 운동이름 : 한번인지 총합인지

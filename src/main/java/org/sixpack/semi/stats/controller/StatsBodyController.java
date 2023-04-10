@@ -1,20 +1,13 @@
 package org.sixpack.semi.stats.controller;
 
-import java.sql.Date;
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.sixpack.semi.diary.model.service.DiaryServiceImpl;
 import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.stats.model.service.StatsBodyService;
-import org.sixpack.semi.diary.model.service.DiaryServiceImpl;
-import org.sixpack.semi.diary.model.vo.Diary;
-import org.sixpack.semi.diary.model.vo.Period;
-import org.sixpack.semi.stats.model.vo.*;
+import org.sixpack.semi.stats.model.vo.BodyChart;
 import org.sixpack.semi.stats.model.vo.BodyStats;
+import org.sixpack.semi.stats.model.vo.StatsDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 @Controller()
 public class StatsBodyController {

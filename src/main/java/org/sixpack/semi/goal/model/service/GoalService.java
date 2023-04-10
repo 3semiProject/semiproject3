@@ -1,12 +1,11 @@
 package org.sixpack.semi.goal.model.service;
 
-import org.sixpack.semi.diary.model.vo.Diary;
 import org.sixpack.semi.goal.model.vo.Goal;
 
 public interface GoalService {
 	//해당일의 목표정보 조회
 	//해당회원, 입력 날짜이전의 가장 최신정보 불러오기
-	public Goal selectRecentGoal(Diary diary);
+	public Goal selectRecentGoal(String diary);
 	
 	//목표정보 입력
 	public int insertGoalInfo(Goal goal);

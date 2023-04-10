@@ -114,8 +114,7 @@ My 다이어리 분석
     <div class="verticalBar"></div>
     <div style="width: 50%; height: 300px; display: flex;">
 
-
-        <div style="width: 290px;">
+        <div style="width: 500px; margin-top:50px">
             <canvas id="bodyStatsChart"></canvas>
         </div>
 
@@ -123,8 +122,8 @@ My 다이어리 분석
         <div style="display: flex;align-items: center;">
             <table class="avgstats">
                 <tr>
-                    <td>평균 체중 :</td>
-                    <td id="average_weight"></td>
+                    <td style="width: 300px;">평균 체중 :</td>
+                    <td style="width: 50px;" id="average_weight"></td>
                 </tr>
                 <tr>
                     <td>평균 골격근량 :</td>
@@ -147,9 +146,6 @@ My 다이어리 분석
 <script type="text/javascript">
     var bodyStats;
     var bodyChart;
-    var t_w;
-    var c_w;
-    var chartDate;
     var barLineChart;
     var barLineChartData;
     var pieChart;
@@ -192,13 +188,11 @@ My 다이어리 분석
                     data: {
                         labels: ['평균 체중', '평균 골격근량', '평균 체지방량'],
                         datasets: [{
-                            axis: 'y',
                             label: 'kg',
-                            fill: false,
-                            backgroundColor: ['rgba(150,255,150,1)', 'rgba(255,255,50,1)', 'rgba(50,100,255,1)'],
+                            backgroundColor: ['rgba(255,255,50,1)', 'rgba(150,255,150,1)', 'rgba(50,100,255,1)'],
                             data: [Number(bodyStats.average_weight), Number(bodyStats.average_fat), Number(bodyStats.average_muscle)]
                         }]
-                    }, option: {indexAxis: 'y'}
+                    }, option: {}
                 });
 
 
@@ -216,28 +210,29 @@ My 다이어리 분석
             dataType: "json",
             success: function (data) {
 
+
                 var jsonStr = JSON.stringify(data);
-                console.log("통계 json : " + jsonStr);
+                console.log("차트통계 json : " + jsonStr);
                 bodyChart = JSON.parse(jsonStr);
                 console.log("parse json : " + bodyStats);
 
-                t_w = "";
-                c_w = "";
-                chartDate = "";
-                barLineChartData = '[';
+                var dateX = new Array();
 
                 for (var i in bodyChart.list) {
-                    barLineChartData +=
-                        '\{date: ' + bodyChart.list[i].date +
-                        't_w: ' + bodyChart.list[i].target_weight +
-                        'c_w: ' + bodyChart.list[i].current_weight +
-                        '\},'
+                    dateX[i] = bodyChart.list[i].date;
                 }
-                barLineChartData += ']';
 
-                console.log("t_w : " + t_w);
-                console.log("c_w : " + c_w);
-                console.log("chartDate : " + chartDate);
+                var t_w = new Array();
+
+                for (var i in bodyChart.list) {
+                    t_w[i] = bodyChart.list[i].target_weight;
+                }
+
+                var c_w = new Array();
+
+                for (var i in bodyChart.list) {
+                    c_w[i] = bodyChart.list[i].current_weight;
+                }
 
                 if (barLineChart !== undefined) {
                     barLineChart.destroy();
@@ -247,19 +242,19 @@ My 다이어리 분석
                 barLineChart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: barLineChartData.map(row => row.date),
+                        labels: dateX,
                         datasets: [{
                             type: 'line',
                             label: '목표 체중',
-                            backgroundColor: "blue",
-                            borderColor: "blue",
-                            data: barLineChartData.map(row => row.t_w)
+                            borderColor: "rgba(255,153,17,0.7)",
+                            data: t_w,
 
                         }, {
                             type: 'line',
                             label: '현재 체중',
-                            borderColor: "green",
-                            data: barLineChartData.map(row => row.c_w)
+                            borderColor: "rgba(99,225,70,0.49)",
+                            data: c_w,
+
                         }],
                     },
                     option: {}
