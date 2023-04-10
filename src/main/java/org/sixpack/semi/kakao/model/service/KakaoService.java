@@ -1,10 +1,14 @@
 package org.sixpack.semi.kakao.model.service;
 
-import org.sixpack.semi.kakao.model.vo.Kakao;
+import java.util.HashMap;
 
 public interface KakaoService {
 
-	Kakao selectKakaoLogin(String kid);
-
-	void insertKakaoMember(Kakao kakao);
+//	String getReturnAccessToken(String code);
+//	
+//	Map<String,Object> getUserInfo(String access_token);
+//	void getLogout(String access_token);
+	
+	String getAccessToken (String authorize_code);
+	HashMap<String, Object> getUserInfo(String access_Token);
 }

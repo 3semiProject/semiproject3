@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.sixpack.semi.banner.model.dao.BannerDao;
 import org.sixpack.semi.banner.model.vo.Banner;
+import org.sixpack.semi.common.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,13 @@ public class BannerServiceImpl implements BannerService {
 	private BannerDao bannerDao;
 
 	@Override
-	public int selectBanner(Banner banner) {
-		return bannerDao.selectBanner(banner);
+	public Banner selectBanner(int banner_no) {
+		return bannerDao.selectBanner(banner_no);
 	}
 	
 	@Override
-	public ArrayList<Banner> selectBannerList() {
-		return bannerDao.selectBannerList();
+	public ArrayList<Banner> selectList(Paging page) {
+		return bannerDao.selectList(page);
 	}
 
 	@Override
@@ -36,5 +37,10 @@ public class BannerServiceImpl implements BannerService {
 	@Override
 	public int deleteBanner(Banner adminbanner) {
 		return bannerDao.deleteBanner(adminbanner);
+	}
+
+	@Override
+	public int selectListCount() {
+		return bannerDao.selectListCount();
 	}
 }

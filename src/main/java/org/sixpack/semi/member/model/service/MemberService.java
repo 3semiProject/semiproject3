@@ -2,8 +2,10 @@ package org.sixpack.semi.member.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.kakao.model.vo.Kakao;
 import org.sixpack.semi.member.model.vo.Member;
+import org.sixpack.semi.qna.model.vo.Qna;
 
 public interface MemberService {
 	Member selectFindIdPhone(Member member);
@@ -22,6 +24,7 @@ public interface MemberService {
 	int insertMember(Member member);
 	int updatePw(Member member);
 	int updateMember(Member member);
+	int updateLoginok(Member member);
 	int deleteMember(String user_id);
 	//난수생성 메소드
 	public String sendRandomMsg(String phone);
@@ -29,5 +32,9 @@ public interface MemberService {
 	int selectPhoneCount(String phone);
 	int insertQuitMember(Member member);
 	ArrayList<Member> selectNewMemberList();
+	
+	//관리자 페이지
+	int selectListCount();
+	ArrayList<Member> selectList(Paging page);
 	
 }
