@@ -697,6 +697,7 @@ public class MemberController {
 
 
 
+
 //------------------------------------------------------------------------------
 	/* 이메일 인증 */
 	@RequestMapping(value = "mailCheck.do", method = RequestMethod.GET)
