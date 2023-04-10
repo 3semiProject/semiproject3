@@ -5,6 +5,8 @@
 <c:set var="startPage" value="${ requestScope.paging.startPage }" />
 <c:set var="endPage" value="${ requestScope.paging.endPage }" />
 <c:set var="maxPage" value="${ requestScope.paging.maxPage }" />
+<c:set var="listCount" value="${ requestScope.paging.listCount }" />
+<c:set var="currentPage" value="${ requestScope.paging.currentPage }" />
 
 <!DOCTYPE html>
 <html>
@@ -26,10 +28,10 @@
 		<a href="${ p1 }">[맨처음]</a> &nbsp;
 	</c:if>
 	<!-- 이전 페이지그룹으로 이동하는 버튼 -->
-	<c:if test="${ !((currentPage - 10) < startPage and (currentPage - 10) > 1) }">
+	<c:if test="${ !((currentPage - 9.9) < startPage and (currentPage - 9.9) > 1) }">
 		[이전그룹] &nbsp;
 	</c:if>
-	<c:if test="${ (currentPage - 10) < startPage and (currentPage - 10) > 1 }">
+	<c:if test="${ (currentPage - 9.9) < startPage and (currentPage - 9.9) > 1 }">
 		<c:url var="pbefore" value="/tiplist.do">
 			<c:param name="page" value="${ startPage - 10 }" />
 		</c:url>
@@ -50,12 +52,12 @@
 	</c:forEach>
 	
 	<!-- 다음 페이지그룹으로 이동하는 버튼 -->
-	<c:if test="${ !((currentPage + 10) > endPage and (currentPage + 10) < maxPage) }">
+	<c:if test="${ !((currentPage + 10) > endPage && maxPage - (endPage + 1) >= 0) }">
 		[다음그룹] &nbsp;
 	</c:if>
-	<c:if test="${ (currentPage + 10) > endPage and (currentPage + 10) < maxPage }">
+	<c:if test="${ (currentPage + 10) > endPage && maxPage - (endPage + 1) >= 0 }">
 		<c:url var="pafter" value="/tiplist.do">
-			<c:param name="page" value="${ endPage + 10 }" />
+			<c:param name="page" value="${ endPage + 1 }" />
 		</c:url>
 		<a href="${ pafter }">[다음그룹]</a> &nbsp;
 	</c:if>

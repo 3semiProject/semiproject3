@@ -123,26 +123,26 @@ public class TipController {
 	}
 
 	// 원글 수정페이지 이동
-	   @RequestMapping(value = "tipupmove.do", method = { RequestMethod.GET, RequestMethod.POST })
-	   public String moveTipUpdateForm(@RequestParam("tip_no") int tip_no, Model model) {
-	      Tip tip = tipService.selectBoard(tip_no);
+	@RequestMapping(value = "tipupmove.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String moveTipUpdateForm(@RequestParam("tip_no") int tip_no, Model model) {
+		Tip tip = tipService.selectBoard(tip_no);
 
-	      if (tip != null) {
-	         if(tip.getOriginfile_tip() != null) {
-	            String[] ofiles = tip.getOriginfile_tip().split(" ");
-	            String[] rfiles = tip.getRenamefile_tip().split(" ");
-	            List<String> ofile = new ArrayList<String>(Arrays.asList(ofiles));
-	            List<String> rfile = new ArrayList<String>(Arrays.asList(rfiles));
-	            model.addAttribute("ofile", ofile);
-	            model.addAttribute("rfile", rfile);
-	         }
-	         model.addAttribute("tip", tip);
-	         return "tip/tipUpdateForm";
-	      } else {
-	         model.addAttribute("message", tip_no + "번 글 수정페이지로 이동 실패!");
-	         return "common/error";
-	      }
-	   }
+		if (tip != null) {
+			if (tip.getOriginfile_tip() != null) {
+				String[] ofiles = tip.getOriginfile_tip().split(" ");
+				String[] rfiles = tip.getRenamefile_tip().split(" ");
+				List<String> ofile = new ArrayList<String>(Arrays.asList(ofiles));
+				List<String> rfile = new ArrayList<String>(Arrays.asList(rfiles));
+				model.addAttribute("ofile", ofile);
+				model.addAttribute("rfile", rfile);
+			}
+			model.addAttribute("tip", tip);
+			return "tip/tipUpdateForm";
+		} else {
+			model.addAttribute("message", tip_no + "번 글 수정페이지로 이동 실패!");
+			return "common/error";
+		}
+	}
 
 	// 원글 삭제 처리용
 	@RequestMapping(value = "tipdelete.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -156,55 +156,55 @@ public class TipController {
 	}
 
 	// 게시글 상세보기 처리용
-	   @RequestMapping(value = "tipdetail.do", method = { RequestMethod.GET, RequestMethod.POST })
-	   public ModelAndView boardDetailMethod(ModelAndView mv, @RequestParam("tip_no") int tip_no,
-	         @RequestParam(name = "user_id", required = false) String user_id,
-	         @RequestParam(name = "page", required = false) String page) {
-	      int currentPage = 1;
-	      if (page != null) {
-	         currentPage = Integer.parseInt(page);
-	      }
+	@RequestMapping(value = "tipdetail.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView boardDetailMethod(ModelAndView mv, @RequestParam("tip_no") int tip_no,
+			@RequestParam(name = "user_id", required = false) String user_id,
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page) {
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = Integer.parseInt(page);
+		}
 
-	      // 조회수 1 증가 처리
-	      tipService.updateBoardReadcount(tip_no);
+		// 조회수 1 증가 처리
+		tipService.updateBoardReadcount(tip_no);
 
-	      // 해당 게시글 조회
-	      ArrayList<Tip> list = tipService.selectRepleList(tip_no);
-	      Tip tip = tipService.selectBoard(tip_no);
-	      Tip tip2 = new Tip();
-	      tip2.setUser_id(user_id);
-	      tip2.setTip_no(tip_no);
-	      
-	      LikeTip likeTip =   tipService.selectLikeTip(tip2);
-	      
-	      if (list != null) {
-	         mv.addObject("list", list);
-	      }
-	      
-	      if(likeTip != null) {
-	         mv.addObject("likeTip", likeTip);
-	      }
+		// 해당 게시글 조회
+		ArrayList<Tip> list = tipService.selectRepleList(tip_no);
+		Tip tip = tipService.selectBoard(tip_no);
+		Tip tip2 = new Tip();
+		tip2.setUser_id(user_id);
+		tip2.setTip_no(tip_no);
 
-	      if (tip != null) {
-	         if(tip.getOriginfile_tip() != null) {
-	            String[] ofiles = tip.getOriginfile_tip().split(" ");
-	            String[] rfiles = tip.getRenamefile_tip().split(" ");
-	            List<String> ofile = new ArrayList<String>(Arrays.asList(ofiles));
-	            List<String> rfile = new ArrayList<String>(Arrays.asList(rfiles));
-	            mv.addObject("ofile", ofile);
-	            mv.addObject("rfile", rfile);
-	         }
-	         mv.addObject("tip", tip);
-	         mv.addObject("currentPage", currentPage);
+		LikeTip likeTip = tipService.selectLikeTip(tip2);
 
-	         mv.setViewName("tip/tipDetailView");
-	      } else {
-	         mv.addObject("message", tip_no + "번 게시글 조회 실패!");
-	         mv.setViewName("common/error");
-	      }
+		if (list != null) {
+			mv.addObject("list", list);
+		}
 
-	      return mv;
-	   }
+		if (likeTip != null) {
+			mv.addObject("likeTip", likeTip);
+		}
+
+		if (tip != null) {
+			if (tip.getOriginfile_tip() != null) {
+				String[] ofiles = tip.getOriginfile_tip().split(" ");
+				String[] rfiles = tip.getRenamefile_tip().split(" ");
+				List<String> ofile = new ArrayList<String>(Arrays.asList(ofiles));
+				List<String> rfile = new ArrayList<String>(Arrays.asList(rfiles));
+				mv.addObject("ofile", ofile);
+				mv.addObject("rfile", rfile);
+			}
+			mv.addObject("tip", tip);
+			mv.addObject("currentPage", currentPage);
+
+			mv.setViewName("tip/tipDetailView");
+		} else {
+			mv.addObject("message", tip_no + "번 게시글 조회 실패!");
+			mv.setViewName("common/error");
+		}
+
+		return mv;
+	}
 
 	// 첨부파일 다운로드 요청 처리용
 	@RequestMapping(value = "tipdown.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -227,161 +227,170 @@ public class TipController {
 	}
 
 	// 등록 요청 처리용 (파일 업로드 기능 사용)
-	   @RequestMapping(value = "tipinsert.do", method = { RequestMethod.GET, RequestMethod.POST })
-	   public String tipInsertMethod(Tip tip, Model model, HttpServletRequest request,
-	         @RequestParam(name = "upfile", required = false) ArrayList<MultipartFile> mfiles) {
+	@RequestMapping(value = "tipinsert.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String tipInsertMethod(Tip tip, Model model, HttpServletRequest request,
+			@RequestParam(name = "upfile", required = false) ArrayList<MultipartFile> mfiles) {
 
-	      // 첨부파일 저장 폴더 경로 지정
-	      String savePath = request.getSession().getServletContext().getRealPath("resources/tip_upfiles");
-	      
-	      String originfile = "";
-	      String renamefile = "";
-	      
-	      // 첨부파일이 있을때
-	      if (!mfiles.isEmpty()) {
-	         for(MultipartFile mfile : mfiles) {
-	            // 전송온 파일이름 추출함
-	            String fileName = mfile.getOriginalFilename();
-	   
-	            // 다른 공지글의 첨부파일과 파일명이 중복되어서
-	            // 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
-	            // 폴더에 저장하는 방식을 사용할 수 있음
-	            // 변경 파일명 : 년월일시분초.확장자
-	            if (fileName != null && fileName.length() > 0) {
-	               // 바꿀 파일명에 대한 문자열 만들기
-	               String renameFileName = FileNameChange2.change(fileName, "yyyyMMddHHmmss");
-	               logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
-	   
-	               // 폴더에 저장 처리
-	               try {
-	                  mfile.transferTo(new File(savePath + "\\" + renameFileName));
-	               } catch (Exception e) {
-	                  e.printStackTrace();
-	                  model.addAttribute("message", "첨부파일 저장 실패!");
-	                  return "common/error";
-	               }
-	   
-	               // 객체에 첨부파일 정보 기록 저장
-	               originfile += fileName + " ";
-	               renamefile += renameFileName + " ";
-	            } // 이름바꾸기
-	         }
-	         // 객체에 첨부파일 정보 기록 저장
-	         tip.setOriginfile_tip(originfile.trim());
-	         tip.setRenamefile_tip(renamefile.trim());
-	      } // 새로운 첨부파일이 있을 때
+		// 첨부파일 저장 폴더 경로 지정
+		String savePath = request.getSession().getServletContext().getRealPath("resources/tip_upfiles");
 
-	      if (tipService.insertBoard(tip) > 0) {
-	         // 공지글 수정 성공시 목록 보기 페이지로 이동
-	         return "redirect:tiplist.do";
-	      } else {
-	         model.addAttribute("message", "게시글 등록 실패!");
-	         return "common/error";
-	      }
-	   }
+		String originfile = "";
+		String renamefile = "";
 
-	   // 게시원글 수정 요청 처리용 (파일 업로드 기능 사용)
-	   @RequestMapping(value = "tipupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
-	   public String boardUpdateMethod(Tip tip, Model model, HttpServletRequest request,
-	         @RequestParam(name = "upfile", required = false) ArrayList<MultipartFile> mfiles) {
+		// 첨부파일이 있을때
+		if (!mfiles.isEmpty()) {
+			for (MultipartFile mfile : mfiles) {
+				// 전송온 파일이름 추출함
+				String fileName = mfile.getOriginalFilename();
 
-	      // 게시원글 첨부파일 저장 폴더 경로 지정
-	      String savePath = request.getSession().getServletContext().getRealPath("resources/tip_upfiles");
-	      String originfile = "";
-	      String renamefile = "";
-	      String[] ofiles = tip.getOriginfile_tip().split(" ");
-	      String[] rfiles = tip.getRenamefile_tip().split(" ");
-	      String[] delFlag = request.getParameterValues("delflag");
-	      
-	      // 첨부파일이 수정 처리된 경우 ---------------------------
-	      // 1. 원래 첨부파일이 있는데 '파일삭제'를 선택한 경우
-	      if (tip.getRenamefile_tip() != null && delFlag != null) {
-	         for(int i = 0; i < delFlag.length; i++) {
-	            for(int k = 0; k < rfiles.length; k++) {
-	               if(delFlag[i].equals(rfiles[k])) {
-	                  new File(savePath + "/" + delFlag[i]).delete();
-	                  rfiles[k] = "x";
-	                  ofiles[k] = "x";
-	               }
-	            }
-	         }
-	         for(int i = 0; i < rfiles.length; i++) {
-	            if(!rfiles[i].equals("x")) {
-	               originfile += ofiles[i] +" ";
-	               renamefile += rfiles[i] +" ";
-	            }
-	         }
-	         
-	         tip.setOriginfile_tip(originfile.trim());
-	         tip.setRenamefile_tip(renamefile.trim());
-	      }
-	      
-	      for(int i = 0; i < mfiles.size(); i++) {
-	         // 2.새로운 첨부파일이 있을때
-	         if (!mfiles.get(i).isEmpty()) {
-	            // 2-1. 이전 첨부파일이 있을 때
-	            if (tip.getRenamefile_tip() != null) {
-	               // 저장 폴더에 있는 이전 파일을 삭제함
-	               new File(savePath + "/" + tip.getRenamefile_tip()).delete();
-	               //이전 파일 정보도 제거함
-	               tip.setOriginfile_tip(null);
-	               tip.setRenamefile_tip(null);
-	            }
-	         }
-	      }
-	      if(!mfiles.isEmpty()) {
-	            // 2-2. 이전 첨부파일이 없을 때
-	            // 전송온 파일이름 추출함
-	            for(MultipartFile mfile : mfiles) {
-	               // 전송온 파일이름 추출함
-	               String fileName = mfile.getOriginalFilename();
-	      
-	               // 다른 공지글의 첨부파일과 파일명이 중복되어서
-	               // 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
-	               // 폴더에 저장하는 방식을 사용할 수 있음
-	               // 변경 파일명 : 년월일시분초.확장자
-	               if (fileName != null && fileName.length() > 0) {
-	                  // 바꿀 파일명에 대한 문자열 만들기
-	                  String renameFileName = FileNameChange2.change(fileName, "yyyyMMddHHmmss");
-	                  logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
-	      
-	                  // 폴더에 저장 처리
-	                  try {
-	                     mfile.transferTo(new File(savePath + "\\" + renameFileName));
-	                  } catch (Exception e) {
-	                     e.printStackTrace();
-	                     model.addAttribute("message", "첨부파일 저장 실패!");
-	                     return "common/error";
-	                  }
-	               
-	                  // 객체에 첨부파일 정보 기록 저장
-	                  //tip.setOriginfile_tip(fileName);
-	                  //tip.setRenamefile_tip(renameFileName);
-	                  originfile += fileName + " ";
-	                  renamefile += renameFileName + " ";
-	               } // 이름바꾸기
-	               tip.setOriginfile_tip(originfile.trim());
-	               tip.setRenamefile_tip(renamefile.trim());
-	            }
-	            // 객체에 첨부파일 정보 기록 저장
-	         }
-	      
+				// 다른 공지글의 첨부파일과 파일명이 중복되어서
+				// 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
+				// 폴더에 저장하는 방식을 사용할 수 있음
+				// 변경 파일명 : 년월일시분초.확장자
+				if (fileName != null && fileName.length() > 0) {
+					// 바꿀 파일명에 대한 문자열 만들기
+					String renameFileName = FileNameChange2.change(fileName, "yyyyMMddHHmmss");
+					logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
 
-	      if (tipService.updateBoard(tip) > 0) {
-	         // 게시원글 수정 성공시 상세보기 페이지로 이동
-	         model.addAttribute("tip_no", tip.getTip_no());
+					// 폴더에 저장 처리
+					try {
+						mfile.transferTo(new File(savePath + "\\" + renameFileName));
+					} catch (Exception e) {
+						e.printStackTrace();
+						model.addAttribute("message", "첨부파일 저장 실패!");
+						return "common/error";
+					}
 
-	         return "redirect:tipdetail.do";
-	      } else {
-	         model.addAttribute("message", tip.getTip_no() + "번 게시글 수정 실패!");
-	         return "common/error";
-	      }
-	   }
+					// 객체에 첨부파일 정보 기록 저장
+					originfile += fileName + " ";
+					renamefile += renameFileName + " ";
+				} // 이름바꾸기
+			}
+			// 객체에 첨부파일 정보 기록 저장
+			tip.setOriginfile_tip(originfile.trim());
+			tip.setRenamefile_tip(renamefile.trim());
+		} // 새로운 첨부파일이 있을 때
+
+		if (tipService.insertBoard(tip) > 0) {
+			// 공지글 수정 성공시 목록 보기 페이지로 이동
+			return "redirect:tiplist.do";
+		} else {
+			model.addAttribute("message", "게시글 등록 실패!");
+			return "common/error";
+		}
+	}
+
+	// 게시원글 수정 요청 처리용 (파일 업로드 기능 사용)
+	@RequestMapping(value = "tipupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String boardUpdateMethod(Tip tip, Model model, HttpServletRequest request,
+			@RequestParam(name = "upfile", required = false) ArrayList<MultipartFile> mfiles) {
+
+		// 게시원글 첨부파일 저장 폴더 경로 지정
+		String savePath = request.getSession().getServletContext().getRealPath("resources/tip_upfiles");
+		String originfile = "";
+		String renamefile = "";
+		String[] ofiles = tip.getOriginfile_tip().split(" ");
+		String[] rfiles = tip.getRenamefile_tip().split(" ");
+		String[] delFlag = request.getParameterValues("delflag");
+
+		// 첨부파일이 수정 처리된 경우 ---------------------------
+		// 1. 원래 첨부파일이 있는데 '파일삭제'를 선택한 경우
+		if (delFlag != null) {
+			for (int i = 0; i < delFlag.length; i++) {
+				for (int k = 0; k < rfiles.length; k++) {
+					if (delFlag[i].equals(rfiles[k])) {
+						new File(savePath + "/" + delFlag[i]).delete();
+						rfiles[k] = "x";
+						ofiles[k] = "x";
+					}
+				}
+			}
+			for (int i = 0; i < rfiles.length; i++) {
+				if (!rfiles[i].equals("x")) {
+					originfile += ofiles[i] + " ";
+					renamefile += rfiles[i] + " ";
+				}
+			}
+			tip.setOriginfile_tip(originfile.trim());
+			tip.setRenamefile_tip(renamefile.trim());
+		} else {
+			for (int i = 0; i < rfiles.length; i++) {
+				originfile += ofiles[i] + " ";
+				renamefile += rfiles[i] + " ";
+			}
+			tip.setOriginfile_tip(originfile.trim());
+			tip.setRenamefile_tip(renamefile.trim());
+		}
+
+		for (int i = 0; i < mfiles.size(); i++) {
+			// 2.새로운 첨부파일이 있을때
+			if (!mfiles.get(i).isEmpty()) {
+				// 2-1. 이전 첨부파일이 있을 때
+				if (tip.getRenamefile_tip() != null) {
+					// 저장 폴더에 있는 이전 파일을 삭제함
+					for (int k = 0; k < rfiles.length; k++) {
+						new File(savePath + "/" + rfiles[k]).delete();
+					}
+					// 이전 파일 정보도 제거함
+					originfile = "";
+					renamefile = "";
+					tip.setOriginfile_tip(null);
+					tip.setRenamefile_tip(null);
+				}
+			}
+		}
+		if (!mfiles.isEmpty()) {
+			// 2-2. 이전 첨부파일이 없을 때
+			// 전송온 파일이름 추출함
+			for (MultipartFile mfile : mfiles) {
+				// 전송온 파일이름 추출함
+				String fileName = mfile.getOriginalFilename();
+
+				// 다른 공지글의 첨부파일과 파일명이 중복되어서
+				// 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
+				// 폴더에 저장하는 방식을 사용할 수 있음
+				// 변경 파일명 : 년월일시분초.확장자
+				if (fileName != null && fileName.length() > 0) {
+					// 바꿀 파일명에 대한 문자열 만들기
+					String renameFileName = FileNameChange2.change(fileName, "yyyyMMddHHmmss");
+					logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
+
+					// 폴더에 저장 처리
+					try {
+						mfile.transferTo(new File(savePath + "\\" + renameFileName));
+					} catch (Exception e) {
+						e.printStackTrace();
+						model.addAttribute("message", "첨부파일 저장 실패!");
+						return "common/error";
+					}
+
+					// 객체에 첨부파일 정보 기록 저장
+					// tip.setOriginfile_tip(fileName);
+					// tip.setRenamefile_tip(renameFileName);
+					originfile += fileName + " ";
+					renamefile += renameFileName + " ";
+				} // 이름바꾸기
+				tip.setOriginfile_tip(originfile.trim());
+				tip.setRenamefile_tip(renamefile.trim());
+			}
+			// 객체에 첨부파일 정보 기록 저장
+		}
+
+		if (tipService.updateBoard(tip) > 0) {
+			// 게시원글 수정 성공시 상세보기 페이지로 이동
+			model.addAttribute("tip_no", tip.getTip_no());
+
+			return "redirect:tipdetail.do";
+		} else {
+			model.addAttribute("message", tip.getTip_no() + "번 게시글 수정 실패!");
+			return "common/error";
+		}
+	}
 
 	// 리스트
 	@RequestMapping(value = "tiplist.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public ModelAndView tipListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+	public ModelAndView tipListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = Integer.parseInt(page);
@@ -451,11 +460,11 @@ public class TipController {
 				mv.setViewName("tip/tipListView2");
 			}
 		}
-		if(mv.isEmpty()) {
+		if (mv.isEmpty()) {
 			mv.addObject("searchs", searchs);
 			mv.setViewName("tip/tipListView2");
 			return mv;
-		}else {
+		} else {
 			return mv;
 		}
 	}

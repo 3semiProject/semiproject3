@@ -125,26 +125,26 @@ public class EyebodyController {
 	}
 
 	// 원글 수정페이지 이동
-	   @RequestMapping(value = "eyebodyupmove.do", method = { RequestMethod.GET, RequestMethod.POST })
-	   public String moveEyebodyUpdateForm(@RequestParam("eyebody_no") int eyebody_no, Model model) {
-	      Eyebody eyebody = eyebodyService.selectBoard(eyebody_no);
+	@RequestMapping(value = "eyebodyupmove.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String moveEyebodyUpdateForm(@RequestParam("eyebody_no") int eyebody_no, Model model) {
+		Eyebody eyebody = eyebodyService.selectBoard(eyebody_no);
 
-	      if (eyebody != null) {
-	         if(eyebody.getOriginfile_eyebody() != null) {
-	            String[] ofiles = eyebody.getOriginfile_eyebody().split(" ");
-	            String[] rfiles = eyebody.getRenamefile_eyebody().split(" ");
-	            List<String> ofile = new ArrayList<String>(Arrays.asList(ofiles));
-	            List<String> rfile = new ArrayList<String>(Arrays.asList(rfiles));
-	            model.addAttribute("ofile", ofile);
-	            model.addAttribute("rfile", rfile);
-	         }
-	         model.addAttribute("eyebody", eyebody);
-	         return "eyebody/eyebodyUpdateForm";
-	      } else {
-	         model.addAttribute("message", eyebody_no + "번 글 수정페이지로 이동 실패!");
-	         return "common/error";
-	      }
-	   }
+		if (eyebody != null) {
+			if (eyebody.getOriginfile_eyebody() != null) {
+				String[] ofiles = eyebody.getOriginfile_eyebody().split(" ");
+				String[] rfiles = eyebody.getRenamefile_eyebody().split(" ");
+				List<String> ofile = new ArrayList<String>(Arrays.asList(ofiles));
+				List<String> rfile = new ArrayList<String>(Arrays.asList(rfiles));
+				model.addAttribute("ofile", ofile);
+				model.addAttribute("rfile", rfile);
+			}
+			model.addAttribute("eyebody", eyebody);
+			return "eyebody/eyebodyUpdateForm";
+		} else {
+			model.addAttribute("message", eyebody_no + "번 글 수정페이지로 이동 실패!");
+			return "common/error";
+		}
+	}
 
 	// 원글 삭제 처리용
 	@RequestMapping(value = "eyebodydelete.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -158,55 +158,55 @@ public class EyebodyController {
 	}
 
 	// 게시글 상세보기 처리용
-	   @RequestMapping(value = "eyebodydetail.do", method = { RequestMethod.GET, RequestMethod.POST })
-	   public ModelAndView boardDetailMethod(ModelAndView mv, @RequestParam("eyebody_no") int eyebody_no,
-	         @RequestParam(name = "user_id", required = false) String user_id,
-	         @RequestParam(name = "page", required = false) String page) {
-	      int currentPage = 1;
-	      if (page != null) {
-	         currentPage = Integer.parseInt(page);
-	      }
+	@RequestMapping(value = "eyebodydetail.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView boardDetailMethod(ModelAndView mv, @RequestParam("eyebody_no") int eyebody_no,
+			@RequestParam(name = "user_id", required = false) String user_id,
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page) {
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = Integer.parseInt(page);
+		}
 
-	      // 조회수 1 증가 처리
-	      eyebodyService.updateBoardReadcount(eyebody_no);
+		// 조회수 1 증가 처리
+		eyebodyService.updateBoardReadcount(eyebody_no);
 
-	      // 해당 게시글 조회
-	      ArrayList<Eyebody> list = eyebodyService.selectRepleList(eyebody_no);
-	      Eyebody eyebody = eyebodyService.selectBoard(eyebody_no);
-	      Eyebody eyebody2 = new Eyebody();
-	      eyebody2.setUser_id(user_id);
-	      eyebody2.setEyebody_no(eyebody_no);
-	      
-	      LikeEyebody likeEyebody =   eyebodyService.selectLikeEyebody(eyebody2);
-	      
-	      if (list != null) {
-	         mv.addObject("list", list);
-	      }
-	      
-	      if(likeEyebody != null) {
-	         mv.addObject("likeEyebody", likeEyebody);
-	      }
+		// 해당 게시글 조회
+		ArrayList<Eyebody> list = eyebodyService.selectRepleList(eyebody_no);
+		Eyebody eyebody = eyebodyService.selectBoard(eyebody_no);
+		Eyebody eyebody2 = new Eyebody();
+		eyebody2.setUser_id(user_id);
+		eyebody2.setEyebody_no(eyebody_no);
 
-	      if (eyebody != null) {
-	         if(eyebody.getOriginfile_eyebody() != null) {
-	            String[] ofiles = eyebody.getOriginfile_eyebody().split(" ");
-	            String[] rfiles = eyebody.getRenamefile_eyebody().split(" ");
-	            List<String> ofile = new ArrayList<String>(Arrays.asList(ofiles));
-	            List<String> rfile = new ArrayList<String>(Arrays.asList(rfiles));
-	            mv.addObject("ofile", ofile);
-	            mv.addObject("rfile", rfile);
-	         }
-	         mv.addObject("eyebody", eyebody);
-	         mv.addObject("currentPage", currentPage);
+		LikeEyebody likeEyebody = eyebodyService.selectLikeEyebody(eyebody2);
 
-	         mv.setViewName("eyebody/eyebodyDetailView");
-	      } else {
-	         mv.addObject("message", eyebody_no + "번 게시글 조회 실패!");
-	         mv.setViewName("common/error");
-	      }
+		if (list != null) {
+			mv.addObject("list", list);
+		}
 
-	      return mv;
-	   }
+		if (likeEyebody != null) {
+			mv.addObject("likeEyebody", likeEyebody);
+		}
+
+		if (eyebody != null) {
+			if (eyebody.getOriginfile_eyebody() != null) {
+				String[] ofiles = eyebody.getOriginfile_eyebody().split(" ");
+				String[] rfiles = eyebody.getRenamefile_eyebody().split(" ");
+				List<String> ofile = new ArrayList<String>(Arrays.asList(ofiles));
+				List<String> rfile = new ArrayList<String>(Arrays.asList(rfiles));
+				mv.addObject("ofile", ofile);
+				mv.addObject("rfile", rfile);
+			}
+			mv.addObject("eyebody", eyebody);
+			mv.addObject("currentPage", currentPage);
+
+			mv.setViewName("eyebody/eyebodyDetailView");
+		} else {
+			mv.addObject("message", eyebody_no + "번 게시글 조회 실패!");
+			mv.setViewName("common/error");
+		}
+
+		return mv;
+	}
 
 	// 첨부파일 다운로드 요청 처리용
 	@RequestMapping(value = "eyebodydown.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -229,161 +229,170 @@ public class EyebodyController {
 	}
 
 	// 등록 요청 처리용 (파일 업로드 기능 사용)
-	   @RequestMapping(value = "eyebodyinsert.do", method = { RequestMethod.GET, RequestMethod.POST })
-	   public String eyebodyInsertMethod(Eyebody eyebody, Model model, HttpServletRequest request,
-	         @RequestParam(name = "upfile", required = false) ArrayList<MultipartFile> mfiles) {
+	@RequestMapping(value = "eyebodyinsert.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String eyebodyInsertMethod(Eyebody eyebody, Model model, HttpServletRequest request,
+			@RequestParam(name = "upfile", required = false) ArrayList<MultipartFile> mfiles) {
 
-	      // 첨부파일 저장 폴더 경로 지정
-	      String savePath = request.getSession().getServletContext().getRealPath("resources/eyebody_upfiles");
-	      
-	      String originfile = "";
-	      String renamefile = "";
-	      
-	      // 첨부파일이 있을때
-	      if (!mfiles.isEmpty()) {
-	         for(MultipartFile mfile : mfiles) {
-	            // 전송온 파일이름 추출함
-	            String fileName = mfile.getOriginalFilename();
-	   
-	            // 다른 공지글의 첨부파일과 파일명이 중복되어서
-	            // 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
-	            // 폴더에 저장하는 방식을 사용할 수 있음
-	            // 변경 파일명 : 년월일시분초.확장자
-	            if (fileName != null && fileName.length() > 0) {
-	               // 바꿀 파일명에 대한 문자열 만들기
-	               String renameFileName = FileNameChange2.change(fileName, "yyyyMMddHHmmss");
-	               logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
-	   
-	               // 폴더에 저장 처리
-	               try {
-	                  mfile.transferTo(new File(savePath + "\\" + renameFileName));
-	               } catch (Exception e) {
-	                  e.printStackTrace();
-	                  model.addAttribute("message", "첨부파일 저장 실패!");
-	                  return "common/error";
-	               }
-	   
-	               // 객체에 첨부파일 정보 기록 저장
-	               originfile += fileName + " ";
-	               renamefile += renameFileName + " ";
-	            } // 이름바꾸기
-	         }
-	         // 객체에 첨부파일 정보 기록 저장
-	         eyebody.setOriginfile_eyebody(originfile.trim());
-	         eyebody.setRenamefile_eyebody(renamefile.trim());
-	      } // 새로운 첨부파일이 있을 때
+		// 첨부파일 저장 폴더 경로 지정
+		String savePath = request.getSession().getServletContext().getRealPath("resources/eyebody_upfiles");
 
-	      if (eyebodyService.insertBoard(eyebody) > 0) {
-	         // 공지글 수정 성공시 목록 보기 페이지로 이동
-	         return "redirect:eyebodylist.do";
-	      } else {
-	         model.addAttribute("message", "게시글 등록 실패!");
-	         return "common/error";
-	      }
-	   }
+		String originfile = "";
+		String renamefile = "";
 
-	   // 게시원글 수정 요청 처리용 (파일 업로드 기능 사용)
-	   @RequestMapping(value = "eyebodyupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
-	   public String boardUpdateMethod(Eyebody eyebody, Model model, HttpServletRequest request,
-	         @RequestParam(name = "upfile", required = false) ArrayList<MultipartFile> mfiles) {
+		// 첨부파일이 있을때
+		if (!mfiles.isEmpty()) {
+			for (MultipartFile mfile : mfiles) {
+				// 전송온 파일이름 추출함
+				String fileName = mfile.getOriginalFilename();
 
-	      // 게시원글 첨부파일 저장 폴더 경로 지정
-	      String savePath = request.getSession().getServletContext().getRealPath("resources/eyebody_upfiles");
-	      String originfile = "";
-	      String renamefile = "";
-	      String[] ofiles = eyebody.getOriginfile_eyebody().split(" ");
-	      String[] rfiles = eyebody.getRenamefile_eyebody().split(" ");
-	      String[] delFlag = request.getParameterValues("delflag");
-	      
-	      // 첨부파일이 수정 처리된 경우 ---------------------------
-	      // 1. 원래 첨부파일이 있는데 '파일삭제'를 선택한 경우
-	      if (eyebody.getRenamefile_eyebody() != null && delFlag != null) {
-	         for(int i = 0; i < delFlag.length; i++) {
-	            for(int k = 0; k < rfiles.length; k++) {
-	               if(delFlag[i].equals(rfiles[k])) {
-	                  new File(savePath + "/" + delFlag[i]).delete();
-	                  rfiles[k] = "x";
-	                  ofiles[k] = "x";
-	               }
-	            }
-	         }
-	         for(int i = 0; i < rfiles.length; i++) {
-	            if(!rfiles[i].equals("x")) {
-	               originfile += ofiles[i] +" ";
-	               renamefile += rfiles[i] +" ";
-	            }
-	         }
-	         
-	         eyebody.setOriginfile_eyebody(originfile.trim());
-	         eyebody.setRenamefile_eyebody(renamefile.trim());
-	      }
-	      
-	      for(int i = 0; i < mfiles.size(); i++) {
-	         // 2.새로운 첨부파일이 있을때
-	         if (!mfiles.get(i).isEmpty()) {
-	            // 2-1. 이전 첨부파일이 있을 때
-	            if (eyebody.getRenamefile_eyebody() != null) {
-	               // 저장 폴더에 있는 이전 파일을 삭제함
-	               new File(savePath + "/" + eyebody.getRenamefile_eyebody()).delete();
-	               //이전 파일 정보도 제거함
-	               eyebody.setOriginfile_eyebody(null);
-	               eyebody.setRenamefile_eyebody(null);
-	            }
-	         }
-	      }
-	      if(!mfiles.isEmpty()) {
-	            // 2-2. 이전 첨부파일이 없을 때
-	            // 전송온 파일이름 추출함
-	            for(MultipartFile mfile : mfiles) {
-	               // 전송온 파일이름 추출함
-	               String fileName = mfile.getOriginalFilename();
-	      
-	               // 다른 공지글의 첨부파일과 파일명이 중복되어서
-	               // 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
-	               // 폴더에 저장하는 방식을 사용할 수 있음
-	               // 변경 파일명 : 년월일시분초.확장자
-	               if (fileName != null && fileName.length() > 0) {
-	                  // 바꿀 파일명에 대한 문자열 만들기
-	                  String renameFileName = FileNameChange2.change(fileName, "yyyyMMddHHmmss");
-	                  logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
-	      
-	                  // 폴더에 저장 처리
-	                  try {
-	                     mfile.transferTo(new File(savePath + "\\" + renameFileName));
-	                  } catch (Exception e) {
-	                     e.printStackTrace();
-	                     model.addAttribute("message", "첨부파일 저장 실패!");
-	                     return "common/error";
-	                  }
-	               
-	                  // 객체에 첨부파일 정보 기록 저장
-	                  //eyebody.setOriginfile_eyebody(fileName);
-	                  //eyebody.setRenamefile_eyebody(renameFileName);
-	                  originfile += fileName + " ";
-	                  renamefile += renameFileName + " ";
-	               } // 이름바꾸기
-	               eyebody.setOriginfile_eyebody(originfile.trim());
-	               eyebody.setRenamefile_eyebody(renamefile.trim());
-	            }
-	            // 객체에 첨부파일 정보 기록 저장
-	         }
-	      
+				// 다른 공지글의 첨부파일과 파일명이 중복되어서
+				// 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
+				// 폴더에 저장하는 방식을 사용할 수 있음
+				// 변경 파일명 : 년월일시분초.확장자
+				if (fileName != null && fileName.length() > 0) {
+					// 바꿀 파일명에 대한 문자열 만들기
+					String renameFileName = FileNameChange2.change(fileName, "yyyyMMddHHmmss");
+					logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
 
-	      if (eyebodyService.updateBoard(eyebody) > 0) {
-	         // 게시원글 수정 성공시 상세보기 페이지로 이동
-	         model.addAttribute("eyebody_no", eyebody.getEyebody_no());
+					// 폴더에 저장 처리
+					try {
+						mfile.transferTo(new File(savePath + "\\" + renameFileName));
+					} catch (Exception e) {
+						e.printStackTrace();
+						model.addAttribute("message", "첨부파일 저장 실패!");
+						return "common/error";
+					}
 
-	         return "redirect:eyebodydetail.do";
-	      } else {
-	         model.addAttribute("message", eyebody.getEyebody_no() + "번 게시글 수정 실패!");
-	         return "common/error";
-	      }
-	   }
+					// 객체에 첨부파일 정보 기록 저장
+					originfile += fileName + " ";
+					renamefile += renameFileName + " ";
+				} // 이름바꾸기
+			}
+			// 객체에 첨부파일 정보 기록 저장
+			eyebody.setOriginfile_eyebody(originfile.trim());
+			eyebody.setRenamefile_eyebody(renamefile.trim());
+		} // 새로운 첨부파일이 있을 때
+
+		if (eyebodyService.insertBoard(eyebody) > 0) {
+			// 공지글 수정 성공시 목록 보기 페이지로 이동
+			return "redirect:eyebodylist.do";
+		} else {
+			model.addAttribute("message", "게시글 등록 실패!");
+			return "common/error";
+		}
+	}
+
+	// 게시원글 수정 요청 처리용 (파일 업로드 기능 사용)
+	@RequestMapping(value = "eyebodyupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String boardUpdateMethod(Eyebody eyebody, Model model, HttpServletRequest request,
+			@RequestParam(name = "upfile", required = false) ArrayList<MultipartFile> mfiles) {
+
+		// 게시원글 첨부파일 저장 폴더 경로 지정
+		String savePath = request.getSession().getServletContext().getRealPath("resources/eyebody_upfiles");
+		String originfile = "";
+		String renamefile = "";
+		String[] ofiles = eyebody.getOriginfile_eyebody().split(" ");
+		String[] rfiles = eyebody.getRenamefile_eyebody().split(" ");
+		String[] delFlag = request.getParameterValues("delflag");
+
+		// 첨부파일이 수정 처리된 경우 ---------------------------
+		// 1. 원래 첨부파일이 있는데 '파일삭제'를 선택한 경우
+		if (delFlag != null) {
+			for (int i = 0; i < delFlag.length; i++) {
+				for (int k = 0; k < rfiles.length; k++) {
+					if (delFlag[i].equals(rfiles[k])) {
+						new File(savePath + "/" + delFlag[i]).delete();
+						rfiles[k] = "x";
+						ofiles[k] = "x";
+					}
+				}
+			}
+			for (int i = 0; i < rfiles.length; i++) {
+				if (!rfiles[i].equals("x")) {
+					originfile += ofiles[i] + " ";
+					renamefile += rfiles[i] + " ";
+				}
+			}
+			eyebody.setOriginfile_eyebody(originfile.trim());
+			eyebody.setRenamefile_eyebody(renamefile.trim());
+		} else {
+			for (int i = 0; i < rfiles.length; i++) {
+				originfile += ofiles[i] + " ";
+				renamefile += rfiles[i] + " ";
+			}
+			eyebody.setOriginfile_eyebody(originfile.trim());
+			eyebody.setRenamefile_eyebody(renamefile.trim());
+		}
+
+		for (int i = 0; i < mfiles.size(); i++) {
+			// 2.새로운 첨부파일이 있을때
+			if (!mfiles.get(i).isEmpty()) {
+				// 2-1. 이전 첨부파일이 있을 때
+				if (eyebody.getRenamefile_eyebody() != null) {
+					// 저장 폴더에 있는 이전 파일을 삭제함
+					for (int k = 0; k < rfiles.length; k++) {
+						new File(savePath + "/" + rfiles[k]).delete();
+					}
+					// 이전 파일 정보도 제거함
+					originfile = "";
+					renamefile = "";
+					eyebody.setOriginfile_eyebody(null);
+					eyebody.setRenamefile_eyebody(null);
+				}
+			}
+		}
+		if (!mfiles.isEmpty()) {
+			// 2-2. 이전 첨부파일이 없을 때
+			// 전송온 파일이름 추출함
+			for (MultipartFile mfile : mfiles) {
+				// 전송온 파일이름 추출함
+				String fileName = mfile.getOriginalFilename();
+
+				// 다른 공지글의 첨부파일과 파일명이 중복되어서
+				// 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
+				// 폴더에 저장하는 방식을 사용할 수 있음
+				// 변경 파일명 : 년월일시분초.확장자
+				if (fileName != null && fileName.length() > 0) {
+					// 바꿀 파일명에 대한 문자열 만들기
+					String renameFileName = FileNameChange2.change(fileName, "yyyyMMddHHmmss");
+					logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
+
+					// 폴더에 저장 처리
+					try {
+						mfile.transferTo(new File(savePath + "\\" + renameFileName));
+					} catch (Exception e) {
+						e.printStackTrace();
+						model.addAttribute("message", "첨부파일 저장 실패!");
+						return "common/error";
+					}
+
+					// 객체에 첨부파일 정보 기록 저장
+					// eyebody.setOriginfile_eyebody(fileName);
+					// eyebody.setRenamefile_eyebody(renameFileName);
+					originfile += fileName + " ";
+					renamefile += renameFileName + " ";
+				} // 이름바꾸기
+				eyebody.setOriginfile_eyebody(originfile.trim());
+				eyebody.setRenamefile_eyebody(renamefile.trim());
+			}
+			// 객체에 첨부파일 정보 기록 저장
+		}
+
+		if (eyebodyService.updateBoard(eyebody) > 0) {
+			// 게시원글 수정 성공시 상세보기 페이지로 이동
+			model.addAttribute("eyebody_no", eyebody.getEyebody_no());
+
+			return "redirect:eyebodydetail.do";
+		} else {
+			model.addAttribute("message", eyebody.getEyebody_no() + "번 게시글 수정 실패!");
+			return "common/error";
+		}
+	}
 
 	// 리스트
 	@RequestMapping(value = "eyebodylist.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public ModelAndView eyebodyListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+	public ModelAndView eyebodyListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = Integer.parseInt(page);
@@ -454,11 +463,11 @@ public class EyebodyController {
 				mv.setViewName("eyebody/eyebodyListView2");
 			}
 		}
-		if(mv.isEmpty()) {
+		if (mv.isEmpty()) {
 			mv.addObject("searchs", searchs);
 			mv.setViewName("eyebody/eyebodyListView2");
 			return mv;
-		}else {
+		} else {
 			return mv;
 		}
 	}

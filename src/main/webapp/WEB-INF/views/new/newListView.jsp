@@ -2,8 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:set var="listCount" value="${ requestScope.paging.listCount }" />
-<c:set var="currentPage" value="${ requestScope.paging.currentPage }" />
 <!DOCTYPE html>
 <html>
 <head>

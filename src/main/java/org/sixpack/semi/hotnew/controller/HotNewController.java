@@ -89,7 +89,7 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 	}
 	
 	@RequestMapping("newlist.do")
-	public ModelAndView newListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+	public ModelAndView newListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = Integer.parseInt(page);
@@ -114,7 +114,7 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 	}
 	
 	@RequestMapping("hotlist.do")
-	public ModelAndView hotListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+	public ModelAndView hotListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = Integer.parseInt(page);

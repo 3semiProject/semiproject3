@@ -72,14 +72,14 @@ body{
 
 </script>
 <script type="text/javascript">
-function fileCheck(obj) {
+function fileCheck1(obj) {
 	
-	var x = document.getElementById("file");
+	var x = document.getElementById("file1");
 	var txt = "";
 	if ('files' in x) {
 	    if (x.files.length > 3) {
 	        alert("파일 개수가 초과되었습니다.");
-	        document.getElementById("file").value = "";
+	        document.getElementById("file1").value = "";
 	        return;
 	    }
 	}
@@ -93,7 +93,7 @@ function fileCheck(obj) {
 
     } else {
         alert('이미지 파일만 선택할 수 있습니다.');
-        document.getElementById("file").value = "";
+        document.getElementById("file1").value = "";
 
         parentObj  = obj.parentNode
         node = parentObj.replaceChild(obj.cloneNode(true),obj);
@@ -133,7 +133,7 @@ $(function() {
 
     var selectFile = function(files) {
         // input file 영역에 드랍된 파일들로 대체
-        if(files.length > 0 && $file1.files.length < 3){
+        if(files.length < 4 && $file1.files.length < 4){
 	        $file1.files = files;
 		    showFiles($file1.files);
         }else{
@@ -248,7 +248,7 @@ $(function() {
 				<tr height="40">
 					<th>FILE</th>
 					<td><input type="file" name="upfile" id="file1" multiple
-					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this);">
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck1(this);">
 					<br>
 					<div class="drop-zone1" align="center" id="drop-zone">
             		 * 파일선택 버튼 클릭 또는 이미지 파일을 여기로 드래그하세요 *<br>
@@ -290,7 +290,7 @@ $(function() {
 				<tr height="40">
 					<th>FILE</th>
 					<td><input type="file" name="upfile" id="file2" multiple
-					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this);">
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck2(this);">
 					<br>
 					<div class="drop-zone2" align="center" id="drop-zone">
             		 * 파일선택 버튼 클릭 또는 이미지 파일을 여기로 드래그하세요 *<br>
@@ -304,6 +304,37 @@ $(function() {
 				</tr>
 			</table>
 		</form>
+<script type="text/javascript">
+function fileCheck2(obj) {
+	
+	var x = document.getElementById("file2");
+	var txt = "";
+	if ('files' in x) {
+	    if (x.files.length > 3) {
+	        alert("파일 개수가 초과되었습니다.");
+	        document.getElementById("file2").value = "";
+	        return;
+	    }
+	}
+	
+    pathpoint = obj.value.lastIndexOf('.');
+    filepoint = obj.value.substring(pathpoint+1,obj.length);
+    filetype = filepoint.toLowerCase();
+    if(filetype=='jpg' || filetype=='gif' || filetype=='png' || filetype=='jpeg') {
+
+        // 정상적인 이미지 확장자 파일일 경우 ...
+
+    } else {
+        alert('이미지 파일만 선택할 수 있습니다.');
+        document.getElementById("file2").value = "";
+
+        parentObj  = obj.parentNode
+        node = parentObj.replaceChild(obj.cloneNode(true),obj);
+
+        return false;
+    }
+}
+</script>		
 <script type="text/javascript">
 $(function() {
     
@@ -334,7 +365,7 @@ $(function() {
 
     var selectFile = function(files) {
         // input file 영역에 드랍된 파일들로 대체
-        if(files.length > 0 && $file2.files.length < 3){
+        if(files.length < 4 && $file2.files.length < 4){
 	        $file2.files = files;
 		    showFiles($file2.files);
         }else{
@@ -434,7 +465,7 @@ $(function() {
 				<tr height="40">
 					<th>FILE</th>
 					<td><input type="file" name="upfile" id="file3" multiple
-					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this);">
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck3(this);">
 					<br>
 					<div class="drop-zone3" align="center" id="drop-zone">
             		 * 파일선택 버튼 클릭 또는 이미지 파일을 여기로 드래그하세요 *<br>
@@ -448,6 +479,37 @@ $(function() {
 				</tr>
 			</table>
 		</form>
+<script type="text/javascript">
+function fileCheck3(obj) {
+	
+	var x = document.getElementById("file3");
+	var txt = "";
+	if ('files' in x) {
+	    if (x.files.length > 3) {
+	        alert("파일 개수가 초과되었습니다.");
+	        document.getElementById("file3").value = "";
+	        return;
+	    }
+	}
+	
+    pathpoint = obj.value.lastIndexOf('.');
+    filepoint = obj.value.substring(pathpoint+1,obj.length);
+    filetype = filepoint.toLowerCase();
+    if(filetype=='jpg' || filetype=='gif' || filetype=='png' || filetype=='jpeg') {
+
+        // 정상적인 이미지 확장자 파일일 경우 ...
+
+    } else {
+        alert('이미지 파일만 선택할 수 있습니다.');
+        document.getElementById("file3").value = "";
+
+        parentObj  = obj.parentNode
+        node = parentObj.replaceChild(obj.cloneNode(true),obj);
+
+        return false;
+    }
+}
+</script>		
 <script type="text/javascript">
 $(function() {
     
@@ -478,7 +540,7 @@ $(function() {
 
     var selectFile = function(files) {
         // input file 영역에 드랍된 파일들로 대체
-        if(files.length > 0 && $file3.files.length < 3){
+        if(files.length < 4 && $file3.files.length < 4){
 	        $file3.files = files;
 		    showFiles($file3.files);
         }else{
@@ -578,7 +640,7 @@ $(function() {
 				<tr height="40">
 					<th>FILE</th>
 					<td><input type="file" name="upfile" id="file4" multiple
-					accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this);">
+					accept="image/gif, image/jpeg, image/png" onchange="fileCheck4(this);">
 					<br>
 					<div class="drop-zone4" align="center" id="drop-zone">
             		 * 파일선택 버튼 클릭 또는 이미지 파일을 여기로 드래그하세요 *<br>
@@ -592,6 +654,37 @@ $(function() {
 				</tr>
 			</table>
 		</form>
+<script type="text/javascript">
+function fileCheck4(obj) {
+	
+	var x = document.getElementById("file4");
+	var txt = "";
+	if ('files' in x) {
+	    if (x.files.length > 3) {
+	        alert("파일 개수가 초과되었습니다.");
+	        document.getElementById("file4").value = "";
+	        return;
+	    }
+	}
+	
+    pathpoint = obj.value.lastIndexOf('.');
+    filepoint = obj.value.substring(pathpoint+1,obj.length);
+    filetype = filepoint.toLowerCase();
+    if(filetype=='jpg' || filetype=='gif' || filetype=='png' || filetype=='jpeg') {
+
+        // 정상적인 이미지 확장자 파일일 경우 ...
+
+    } else {
+        alert('이미지 파일만 선택할 수 있습니다.');
+        document.getElementById("file4").value = "";
+
+        parentObj  = obj.parentNode
+        node = parentObj.replaceChild(obj.cloneNode(true),obj);
+
+        return false;
+    }
+}
+</script>		
 <script type="text/javascript">
 $(function() {
     
@@ -622,7 +715,7 @@ $(function() {
 
     var selectFile = function(files) {
         // input file 영역에 드랍된 파일들로 대체
-        if(files.length > 0 && $file4.files.length < 3){
+        if(files.length < 4 && $file4.files.length < 4){
 	        $file4.files = files;
 		    showFiles($file4.files);
         }else{
