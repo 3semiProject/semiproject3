@@ -4,8 +4,8 @@ import java.sql.Date;
 
 public class Body implements java.io.Serializable{
 	private static final long serialVersionUID = -1367031958131982741L;
-	//4.5 수정
-	private String diary_no;				 //다이어리번호
+	//4.10 수정 : diary_no int
+	private int diary_no;				 //다이어리번호
 	private String user_id;				 //작성자아이디
 	private Date body_post_date;		//등록날짜
 	private double body_weight;				 //체중(kg)
@@ -19,7 +19,7 @@ public class Body implements java.io.Serializable{
 		super();
 	}
 
-	public Body(String diary_no, String user_id, Date body_post_date, double body_weight, double body_fat,
+	public Body(int diary_no, String user_id, Date body_post_date, double body_weight, double body_fat,
 			double body_muscle, double body_waistline, double body_bmi, double body_bmr) {
 		super();
 		this.diary_no = diary_no;
@@ -40,11 +40,11 @@ public class Body implements java.io.Serializable{
 				+ ", body_waistline=" + body_waistline + ", body_bmi=" + body_bmi + ", body_bmr=" + body_bmr + "]";
 	}
 
-	public String getDiary_no() {
+	public int getDiary_no() {
 		return diary_no;
 	}
 
-	public void setDiary_no(String diary_no) {
+	public void setDiary_no(int diary_no) {
 		this.diary_no = diary_no;
 	}
 
@@ -112,4 +112,5 @@ public class Body implements java.io.Serializable{
 		this.body_bmr = body_bmr;
 	}
 	
+
 }

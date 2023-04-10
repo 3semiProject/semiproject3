@@ -128,10 +128,10 @@ document.getElementById('eatTime').value = now.toISOString().slice(11, 16);
 			},
 			error : function(request, status, errorData) {
 				//jqXHR:request, textStatus: status, errorThrown :errorData
-	          console.log("error code : " + request.status
-	                   + "\nMessage : " + reqeust.response
-	                   +"\nError : " + errorData);
-	       }
+						console.log("error code : " + request.status
+								+ "\nMessage : " + request.responseText
+								+ "\nError : " + errorData);
+			      }
 		}); //ajax
  	}); // searchFood event
  

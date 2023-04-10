@@ -1,12 +1,19 @@
 package org.sixpack.semi.body.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.parser.ParseException;
 import org.sixpack.semi.body.model.service.BodyService;
 import org.sixpack.semi.body.model.vo.Body;
+import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.diary.model.service.DiaryService;
 import org.sixpack.semi.diary.model.vo.Diary;
 import org.sixpack.semi.goal.model.vo.Goal;
@@ -17,6 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller("bodyCon")
@@ -30,7 +41,7 @@ public class BodyController {
 	private static final Logger logger = LoggerFactory.getLogger(BodyController.class);
 
 	//체형다이어리 화면출력용
-	@RequestMapping("diary_showBodyDiary.do")
+	@RequestMapping(value="diary_showBodyDiary.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public String showBodyDiary(Model model, Diary diary, HttpSession session) {			
 	Diary move = null;
 		
@@ -61,7 +72,7 @@ public class BodyController {
 			//id, date, category 일치하는 diary 있는지 조회
 	        move = diaryService.selectDiaryOne(diary);
 
-			//조회된 move 없으면 그냥 빈 식단화면 띄우기
+			//조회된 move 없으면 이전 다이이어리 정보 담기
 			if(move ==null) {
 				logger.info("빈 운동화면 띄우기"+ diary.toString());
 				move=diary;
@@ -70,16 +81,16 @@ public class BodyController {
 
 		model.addAttribute("diary", move);	
 			//목표정보, 날짜정보 조회
-			Goal goal = diaryService.selectlastGoal(diary);//가장 최신 목표정보
-			ArrayList<Diary> week = diaryService.selectWeekDiary(diary); // 일주일날짜에 대한 다이어리 정보
+			Goal goal = diaryService.selectlastGoal(move);//가장 최신 목표정보
+			ArrayList<Diary> week = diaryService.selectWeekDiary(move); // 일주일날짜에 대한 다이어리 정보
 			if(goal!=null&& week!=null) {
 				model.addAttribute("goal", goal);
 				model.addAttribute("week", week);
 			}
 			
 			//체형정보 조회 있을때만 내보냄
-			Body body = bodyService.selectOneBody(diary);
-			Body compare = bodyService.selectCompareBody(diary);
+			Body body = bodyService.selectOneBody(move);
+			Body compare = bodyService.selectCompareBody(move);
 			if(body!=null && compare!=null) {
 				model.addAttribute("body", body);			
 				model.addAttribute("compare", compare);							
@@ -126,15 +137,93 @@ public class BodyController {
 				return "redirect:diary_showBodyModify.do";	
 			}
 		}			
-			//작성할 새 다이어리번호 전달
-			diary.setDiary_no(diaryService.getDiaryNo());
+			////작성할 새 다이어리번호 전달
+			//diary.setDiary_no(diaryService.getDiaryNo());
 			model.addAttribute("diary",diary);
 		return "diary/body/bodyWrite";
 	}
 	
 	//체형다이어리 수정 화면출력용
 	@RequestMapping("diary_showBodyModify.do")
-	public String showBodyModifyView() {
+	public String showBodyModifyView(
+			Model model,
+			@RequestParam int diary_no) {
+		Diary diary = null;
+		//diary_no로 회원정보 조회
+		if(diary_no>0) {
+		 diary = diaryService.selectDiaryNo(diary_no);
+		}
+		
+		model.addAttribute("diary", diary);
 			return "diary/body/bodyModify";			
 	}
+	
+	//체형다이어리 작성처리용 (이미지처리)
+	@RequestMapping(value="diary_insertBodyWrite.do", method= RequestMethod.POST)
+	public String insertBodyWrite(RedirectAttributes redirect,
+			HttpServletRequest request,
+			Diary diary, Body body,
+			@RequestParam(name = "upfile", required = false) MultipartFile mfile,
+			Model model) throws ParseException {
+		//작성할 새 다이어리번호
+		int diary_no = diaryService.getDiaryNo();
+		diary.setDiary_no(diary_no);
+		body.setDiary_no(diary_no);
+		
+		diary.setDiary_category("body");
+		
+		//날짜 설정
+		body.setBody_post_date(diary.getDiary_post_date());
+		//이미지파일 저장처리
+		// 첨부파일 저장 폴더 경로 지정
+		String savePath = request.getSession().getServletContext().getRealPath("resources/diary_upfile");
+
+		// 첨부파일이 있을때
+		if (mfile != null && !mfile.isEmpty()) {
+			// 전송온 파일이름 추출함
+			String fileName = mfile.getOriginalFilename();
+			System.out.println(diary.getDiary_post_date());
+			// 다른 공지글의 첨부파일과 파일명이 중복되어서
+			// 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
+			// 폴더에 저장하는 방식을 사용할 수 있음
+			// 변경 파일명 : 년월일시분초.확장자
+			if (fileName != null && fileName.length() > 0) {
+				// 바꿀 파일명에 대한 문자열 만들기
+				String renameFileName = FileNameChange.diaryChange(
+						diary.getDiary_no(), fileName);
+
+				logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
+
+				// 폴더에 저장 처리
+				try {
+					mfile.transferTo(new File(savePath + "\\" + renameFileName));
+				} catch (Exception e) {
+					e.printStackTrace();
+					
+				}
+
+				//저장 성공하면 diary 객체에 첨부파일 정보 기록 저장
+				diary.setDiary_image(renameFileName);
+			} // 이름바꾸기
+		} // 새로운 첨부파일이 있을 때
+		logger.info(diary.toString());
+
+		//다이어리 작성실패 시
+		if(diaryService.insertDiary(diary) ==0) {
+			model.addAttribute("message", "다이어리 작성 실패");
+			return "common/error";
+		}
+		
+		//체중입력값 있을때만 저장 :diary는 존재하되, 체중0인 body는 존재하지 않게
+		if(body.getBody_weight()>0) {			
+			if(bodyService.insertBody(body)==0) {
+				model.addAttribute("message", "체형정보 작성 실패");
+				return "common/error";			
+			}
+		}
+		
+		redirect.addAttribute("diary_no", diary.getDiary_no());
+		return "redirect:diary_showBodyDiary.do";
+	}
+	
 }

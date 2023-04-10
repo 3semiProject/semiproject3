@@ -87,6 +87,44 @@ $('#act_total').val(100);
 //작성일, 식사시간에 현재시간 띄우기
 var now = new Date();
 document.getElementById('actTime').value = now.toISOString().slice(11, 16);
+//작성일에 이미 다이어리가 존재하면 수정화면으로 이동 안내창띄우기
+// diary_post_date 값 변경 시 중복 체크
+  $('input[name="diary_post_date"]').on('change', function() {
+    var diary_post_date = $(this).val();
+    var user_id = $('input[name="user_id"]').val();
+    $.ajax({
+      url: 'diary_checkDuplicateDiary.do',
+      method: 'POST',
+      data: {
+    	diary_category = "act";
+        diary_post_date: diary_post_date,
+        user_id: user_id,
+        diary_no: diary_no
+      },
+      success: function(data) {
+        if (data == 'ok') {    	
+    	  console.log("성공" + data);
+        }else{
+        	if (confirm('해당 일자의 다이어리가 이미 존재합니다. 다이어리화면으로 이동합니다.')){
+        		  // 수정 페이지로 이동
+        		  window.location.href = 'diary_showActDiary.do?diary_no=' + data;
+        		  
+        		} else {
+        		  // 작성화면으로 되돌아감
+        		  $('input[name="diary_post_date"]').val('${ diary.diary_post_date }');
+        		}          
+        }
+      }, //success
+      error : function(request, status, errorData) {
+			//jqXHR:request, textStatus: status, errorThrown :errorData
+        console.log("error code : " + request.status
+                 + "\nMessage : " + request.responseText
+                 +"\nError : " + errorData);
+     }
+    }); //ajax
+  }); //date change
+
+
 
 //운동이름 검색이벤트
 	$('#searchM').on('click', function (){
@@ -329,25 +367,5 @@ function changeImg(input) {
 			<input type="submit" value="저장">
 		</form>
 	</div>
-
-diary_showActWrite.do -> ActWrite : 운동다이어리 작성화면
-받은값 diary : 어떤날짜에 누가 작성하는건지
-
-	시간입력
-	이미지입력
-	메모입력
-	운동추가 : ajax 운동이름 검색기능 name 
-			-> diary_serarchMove.do ->ajax: move 
-			-> 운동추가, var에 담아뒀다가 분입력되면 kcal계산식에 사용
-보낼값 diary, acts
-	저장버튼 -> diary_insertAct.do ->insertDiary, insertOneAct * n 
-	-> diary_showAct.do -> actView
-
-
-보낼값 diary, acts
-저장버튼 ->diary_inertAct.do
-		-> insertDiary, 
-
-
 </body>
 </html>

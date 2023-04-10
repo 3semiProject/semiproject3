@@ -50,6 +50,7 @@ public class DiaryDao {
 		return session.selectOne("diaryMapper.selectDiaryNo", diary_no);
 	}
 	public Diary selectDiaryOne(Diary diary) {
+		System.out.println("Dao 1");
 		return session.selectOne("diaryMapper.selectDiaryOne", diary);
 	}
 	public Diary selectDiaryDate(DateData move) {
