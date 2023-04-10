@@ -10,32 +10,32 @@
 <title>main</title>
 <style type="text/css">
 * {
-   color: #01CD88;
+	color: #01CD88;
 }
 
 a {
-   text-decoration: none;
+	text-decoration: none;
 }
 
 #mainContain {
-   width: 1200px;
-   height: 300px;
+	width: 1200px;
+	height: 300px;
 }
 
 #adminBox {
-   display: flex;
-   border: 1px solid #D1D1D1;
-   border-radius: 35px;
+	display: flex;
+	border: 1px solid #D1D1D1;
+	border-radius: 35px;
 }
 
 #adminBox #user_visit, #border_mgt {
-   width: 500px;
-   height: 300px;
-   text-align: center;
-   border: 1px solid #D1D1D1;
-   border-radius: 35px;
-   margin: 0 10px;
-   /*    border: 1px solid #D1D1D1;
+	width: 500px;
+	height: 300px;
+	text-align: center;
+	border: 1px solid #D1D1D1;
+	border-radius: 35px;
+	margin: 0 10px;
+	/*    border: 1px solid #D1D1D1;
    position: relative;
    float: left;
    margin-top: 5px;
@@ -49,39 +49,38 @@ a {
 }
 
 #adminBox div div {
-   border: 1px solid #D1D1D1;
-   border-radius: 35px;
-   align-items: center;
+	border: 1px solid #D1D1D1;
+	border-radius: 35px;
+	align-items: center;
 }
 
 #adminBox #user_visit #visit_count, #adminBox #user_visit #visit_count {
-   width: 500px;
-   height: 240px;
+	width: 500px;
+	height: 240px;
 }
 
 #adminBox #user_visit #visit_count div {
-   display: flex;
-   height: 80px;
+	display: flex;
+	height: 80px;
 }
 
 #adminBox #border_mgt #board_count div {
-   display: flex;
-   height: 80px;
+	display: flex;
+	height: 80px;
 }
 
 #login_Box {
 	width: 120px;
 	height: 300px;
-    border: 1px solid #D1D1D1;
-    border-radius: 35px;
-    margin: auto;
+	border: 1px solid #D1D1D1;
+	border-radius: 35px;
+	margin: auto;
 }
 
 #login_Box div {
 	align-items: center;
 	margin-top: 30px;
 }
-
 
 #login_Box #login_join {
 	width: 100px;
@@ -98,38 +97,38 @@ a {
 }
 
 #userBox #userBox_intro {
-   border: 1px solid #D1D1D1;
-   position: relative;
-   float: left;
-   margin-top: 5px;
-   margin-left: 0.5%;
-   width: 70%;
-   height: 300px;
-   background-color: white;
-   border-radius: 35px;
-   font-size: 50pt;
-   line-height: 300px;
+	border: 1px solid #D1D1D1;
+	position: relative;
+	float: left;
+	margin-top: 5px;
+	margin-left: 0.5%;
+	width: 70%;
+	height: 300px;
+	background-color: white;
+	border-radius: 35px;
+	font-size: 50pt;
+	line-height: 300px;
 }
 
 #userBox #userBox_loginBox {
-   border: 1px solid #D1D1D1;
-   position: relative;
-   float: right;
-   margin-top: 5px;
-   margin-right: 0.5%;
-   width: 28%;
-   height: 300px;
-   background-color: white;
-   border-radius: 35px;
+	border: 1px solid #D1D1D1;
+	position: relative;
+	float: right;
+	margin-top: 5px;
+	margin-right: 0.5%;
+	width: 28%;
+	height: 300px;
+	background-color: white;
+	border-radius: 35px;
 }
 
-#userBox_memberBox{
-   display: flex;
-   border: 1px solid #D1D1D1;
-   border-radius: 35px;
-   height: 300px;
-   justify-content: space-around;
-/*    border: 1px solid #D1D1D1;
+#userBox_memberBox {
+	display: flex;
+	border: 1px solid #D1D1D1;
+	border-radius: 35px;
+	height: 300px;
+	justify-content: space-around;
+	/*    border: 1px solid #D1D1D1;
    position: relative;
    float: right;
    margin-top: 5px;
@@ -139,70 +138,78 @@ a {
    background-color: white;
    border-radius: 35px; */
 }
-#userBox_memberBox > div {
-   border: 1px solid #D1D1D1;
-   position: relative;
-   float: right;
-   margin-top: 5px;
-   margin-right: 0.5%;
-   width: 28%;
-   height: 300px;
-   background-color: white;
-   border-radius: 35px;
-   align-items: center;
-   text-align: center;
+
+#userBox_memberBox>div {
+	border: 1px solid #D1D1D1;
+	position: relative;
+	float: right;
+	margin-top: 5px;
+	margin-right: 0.5%;
+	width: 28%;
+	height: 300px;
+	background-color: white;
+	border-radius: 35px;
+	align-items: center;
+	text-align: center;
 }
 
-#userBox_memberBox div div{
-border: 1px solid #D1D1D1;
+#userBox_memberBox div div {
+	border: 1px solid #D1D1D1;
 }
-
 
 #userBox_memberBox #calendar_box #calendar {
-   height: 250px;
-   border-radius: 35px;
+	height: 250px;
+	border-radius: 35px;
 }
 
-#userBox_memberBox #myActivity_box div{
-   height: 50px;
-   width: 80%;
-   margin: 30px 30px;
-   border-radius: 15px;
+#userBox_memberBox #myActivity_box div {
+	height: 50px;
+	width: 80%;
+	margin: 30px 30px;
+	border-radius: 15px;
 }
 
 #userBox_memberBox form input[type="image"] {
-   line-height: 100px;
-   width: 60%;
-   height: 100px;
-   margin: 10px;
-   border-radius: 20px;
+	line-height: 100px;
+	width: 60%;
+	height: 100px;
+	margin: 10px;
+	border-radius: 20px;
 }
 
 #userBox_loginBox #loginbtn {
-   border: 1px solid #D1D1D1;
-   border-radius: 35px;
-   width: 300px;
-   margin: 20px 0;
+	border: 1px solid #D1D1D1;
+	border-radius: 35px;
+	width: 300px;
+	margin: 20px 0;
 }
 
 #loginbtn img {
-   line-height: 100px;
-   width: 80%;
-   height: 100px;
-   margin: 10px;
+	line-height: 100px;
+	width: 80%;
+	height: 100px;
+	margin: 10px;
 }
 
-#todayVisitors, #monthVisitors, #avgVisitors, #postCount, #blackPostCount {
+#todayVisitors, #monthVisitors, #avgVisitors, #postCount,
+	#blackPostCount {
 	width: 300px;
 	font-size: xx-large;
 	margin: auto;
 	justify-content: center;
 	color: black;
 }
-
-
-<!-- input type date의 placeholder 없애기-->
-/* input[type=month]::-webkit-datetime-edit-text { 
+<!--
+input
+ 
+type
+ 
+date의
+ 
+placeholder
+ 
+없애기--
+> /* input[type=month]::-webkit-datetime-edit-text { 
   -webkit-appearance: none; 
   display: none; 
 } 
@@ -221,9 +228,50 @@ input[type=month]::-webkit-datetime-edit-year-field {
   -webkit-appearance: none; 
   display: none; 
 } */
-
-
 </style>
+<!-- fullcalendar CDN -->
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.5/index.global.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.5/index.global.min.js'></script>
+<script>
+$(function () {
+	$.ajax({
+        url: 'calendar.do', // Replace with your server URL that returns the JSON object
+        type: 'post',
+        data : {
+           "user_id" : "${loginMember.user_id}"
+        },
+        dataType: 'json',
+        success: function(data) {
+           var jsonStr = JSON.stringify(data);
+           var json = JSON.parse(jsonStr).list;
+           console.log("data : "+ JSON.stringify(json));
+           var events = [];
+           for (var i in json) {
+
+              events.push({
+                 title: json[i].diary_no,
+                 start: json[i].diary_post_date
+              });
+           }
+           var calendarEl = document.getElementById('calendar');
+           var calendar = new FullCalendar.Calendar(calendarEl, {
+
+               initialView: 'dayGridMonth',
+               events: events,
+               eventClick: function(info) {
+            	   location.href = "diary.do?diary_no=" + events.title;
+               }
+            });
+           calendar.render();
+         },
+
+        error: function(jqXHR, err, errorThrown) {
+           console.error('Error loading events: '+ JSON.stringify(jqXHR) +"["+ JSON.stringify(err) + "], " + errorThrown);
+        }
+     });
+});
+</script>
+
 
 <script type="text/javascript"
    src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
@@ -241,6 +289,8 @@ input[type=month]::-webkit-datetime-edit-year-field {
    //adminBox에서 접속자수, 게시물수 get
    $(function (){
 
+	   
+	   if(${"loginMember.admin_ck"} == "Y"){
   setInterval(function() {
 		 
   $.ajax({
@@ -265,7 +315,7 @@ input[type=month]::-webkit-datetime-edit-year-field {
   });//adminBox ajax close;
   
   }, 1000);	//setInterval() close;
-   
+	   }
    });//function close;
 </script>
 </head>
