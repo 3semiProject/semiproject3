@@ -1,6 +1,7 @@
 package org.sixpack.semi.member.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -25,24 +26,22 @@ public class MemberDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
-	public Member selectFindIdPhone(Member member) {
-		// TODO Auto-generated method stub
-		return null;
+	//find id for phone
+	public String selectFindIdPhone(Member member) {
+		return session.selectOne("memberMapper.selectFindIdPhone", member);
 	}
+	//find id for email
+	public String selectFindIdEmail(Member member) {
+		return session.selectOne("memberMapper.selectFindIdEmail", member);
 
-	public Member selectFindIdEmail(Member member) {
-		// TODO Auto-generated method stub
-		return null;
 	}
-
-	public Member selectFindPwId(Member member) {
-		// TODO Auto-generated method stub
-		return null;
+	//find pw for phone
+	public Member selectFindPwPhone(Member member) {
+		return session.selectOne("memberMapper.selectFindPwPhone", member);
 	}
-
+	//find pw for email
 	public Member selectFindPwEmail(Member member) {
-		// TODO Auto-generated method stub
-		return null;
+		return session.selectOne("memberMapper.selectFindPwEmail", member);
 	}
 
 	public Member selectProfile(Member member) {
@@ -75,18 +74,13 @@ public class MemberDao {
 	}
 
 	public int updatePw(Member member) {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.update("memberMapper.updatePw", member);
 	}
 
 	public int updateMember(Member member) {
 		return session.update("memberMapper.updateMember", member);
 	}
 
-	public int updateMember(String user_id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	public int selectDupCheckId(String user_id) {
 		return session.selectOne("memberMapper.selectDupCheckId", user_id.toUpperCase());
@@ -173,7 +167,7 @@ public class MemberDao {
 		List<Member> list = session.selectList("memberMapper.selectSearchEnroll", searchDate);
 		return (ArrayList<Member>)list;
 	}
-	
+
 	public ArrayList<Member> selectSearchBirth(SearchDate searchDate) {
 		List<Member> list = session.selectList("memberMapper.selectSearchBirth", searchDate);
 		return (ArrayList<Member>)list;
@@ -188,6 +182,11 @@ public class MemberDao {
 		List<Member> list = session.selectList("memberMapper.selectSearchLoginok", searchs);
 		return (ArrayList<Member>)list;
 	}
+
+
+
+
+
 
 
 

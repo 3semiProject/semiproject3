@@ -3,25 +3,26 @@ package org.sixpack.semi.member.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
-import javax.mail.internet.MimeMessage;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.common.SearchDate;
 import org.sixpack.semi.kakao.model.service.KakaoService;
-import org.sixpack.semi.kakao.model.vo.Kakao;
 import org.sixpack.semi.log.controller.LogController;
 import org.sixpack.semi.log.model.service.LogService;
 import org.sixpack.semi.log.model.vo.Log;
@@ -36,6 +37,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -150,6 +152,7 @@ public class MemberController {
 	public String moveFindPwPage() {
 		return "member/findPwPage";
 	}
+
 
 //	// 소셜로그인이 포함된 로그인 페이지 내보내기용 메소드
 //	@RequestMapping(value = "loginPage.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -316,32 +319,9 @@ public class MemberController {
 			mv.addObject("user_nickname", member.getUser_nickname());
 			mv.setViewName("member/pwCheckPopUp");
 		}
-//		} else {
-//			mv.addObject("user_id", user_id);
-////			mv.setViewName("common/error");
-//			mv.setViewName("redirect:myinfo.do?user_id=" + user_id);
-//		}
 
 		return mv;
 	}
-
-//	//회원정보 수정 페이지 요청 전, 비밀번호 체크 팝업창
-//	@RequestMapping(value = "pwCheckPopUp.do", method = { RequestMethod.GET, RequestMethod.POST })
-//	public ModelAndView movePwCheckPopUp(@RequestParam("user_id") String user_id, ModelAndView mv) {
-//		Member member = (Member)memberService.selectMember(user_id);
-//		
-//		if (member != null) {
-//			mv.addObject("member", member.getUser_pw()); // requestSetAttribute("member", member) 와 같음
-//			// Model 또는 ModelAndView 에 저장하는 것은
-//			// request.setAttribute("member", member); 와 같음
-//			mv.setViewName("member/pwCheckPopUp");
-//		} else {
-//			mv.addObject("message", user_id+ " : 회원 정보 수정 실패");
-//			mv.setViewName("common/error");
-//		}
-//		
-//		return mv;
-//	}
 
 	// ---------------------------------------------
 	// ajax 통신으로 아이디 중복확인 요청 처리용 메소드
@@ -394,15 +374,17 @@ public class MemberController {
 	public String phoneAuth(@RequestParam("phone") String phone, HttpSession session) {
 
 		try { // 이미 가입된 전화번호가 있으면
-			if (memberService.selectPhoneCount(phone) > 0)
-				return "0";
+			if (memberService.selectPhoneCount(phone) > 0) {
+			String code = memberService.sendRandomMsg(phone);
+			return code;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		String code = memberService.sendRandomMsg(phone);
-		return code;
+		return "0";
 	}
+
+
 
 	// 회원가입 요청 처리용 메소드
 	@RequestMapping(value = "enroll.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -424,31 +406,255 @@ public class MemberController {
 	
 	//[find]------------------------------------------------------------------
 	
+	//ajax- 핸드폰번호로 아이디 찾기.
+	@RequestMapping(value = "findIdPhone.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public void findIdPhoneMethod(@RequestParam("name") String name, @RequestParam("phone") String phone,
+								HttpServletResponse response) throws IOException {
 
-	@RequestMapping("findIdPhone.do")
-	public String findIdPhoneMethod(HttpServletResponse response, Member member, Model model) {
-		return null;
+			Member member = new Member();
+			member.setUser_name(name);
+
+			member.setPhone(phone);
+
+
+			String find_id = memberService.selectFindIdPhone(member);
+			response.setContentType("text/html; charset=utf-8");
+
+			PrintWriter out = response.getWriter();
+			if(find_id != null && find_id.length() >0) {
+				out.append(find_id);
+				out.flush();
+			}else {
+				out.append("no");
+				out.flush();
+			}
+		out.close();
+	}//close find id for phone
+
+
+	//ajax- 이메일로 아이디 찾기.
+	@RequestMapping(value ="findIdEmail.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public void findIdEmailMethod(@RequestParam("name") String name, @RequestParam("email") String email,
+									HttpServletResponse response) throws IOException {
+		Member member = new Member();
+		member.setUser_name(name);
+
+		member.setEmail(email);
+
+
+		String find_id = memberService.selectFindIdEmail(member);
+		response.setContentType("text/html; charset=utf-8");
+
+		PrintWriter out = response.getWriter();
+		if(find_id != null && find_id.length() >0) {
+			out.append(find_id);
+			out.flush();
+		}else {
+			out.append("no");
+			out.flush();
+		}
+	out.close();
+	}// find id for email
+
+
+	//ajax- 핸드폰으로 패스워드 찾기.
+	@RequestMapping(value = "findPwPhone.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public void findpwPhoneMethod(@RequestParam("name") String name, @RequestParam("id") String id,
+									@RequestParam("phone") String phone, HttpServletResponse response) throws Exception {
+
+				Member member = new Member();
+				member.setUser_name(name);
+				member.setUser_id(id);
+				member.setPhone(phone);
+
+				String tempPw;
+				member = memberService.selectFindPwPhone(member);
+				//해당 정보의 고객이 존재시 1리턴
+				if( member != null ) {
+					logger.info(member.toString());
+					//임시 비밀번호 생성
+					tempPw = tempPassword(8);
+
+					System.out.println("tempPw : " +tempPw);
+			// member에 새로운 패스워드 암호화해서 기록
+			member.setUser_pw(bcryptPasswordEncder.encode(tempPw));
+			memberUpdateMethod(member, tempPw);	//update member pw
+
+
+			//해당 member의 이메일로 임시 비밀번호 전송
+			String success = tempPwSendEmail(member.getEmail(), tempPw, name);
+
+			response.setContentType("text/html; charset=utf-8");
+
+				//ajax로 스트림연결하여 결과 전송
+				PrintWriter out = response.getWriter();
+				if(success != null && success == "ok") {
+					out.append(success);
+					out.flush();
+				}else {
+					out.append("no");
+					out.flush();
+				}
+			out.close();
+				}
+		}//find pw for phone
+
+
+
+	//ajax- 이메일로 패스워드 찾기.
+	@RequestMapping(value = "findPwEmail.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public void findpwEmailMethod(@RequestParam("name") String name, @RequestParam("id") String id,
+									@RequestParam("email") String email, HttpServletResponse response) throws Exception {
+
+
+		Member member = new Member();
+		member.setUser_name(name);
+		member.setUser_id(id);
+		member.setEmail(email);
+
+		String tempPw;
+		member = memberService.selectFindPwEmail(member);
+		//해당 정보의 고객이 존재시 1리턴
+		if( member != null ) {
+			logger.info(member.toString());
+			//임시 비밀번호 생성
+			tempPw = tempPassword(8);
+
+	// member에 새로운 패스워드 암호화해서 기록
+	member.setUser_pw(bcryptPasswordEncder.encode(tempPw));
+
+	PrintWriter out = response.getWriter();
+
+	if(memberUpdateMethod(member, tempPw) == "1") {
+		//해당 member의 이메일로 임시 비밀번호 전송
+		String success = tempPwSendEmail(member.getEmail(), tempPw, member.getUser_name());
+		System.out.println("이메일로 새 비밀번호 전송!");
+		response.setContentType("text/html; charset=utf-8");
+
+			//ajax로 스트림연결하여 결과 전송
+
+			if(success != null && success == "ok") {
+				out.append(success);
+				out.flush();
+			}else {
+				out.append("no");
+				out.flush();
+			}
+				out.close();
+	}else {
+		System.out.println("테스!");
+
+		out.append("새 비밀번호 생성 및 업데이트 실패!");
+
 	}
 
-	@RequestMapping("findIdEmail.do")
-	public String findIdEmailMethod(HttpServletResponse response, Member member, Model model) {
-		return null;
-	}
+}
 
-	@RequestMapping("findPwId.do")
-	public String findpwIMethod(HttpServletResponse response, Member member, Model model) {
-		return null;
-	}
+}
 
-	@RequestMapping("findPwEmailr.do")
-	public String findpwEmailMethod(HttpServletResponse response, Member member, Model model) {
-		return null;
-	}
 
-	@RequestMapping("findPwEmail.do")
-	public String findpwEMethod(HttpServletResponse response, Member member, Model model) {
-		return null;
-	}
+
+
+	//랜덤 비밀번호 생성기
+	public static String tempPassword(int leng) {
+		int index = 0;
+		char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+				'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a',
+				'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+				'w', 'x', 'y', 'z' }; // 배열안의 문자 숫자는 원하는대로
+
+		StringBuffer password = new StringBuffer();
+		Random random = new Random();
+
+		for (int i = 0; i < leng; i++) {
+			double rd = random.nextDouble();
+			index = (int) (charSet.length * rd);
+
+			password.append(charSet[index]);
+
+			System.out.println("index::" + index + "	charSet::" + charSet[index]);
+			System.out.println(password.toString());
+		}
+
+		return password.toString();
+		// StringBuffer를 String으로 변환해서 return 하려면 toString()을 사용하면 된다.
+
+	}//randow pw maker
+
+
+
+	/* 이메일로 임시비밀번호 전송 메소드*/
+	@RequestMapping(value = "mailCheckPw.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String tempPwSendEmail(String email, String newPw, String user_name) throws Exception {
+		logger.info("이메일 데이터 전송 확인");
+		logger.info("이메일 : " + email);
+		logger.info("새로운 패스워드 : " + newPw);
+		/* 이메일 보내기 */
+		String setFrom = "hjm8686@naver.com";
+		String toMail = email;
+		String title = "[다뮤니티] 임시 비밀번호 발급 안내";
+		String content = "[" + user_name + "님]\n임시 비밀번호가 아래와 같이 발급되었으니, "
+						+ "로그인 하신 후 비밀번호를 변경하시기 바랍니다."
+						+ "\n\n임시 비밀번호 : " + newPw;
+		try {
+
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+			helper.setFrom(setFrom);
+			helper.setTo(toMail);
+			helper.setSubject(title);
+			helper.setText(content, true);
+			mailSender.send(message);
+			return "ok";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "no";
+
+	}//random pw send email method
+
+
+
+	// 회원정보 비밀번호 수정
+//		@RequestMapping(value = "updatePw.do", method = { RequestMethod.GET, RequestMethod.POST })
+		public String memberUpdateMethod(Member member, String new_pw) {
+			logger.info("updatePw.do : " + member);
+			// 새로운 비밀번호 입력시,
+			if (new_pw != null && new_pw.length() > 0) {// userpwd에 값이 들어왔다면,
+				// 암호화된 기존의 패스워드 !== 새로운 패스워드O
+				if (!this.bcryptPasswordEncder.matches(new_pw, member.getUser_pw())) {
+					// member에 새로운 패스워드 암호화해서 기록
+					member.setUser_pw(bcryptPasswordEncder.encode(new_pw));
+				}
+
+				logger.info(member.getUser_pw());
+			} else { // 새 암호가 들어오지 않은 경우
+				// 새로운 패스워드 값이 존재하지 않을 시, member에 원래 패스워드 기록
+				member.setUser_pw(member.getUser_pw()); // 기존의 패스워드 암호화가 이미 된 상태라 새로 암호화할 필요 없음
+
+			}
+
+			if ( memberService.updatePw(member) > 0) {
+				//성공시,
+				logger.info("up fail");
+				return "1";
+			} else {
+				return "2";
+			}
+		}
+
+
+
+
+
+
+
+
 
 	@RequestMapping("sendEmail.do")
 	public String sendEmailMethod(HttpServletResponse response, @RequestParam("email") String email) {
@@ -490,21 +696,6 @@ public class MemberController {
 		return mv;
 	}
 
-//	// 회원정보 비밀번호 수정
-//	@RequestMapping(value = "updatePw.do", method = { RequestMethod.GET, RequestMethod.POST })
-//	public String memberUpdateMethod(Member member, Model model) {
-//		logger.info("updatePw.do : " + member);
-//
-//		if (memberService.updatePw(member) > 0) {
-//			// 수정이 성공했다면, 컨트롤러의 메소드를 직접 호출함
-//			// 필요시, 값을 전달할 수도 있음 : 쿼리스트링 사용함
-//			// ?이름=값&이름=값
-//			return "redirect:myinfo.do?user_pw=" + member.getUser_pw();
-//		} else {
-//			model.addAttribute("message", member.getUser_pw() + " : 회원 정보 수정 실패😞");
-//			return "common/error";
-//		}
-//	}
 
 	// 마이페이지 클릭시 내 정보 보기 요청 처리용 메소드
 	@RequestMapping(value = "myinfo.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -704,7 +895,7 @@ public class MemberController {
 
 //------------------------------------------------------------------------------
 	/* 이메일 인증 */
-	@RequestMapping(value = "mailCheck.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "mailCheck.do", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String mailCheckGET(String email) throws Exception {
 
@@ -720,9 +911,12 @@ public class MemberController {
 		/* 이메일 보내기 */
 		String setFrom = "hjm8686@naver.com";
 		String toMail = email;
-		String title = "회원가입 인증 이메일 입니다.";
+		String title = "다뮤니티 인증 이메일 입니다.";
 		String content = "다뮤니티를 방문해주셔서 감사합니다." + "<br><br>" + "인증 번호는 " + checkNum + "입니다." + "<br>"
 				+ "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+
+
+
 
 		try {
 
@@ -744,9 +938,9 @@ public class MemberController {
 
 	}
 
-	
+
 	//서치 시작 ---------------------------------------------------------------
-	//검색용 
+	//검색용
 	@RequestMapping(value="membersearch.do", method={ RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView memberSearchoneMethod(
 			@RequestParam(name = "page", required = false, defaultValue = "1") String page,
@@ -754,12 +948,12 @@ public class MemberController {
 			@RequestParam("keyword") String keyword, ModelAndView mv) {
 		String beginDate = null, endDate = null, bdate = null;
 		CountSearch countSearch = new CountSearch(searchtype, keyword);
-		
+
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = Integer.parseInt(page);
 		}
-		
+
 		if (searchtype.equals("enroll")) { // enroll만 name이 keyword가 아님 begin, end로 옴
 			beginDate = request.getParameter("begin");
 			endDate = request.getParameter("end");
@@ -769,23 +963,23 @@ public class MemberController {
 		}else {
 			keyword = request.getParameter("keyword");
 		}
-		
+
 		int limit = 10;
 		int listCount = memberService.selectSearchListCount(countSearch);
 		Searchs searchs = new Searchs(listCount, currentPage, limit);
 		searchs.calculator();
-		
+
 		searchs.setSearchtype(searchtype);
 		searchs.setKeyword(keyword);
-		
+
 		ArrayList<Member> list;
-		
+
 		if(searchtype.equals("uid")) {
 			list = memberService.selectSearchId(searchs);
 			if(list != null && list.size() > 0) {
 				mv.addObject("list", list);
 				mv.addObject("searchs", searchs);
-				
+
 				mv.setViewName("admin/memberAllList2");
 			}
 		}else if(searchtype.equals("uname")) {
@@ -793,7 +987,7 @@ public class MemberController {
 			if(list != null && list.size() > 0) {
 				mv.addObject("list", list);
 				mv.addObject("searchs", searchs);
-				
+
 				mv.setViewName("admin/memberAllList2");
 			}
 		}else if(searchtype.equals("unick")) {
@@ -801,7 +995,7 @@ public class MemberController {
 			if(list != null && list.size() > 0) {
 				mv.addObject("list", list);
 				mv.addObject("searchs", searchs);
-				
+
 				mv.setViewName("admin/memberAllList2");
 			}
 		}else if(searchtype.equals("uphone")) {
@@ -809,7 +1003,7 @@ public class MemberController {
 			if(list != null && list.size() > 0) {
 				mv.addObject("list", list);
 				mv.addObject("searchs", searchs);
-					
+
 				mv.setViewName("admin/memberAllList2");
 			}
 		}else if(searchtype.equals("uemail")) {
@@ -817,7 +1011,7 @@ public class MemberController {
 			if(list != null && list.size() > 0) {
 				mv.addObject("list", list);
 				mv.addObject("searchs", searchs);
-					
+
 				mv.setViewName("admin/memberAllList2");
 			}
 		}else {
@@ -826,7 +1020,7 @@ public class MemberController {
 		}
 		return mv;
 	}
-		
+
 
 
 }

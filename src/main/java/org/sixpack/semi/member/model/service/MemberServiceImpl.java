@@ -1,13 +1,8 @@
 package org.sixpack.semi.member.model.service;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
@@ -16,33 +11,29 @@ import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.member.model.dao.MemberDao;
 import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.member.model.vo.PhoneSns;
-import org.sixpack.semi.qna.model.vo.Qna;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService{
 	@Autowired
 	private MemberDao memberDao;
-
-	@Override
-	public Member selectFindIdPhone(Member member) {
+	
+	@Override	//회원 id find for phone
+	public String selectFindIdPhone(Member member) {
 		return memberDao.selectFindIdPhone(member);
 	}
-
+	//회원 id find for email
 	@Override
-	public Member selectFindIdEmail(Member member) {
+	public String selectFindIdEmail(Member member) {
 		return memberDao.selectFindIdEmail(member);
 	}
-
+	//회원 pw find for phone
 	@Override
-	public Member selectFindPwId(Member member) {
-		return memberDao.selectFindPwId(member);
+	public Member selectFindPwPhone(Member member) {
+		return memberDao.selectFindPwPhone(member);
 	}
-
+	//회원 pw find for email
 	@Override
 	public Member selectFindPwEmail(Member member) {
 		return memberDao.selectFindPwEmail(member);
@@ -124,7 +115,7 @@ public class MemberServiceImpl implements MemberService{
 		
 		
 		
-		System.out.println("회원가입 문자 인증 : " + randomNumber);
+		System.out.println("다뮤니티 문자 인증 : [" + randomNumber + "]");
 		
 		msg.send_msg(phone, randomNumber);
 		
@@ -213,6 +204,8 @@ public class MemberServiceImpl implements MemberService{
 	public ArrayList<Member> selectSearchLoginok(Searchs searchs) {
 		return memberDao.selectSearchLoginok(searchs);
 	}
+
+
 
 
 

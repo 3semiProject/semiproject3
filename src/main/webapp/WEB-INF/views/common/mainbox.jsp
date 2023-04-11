@@ -14,28 +14,28 @@
 }
 
 a {
-	text-decoration: none;
+   text-decoration: none;
 }
 
 #mainContain {
-	width: 1200px;
-	height: 300px;
+   width: 1200px;
+   height: 300px;
 }
 
 #adminBox {
-	display: flex;
-	border: 1px solid #D1D1D1;
-	border-radius: 35px;
+   display: flex;
+   border: 1px solid #D1D1D1;
+   border-radius: 35px;
 }
 
 #adminBox #user_visit, #border_mgt {
-	width: 500px;
-	height: 300px;
-	text-align: center;
-	border: 1px solid #D1D1D1;
-	border-radius: 35px;
-	margin: 0 10px;
-	/*    border: 1px solid #D1D1D1;
+   width: 500px;
+   height: 300px;
+   text-align: center;
+   border: 1px solid #D1D1D1;
+   border-radius: 35px;
+   margin: 0 10px;
+   /*    border: 1px solid #D1D1D1;
    position: relative;
    float: left;
    margin-top: 5px;
@@ -49,52 +49,53 @@ a {
 }
 
 #adminBox div div {
-	border: 1px solid #D1D1D1;
-	border-radius: 35px;
-	align-items: center;
+   border: 1px solid #D1D1D1;
+   border-radius: 35px;
+   align-items: center;
 }
 
 #adminBox #user_visit #visit_count, #adminBox #user_visit #visit_count {
-	width: 500px;
-	height: 240px;
+   width: 500px;
+   height: 240px;
 }
 
 #adminBox #user_visit #visit_count div {
-	display: flex;
-	height: 80px;
+   display: flex;
+   height: 80px;
 }
 
 #adminBox #border_mgt #board_count div {
-	display: flex;
-	height: 80px;
+   display: flex;
+   height: 80px;
 }
 
 #login_Box {
 	width: 120px;
 	height: 300px;
-	border: 1px solid #D1D1D1;
-	border-radius: 35px;
-	margin: auto;
+    border: 1px solid #D1D1D1;
+    border-radius: 35px;
+    margin: auto;
 }
 
-        #login_Box div {
-            align-items: center;
-            margin-top: 30px;
-        }
+#login_Box div {
+	align-items: center;
+	margin-top: 30px;
+}
 
-        #login_Box #login_join {
-            width: 100px;
-            height: 100px;
-            margin: 10px;
-            line-height: 100px;
-            background-color: #01CD88;
-        }
 
-        #login_Box #login_join div {
-            margin: 30px 0;
-            text-align: center;
-            justify-content: center;
-        }
+#login_Box #login_join {
+	width: 100px;
+	height: 100px;
+	margin: 10px;
+	line-height: 100px;
+	background-color: #01CD88;
+}
+
+#login_Box #login_join div {
+	margin: 30px 0;
+	text-align: center;
+	justify-content: center;
+}
 
 #userBox #userBox_intro {
    border: 1px solid #D1D1D1;
@@ -138,7 +139,6 @@ a {
    background-color: white;
    border-radius: 35px; */
 }
-
 #userBox_memberBox > div {
    border: 1px solid #D1D1D1;
    position: relative;
@@ -200,6 +200,8 @@ border: 1px solid #D1D1D1;
 	justify-content: center;
 	color: black;
 }
+
+
 <!--  input type date의 placeholder 없애기-->
 /* input[type=month]::-webkit-datetime-edit-text {
         <!--
@@ -287,40 +289,41 @@ $(function () {
    //adminBox에서 접속자수, 게시물수 get
    $(function (){
             if ( "${loginMember.admin_ck}" === 'Y' )  {
-                setInterval(function () {
+  setInterval(function() {
+		 
+  $.ajax({
+	  url: "adminBox.do",
+	  type: "post",
+	  dataType: "json",
+	  success: function(jsonData) {
+		  console.log("jsonData sending ");
+		
+		$('#todayVisitors').html(jsonData.visitorsT + ' 명');
+		$('#monthVisitors').html(jsonData.visitorsM + ' 명');
+		$('#avgVisitors').html(jsonData.visitorsAvg + ' 명');
+		$('#postCount').html(jsonData.postCount + ' 개');
+		//$('#blackPostCount').html(jsonData.blackPostCount + ' 명');
 
-                    $.ajax({
-                        url: "adminBox.do",
-                        type: "post",
-                        dataType: "json",
-                        success: function (jsonData) {
-                            console.log("jsonData sending ");
+	},
+	error: function(request, status, errorData){
+		console.log("error code : " + request.status
+				+ "\nMessage : " + request.responseText
+				+ "\nError : " + errorData);
+	} 
+  });//adminBox ajax close;
+  
+  }, 1000);	//setInterval() close;
 
-                            $('#todayVisitors').html(jsonData.visitorsT + ' 명');
-                            $('#monthVisitors').html(jsonData.visitorsM + ' 명');
-                            $('#avgVisitors').html(jsonData.visitorsAvg + ' 명');
-                            $('#postCount').html(jsonData.postCount + ' 개');
-                            //$('#blackPostCount').html(jsonData.blackPostCount + ' 명');
-
-                        },
-                        error: function (request, status, errorData) {
-                            console.log("error code : " + request.status
-                                + "\nMessage : " + request.responseText
-                                + "\nError : " + errorData);
-                        }
-                    });//adminBox ajax close;
-
-                }, 1000);	//setInterval() close;
-            }
-        });//function close;
-    </script>
+	}//관리자일때만
+   });//function close;
+</script>
 </head>
 <body>
-<div id="mainContain">
-    <!-- non-login -->
-    <c:if test="${ empty sessionScope.loginMember }">
-        <%-- intro / login / find / join --%>
-        <div id="userBox">
+   <div id="mainContain">
+      <!-- non-login -->
+      <c:if test="${ empty sessionScope.loginMember }">
+         <%-- intro / login / find / join --%>
+         <div id="userBox">
             <div id="userBox_intro">Introduce</div>
             <div id="userBox_loginBox" align="center">
                <div id="loginbtn">
@@ -363,83 +366,83 @@ $(function () {
                <div>내가 쓴 댓글 ${ loginMember.user_id } 개</div>
             </div>
             <div id="userBox_info">
-                <form class="pofile" action="myinfo.do" method="post">
-                    <input type="hidden" name="user_id" value="${ loginMember.user_id }"/>
-                    <c:if test="${ empty loginMember.profile_renamefile }">
-                        <input type="image" alt="memberProfile"
-                               src="${ pageContext.servletContext.contextPath }/resources/profile_upfiles/profile.jpeg"/>
-                    </c:if>
-                    <c:if test="${ !empty loginMember.profile_renamefile }">
-                        <input type="image" alt="memberProfile"
-                               src="${ pageContext.servletContext.contextPath }/resources/profile_upfiles/${ loginMember.profile_renamefile }"/>
-                    </c:if>
-                </form>
-                <div id="loginA">
-                    <div id="user_nickname">${ loginMember.user_nickname }님</div>
-                    <div id="login_join">
-                        <a href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
-                    </div>
-                </div>
+            <form class="pofile" action="myinfo.do" method="post">
+               <input type="hidden" name="user_id" value="${ loginMember.user_id }" />
+               <c:if test="${ empty loginMember.profile_renamefile }">
+                <input type="image" alt="memberProfile"
+                  src="${ pageContext.servletContext.contextPath }/resources/profile_upfiles/profile.jpeg" />
+                </c:if>
+               <c:if test="${ !empty loginMember.profile_renamefile }">
+                <input type="image" alt="memberProfile"
+                  src="${ pageContext.servletContext.contextPath }/resources/profile_upfiles/${ loginMember.profile_renamefile }" />
+                </c:if>
+            </form>
+            <div id="loginA">
+               <div id="user_nickname">${ loginMember.user_nickname }님</div>
+               <div id="login_join">
+                  <a href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
+               </div>
             </div>
-        </div>
+            </div>
+         </div>
 
-    </c:if>
+      </c:if>
 
 
-    <!-- 로그인 했을 때 : 관리자인 경우 -->
-    <c:if
-            test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
-        <div id="adminBox">
+
+      <!-- 로그인 했을 때 : 관리자인 경우 -->
+      <c:if
+         test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
+         <div id="adminBox">
             <div id="user_visit">
-                <form action="visitSearch.do">
-                    <div>접속자 분류</div>
-                    <div style="display: flex;">
-                        <div style="width: 30%;">기간</div>
-                        <c:set var="now" value="<%=new java.util.Date()%>"/>
-                        <c:set var="sys"><fmt:formatDate value="${now}" pattern="yyyy"/></c:set>
-                        <input style="width: 60%; text-align: center;" type="month" value="년 / 월"/>
-                    </div>
-                </form>
-                <div id="visit_count">
-                    <div id="today">
-                        <div>접속자 수</div>
-                        <div id="todayVisitors"></div>
-                    </div>
-                    <div id="month">
-                        <div>월 접속자 수</div>
-                        <div id="monthVisitors"></div>
-                    </div>
-                    <div id="year">
-                        <div>월 평균 접속자 수</div>
-                        <div id="avgVisitors"></div>
-                    </div>
-                </div>
+           <form action="visitSearch.do">
+               <div>접속자 분류</div>
+               <div style="display: flex;">
+               <div style="width: 30%;">기간</div>
+              	<c:set var="now" value="<%=new java.util.Date()%>" />
+				<c:set var="sys"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
+               <input style="width: 60%; text-align: center;" type="month" value="년 / 월"/>
+               </div>
+           </form>
+               <div id="visit_count">
+                  <div id="today">
+                     <div>접속자 수</div>
+                     <div id="todayVisitors"></div>
+                  </div>
+                  <div id="month">
+                     <div>월 접속자 수</div>
+                     <div id="monthVisitors"></div>
+                  </div>
+                  <div id="year">
+                     <div>월 평균 접속자 수</div>
+                     <div id="avgVisitors"></div>
+                  </div>
+               </div>
             </div>
             <div id="border_mgt">
-                <div>게시판 분류</div>
-                <div id="board_count">
-                    <div id="total_post">
-                        <div>총 게시물 수</div>
-                        <div id="postCount"></div>
-                    </div>
-                    <div id="total_coment">
-                        <div>총 유해게시물 수</div>
-                        <div id="blackPostCount"></div>
-                    </div>
-                </div>
+               <div>게시판 분류</div>
+               <div id="board_count">
+                  <div id="total_post">
+                     <div>총 게시물 수</div>
+                     <div id="postCount"></div>
+                  </div>
+                  <div id="total_coment">
+                     <div>총 유해게시물 수</div>
+                     <div id="blackPostCount"></div>
+                  </div>
+               </div>
             </div>
             <div id="login_Box" align="center">
-                <div style="padding: 10px 0; height: 40px;">
-                    관리자<br>${ loginMember.user_nickname } 님
-                </div>
-                <div id="login_join" onclick="logout();">
-                    <a style="color: white;"
-                       href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
-                </div>
+            	<div style="padding: 10px 0; height: 40px;">
+            	관리자<br>${ loginMember.user_nickname } 님 </div>
+              	<div id="login_join" onclick="logout();">
+                  <a style="color: white;" 
+                  href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
+               </div>
             </div>
-        </div>
-
-    </c:if>
-</div>
+         </div>
+      
+      </c:if>
+   </div>
 </body>
 </html>
