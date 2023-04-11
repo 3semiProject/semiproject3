@@ -21,6 +21,7 @@
     #freeWrapper{
         width: 1130px;
         height: 1200px;
+        margin: 0px 10%;
     }
 
     #freeWrapper > ul > li:first-child {
@@ -140,7 +141,7 @@
                     <li>
                         <ul>
                             <li>No</li>
-                            <li class="left">제목</li>
+                            <li>제목</li>
                             <li>첨부파일</li>
                             <li>작성일</li>
                             <li>작성자</li>
@@ -179,16 +180,13 @@
             </li>
 
             <!-- 검색 폼 영역 -->
-            <li id='liSearchOption'>
-            <form action="commuwrite.do" method="post">
-            	<div>
+            <li id='liSearchOption' style="display:inline-block;">
+            <form action="commuwrite.do" method="post" style="display:inline; float:right;">
             	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y'}">
-             		<input id="wri" type=submit value="글쓰기">
+             		&nbsp;<input id="wri" type=submit value="글쓰기">
              	</c:if>
-            	</div>
             </form>
-            	<form action="freesearch.do" method="post">
-                <div>
+            	<form action="freesearch.do" method="post" style="display:inline;">
                     <select name="searchtype" >
                         <option value="fname" >제목</option>
                         <option value="fvalue">내용</option>
@@ -196,7 +194,6 @@
                     </select>
                     <input type="search" name="keyword">
                     <input type="submit" value="검색">
-                </div>
                 </form>
              </li>
         </ul>
