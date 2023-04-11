@@ -117,6 +117,21 @@
             border-radius: 8px;
         }
 
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type='number'] {
+            border: rgba(99, 225, 70, 0.49) solid 3px;
+            font-size: 15pt;
+            font-weight: bold;
+            font-family: Copperplate, Papyrus, fantasy;
+            width: 80px;
+            border-radius: 8px;
+        }
+
         input[type='date'] {
             border: rgba(99, 225, 70, 0.49) solid 3px;
             font-size: 15pt;
@@ -174,14 +189,14 @@
             <div class="join_e">
                 <div class="join_item">키</div>
                 <div class="join_item2">
-                    <label><input type="text" name="height" value="${goal.height}" maxlength="6"> cm</label>
+                    <label><input type="number" name="height" value="${goal.height}" maxlength="6"> cm</label>
                 </div>
             </div>
             <div class="join_e">
                 <div class="join_item">몸무게</div>
                 <div class="join_item2">
 
-                    <label><input type="text" name="current_weight" value="${goal.current_weight}"> kg</label>
+                    <label><input type="number" name="current_weight" value="${goal.current_weight}"> kg</label>
                 </div>
             </div>
             <div class="join_e">
