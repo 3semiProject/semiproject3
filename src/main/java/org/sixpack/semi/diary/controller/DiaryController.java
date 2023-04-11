@@ -17,6 +17,8 @@ import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.diary.model.service.DiaryService;
 import org.sixpack.semi.diary.model.vo.DateData;
 import org.sixpack.semi.diary.model.vo.Diary;
+import org.sixpack.semi.goal.model.service.GoalService;
+import org.sixpack.semi.goal.model.service.GoalServiceImpl;
 import org.sixpack.semi.goal.model.vo.Goal;
 import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;
@@ -24,21 +26,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Controller("diaryCon")
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.sql.Date;
+
+@Controller("diaryController")
 public class DiaryController {
 	
 	@Autowired
 	private DiaryService diaryService;
-	
+
+	@Autowired
+	private GoalService goalService;
+
 	private static final Logger logger = LoggerFactory.getLogger(DiaryController.class);
 	
 	//ajax mainbox 캘린더
@@ -76,87 +82,103 @@ public class DiaryController {
 		Date today = new Date(new java.util.Date().getTime());
 		Diary diary= new Diary(user_id, today, 0, "eat", null, null );
 		
-		
 
-		//다이어리 전환 전, 목표정보 있는지 확인
-		//목표관리페이지 아직 미완성
-		 //Goal goal=null;
-		 //goal= diaryService.selectCurrentGoal(diary); //1달이내 정보조회
-		 //if(goal==null || goal.getGoal_date().before(today)) { //조회값이 없거나, 목표일이 끝났을때
-		 //redirect.addFlashAttribute("diary", diary);
-		 //redirect.addFlashAttribute("message", "목표정보가 없습니다. 목표를 설정해주세요"); 
-		 //return "redirect:diary_showGoalWrite.do"; //목표작성화면으로 이동
-		//}
-		
-		//목표정보 있으면 식단 다이어리화면으로 이동
-		redirect.addFlashAttribute("diary", diary);
-		return "redirect:diary_showEatDiary.do";
-	}
-	
-	//다이어리 화면내 id, date, category 정보로 다이어리간 이동
-	//수정 : diary_no로 이동
-	//수정 : 날짜로 이동
-	@RequestMapping(value="diary_moveDiary.do", method={ RequestMethod.GET, RequestMethod.POST })
-	public String showMoveDiary( RedirectAttributes redirect, Diary diary,
-			HttpSession session) {
-		
-		//diary_no 있을때 바로이동
-		Diary move = null;
-		if(diary.getDiary_no()>0) {
-			move = diaryService.selectDiaryNo(diary.getDiary_no());
-		}else {
-			//date 없을때 현재날짜로
-			if(diary.getDiary_post_date()==null) {
-				diary.setDiary_post_date(new Date(new java.util.Date().getTime()));
-			}
-			
-			//id 없을때
-			if(session==null) {
-				//비로그인 상태면 로그인 페이지로 이동
-				return "redirect:loginPage.do";	
-			}else {
-				if(diary.getUser_id()==null) {
-					diary.setUser_id(((Member)session.getAttribute("loginMember")).getUser_id());
-				}
-			}
-			
-			//category 없을때 식단우선
-			if(diary.getDiary_category()==null) {
-				diary.setDiary_category("eat");
-			}			
-			//입력정보와 일치하는 diary 있는지 조회
-			if(!(diary.getUser_id()==null&& diary.getDiary_post_date()==null&&diary.getDiary_category()==null)) {
-				move = diaryService.selectDiaryOne(diary);			
-			}
-			//조회된 move 없으면 그냥 빈 식단화면 띄우기
-			if(move ==null) {
-				logger.info("빈 식단화면 띄우기"+ diary.toString());
-				//diary.setDiary_post_date(java.sql.Date.valueOf("2023-03-01"));
-				//diary.setUser_id("dd");
-				//diary.setDiary_category("eat");				
-				move=diary;
-			}
-		}
-		redirect.addFlashAttribute("diary", move);	
-		//카테고리별 컨트롤러 호출
-		if(move.getDiary_category()==null || 
-				move.getDiary_category().equals("eat")){
-			return "redirect:diary_showEatDiary.do";
-		}else if(move.getDiary_category().equals("act")){
-			return "redirect:diary_showActDiary.do";
-		}else{
-			return "redirect:diary_showBodyDiary.do";
-		}
-	}
-	
-	//ajax 다이어리 등록 요청 처리용(파일 업로드 기능 사용)
-	@RequestMapping(value = "diary_insertWrite.do", method= {RequestMethod.GET, RequestMethod.POST})
-	@ResponseBody
-	public void insertEatWrite(
-	        @ModelAttribute("diary") Diary diary,
-	        @RequestParam(name = "time") String time,
-	        @RequestParam(name = "upfile", required = false) MultipartFile mfile,
-	        Model model, HttpServletRequest request) throws ParseException {
+        //다이어리 전환 전, 목표정보 있는지 확인
+        Goal goal = diaryService.selectTodayGoal(diary); // 오늘 날짜 goal 조회
+        System.out.println("goal : " + goal);
+
+        if (goal == null) { //조회값이 없거나, 목표일이 끝났을때
+            goal = diaryService.selectCurrentGoal(diary);
+			System.out.println("goal1 : " + goal);
+
+            if (goal != null) { // 기한 내 목표 있을 경우
+				goalService.insertGoalInfo(goal);  // 목표 생성
+				System.out.println("goal2 : " + goal);
+
+            } else {
+                goal = diaryService.selectlastGoal(diary);
+				System.out.println("goal3 : " + goal);
+
+                if (goal != null) {
+                    redirect.addAttribute("isExist", "D"); // 기간 내 목표가 없을 시
+                    redirect.addAttribute("goal", goal);
+                    return "redirect:diary_showGoal.do"; //목표작성화면으로 이동
+                } else {
+                    redirect.addAttribute("isExist", "N"); // 처음 가입시(목표 데이터 없을 시)
+                    return "redirect:diary_showGoalModify.do"; //목표작성화면으로 이동
+                }
+            }
+        }
+
+        //목표정보 있으   면 식단 다이어리화면으로 이동
+        redirect.addFlashAttribute("diary", diary);
+        return "redirect:diary_showEatDiary.do";
+    }
+
+    //다이어리 화면내 id, date, category 정보로 다이어리간 이동
+    //수정 : diary_no로 이동
+    //수정 : 날짜로 이동
+    @RequestMapping(value = "diary_moveDiary.do", method = {RequestMethod.GET, RequestMethod.POST})
+    public String showMoveDiary(RedirectAttributes redirect, Diary diary,
+                                HttpSession session) {
+
+        //diary_no 있을때 바로이동
+        Diary move = null;
+        if (diary.getDiary_no() > 0) {
+            move = diaryService.selectDiaryNo(diary.getDiary_no());
+        } else {
+            //date 없을때 현재날짜로
+            if (diary.getDiary_post_date() == null) {
+                diary.setDiary_post_date(new Date(new java.util.Date().getTime()));
+            }
+
+            //id 없을때
+            if (session == null) {
+                //비로그인 상태면 로그인 페이지로 이동
+                return "redirect:loginPage.do";
+            } else {
+                if (diary.getUser_id() == null) {
+                    diary.setUser_id(((Member) session.getAttribute("loginMember")).getUser_id());
+                }
+            }
+
+            //category 없을때 식단우선
+            if (diary.getDiary_category() == null) {
+                diary.setDiary_category("eat");
+            }
+            //입력정보와 일치하는 diary 있는지 조회
+            if (!(diary.getUser_id() == null && diary.getDiary_post_date() == null && diary.getDiary_category() == null)) {
+                move = diaryService.selectDiaryOne(diary);
+            }
+            //조회된 move 없으면 그냥 빈 식단화면 띄우기
+            if (move == null) {
+                logger.info("빈 식단화면 띄우기" + diary.toString());
+                //diary.setDiary_post_date(java.sql.Date.valueOf("2023-03-01"));
+                //diary.setUser_id("dd");
+                //diary.setDiary_category("eat");
+                move = diary;
+            }
+        }
+        redirect.addFlashAttribute("diary", move);
+        //카테고리별 컨트롤러 호출
+        if (move.getDiary_category() == null ||
+                move.getDiary_category().equals("eat")) {
+            return "redirect:diary_showEatDiary.do";
+        } else if (move.getDiary_category().equals("act")) {
+            return "redirect:diary_showActDiary.do";
+        } else {
+            return "redirect:diary_showBodyDiary.do";
+        }
+    }
+
+    //ajax 다이어리 등록 요청 처리용(파일 업로드 기능 사용)
+    @RequestMapping(value = "diary_insertWrite.do", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public void insertEatWrite(
+            @ModelAttribute("diary") Diary diary,
+            @RequestParam(name = "time") String time,
+            @RequestParam(name = "upfile", required = false) MultipartFile mfile,
+            Model model, HttpServletRequest request) throws ParseException {
 
 		//날짜포맷팅
 		// 입력받은 시간 문자열
@@ -226,13 +248,12 @@ public class DiaryController {
 			String no = String.valueOf(searchD.getDiary_no());
 
 			return no;
-		}else {			
+		}else {
 			System.out.println("Controller nope");
-			return "ok";	
+			return "ok";
 		}
 	}
-		
-	
+
 //	//캘린더 출력용
 //	@RequestMapping(value = "diary_showCalendar.do", method = RequestMethod.GET)
 //	public String calendar(Model model, HttpServletRequest request, DateData dateData){

@@ -24,7 +24,7 @@ import java.util.List;
 
 // 음식, 운동 데이터 db 삽입용
 
-@Controller("InsertDataController")
+@Controller("insertDataController")
 public class InsertDataController {
 
     @Autowired

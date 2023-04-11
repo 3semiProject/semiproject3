@@ -17,7 +17,7 @@ public class MailConfig {
         javaMailSender.setUsername("hjm8686@naver.com");
         javaMailSender.setPassword("jm5411!56");
 
-        javaMailSender.setPort(465);
+        javaMailSender.setPort(587);
 
         javaMailSender.setJavaMailProperties(getMailProperties());
 

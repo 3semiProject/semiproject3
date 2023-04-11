@@ -39,6 +39,9 @@ public class HomeController {
 	//common/main.jsp 를 내보내기 위해 리턴하는 메소드
 	@RequestMapping("main.do")
 	public String forwardMainView() {
+
+
+
 		return "common/main";  //내보낼 뷰파일명 리턴
 	}
 }

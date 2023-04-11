@@ -126,8 +126,8 @@
 
             $('input[name=energy_demand]').each(function () {
 
-                if($(this).val() == ${goal.energy_demand}){
-                    $(this).prop('checked',true);
+                if ($(this).val() == ${goal.energy_demand}) {
+                    $(this).prop('checked', true);
                 }
             }); //each
         });//document.ready
@@ -190,7 +190,11 @@
 </div>
 <br>
 <div style="text-align: center">
-    <button onclick="location.href='diary_showGoalModify.do';">수정하기</button>
+
+    <c:url value="/diary_showGoalModify.do" var="goalModify">
+        <c:param name="isExist" value="Y"/>
+    </c:url>
+    <button onclick="location.href='${goalModify}';">수정하기</button>
 </div>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 

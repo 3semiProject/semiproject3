@@ -17,4 +17,12 @@ public class GoalDao {
     public Goal selectRecentGoal(String diary) {
         return session.selectOne("diaryMapper.selectlastGoal", diary);
     }
+
+    public int insertGoalInfo(Goal goal) {
+        return session.update("diaryMapper.insertGoalInfo", goal);
+    }
+
+    public int updateGoalInfo(Goal goal) {
+        return session.update("diaryMapper.updateGoalInfo", goal);
+    }
 }

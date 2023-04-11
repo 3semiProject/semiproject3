@@ -8,21 +8,21 @@ import org.springframework.stereotype.Service;
 @Service("goalService")
 public class GoalServiceImpl implements GoalService {
 
-	@Autowired
-	private GoalDao goalDao;
+    @Autowired
+    private GoalDao goalDao;
 
-	@Override
-	public Goal selectRecentGoal(String diary) {
-		return goalDao.selectRecentGoal(diary);
-	}
+    @Override
+    public Goal selectRecentGoal(String diary) {
+        return goalDao.selectRecentGoal(diary);
+    }
 
-	@Override
-	public int insertGoalInfo(Goal goal) {
-		return 0;
-	}
+    @Override
+    public int insertGoalInfo(Goal goal) {
+        return goalDao.insertGoalInfo(goal);
+    }
 
-	@Override
-	public int updateGoalInfo(Goal goal) {
-		return 0;
-	}
+    @Override
+    public int updateGoalInfo(Goal goal) {
+        return goalDao.updateGoalInfo(goal);
+    }
 }
