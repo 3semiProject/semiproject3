@@ -139,10 +139,8 @@ function changeLogin(element) {
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/menubar.jsp" />
-	<c:import url="/WEB-INF/views/admin/mamberListbar.jsp" />
-	
 	<hr>
-<%-- <center>
+<center>
             <li id='liSearchOption'>
             	<form action="qnasearch.do?page=1" method="post">
                 <div>
@@ -156,7 +154,7 @@ function changeLogin(element) {
                 </div>
                 </form>
              </li>
-</center> --%>
+</center>
 <hr>
 <div id="memberWrapper">
 
@@ -212,7 +210,7 @@ function changeLogin(element) {
                 </ul>
             </li>
             <br>
-             &nbsp; &nbsp; <c:import url="/WEB-INF/views/admin/memberpaging.jsp" />                
+             &nbsp; &nbsp; <c:import url="/WEB-INF/views/admin/membersearchpaging.jsp" />                
 
 	
 	

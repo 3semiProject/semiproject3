@@ -2,10 +2,11 @@ package org.sixpack.semi.member.model.service;
 
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
-import org.sixpack.semi.kakao.model.vo.Kakao;
+import org.sixpack.semi.common.SearchDate;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.member.model.vo.Member;
-import org.sixpack.semi.qna.model.vo.Qna;
 
 public interface MemberService {
 	Member selectFindIdPhone(Member member);
@@ -36,5 +37,17 @@ public interface MemberService {
 	//관리자 페이지
 	int selectListCount();
 	ArrayList<Member> selectList(Paging page);
+	
+	//서치 메소드
+	int selectSearchListCount(CountSearch countSearch);
+	ArrayList<Member> selectSearchId(Searchs searchs);
+	ArrayList<Member> selectSearchName(Searchs searchs);
+	ArrayList<Member> selectSearchNick(Searchs searchs);
+	ArrayList<Member> selectSearchPhone(Searchs searchs);
+	ArrayList<Member> selectSearchEmail(Searchs searchs);
+	ArrayList<Member> selectSearchEnroll(SearchDate searchDate);
+	ArrayList<Member> selectSearchBirth(SearchDate searchDate);
+	ArrayList<Member> selectSearchGender(Searchs searchs);
+	ArrayList<Member> selectSearchLoginok(Searchs searchs);
 	
 }

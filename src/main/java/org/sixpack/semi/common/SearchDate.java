@@ -8,34 +8,43 @@ public class SearchDate implements Serializable {
 
     private static final long serialVersionUID = 2253546582582684455L;
 
-    private Date start;
+    private Date begin;
     private Date end;
-	public SearchDate() {
+
+    public SearchDate() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-	public SearchDate(Date start, Date end) {
+
+	public SearchDate(Date begin, Date end) {
 		super();
-		this.start = start;
+		this.begin = begin;
 		this.end = end;
 	}
-	public Date getStart() {
-		return start;
+
+	public Date getBegin() {
+		return begin;
 	}
-	public void setStart(Date start) {
-		this.start = start;
+
+	public void setBegin(Date begin) {
+		this.begin = begin;
 	}
+
 	public Date getEnd() {
 		return end;
 	}
+
 	public void setEnd(Date end) {
 		this.end = end;
 	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
 	@Override
 	public String toString() {
-		return "SearchDate [start=" + start + ", end=" + end + "]";
+		return "SearchDate [begin=" + begin + ", end=" + end + "]";
 	}
+
+
 }

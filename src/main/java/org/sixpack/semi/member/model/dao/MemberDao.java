@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.SearchDate;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
 import org.sixpack.semi.member.controller.MemberController;
 import org.sixpack.semi.member.model.vo.Member;
@@ -136,6 +139,56 @@ public class MemberDao {
 	public int updateLoginok(Member member) {
 		return session.update("memberMapper.updateLoginok", member);
 	}
+
+	public int selectSearchListCount(CountSearch countSearch) {
+		return session.selectOne("memberMapper.selectSearchListCount", countSearch);
+	}
+
+	public ArrayList<Member> selectSearchId(Searchs searchs) {
+		List<Member> list = session.selectList("memberMapper.selectSearchId", searchs);
+		return (ArrayList<Member>)list;
+	}
+
+	public ArrayList<Member> selectSearchName(Searchs searchs) {
+		List<Member> list = session.selectList("memberMapper.selectSearchName", searchs);
+		return (ArrayList<Member>)list;
+	}
+
+	public ArrayList<Member> selectSearchNick(Searchs searchs) {
+		List<Member> list = session.selectList("memberMapper.selectSearchNick", searchs);
+		return (ArrayList<Member>)list;
+	}
+
+	public ArrayList<Member> selectSearchPhone(Searchs searchs) {
+		List<Member> list = session.selectList("memberMapper.selectSearchPhone", searchs);
+		return (ArrayList<Member>)list;
+	}
+
+	public ArrayList<Member> selectSearchEmail(Searchs searchs) {
+		List<Member> list = session.selectList("memberMapper.selectSearchEmail", searchs);
+		return (ArrayList<Member>)list;
+	}
+
+	public ArrayList<Member> selectSearchEnroll(SearchDate searchDate) {
+		List<Member> list = session.selectList("memberMapper.selectSearchEnroll", searchDate);
+		return (ArrayList<Member>)list;
+	}
+	
+	public ArrayList<Member> selectSearchBirth(SearchDate searchDate) {
+		List<Member> list = session.selectList("memberMapper.selectSearchBirth", searchDate);
+		return (ArrayList<Member>)list;
+	}
+
+	public ArrayList<Member> selectSearchGender(Searchs searchs) {
+		List<Member> list = session.selectList("memberMapper.selectSearchGender", searchs);
+		return (ArrayList<Member>)list;
+	}
+
+	public ArrayList<Member> selectSearchLoginok(Searchs searchs) {
+		List<Member> list = session.selectList("memberMapper.selectSearchLoginok", searchs);
+		return (ArrayList<Member>)list;
+	}
+
 
 
 

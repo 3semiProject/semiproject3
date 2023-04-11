@@ -57,7 +57,7 @@
     #ulTable > li > ul > li:first-child +li+li        {width:10%;} /*첨부파일 열 크기*/
     #ulTable > li > ul > li:first-child +li+li+li     {width:20%;} /*작성일 열 크기*/
     #ulTable > li > ul > li:first-child +li+li+li+li  {width:15%;} /*작성자 열 크기*/
-	#ulTable > li > ul > li:first-child +li+li+li+li  {width:10%;} /*조회수 열 크기*/
+	#ulTable > li > ul > li:first-child +li+li+li+li+li  {width:10%;} /*조회수 열 크기*/
     #divPaging {
           clear:both; 
         margin:0 auto; 
@@ -161,6 +161,7 @@
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
 							<li class="center">  
+							
 							<c:if test="${ q.qna_lev eq 2 }">&nbsp; ┗ Re : </c:if>
                             <c:if test="${ q.qna_lev eq 3 }">&nbsp; &nbsp; ┗ Re : </c:if>
 					        <c:if test="${q.qna_private eq 'N'}" >

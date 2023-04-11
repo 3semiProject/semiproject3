@@ -49,6 +49,7 @@
 	border-radius: 35px;
 	height: 800px;
 	float: right;
+	text-align: center;
 }
 
 #banner_article {
@@ -106,6 +107,13 @@ th {
 td, .cona {
 	font-size: large;
 	color : black;
+}
+span{
+ 	color : black;
+ 	font-size: 14pt;
+	font-weight: bolder;
+	text-decoration-line: underline; 
+	text-decoration-thickness: 2px;
 }
 
 
@@ -280,7 +288,13 @@ td, .cona {
 
 		<div id="mainTextBox_banner">
 			<div id="banner_article">
-				<div name="article">article1</div>
+
+				<a href="https://newsis.com/view/?id=NISX20230407_0002257899&cID=10201&pID=10200">
+				<img width="273.2" height="146.9" src="https://image.newsis.com/2022/04/11/NISI20220411_0000972072_web.jpg?rnd=20220411161920">
+				<span>기사제목입니당.</span>
+				</a>
+
+				
 				<div name="article">article2</div>
 				<div name="article">article3</div>
 				<div name="article">article4</div>
@@ -288,12 +302,13 @@ td, .cona {
 
 			</div>
 			<div id="banner_youtube">
-				<div name="youtube">youtube1</div>
-				<div name="youtube">youtube2</div>
-				<div name="youtube">youtube3</div>
-				<div name="youtube">youtube4</div>
-
-
+			<c:forEach var="list" items="${bannerlink}">
+				<iframe width="273.2" height="196.9" src="${list}" 
+					title="YouTube video player" frameborder="0" 
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+					allowfullscreen>
+				</iframe>
+				</c:forEach>
 			</div>
 		</div>
 	</div>

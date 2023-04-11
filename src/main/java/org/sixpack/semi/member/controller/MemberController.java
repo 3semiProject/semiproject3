@@ -16,7 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.FileNameChange;
+import org.sixpack.semi.common.Searchs;
+import org.sixpack.semi.common.SearchDate;
 import org.sixpack.semi.kakao.model.service.KakaoService;
 import org.sixpack.semi.kakao.model.vo.Kakao;
 import org.sixpack.semi.log.controller.LogController;
@@ -24,6 +27,7 @@ import org.sixpack.semi.log.model.service.LogService;
 import org.sixpack.semi.log.model.vo.Log;
 import org.sixpack.semi.member.model.service.MemberService;
 import org.sixpack.semi.member.model.vo.Member;
+import org.sixpack.semi.qna.model.vo.Qna;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -700,7 +704,7 @@ public class MemberController {
 
 //------------------------------------------------------------------------------
 	/* 이메일 인증 */
-	@RequestMapping(value = "mailCheck.do", method = RequestMethod.GET)
+	@RequestMapping(value = "mailCheck.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String mailCheckGET(String email) throws Exception {
 
@@ -739,5 +743,90 @@ public class MemberController {
 		return num;
 
 	}
+
+	
+	//서치 시작 ---------------------------------------------------------------
+	//검색용 
+	@RequestMapping(value="membersearch.do", method={ RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView memberSearchoneMethod(
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page,
+			@RequestParam("searchtype") String searchtype, HttpServletRequest request,
+			@RequestParam("keyword") String keyword, ModelAndView mv) {
+		String beginDate = null, endDate = null, bdate = null;
+		CountSearch countSearch = new CountSearch(searchtype, keyword);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		if (searchtype.equals("enroll")) { // enroll만 name이 keyword가 아님 begin, end로 옴
+			beginDate = request.getParameter("begin");
+			endDate = request.getParameter("end");
+		}else if(searchtype.equals("birth")){
+			beginDate = request.getParameter("begin");
+			endDate = request.getParameter("end");
+		}else {
+			keyword = request.getParameter("keyword");
+		}
+		
+		int limit = 10;
+		int listCount = memberService.selectSearchListCount(countSearch);
+		Searchs searchs = new Searchs(listCount, currentPage, limit);
+		searchs.calculator();
+		
+		searchs.setSearchtype(searchtype);
+		searchs.setKeyword(keyword);
+		
+		ArrayList<Member> list;
+		
+		if(searchtype.equals("uid")) {
+			list = memberService.selectSearchId(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("admin/memberAllList2");
+			}
+		}else if(searchtype.equals("uname")) {
+			list = memberService.selectSearchName(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("admin/memberAllList2");
+			}
+		}else if(searchtype.equals("unick")) {
+			list = memberService.selectSearchNick(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+				
+				mv.setViewName("admin/memberAllList2");
+			}
+		}else if(searchtype.equals("uphone")) {
+			list = memberService.selectSearchPhone(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+					
+				mv.setViewName("admin/memberAllList2");
+			}
+		}else if(searchtype.equals("uemail")) {
+			list = memberService.selectSearchEmail(searchs);
+			if(list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+					
+				mv.setViewName("admin/memberAllList2");
+			}
+		}else {
+			mv.addObject("message", currentPage + "로 검색된 정보가 없습니다.");
+			mv.setViewName("common/error");
+		}
+		return mv;
+	}
+		
+
 
 }

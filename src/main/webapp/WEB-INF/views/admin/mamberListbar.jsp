@@ -54,19 +54,19 @@
        
 }    
 
-	#ulTable > li > ul > li:first-child               			  {width:5%;} /*체크박스 열 크기*/
-    #ulTable > li > ul > li:first-child +li           			  {width:5%;}  /*No 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li        			  {width:35%;} /*제목 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li+li    			  {width:10%;} /*첨부파일 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li+li+li  			  {width:15%;} /*작성자 열 크기*/
-	#ulTable > li > ul > li:first-child +li+li+li+li+li  		  {width:10%;} /*작성일 열 크기*/
-	#ulTable > li > ul > li:first-child +li+li+li+li+li+li  	  {width:10%;} /*조회수 열 크기*/
-	#ulTable > li > ul > li:first-child +li+li+li+li+li +li+li 	  {width:5%;} /*수정버튼 열 크기*/
-	#ulTable > li > ul > li:first-child +li+li+li+li+li+li+li+li  {width:5%;} /*삭제버 열 크기*/
+    #ulTable > li > ul > li:first-child               {width:7%;} /*아이디 열 크기*/
+    #ulTable > li > ul > li:first-child +li           {width:7%;} /*이름 열 크기*/
+    #ulTable > li > ul > li:first-child +li+li        {width:10%;} /*닉네임 열 크기*/
+    #ulTable > li > ul > li:first-child +li+li+li     {width:10%;} /*전화번호 열 크기*/
+    #ulTable > li > ul > li:first-child +li+li+li+li  {width:10%;} /*생일 열 크기*/
+	#ulTable > li > ul > li:first-child +li+li+li+li+li  {width:21%;} /*이메일 열 크기*/
+	#ulTable > li > ul > li:first-child +li+li+li+li+li+li  {width:10%;} /*가입일 열 크기*/
+	#ulTable > li > ul > li:first-child +li+li+li+li+li+li+li  {width:7%;} /*성별 열 크기*/
+	#ulTable > li > ul > li:first-child +li+li+li+li+li+li+li+li  {width:13%;} /*로그인여부 열 크기*/
     #divPaging {
           clear:both; 
         margin:0 auto; 
-        width:220px; 
+        width:300px; 
         height:50px;
 }
 
@@ -122,9 +122,31 @@
 
 
 </style>
-    <script type="text/javascript"
-            src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
-    <script type="text/javascript"></script>
+    <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
+    <script type="text/javascript">
+	$(function(){
+		//$('선택자').이벤트함수(function(){ 실행 코드 });
+		//$('선택자').on('이벤트종류', function(){ 실행 코드 });
+		//작성한 이벤트 실행 코드는 이벤트가 발생될 때 까지 대기상태임
+		
+		//검색할 항목을 선택하면, 해당 항목에 대한 폼이 보여지게 함
+		//보여지고 있는 다른 폼은 다시 안 보이게 함
+		$('input[name=item]').on('change', function(){
+			//change 이벤트가 발생한 radio 와 연결된 폼만
+			//보여지게 하고, 나머지 폼들은 안보이게 처리함
+			$('input[name=item]').each(function(index){
+				//해당 index번째  radio 가 checked 인지 확인하고
+				if($(this).is(':checked')){
+					$('form.sform').eq(index).css('display', 'block');
+				}else {
+					$('form.sform').eq(index).css('display', 'none');
+				}
+				
+			});	//each
+		});	//on
+		
+	}); //document.ready
+    </script>
 </head>
 <body>
 <%--관리자 접속시--%>
@@ -133,38 +155,21 @@
 <br>
 <%--검색 항목--%>
 <center>
-<div style="display: flex; border: 1px solid #D1D1D1;">
-	<div style="width: 30%; border: 1px solid #D1D1D1;">게시판별 보기</div>
-	<div style="width: 60%;">
-		<select id="optionLink" name="searchtype" onchange="if(this.value) location.href=(this.value);">
-			<option value="black" selected="selected">유해게시글관리</option>
-			<option value="adHotlist.do?page=1">HOT</option>
-			<option value="adNewlist.do?page=1">NEW</option>
-			<option value="commu.do?page=1">FREE</option>
-			<option value="tiplist.do?page=1">TIP</option>
-			<option value="eyebodylist.do?page=1">EYEBODY</option>
-			<option value="bfaflist.do?page=1">BF&AF</option>
-			<option value="nlist.do?page=1">공지사항</option>
-			<option value="elist.do?page=1">이벤트</option>
-			<option value="faqlist.do">FAQ</option>
-			<option value="qnalist.do">QNA</option>
-			
-		</select>
-	</div>
-</div>	
 <div id="liSearchOption">
-	<form action="nsearch.do?page=1" method="post">
+	<form action="membersearch.do?page=1" method="post">
 	<div style="display: flex; border: 1px solid #D1D1D1;">
 		<div style="width: 30%; border: 1px solid #D1D1D1;">키워드 검색</div>
 		<div style="width: 60%;">
 			<select name="searchtype">
-				<option value="nname">제목</option>
-				<option value="ncontent">내용</option>
-				<option value="nid">작성자</option>
+				<option value="uid">아이디</option>
+				<option value="uname">이름</option>
+				<option value="unick">닉네임</option>
+				<option value="uphone">전화번호</option>
+				<option value="uemail">이메일</option>
 			</select> <input type="search" name="keyword"> 
 			<input type="submit" value="검색">
+			</div>
 		</div>
-	</div>
 	</form>
 </div>
 <br>

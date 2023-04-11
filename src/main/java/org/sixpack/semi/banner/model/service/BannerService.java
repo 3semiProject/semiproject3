@@ -13,5 +13,5 @@ public interface BannerService {
 	int updateBanner(Banner banner);
 	int deleteBanner(Banner banner);
 	int selectListCount();
-
+	ArrayList<String> selectlink();
 }
