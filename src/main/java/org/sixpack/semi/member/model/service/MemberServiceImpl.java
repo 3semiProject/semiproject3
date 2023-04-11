@@ -9,7 +9,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.SearchDate;
+import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.member.model.dao.MemberDao;
 import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.member.model.vo.PhoneSns;
@@ -161,6 +164,56 @@ public class MemberServiceImpl implements MemberService{
 	public int updateLoginok(Member member) {
 		return memberDao.updateLoginok(member);
 	}
+
+	@Override
+	public int selectSearchListCount(CountSearch countSearch) {
+		return memberDao.selectSearchListCount(countSearch);
+	}
+
+	@Override
+	public ArrayList<Member> selectSearchId(Searchs searchs) {
+		return memberDao.selectSearchId(searchs);
+	}
+
+	@Override
+	public ArrayList<Member> selectSearchName(Searchs searchs) {
+		return memberDao.selectSearchName(searchs);
+	}
+
+	@Override
+	public ArrayList<Member> selectSearchNick(Searchs searchs) {
+		return memberDao.selectSearchNick(searchs);
+	}
+	@Override
+	public ArrayList<Member> selectSearchPhone(Searchs searchs) {
+		return memberDao.selectSearchPhone(searchs);
+	}
+
+	@Override
+	public ArrayList<Member> selectSearchEmail(Searchs searchs) {
+		return memberDao.selectSearchEmail(searchs);
+	}
+	
+	@Override
+	public ArrayList<Member> selectSearchBirth(SearchDate searchDate) {
+		return memberDao.selectSearchBirth(searchDate);
+	}
+
+	@Override
+	public ArrayList<Member> selectSearchEnroll(SearchDate searchDate) {
+		return memberDao.selectSearchEnroll(searchDate);
+	}
+
+	@Override
+	public ArrayList<Member> selectSearchGender(Searchs searchs) {
+		return memberDao.selectSearchGender(searchs);
+	}
+
+	@Override
+	public ArrayList<Member> selectSearchLoginok(Searchs searchs) {
+		return memberDao.selectSearchLoginok(searchs);
+	}
+
 
 
 

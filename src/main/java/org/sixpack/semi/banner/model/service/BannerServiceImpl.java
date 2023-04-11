@@ -43,4 +43,9 @@ public class BannerServiceImpl implements BannerService {
 	public int selectListCount() {
 		return bannerDao.selectListCount();
 	}
+
+	@Override
+	public ArrayList<String> selectlink() {
+		return bannerDao.selectlink();
+	}
 }

@@ -41,5 +41,11 @@ public class BannerDao {
 		return session.selectOne("bannerMapper.selectListCount");
 	}
 
+	public ArrayList<String> selectlink() {
+		List<String> list = session.selectList("bannerMapper.selectlink");
+		return (ArrayList<String>)list;
+
+	}
+
 
 }

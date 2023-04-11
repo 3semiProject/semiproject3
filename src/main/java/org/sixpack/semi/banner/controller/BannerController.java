@@ -63,7 +63,7 @@ public class BannerController {
 		return mv;
 	}
 	
-	@RequestMapping(value = "yooinsert.do", method ={ RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "bainsert.do", method ={ RequestMethod.GET, RequestMethod.POST })
 	public String yootubeInsertMethod(Banner banner, Model model, HttpServletRequest request) {
 
 		if (bannerService.insertBanner(banner) > 0) {
@@ -78,7 +78,7 @@ public class BannerController {
 	// 게시 원글 쓰기 페이지로 이동 처리용
 	@RequestMapping("bawform.do")
 	public String moveqnaWriteForm() {
-		return "banner/yootubeWriteForm";
+		return "banner/bannerWriteForm";
 	}
 	
 	//수정페이지로 이동 처리용
@@ -144,5 +144,15 @@ public class BannerController {
 	public String BannerDeleteMethod(int banner_no, Model model) {
 		return null;
 	}
-
+//
+//	 @RequestMapping("yootubelink.do")
+//	 public String rendomlink(Model model) {
+//		Banner bannerlink = bannerService.selectlink();
+//		
+//		model.addAttribute("bannerlink", bannerlink);
+//		System.out.println("배너링크 : " + bannerlin);
+//		
+//		return "common/contentBox";
+//
+//	 }
 }
