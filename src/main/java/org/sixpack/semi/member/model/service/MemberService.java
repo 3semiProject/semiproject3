@@ -1,6 +1,8 @@
 package org.sixpack.semi.member.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.kakao.model.vo.Kakao;
@@ -8,9 +10,13 @@ import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.qna.model.vo.Qna;
 
 public interface MemberService {
-	Member selectFindIdPhone(Member member);
-	Member selectFindIdEmail(Member member);
-	Member selectFindPwId(Member member);
+	//회원 id find for phone
+	String selectFindIdPhone(Member member);
+	//회원 id find for email
+	String selectFindIdEmail(Member member);
+	//회원 pw find for phone
+	Member selectFindPwPhone(Member member);
+	//회원 pw find for email
 	Member selectFindPwEmail(Member member);
 	Member selectProfile(Member member);
 	Member selectNickname(Member member);
@@ -36,5 +42,8 @@ public interface MemberService {
 	//관리자 페이지
 	int selectListCount();
 	ArrayList<Member> selectList(Paging page);
+
+	
+
 	
 }

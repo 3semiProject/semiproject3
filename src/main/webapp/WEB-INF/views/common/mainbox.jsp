@@ -240,7 +240,10 @@ input[type=month]::-webkit-datetime-edit-year-field {
 	
    //adminBox에서 접속자수, 게시물수 get
    $(function (){
-
+	   
+	   //관리자 일때만
+	if ( "${loginMember.admin_ck}" === 'Y' )  {
+   
   setInterval(function() {
 		 
   $.ajax({
@@ -266,6 +269,7 @@ input[type=month]::-webkit-datetime-edit-year-field {
   
   }, 1000);	//setInterval() close;
    
+	}//관리자일때만
    });//function close;
 </script>
 </head>

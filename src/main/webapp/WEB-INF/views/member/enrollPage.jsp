@@ -327,7 +327,7 @@ body {
 			    var cehckBox = $(".mail_check_input");        // 인증번호 입력란
 			    var boxWrap = $(".mail_check_input_box");    // 인증번호 입력란 박스 
 			    $.ajax({
-			        
+			    	data: {en : '0' },
 			        type:"GET",
 			        url:"mailCheck.do?email=" + email,
 			        success:function(data){

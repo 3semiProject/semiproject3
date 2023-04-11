@@ -148,8 +148,8 @@ body{
 			<option value="adBFlist.do?page=1">BF&AF</option>
 			<option value="nlist.do?page=1">공지사항</option>
 			<option value="elist.do?page=1">이벤트</option>
-			<option value="qnalist.do">FAQ</option>
-			<option value="faqlist.do?page=1">QNA</option>
+			<option value="faqlist.do?page=1">FAQ</option>
+			<option value="qnalist.do?page=1">QNA</option>
 		</select>
 	</div>
 </div>	
