@@ -12,8 +12,6 @@ import org.json.simple.JSONObject;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
-import org.sixpack.semi.eyebody.model.vo.Eyebody;
-import org.sixpack.semi.free.model.vo.Free;
 import org.sixpack.semi.hotnew.model.service.HotNewService;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
 import org.sixpack.semi.member.model.vo.Member;
@@ -37,28 +35,45 @@ private static final Logger logger = LoggerFactory.getLogger(HotNewController.cl
 	//hotnewdetail.do
 	@RequestMapping(value="hotnewdetail.do", method={ RequestMethod.GET, RequestMethod.POST })
 	public String selectDetailMethod(@RequestParam("hotnew_no") int hotnew_no, Model model,
-			HttpSession session,
-			@RequestParam("hotnew_name") String hotnew_name, @RequestParam("user_id") String user_id) {
+			HttpSession session, @RequestParam(name= "user_id", required=false) String user_id,
+			@RequestParam("hotnew_name") String hotnew_name) {
 		HotNew hotnew = new HotNew();
+		
 		hotnew.setHotnew_no(hotnew_no);
 		hotnew.setHotnew_name(hotnew_name);
 		hotnew.setUser_id(user_id);
 		System.out.println(hotnew);
 		if(hotNewService.selectFree(hotnew) != null) {
-			return "redirect:freedetail.do?free_no=" + hotnew.getHotnew_no() 
-				+ "&user_id=" + ((Member)session.getAttribute("loginMember")).getUser_id();
+			if((Member)session.getAttribute("loginMember") != null) {
+				return "redirect:freedetail.do?free_no=" + hotnew.getHotnew_no() 
+						+ "&user_id=" + ((Member)session.getAttribute("loginMember")).getUser_id();
+			}else {
+				return "redirect:freedetail.do?free_no=" + hotnew.getHotnew_no();
+			}
 		}
 		else if(hotNewService.selectTip(hotnew) != null) {
-			return "redirect:tipdetail.do?tip_no=" + hotnew.getHotnew_no() 
-				+ "&user_id=" + ((Member)session.getAttribute("loginMember")).getUser_id();
+			if((Member)session.getAttribute("loginMember") != null) {
+				return "redirect:tipdetail.do?tip_no=" + hotnew.getHotnew_no() 
+						+ "&user_id=" + ((Member)session.getAttribute("loginMember")).getUser_id();
+			}else {
+				return "redirect:tipdetail.do?tip_no=" + hotnew.getHotnew_no();
+			}
 		}
 		else if(hotNewService.selectEyebody(hotnew) != null) {
-			return "redirect:eyebodydetail.do?eyebody_no=" + hotnew.getHotnew_no() 
-				+ "&user_id=" + ((Member)session.getAttribute("loginMember")).getUser_id();
+			if((Member)session.getAttribute("loginMember") != null) {
+				return "redirect:eyebodydetail.do?eyebody_no=" + hotnew.getHotnew_no() 
+						+ "&user_id=" + ((Member)session.getAttribute("loginMember")).getUser_id();
+			}else {
+				return "redirect:eyebodydetail.do?eyebody_no=" + hotnew.getHotnew_no();
+			}
 		}
 		else if(hotNewService.selectBfaf(hotnew) != null) {
-			return "redirect:bfafdetail.do?bfaf_no=" + hotnew.getHotnew_no() 
-				+ "&user_id=" + ((Member)session.getAttribute("loginMember")).getUser_id();
+			if((Member)session.getAttribute("loginMember") != null) {
+				return "redirect:bfafdetail.do?bfaf_no=" + hotnew.getHotnew_no() 
+						+ "&user_id=" + ((Member)session.getAttribute("loginMember")).getUser_id();
+			}else {
+				return "redirect:bfafdetail.do?bfaf_no=" + hotnew.getHotnew_no();
+			}
 		}else {
 			model.addAttribute("message", hotnew.getHotnew_no() + "번 게시물 조회 실패");
 			return "common/error";

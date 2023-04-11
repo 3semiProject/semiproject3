@@ -168,7 +168,7 @@ public class FreeController {
 	// 게시글 상세보기 처리용
 	@RequestMapping(value = "freedetail.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView boardDetailMethod(ModelAndView mv, @RequestParam("free_no") int free_no,
-			@RequestParam(name = "user_id", required = false) String user_id,
+			@RequestParam(name = "user_id", required = false) String user_id, 
 			@RequestParam(name = "page", required = false, defaultValue = "1") String page) {
 		int currentPage = 1;
 		if (page != null) {

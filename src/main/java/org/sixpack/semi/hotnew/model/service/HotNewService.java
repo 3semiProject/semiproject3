@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
-import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
 
 public interface HotNewService {

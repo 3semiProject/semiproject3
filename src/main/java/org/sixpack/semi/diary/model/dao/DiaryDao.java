@@ -72,6 +72,11 @@ public class DiaryDao {
     public int insertMoveData(List<Move> datalist) {
         return session.update("insertDataMapper.insertMove", datalist);
     }
+    
+	public ArrayList<Diary> selectDiary(String user_id) {
+		List<Diary> list = session.selectList("diaryMapper.selectDiary", user_id);
+        return (ArrayList<Diary>) list;
+	}
 
 
 }

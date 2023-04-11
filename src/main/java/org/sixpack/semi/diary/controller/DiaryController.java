@@ -1,12 +1,17 @@
 package org.sixpack.semi.diary.controller;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.diary.model.service.DiaryService;
@@ -35,6 +40,28 @@ public class DiaryController {
 	private DiaryService diaryService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(DiaryController.class);
+	
+	//ajax mainbox 캘린더
+	@RequestMapping(value = "calendar.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String diaryCalendarMethod(@RequestParam("user_id") String user_id) throws UnsupportedEncodingException {
+		ArrayList<Diary> list = diaryService.selectDiary(user_id);
+		logger.info("calendar.do : " + list.size());
+
+		JSONObject sendJson = new JSONObject();
+		JSONArray jarr = new JSONArray();
+
+		for (Diary diary : list) {
+			JSONObject job = new JSONObject();
+
+			job.put("diary_no", diary.getDiary_no());
+			job.put("diary_post_date", diary.getDiary_post_date().toString());
+			jarr.add(job);
+		}
+		sendJson.put("list", jarr);
+		return sendJson.toJSONString();
+	}
+	
 	
 	//main에서 다이어리화면 띄울때 목표정보 확인용
 	@RequestMapping(value="diary.do", method={ RequestMethod.GET, RequestMethod.POST })

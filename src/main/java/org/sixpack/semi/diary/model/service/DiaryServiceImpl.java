@@ -99,6 +99,11 @@ public class DiaryServiceImpl implements DiaryService {
 		return diaryDao.insertMoveData(datalist);
 	}
 
+	@Override
+	public ArrayList<Diary> selectDiary(String user_id) {
+		return diaryDao.selectDiary(user_id);
+	}
+
 
 
 

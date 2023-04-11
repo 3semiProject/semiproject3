@@ -7,7 +7,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
-import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
