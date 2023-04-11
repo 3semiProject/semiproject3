@@ -42,6 +42,7 @@ public class DiaryServiceImpl implements DiaryService {
 
 	@Override
 	public Diary selectDiaryOne(Diary diary) {
+		System.out.println("Service 1");
 		return diaryDao.selectDiaryOne(diary);
 	}
 

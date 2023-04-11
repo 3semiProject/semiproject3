@@ -21,6 +21,11 @@ public class BodyServiceImpl implements BodyService {
 	public Body selectCompareBody(Diary diary) {
 		return bodyDao.selectCompareBody(diary);
 	}
+
+	@Override
+	public int insertBody(Body body) {
+		return bodyDao.insertBody(body);
+	}
 	
 	
 }

@@ -87,15 +87,15 @@ public class ActController {
 		
 		
 		//목표정보, 날짜정보 조회 
-		Goal goal = diaryService.selectlastGoal(diary);//가장 최신 목표정보
-		ArrayList<Diary> week = diaryService.selectWeekDiary(diary); // 일주일날짜에 대한 다이어리 정보
+		Goal goal = diaryService.selectlastGoal(move);//가장 최신 목표정보
+		ArrayList<Diary> week = diaryService.selectWeekDiary(move); // 일주일날짜에 대한 다이어리 정보
 		if(goal!=null&& week!=null) {
 		model.addAttribute("goal", goal);
 		model.addAttribute("week", week);
 		}
 		
 		//운동정보 조회 있을때만 내보냄
-		ArrayList<Act> acts = actService.selectDayAct(diary);
+		ArrayList<Act> acts = actService.selectDayAct(move);
 		if(acts.size()>0) {
 			model.addAttribute("acts", acts);	 // 하루치 운동정보 목록
 		}

@@ -186,8 +186,25 @@ public class DiaryController {
 			//다이어리 생성
 				diaryService.insertDiary(diary);
 		}
-			
-	
+	//ajax 다이어리 작성 중복체크 : id, date, category
+	@RequestMapping(value="diary_checkDuplicateDiary.do" , method= {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody //뷰리졸버 통하지 않고string반환
+	public String checkDuplicateDiary(Model model, Diary diary){
+		System.out.println("Controller 1");
+		Diary searchD = diaryService.selectDiaryOne(diary);
+		System.out.println("Controller 2");
+
+		if(searchD !=null) { //다이어리 존재하면 다이어리번호 전달
+			System.out.println("Controller 3");
+			String no = String.valueOf(searchD.getDiary_no());
+
+			return no;
+		}else {			
+			System.out.println("Controller nope");
+			return "ok";	
+		}
+	}
+		
 	
 //	//캘린더 출력용
 //	@RequestMapping(value = "diary_showCalendar.do", method = RequestMethod.GET)

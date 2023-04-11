@@ -14,10 +14,9 @@
  href="${ pageContext.servletContext.contextPath }/resources/css/diarytab.css" >
  <link rel="stylesheet" type="text/css"
  href="${ pageContext.servletContext.contextPath }/resources/css/button_div.css" >
-
 <style type="text/css">
 /* 바디다이어리 출력용 */
-div#diaryPart{
+div#bodyPart{
 	height: 80%;
 	min-height: 100%;
 	align-items: center;
@@ -29,7 +28,7 @@ div#diaryPart{
 div.button{
 	float: right;
 }
-#modifybtn{
+.modifybtn{
 	width: 55px;
 	height: 30px;
 	border: 1px solid #827482;
@@ -87,14 +86,19 @@ div.memobox>textarea{
    		justify-content: center;
    }
 </style>
-<link rel="stylesheet" type="text/css"
- href="${ pageContext.servletContext.contextPath }/resources/css/button_div.css" >
-<link rel="stylesheet" type="text/css"
- href="${ pageContext.servletContext.contextPath }/resources/css/vars.css" >
-<link rel="stylesheet" type="text/css"
- href="${ pageContext.servletContext.contextPath }/resources/css/diarytab2.css" >
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
-
+<script type="text/javascript">
+$(function(){
+	$('.writebtn').on('click', function (){
+		window.location.href = 'diary_showBodyWrite.do';
+		
+	});//writebtn
+	$('#bodyPart').on('click', '.modifyBtn',function (){
+		var dn = $(this).attr('id');
+		window.location.href = 'diary_showBodyModify.do?diary_no='+dn;
+	});//modifyBtn
+});//document.ready
+</script>
 </head>
 <body>
 	<br><c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
@@ -102,23 +106,36 @@ div.memobox>textarea{
 <br>
 <div class="vars">
 <div class="calendar">
-	<form action="diary.do?" id="moveCalendar">
+	<form action="" id="moveCalendar">
 	<input type="date" id="calendarDate" name="diary_post_date" value="${diary.diary_post_date}">
 	<input type="hidden" name="user_id" value="${diary.user_id}">	
 	<input type="hidden" name="diary_category" value="${diary.diary_category}">
 	</form>
 	<script type="text/javascript">
-		$(function(){
-			$('#calendarDate').on('change', function(event){
-				$("#moveCalendar").submit();
-			});
-		});
+	$(function() {
+		  var previousDate = $('#calendarDate').val(); //현재페이지 날짜 저장
+
+		  $('#calendarDate').on('change', function(event) {
+		    var selectedDate = $(this).val(); // 새로 선택된 날짜 저장
+
+		    if (selectedDate !== previousDate) { // 이전에 선택된 날짜와 값이 다른 경우에만 폼 전송
+		      var formData = new FormData();
+		      formData.append("diary_no", ${diary.diary_no});
+		      formData.append("diary_post_date", selectedDate); // 새로 선택된 날짜 사용
+		      submit(formData);
+		      
+		      var xhr = new XMLHttpRequest();
+		      xhr.open('POST', 'diary_bodyCalendar.do');
+		      xhr.send(formData);
+		    }
+		    }); //calendar event
+		  });//doc.ready
 	</script>
     <br>
 </div>
 <div class="navigation">
 	<div>
-		<img id="img_today"alt="today 강조" src="${ pageContext.servletContext.contextPath }/resources/images/diary/today.jpg">
+		<img id="img_today" alt="today 강조" src="${ pageContext.servletContext.contextPath }/resources/images/diary/today.jpg">
 	</div>
 	<!-- 이전 -->
 	<div class="date">
@@ -143,7 +160,7 @@ div.memobox>textarea{
 		</div>
 	</c:forEach>
 	<div class="date">
-    <a href="diary_moveWeekDiary.do?week=${diary.diary_post_date}&ago=1">
+    <a href="diary_moveDiary.do?week=${diary.diary_post_date}&ago=1">
         <!-- 이후> --> &nbsp; &gt;
     </a>
 	</div>
@@ -175,12 +192,12 @@ div.memobox>textarea{
 <br><br>
 </div>
 <%-- 		${body}<br> ${compare}<br> ${diary}<br> --%>
-<div id="diaryPart">
+<div id="bodyPart">
 <c:if test="${diary.diary_no eq 0}">
 		<div class="noneD">
 			<h3>다이어리가 없네요, 작성하시겠습니까?</h3>
 			<div>
-				<button id="writebtn">글쓰기</button>
+				<button class="writebtn" name="${diary.diary_post_date}">글쓰기</button>
 			</div>
 		</div>
 	</c:if>
@@ -226,7 +243,7 @@ div.memobox>textarea{
 					src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage2.jpg" />
 			</c:if>
 			<c:if test="${ !empty diary.diary_image }">
-				<img src="${ diary.diary_image }">
+				<img src="${ pageContext.servletContext.contextPath }/resources/diary_upfile/${ diary.diary_image }">
 			</c:if>
 		</div>
 		<!-- 등록된 메모 출력 -->
@@ -234,27 +251,10 @@ div.memobox>textarea{
 		<div class="memobox">
 			<textarea>${ diary.diary_memo }</textarea>
 		</div>
-		<div class="button"><button id="modifybtn">수정</button></div>
+		<div class="button"><button class="modifyBtn" id="${diary.diary_no}">수정</button></div>
 	</c:if>	
 	</div>
-<%-- 
-			<c:if test="${ !empty sessionScope.diaryno }">
-				<div>
-					<!-- 수정 페이지(bodyModify)로 이동 버튼 -->
-					<c:url var="bmoveup" value="/bmoveup.do">
-						<c:param name="diaryno" value="${ diary.diary_no }" />
-					</c:url>
-					<button onclick="javascript:location.href='${ bmoveup }';">수정하기</button>
-					<!-- 삭제하기 버튼 -->
-					<c:url var="bdel" value="/bdel.do">
-						<c:param name="diaryno" value="${ diary.diary_no }" />
-						<c:param name="rfile" value="${ body.rename_filepath }" />
-					</c:url>
-					<button onclick="javascript:location.href='${ bdel }';">삭제하기</button>
-				</div>
-			</c:if> --%>
-	
-
+	<br>
 	<div id="footer">
 		<c:import url="/WEB-INF/views/common/footer.jsp" />
 	</div>

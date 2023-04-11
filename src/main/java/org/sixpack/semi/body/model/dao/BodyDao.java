@@ -19,4 +19,8 @@ public class BodyDao {
 	public Body selectCompareBody(Diary diary) {
 		return session.selectOne("bodyMapper.selectCompareBody", diary);
 	}
+
+	public int insertBody(Body body) {
+		return session.insert("bodyMapper.insertBody", body);
+	}
 }

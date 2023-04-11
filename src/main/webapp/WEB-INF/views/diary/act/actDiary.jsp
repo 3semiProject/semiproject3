@@ -135,9 +135,8 @@ button:hover, button:focus {
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
-
 $(function(){
-	$('#writebtn').on('click', function (){
+	$('.writebtn').on('click', function (){
 		var act_date = $(this).attr("name");
 		window.location.href = 'diary_showActWrite.do?diary_post_date='+act_date;
 		
@@ -147,17 +146,8 @@ $(function(){
 		 var dn = $(this).attr('id');
 		window.location.href = 'diary_showActModify.do?diary_no='+dn;
 		
-	});//writebtn
-	
-	$('#calendarDate').on('change', function(event){
-		$("#moveCalendar").submit();
-	});//calendarDate
-	
+	});//modifyBtn
 });//document.ready
-
-	//운동추천 화면출력용 ajax
-	//diary_showActRec.do실행
-	//
 </script>
 </head>
 <body>
@@ -166,7 +156,7 @@ $(function(){
 <br>
 <div class="vars">
 <div class="calendar">
-	<form action="diary.do?" id="moveCalendar">
+	<form action="" id="moveCalendar">
 	<input type="date" id="calendarDate" name="diary_post_date" value="${diary.diary_post_date}">
 	<input type="hidden" id="id" name="user_id" value="${diary.user_id}">	
 	<input type="hidden" name="diary_category" value="${diary.diary_category}">
@@ -196,7 +186,7 @@ $(function(){
 
 <div class="navigation">
 	<div>
-		<img id="img_today"alt="today 강조" src="${ pageContext.servletContext.contextPath }/resources/images/diary/today.jpg">
+		<img alt="today 강조" src="${ pageContext.servletContext.contextPath }/resources/images/diary/today.jpg">
 	</div>
 	<!-- 이전 -->
 	<div class="date">
@@ -220,7 +210,7 @@ $(function(){
 		</div>
 	</c:forEach>
 	<div class="date">
-    <a href="diary_moveWeekDiary.do?week=${diary.diary_post_date}&ago=1">
+    <a href="diary_moveDiary.do?week=${diary.diary_post_date}&ago=1">
         <!-- 이후> --> &nbsp; &gt;
     </a>
 	</div>
@@ -256,7 +246,7 @@ $(function(){
 		<div class="noneD">
 			<h3>다이어리가 없네요, 작성하시겠습니까?</h3>
 			<div>
-				<button id="writebtn" name="${diary.diary_post_date}">글쓰기</button>
+				<button class="writebtn" name="${diary.diary_post_date}">글쓰기</button>
 				
 			</div>
 		</div>
@@ -296,7 +286,7 @@ $(function(){
 		<div class="memobox">
 			<textarea>${ diary.diary_memo }</textarea>
 		</div>
-		<div class="button"><button id="modifybtn">수정</button></div>
+		<div class="button"><button class="modifyBtn" id="${diary.diary_no}">수정</button></div>
 	</c:if>
 </div>   
 <hr>
