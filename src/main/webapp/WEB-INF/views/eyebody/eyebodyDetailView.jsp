@@ -55,22 +55,31 @@ body {
    height: 30px;
 }
 
-th {
-   margin: 0px;
-   padding: 10px;
-   width: 180px;
-   height: 20px;
-   border: 1px solid #D1D1D1;
-   background-color: #DCFFDC;
+table {
+  -moz-border-radius: 5px !important;
+  border-collapse: collapse !important;
+  border: none !important;
+  border-style: hidden;
+  border: 1px solid #D1D1D1;
+  background-color: #DCFFDC;
+  border-radius: 20px;
 }
 
-td {
-   margin: 0px;
-   padding: 10px;
-   width: 780px;
-   height: 20px;
-   border: 1px solid #D1D1D1;
-   background-color: #DCFFDC;
+table th,
+table td {
+  border: none !important
+}
+table th:first-child {
+  -moz-border-radius: 5px 0 0 0 !important;
+}
+table th:last-child {
+  -moz-border-radius: 0 5px 0 0 !important;
+}
+table tr:last-child td:first-child {
+  -moz-border-radius: 0 0 0 5px !important;
+}
+table tr:last-child td:last-child {
+  -moz-border-radius: 0 0 5px 0 !important;
 }
 
 .cbfile {
@@ -96,6 +105,7 @@ td {
    width: 900px;
    border-radius: 30px;
    border: 1px solid #D1D1D1;
+   background-color: #F0FFF0;
 }
 
 a {
@@ -125,8 +135,6 @@ a:hover {
 		<p id="title">FREE 게시글 상세보기</p>
 	</div>
    <div class="allarea">
-      <table style="margin-left: auto; margin-right: auto;" width="900px"
-         border="1px solid" cellpadding="0" cellspacing="0">
          <div class="fixdel" align="right">
             <c:if test="${ requestScope.eyebody.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
                <c:url var="eyeup" value="/eyebodyupmove.do">
@@ -154,8 +162,8 @@ a:hover {
             <div class="userezinfo">
                <div class="side">
                   <span class="userinfoimg">작성자: ${ eyebody.user_id }</span> <span
-                     class="datetime" style="text-align: right"> &nbsp; 작성일: <fmt:formatDate
-                        value="${eyebody.write_eyebody_date}" paeyeern="yyyy-MM-dd a HH:mm:ss" />
+                     class="datetime" style="text-align: right"> &nbsp; 작성일: 
+                     <fmt:formatDate value="${eyebody.write_eyebody_date}" pattern="yyyy-MM-dd a HH:mm:ss" />
                   </span>
                </div>
                <div class="side fr">
@@ -227,6 +235,8 @@ a:hover {
                </c:if>
          </div>
          
+         <table style="margin-left: auto; margin-right: auto;" width="900px"
+         border="1px solid" cellpadding="0" cellspacing="0">
          <div>
             <th>댓글 작성자</th>
          <td align="center">댓글내용 &nbsp; &nbsp; 
@@ -294,21 +304,18 @@ a:hover {
                </c:if>
             </tr>
             </c:forEach>
-         </div>
-         
-         <tr style="background-color: #E2E2E2">
-            <td colspan="2" align="right">
-            	<c:if test="${empty sessionScope.loginMember}">
-                  * 메인페이지의 TOP5 게시글 상세보기 이외의 모든 기능을 이용하시려면 로그인해주세요 *
-                  <input type="button" value="로그인이동"
-                     onclick="location.href='loginPage.do'">
-               </c:if> <c:if test="${!empty sessionScope.loginMember}">
-                  <input type="button" value="메인페이지"
-                     onclick="location.href='main.do'">
-               </c:if> <input type="button" value="뒤로가기"
-               onclick="javascript:history.go(-1)"></td>
-         </tr>
       </table>
+      <br>
+      <hr>
+      <div align="right">
+            <td colspan="2" align="right">
+            <c:if test="${empty sessionScope.loginMember}">
+                  * 메인페이지의 TOP5 게시글 상세보기 이외의 모든 기능을 이용하시려면 로그인해주세요 *
+                  <button onclick="location.href='loginPage.do'">로그인이동</button>&nbsp;
+               </c:if> <c:if test="${!empty sessionScope.loginMember}">
+                  <button onclick="location.href='main.do'">메인페이지</button>&nbsp;
+               </c:if> <button onclick="javascript:history.go(-1)">뒤로가기</button>
+      </div>
    </div>
    <br>
 <hr>
