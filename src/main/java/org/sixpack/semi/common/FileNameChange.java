@@ -27,7 +27,7 @@ public class FileNameChange {
     	SimpleDateFormat sdf =
     			new SimpleDateFormat("yyyyMMddHHmmss");
     	//변경할 파일명 만들기
-    	String renameFileName = diary_no +"&"+ sdf.format(
+    	String renameFileName = diary_no +"D"+ sdf.format(
     			new java.sql.Date(System.currentTimeMillis()));
     	
     	//원본 파일의 확장자를 추출해서, 변경 파일명에 붙여줌

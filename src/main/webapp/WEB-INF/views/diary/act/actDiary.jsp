@@ -16,16 +16,27 @@
  href="${ pageContext.servletContext.contextPath }/resources/css/button_div.css" >
 
 <style type="text/css">
+<link rel="preload" href="https://cdn.dribbble.com/assets/neue-haas-grotesk/NeueHaasGrotTextRound-75Bold-Web-f2ff2f34217e3fdab82c30ef689f5be3fb86a8e4218a1906a9399d0354a95d45.woff2" as="font" crossorigin="anonymous">
+@font-face{
+	font-family: 'dfont';
+	src: url("${ pageContext.servletContext.contextPath }/resources/fonts/NimbusSansNovusT-UltraLight.woff");
+}
 div#diaryPart{
+font-family: dfont;
+}
+/* 다이어리출력용 */
+#mainContain{
+	margin: auto;
+	width: 1200px;
 	height: 80%;
 	min-height: 100%;
-	align-items: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	font-family: Copperplate, Papyrus, fantasy;
-	margin: auto;
-   	display: table
+	position: relative;
+	padding-bottom: 60px;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-size: 16px;
 }
 
 div.lineBox {
@@ -151,42 +162,21 @@ $(function(){
 </script>
 </head>
 <body>
+
+<div id="mainContain">
 <br><c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
-<br><c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /> <!--다이어리 메뉴바-->
+<br><c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp"/> <!--다이어리 메뉴바-->
 <br>
+
+
 <div class="vars">
 <div class="calendar">
-	<form action="" id="moveCalendar">
 	<input type="date" id="calendarDate" name="diary_post_date" value="${diary.diary_post_date}">
-	<input type="hidden" id="id" name="user_id" value="${diary.user_id}">	
-	<input type="hidden" name="diary_category" value="${diary.diary_category}">
-	</form>
-	<script type="text/javascript">
-	$(function() {
-		  var previousDate = $('#calendarDate').val(); //현재페이지 날짜 저장
-
-		  $('#calendarDate').on('change', function(event) {
-		    var selectedDate = $(this).val(); // 새로 선택된 날짜 저장
-
-		    if (selectedDate !== previousDate) { // 이전에 선택된 날짜와 값이 다른 경우에만 폼 전송
-		      var formData = new FormData();
-		      formData.append("diary_no", ${diary.diary_no});
-		      formData.append("diary_post_date", selectedDate); // 새로 선택된 날짜 사용
-		      submit(formData);
-		      
-		      var xhr = new XMLHttpRequest();
-		      xhr.open('POST', 'diary_actCalendar.do');
-		      xhr.send(formData);
-		    }
-		    }); //calendar event
-		  });//doc.ready
-	</script>
     <br>
 </div>
-
 <div class="navigation">
 	<div>
-		<img alt="today 강조" src="${ pageContext.servletContext.contextPath }/resources/images/diary/today.jpg">
+		<img id="img_today"alt="today 강조" src="${ pageContext.servletContext.contextPath }/resources/images/diary/today.jpg">
 	</div>
 	<!-- 이전 -->
 	<div class="date">
@@ -194,6 +184,7 @@ $(function(){
 		         &lt; &nbsp;
 	    </a>
     </div>
+    
     <c:forEach var="w" items="${week}" varStatus="status" >
 		<div>
 			<div class="date">
@@ -210,12 +201,14 @@ $(function(){
 		</div>
 	</c:forEach>
 	<div class="date">
-    <a href="diary_moveDiary.do?week=${diary.diary_post_date}&ago=1">
+    <a href="diary_moveWeekDiary.do?week=${diary.diary_post_date}&ago=1">
         <!-- 이후> --> &nbsp; &gt;
     </a>
 	</div>
     
 </div><br>
+
+
 <div class="target">
 <img alt="목표체중 표시바" src="${ pageContext.servletContext.contextPath }/resources/images/diary/goalLine.png">
 <table>
@@ -233,12 +226,14 @@ $(function(){
 </table>
 </div>
 <br>
+
 <div class="tabs">
 <c:set var="moveURL" value="diary_moveDiary.do?user_id=${sessionScope.loginMember.user_id}&diary_post_date=${diary.diary_post_date}&diary_category="/>
  		<a class="tabs left" href="${moveURL}eat">식단</a>
  		<a class="tabs center" href="${moveURL}act">운동</a>
  		<a class="tabs right" href="${moveURL}body">체형</a>
 	</div>
+</div>
 </div><!--  -->
 <div id="diaryPart">
 	<br>

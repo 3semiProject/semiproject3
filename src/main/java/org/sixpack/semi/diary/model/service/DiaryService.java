@@ -12,22 +12,22 @@ import org.springframework.stereotype.Service;
 
 public interface DiaryService {
     //가장마지막 goal 조회
-    public Goal selectlastGoal(Diary diary);
+    Goal selectlastGoal(Diary diary);
 
     //기준일로 goal 조회
-    public Goal selectGoal(Diary diary);
+    Goal selectGoal(Diary diary);
 
     //한달이내 goal 최신값 조회
-    public Goal selectCurrentGoal(Diary diary);
+    Goal selectCurrentGoal(Diary diary);
 
-    public Goal selectTodayGoal(Diary diary);
+    Goal selectTodayGoal(Diary diary);
 
     //다이어리 이동용
     Diary selectDiaryNo(int diary_no);
 
-    public Diary selectDiaryOne(Diary diary); //id, date, category
+    Diary selectDiaryOne(Diary diary); //id, date, category
 
-    public Diary selectDiaryDate(DateData move); //id, date, category
+    Diary selectDiaryDate(DateData move); //id, date, category
 
     // 하루치 모든 다이어리 조회 : 식단일 때
     ArrayList<Diary> selectDayDiary(Diary diary);
@@ -43,10 +43,10 @@ public interface DiaryService {
     int insertDiary(Diary diary);
 
     // 다이어리 수정
-    public int updateDiary(Diary diary);
+    int updateDiary(Diary diary);
 
     // 다이어리 삭제
-    public int deleteDiary(Diary diary);
+    int deleteDiary(Diary diary);
 
 
     int insertFoodData(List<Food> datalist);
@@ -54,7 +54,9 @@ public interface DiaryService {
     int insertMoveData(List<Move> datalist);
 
     //시퀀스로 생성할 diary_no 받아오기
-    public int getDiaryNo();
+    int getDiaryNo();
 	
-	public ArrayList<Diary> selectDiary(String user_id);
+	ArrayList<Diary> selectDiary(String user_id);
+	//날짜정보 업데이트용
+	int updateDiaryTime(Diary timeDiary);
 }

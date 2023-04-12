@@ -102,5 +102,10 @@ public class DiaryServiceImpl implements DiaryService {
 		return diaryDao.selectDiary(user_id);
 	}
 
+	@Override
+	public int updateDiaryTime(Diary timeDiary) {
+		return diaryDao.updateDiaryTime(timeDiary);
+	}
+
 
 }
