@@ -27,6 +27,7 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
     #freeWrapper{
         width: 1130px;
         height: 1200px;
+        margin: 0px 10%;
     }
 
     #freeWrapper > ul > li:first-child {
@@ -37,9 +38,11 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
         line-height:30px;
 }
 
-    #ulTable {margin-top:10px;}
+    #ulTable {
+    	margin-top:10px;
+    	width: auto;
+    }
     
-
     #ulTable > li:first-child > ul > li {
         background-color:#01CD88;
         font-weight:bold;
@@ -52,6 +55,7 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
         position:relative;
         min-width:40px;
 }
+
     #ulTable > li > ul > li { 
         float:left;
         font-size:10pt;
@@ -66,7 +70,7 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
     #ulTable > li > ul > li:first-child +li+li+li+li  {width:15%;} /*작성자 열 크기*/
 	#ulTable > li > ul > li:first-child +li+li+li+li  {width:10%;} /*조회수 열 크기*/
     #divPaging {
-          clear:both; 
+        clear:both; 
         margin:0 auto; 
         width:220px; 
         height:50px;
@@ -121,7 +125,6 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
 	#wri{
 		align: center;
 	}
-
 </style>
 <script type="text/javascript"
             src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
@@ -145,7 +148,7 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
                     <li>
                         <ul>
                             <li>No</li>
-                            <li class="left">제목</li>
+                            <li>제목</li>
                             <li>첨부파일</li>
                             <li>작성일</li>
                             <li>작성자</li>
@@ -183,16 +186,13 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
                 </ul>
             </li>
             <!-- 검색 폼 영역 -->
-            <li id='liSearchOption'>
-            <form action="commuwrite.do" method="post">
-            	<div>
+            <li id='liSearchOption' style="display:inline-block;">
+            <form action="commuwrite.do" method="post" style="display:inline; float:right;">
             	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y'}">
-             		<input id="wri" type=submit value="글쓰기">
+             		&nbsp;<input id="wri" type=submit value="글쓰기">
              	</c:if>
-            	</div>
             </form>
-            	<form action="freesearch.do" method="post">
-                <div>
+            	<form action="freesearch.do" method="post" style="display:inline;">
                     <select name="searchtype" >
                         <option value="fname" >제목</option>
                         <option value="fvalue">내용</option>
@@ -200,7 +200,6 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
                     </select>
                     <input type="search" name="keyword">
                     <input type="submit" value="검색">
-                </div>
                 </form>
              </li>
              <li>

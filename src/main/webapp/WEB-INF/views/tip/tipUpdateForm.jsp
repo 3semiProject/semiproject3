@@ -20,24 +20,66 @@ body{
 }
 
 #title {
-	text-decoration: none;
-	background-color: white;
-	text-align: center;
-	color: #01CD88;
-	font-weight: bold;
-	text-shadow: 1px 1px 2px #D1D1D1;
-	font-size: 20pt;
-	border: 1px solid;
+   position: static;
+   top: 50%;
+   left: 50%;
+   width: 300px;
+   transform: translate(100%, 0%);
+   text-decoration: none;
+   background-color: white;
+   text-align: center;
+   color: #01CD88;
+   font-weight: bold;
+   text-shadow: 1px 1px 2px #D1D1D1;
+   font-size: 20pt;
+   border: 1px solid;
 }
+
+table {
+  margin-bottom: 50px;
+  margin: auto;
+  padding: 30px;
+  width: 1000px;
+  -moz-border-radius: 5px !important;
+  border-collapse: collapse !important;
+  border: none !important;
+  border-style: hidden;
+  background-color: #DCFFDC;
+  border-radius: 20px;
+}
+table th,
+table td {
+  border: none !important
+}
+table th:first-child {
+  -moz-border-radius: 5px 0 0 0 !important;
+}
+table th:last-child {
+  -moz-border-radius: 0 5px 0 0 !important;
+}
+table tr:last-child td:first-child {
+  -moz-border-radius: 0 0 0 5px !important;
+}
+table tr:last-child td:last-child {
+  -moz-border-radius: 0 0 5px 0 !important;
+}
+
+textarea{
+	width: 850px;
+	height: 300px;
+	border: none;
+    resize: none !important;
+}
+
 .drop-zone {
-        width: auto;
+        width: 850px;
         height: 100px;
-        background-color: azure;
+        background-color: azure !important;
         display: flex;
     }
 
     .drop-zone-dragenter, .drop-zone-dragover {
-        border: 10px solid blue;
+        border: 10px solid blue !important;
     }
 </style>
 <script type="text/javascript"
@@ -183,7 +225,7 @@ $(function() {
 	<c:import url="/WEB-INF/views/common/commubar.jsp" />
 	<hr>
 	<div>
-		<p id="title">게시글 수정</p>
+		<p id="title">TIP 게시글 수정</p>
 	</div>
 	<div>
 		<form action="tipupdate.do" method="post"
@@ -194,7 +236,7 @@ $(function() {
 			<table width="100%" border="1px solid" cellpadding="0"
 				cellspacing="0">
 				<tr>
-					<th>게시판 종류</th>
+					<th></th>
 					<td align="center">TIP</td>
 				</tr>
 				<tr height="40">
@@ -204,11 +246,11 @@ $(function() {
 				</tr>
 				<tr height="40">
 					<th>제목</th>
-					<td><input name="tip_name" type="text" value="${ tip.tip_name }" style="width: 90%;" /></td>
+					<td><input name="tip_name" type="text" value="${ tip.tip_name }" style="width: 700px;" /></td>
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td><textarea name="tip_value" style="width: 90%; height: 200px;">
+					<td><textarea name="tip_value">
 					${ tip.tip_value }
 					</textarea>
 					</td>
@@ -235,17 +277,17 @@ $(function() {
 				</tr>
 				<tr>
 					<td colspan="2" align="right">
-						<input type="submit" value="수정하기"> &nbsp; 
-						<input type="reset" value="수정취소"> &nbsp; 
+						<input type="submit" value="수정하기">
+						<input type="reset" value="수정취소">
 						<input type="button" value="뒤로가기"
-						onclick="javascript:history.go(-1)"></td>
+						onclick="javascript:history.go(-1)"> &nbsp;&nbsp;</td>
 				</tr>
 			</table>
 		</form>
 	</div>
 <hr>
 <script type="text/javascript">
-CKEDITOR.replace("tip_value", { height: 100 });
+CKEDITOR.replace("tip_value", { height: 300, width: 850 });
 </script>
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>

@@ -20,14 +20,55 @@ body{
 }
 
 #title {
-	text-decoration: none;
-	background-color: white;
-	text-align: center;
-	color: #01CD88;
-	font-weight: bold;
-	text-shadow: 1px 1px 2px #D1D1D1;
-	font-size: 20pt;
-	border: 1px solid;
+   position: static;
+   top: 50%;
+   left: 50%;
+   width: 300px;
+   transform: translate(100%, 0%);
+   text-decoration: none;
+   background-color: white;
+   text-align: center;
+   color: #01CD88;
+   font-weight: bold;
+   text-shadow: 1px 1px 2px #D1D1D1;
+   font-size: 20pt;
+   border: 1px solid;
+}
+
+table {
+  margin-bottom: 50px;
+  margin: auto;
+  padding: 30px;
+  width: 1000px;
+  -moz-border-radius: 5px !important;
+  border-collapse: collapse !important;
+  border: none !important;
+  border-style: hidden;
+  background-color: #DCFFDC;
+  border-radius: 20px;
+}
+table th,
+table td {
+  border: none !important
+}
+table th:first-child {
+  -moz-border-radius: 5px 0 0 0 !important;
+}
+table th:last-child {
+  -moz-border-radius: 0 5px 0 0 !important;
+}
+table tr:last-child td:first-child {
+  -moz-border-radius: 0 0 0 5px !important;
+}
+table tr:last-child td:last-child {
+  -moz-border-radius: 0 0 5px 0 !important;
+}
+
+textarea{
+	width: 850px;
+	height: 100px;
+	border: none;
+    resize: none !important;
 }
 </style>
 <script type="text/javascript"
@@ -58,13 +99,13 @@ body{
 				</tr>
 				<tr  height="40">
 					<th>내용</th>
-					<td><textarea name="bfaf_value" style="width: 90%;"></textarea>
+					<td><textarea name="bfaf_value"></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="right"><input type="submit" value="등록">
 						<input type="button" value="뒤로가기"
-						onclick="javascript:history.go(-1)"></td>
+						onclick="javascript:history.go(-1)"> &nbsp;&nbsp;</td>
 				</tr>
 			</table>
 		</form>
