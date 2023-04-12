@@ -20,7 +20,26 @@ body {
 	font-family: "맑은 고딕";
 }
 
+#fixdel {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 400px;
+	text-decoration: none;
+	background-color: white;
+	text-align: center;
+	color: #01CD88;
+	font-weight: bold;
+	font-size: 20pt;
+	border: 1px solid;
+}
 #title {
+	position: static;
+    top: 50%;
+    left: 50%;
+	width: 400px;
+	transform: translate(100%, 0%);
 	text-decoration: none;
 	background-color: white;
 	text-align: center;
@@ -36,13 +55,22 @@ body {
 	height: 30px;
 }
 
-.commenttxt {
+th {
 	margin: 0px;
 	padding: 10px;
-	width: 880px;
-	height: 100px;
-	border-radius: 10px;
+	width: 180px;
+	height: 20px;
 	border: 1px solid #D1D1D1;
+	background-color: #A5FFC9
+}
+
+td {
+	margin: 0px;
+	padding: 10px;
+	width: 780px;
+	height: 20px;
+	border: 1px solid #D1D1D1;
+	background-color: #A5FFC9
 }
 
 .cbfile {
@@ -87,13 +115,13 @@ body {
 	<div class="allarea">
 		<table style="margin-left: auto; margin-right: auto;" width="900px"
 			border="1px solid" cellpadding="0" cellspacing="0">
-			<tr>
+			<div class="fixdel" align="right">
 				<c:if
 					test="${ requestScope.bfaf.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
-					<th>게시물 관리</th>
-					<td align="center"><c:url var="baup" value="/bfafupmove.do">
+			
+					<c:url var="baup" value="/bfafupmove.do">
 							<c:param name="bfaf_no" value="${ bfaf.bfaf_no }" />
-						</c:url> <a href="${ baup }">[글수정]</a> &nbsp; &nbsp;
+						</c:url> <a href="${ baup }">[글수정] </a> &nbsp; &nbsp;
 				</c:if>
 
 				<c:if
@@ -101,9 +129,9 @@ body {
 					<c:url var="bade" value="/bfafdelete.do">
 						<c:param name="bfaf_no" value="${ bfaf.bfaf_no }" />
 					</c:url>
-					<a href="${ bade }">[글삭제]</a> &nbsp; &nbsp;
+					<a href="${ bade }"> [글삭제]</a> &nbsp; &nbsp;
 				</c:if>
-			</tr>
+			</div>
 
 
 
@@ -116,9 +144,8 @@ body {
 				</div>
 				<div class="userezinfo">
 					<div class="side">
-						<a href="유저정보 or 작성글 보기" onclick="return false;"
-							class="userinfoimg">${ bfaf.user_id }</a> <span class="datetime"
-							style="text-align: right"> &nbsp; <fmt:formatDate
+						<a class="userinfoimg">${ bfaf.user_id }</a> <span
+							class="datetime" style="text-align: right"> &nbsp; <fmt:formatDate
 								value="${bfaf.write_bfaf_date}" pattern="yyyy-MM-dd a HH:mm:ss" />
 						</span>
 					</div>
@@ -163,8 +190,12 @@ body {
 						<br>
 					</c:if>
 				</c:forEach>
-				&nbsp; &nbsp; ${bfaf.bfaf_value}<br> <br> <br> <br>
-				<br> <br>
+				&nbsp; &nbsp; ${bfaf.bfaf_value}<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
 
 			</div>
 
@@ -187,23 +218,22 @@ body {
 			</div>
 			<hr>
 			<br>
-			<div class="commenttxt" style="background-color: #A5FFC9">
-				<a>댓글 작성자</a>
-				<hr>
-				<div align="left">
-					댓글내용 &nbsp; &nbsp;
-					<c:if test="${ !empty sessionScope.loginMember.user_id }">
-						<c:url var="barein" value="/movebfafrepin.do">
-							<c:param name="bfaf_no" value="${bfaf.bfaf_no }" />
-						</c:url>
-						<a href="${ barein }">[댓글등록]</a>
-					</c:if>
-				</div>
-			</div>
+			<div>
+				<th>댓글 작성자</th>
+			<td align="center">댓글내용 &nbsp; &nbsp; <c:if
+					test="${ !empty sessionScope.loginMember.user_id }">
+					<c:url var="barein" value="/movebfafrepin.do">
+						<c:param name="bfaf_no" value="${bfaf.bfaf_no }" />
+					</c:url>
+					<a href="${ barein }">[댓글등록]</a>
+				</c:if>
+			</td>
+			<hr>
+
 
 			<br>
 			<c:forEach items="${ list }" var="ba">
-				<tr height="35">
+				<tr>
 					<c:if test="${ ba.bfaf_reply_lev eq 2 }">
 						<th>${ba.user_id}</th>
 						<td>&nbsp; &nbsp; ${ba.bfaf_value} &nbsp; <c:if
@@ -254,6 +284,7 @@ body {
 						</td>
 					</c:if>
 				</tr>
+			</div>
 			</c:forEach>
 			<tr style="background-color: #E2E2E2">
 				<td colspan="2" align="right"><c:if
