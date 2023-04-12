@@ -35,8 +35,8 @@ public class EventController {
 	private EventService eventService;
 	
 	//공지사항 전체 목록보기 요청 처리용
-	@RequestMapping("elist.do")
-	public ModelAndView eventListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+	@RequestMapping(value = "elist.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView eventListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
 		
 		int currentPage = 1;
 		if(page != null) {
@@ -69,11 +69,9 @@ public class EventController {
 	@RequestMapping(value="esearch.do", method={ RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView noitceSearchMethod(
 			@RequestParam(name = "page", required = false, defaultValue = "1") String page,
-			@RequestParam("searchtype") String searchtype,
-			@RequestParam("keyword") String keyword,
-			/* HttpServletRequest request, */ ModelAndView mv) {
-//		String searchtype = request.getParameter("searchtype");
-//		String keyword = request.getParameter("keyword");
+			HttpServletRequest request, ModelAndView mv) {
+		String searchtype = request.getParameter("searchtype");
+		String keyword = request.getParameter("keyword");
 		
 		CountSearch countSearch = new CountSearch(searchtype, keyword);
 		
@@ -116,11 +114,14 @@ public class EventController {
 				
 				mv.setViewName("event/eventListView2");
 			}
-		}else {
-			mv.addObject("message", currentPage + "로 검색된 이벤트글 정보가 없습니다.");
-			mv.setViewName("common/error");
 		}
-		return mv;
+		if (mv.isEmpty()) {
+			mv.addObject("searchs", searchs);
+			mv.setViewName("event/eventListView2");
+			return mv;
+		} else {
+			return mv;
+		}
 	}
 	
 	//공지글 상세보기 요청 처리용
@@ -173,16 +174,18 @@ public class EventController {
 	}
 	
 	//공지글 수정페이지로 이동 요청 처리용
-	@RequestMapping("emoveup.do")
-	public String moveUpdatePage(@RequestParam("event_no") int event_no, Model model) {
+	@RequestMapping("evtupview.do")
+	public String moveUpdatePage(@RequestParam("event_no") int event_no,
+			  Model model) {
 		//수정페이지에 출력할 해당 공지글 다시 조회함
 		Event event = eventService.selectEvent(event_no);
 		
 		if(event != null) {
 			model.addAttribute("event", event);
-			return "event/eventUpdateForm";
+			
+			return "event/eventUpdate";
 		}else {
-			model.addAttribute("message", event_no + "번 공지글 수정페이지로 이동 실패!");
+			model.addAttribute("message", event_no + "번 이벤트글 수정페이지로 이동 실패!");
 			return "common/error";
 		}
 		
@@ -190,7 +193,7 @@ public class EventController {
 	}
 	
 	//공지글 수정 요청 처리용 (파일 업로드 기능 사용)
-	@RequestMapping(value="eupdate.do", method=RequestMethod.POST)
+	@RequestMapping(value="eupdate.do", method={ RequestMethod.GET, RequestMethod.POST })
 	public String eventUpdateMethod(Event event, Model model, HttpServletRequest request,
 									@RequestParam(name="delflag", required=false) String delFlag,
 									@RequestParam(name="upfile", required=false) MultipartFile mfile) {
@@ -259,9 +262,10 @@ public class EventController {
 		
 		if(eventService.updateEvent(event) > 0) {
 			//공지글 수정 성공시 목록 보기 페이지로 이동
-			return "redirect:nlist.do";
+			model.addAttribute("event_no", event.getEvent_no());
+			return "redirect:elist.do";
 		}else {
-			model.addAttribute("message", event.getEvent_no() + "번 공지 수정 실패!");
+			model.addAttribute("message", event.getEvent_no() + "번 수정 실패!");
 			return "common/error";
 		}
 	}
@@ -279,9 +283,9 @@ public class EventController {
 				String savePath = request.getSession().getServletContext().getRealPath("resources/event_upfiles");
 				new File(savePath + "\\" + renameFileName).delete();
 			}
-			return "redirect:nlist.do";
+			return "redirect:elist.do";
 		}else {
-			model.addAttribute("message", event_no + "번 공지 삭제 실패!");
+			model.addAttribute("message", event_no + "번 이벤트글 삭제 실패!");
 			return "common/error";
 		}
 	}
@@ -292,7 +296,7 @@ public class EventController {
 		return "event/eventWriteForm";
 	}
 	
-	@RequestMapping(value="einsert.do", method=RequestMethod.POST)
+	@RequestMapping(value="evtinsert.do", method=RequestMethod.POST)
 	public String eventInsertMethod(Event event, Model model, HttpServletRequest request,
 									@RequestParam(name="upfile", required=false) MultipartFile mfile) {
 		
@@ -345,6 +349,11 @@ public class EventController {
 			model.addAttribute("message", "새 공지 등록 실패!");
 			return "common/error";
 		}
+	}
+	
+	@RequestMapping("evtwform.do")
+	public String moveqnaWriteForm() {
+		return "event/eventWriteForm";
 	}
 	
 	

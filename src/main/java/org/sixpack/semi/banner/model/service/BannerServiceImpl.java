@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import org.sixpack.semi.banner.model.dao.BannerDao;
 import org.sixpack.semi.banner.model.vo.Banner;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +37,8 @@ public class BannerServiceImpl implements BannerService {
 	}
 
 	@Override
-	public int deleteBanner(Banner adminbanner) {
-		return bannerDao.deleteBanner(adminbanner);
+	public int deleteBanner(int banner_no) {
+		return bannerDao.deleteBanner(banner_no);
 	}
 
 	@Override
@@ -45,7 +47,27 @@ public class BannerServiceImpl implements BannerService {
 	}
 
 	@Override
-	public ArrayList<String> selectlink() {
-		return bannerDao.selectlink();
+	public ArrayList<String> selectyoutubelink() {
+		return bannerDao.selectyoutubelink();
+	}
+
+	@Override
+	public ArrayList<Banner> selectarticlelink() {
+		return bannerDao.selectarticlelink();
+	}
+
+	@Override
+	public int selectSearchListCount(CountSearch countSearch) {
+		return bannerDao.selectSearchListCount(countSearch);
+	}
+
+	@Override
+	public ArrayList<Banner> selectSearchTitle(Searchs searchs) {
+		return bannerDao.selectSearchTitle(searchs);
+	}
+
+	@Override
+	public ArrayList<Banner> selectSearchWriter(Searchs searchs) {
+		return bannerDao.selectSearchWriter(searchs);
 	}
 }

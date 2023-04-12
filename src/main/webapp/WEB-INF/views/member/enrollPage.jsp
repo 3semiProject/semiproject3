@@ -277,7 +277,7 @@ body {
         	alert("인증번호 발송되었습니다.\n휴대폰에서 인증번호를 확인해주세요.");
         	
 			$.ajax({
-				url:"authNumber.do",
+				url:"authNumberenroll.do",
 				type: "POST",
 				data: {phone : $('#phone').val()},
 				dataType: "text",

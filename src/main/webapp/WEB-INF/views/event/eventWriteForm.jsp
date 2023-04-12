@@ -64,14 +64,14 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
 	<c:import url="/WEB-INF/views/common/menubar.jsp" />
 	<c:import url="/WEB-INF/views/common/csbar.jsp" />
 	<hr>
-	<div id="noticediv">
-		<form action="ninsert.do" method="post"
+	<div id="eventdiv">
+		<form action="evtinsert.do" method="post"
 			enctype="multipart/form-data" name="boardform">
 			<table width="100%" border="1px solid" cellpadding="0"
 				cellspacing="0">
 				<tr>
 					<th>게시판 종류</th>
-					<td align="center"><h3>공지사항</h3></td>
+					<td align="center"><h3>EVENT</h3></td>
 				</tr>
 				<tr height="40">
 					<th>작성자</th>
@@ -80,11 +80,11 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
 				</tr>
 				<tr height="40">
 					<th>제목</th>
-					<td><input name="notice_title" type="text" style="width: 90%;" /></td>
+					<td><input name="event_title" type="text" style="width: 90%;" /></td>
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td><textarea name="notice_content"
+					<td><textarea name="event_content"
 							style="width: 90%; height: 200px;"></textarea>
 					</td>
 				</tr>
@@ -105,7 +105,7 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
 	<br>
 
 		<script type="text/javascript">
-	    CKEDITOR.replace("notice_content", { height: 100 });
+	    CKEDITOR.replace("event_content", { height: 100 });
 		</script>
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>

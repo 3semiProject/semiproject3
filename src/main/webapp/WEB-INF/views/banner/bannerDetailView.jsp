@@ -49,18 +49,18 @@ body {
 			<tr>
 				<c:if test="${ sessionScope.loginMember.admin_ck eq 'Y' }">
 					<th>유튜브 & 기사 관리</th>
-					<td align="center"><c:url var="baup" value="/baupview.do">
+					<td align="left"><c:url var="baup" value="/baupview.do">
 							<c:param name="banner_no" value="${ banner.banner_no }" />
 						</c:url> <a href="${ baup }">[글수정]</a> &nbsp; &nbsp;
 				</c:if>
-				<button onclick="javascript:location.href='bannerlist.do?page=${ currentPage }';">목 록</button>
 				<c:if
 					test="${ loginMember.admin_ck eq 'Y' }">
-					<c:url var="bade" value="/badel.do">
-						<c:param name="qna_no" value="${ qna.qna_no }" />
+					<c:url var="bade" value="/bannerDelete.do">
+						<c:param name="banner_no" value="${ banner.banner_no }" />
 					</c:url>
-					<a href="${ qqde }">[글삭제]</a> &nbsp; &nbsp;
-            </c:if>
+					<a href="${ bade }">[글삭제]</a> &nbsp; &nbsp;
+           		</c:if>
+				<button onclick="javascript:location.href='bannerlist.do?page=${ currentPage }';">목 록</button>
 				</td>
 			</tr>
 			<tr height="40">

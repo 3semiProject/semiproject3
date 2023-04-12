@@ -32,19 +32,19 @@ public class NoticeDao {
 	}
 
 	public int updateNoticeReadcount(int notice_no) {
-		return session.update("noticeMapper.selectNotice", notice_no);
+		return session.update("noticeMapper.updateNoticeReadcount", notice_no);
 	}
 
 	public int insertNotice(Notice notice) {
-		return session.insert("noticeMapper.selectNotice", notice);
+		return session.insert("noticeMapper.insertNotice", notice);
 	}
 
 	public int updateNotice(Notice notice) {
-		return session.update("noticeMapper.selectNotice", notice);
+		return session.update("noticeMapper.updateNotice", notice);
 	}
 
 	public int deleteNotice(int notice_no) {
-		return session.delete("noticeMapper.selectNotice", notice_no);
+		return session.delete("noticeMapper.deleteNotice", notice_no);
 	}
 
 	public ArrayList<Notice> selectSearchTitle(Searchs searchs) {

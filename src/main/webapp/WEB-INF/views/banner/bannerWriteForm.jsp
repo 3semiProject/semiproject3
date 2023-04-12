@@ -90,8 +90,12 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
 					</td>
 				</tr>
 				<tr>
-					<th>링 크</th>
+					<th>주소링크</th>
 					<td><input name="banner_link_adrress" type="text" style="width: 90%;" /></td>
+				</tr>
+				<tr>
+					<th>이미지링크</th>
+					<td><input name="banner_img" type="text" style="width: 90%;" /></td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center">

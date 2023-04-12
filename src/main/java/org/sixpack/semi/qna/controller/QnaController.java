@@ -41,9 +41,9 @@ public class QnaController {
 	}
 	
 	//리스트 출력
-	@RequestMapping("qnalist.do")
+	@RequestMapping(value = "qnalist.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public ModelAndView showQnaListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+	public ModelAndView showQnaListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
 		
 		int currentPage = 1;
 		if(page != null) {
@@ -75,9 +75,10 @@ public class QnaController {
 	@RequestMapping(value="qnasearch.do", method={ RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView qnaSearchMethod(
 			@RequestParam(name = "page", required = false, defaultValue = "1") String page,
-			@RequestParam("searchtype") String searchtype,
-			@RequestParam("keyword") String keyword, ModelAndView mv) {
-
+			HttpServletRequest request, ModelAndView mv) {
+		String searchtype = request.getParameter("searchtype");
+		String keyword = request.getParameter("keyword");
+		
 		CountSearch countSearch = new CountSearch(searchtype, keyword);
 		
 		int currentPage = 1;
@@ -119,11 +120,14 @@ public class QnaController {
 				
 				mv.setViewName("qna/qnaListView2");
 			}
-		}else {
-			mv.addObject("message", currentPage + "로 검색된 공지글 정보가 없습니다.");
-			mv.setViewName("common/error");
 		}
-		return mv;
+		if (mv.isEmpty()) {
+			mv.addObject("searchs", searchs);
+			mv.setViewName("free/freeListView2");
+			return mv;
+		} else {
+			return mv;
+		}
 	}
 	
 	//상세보기
@@ -215,7 +219,7 @@ public class QnaController {
 	//수정페이지로 이동 처리용
 	@RequestMapping("qupview.do")
 	public String moveqnaUpdateView(@RequestParam("qna_no") int qna_no,
-									  @RequestParam("page") int currentPage,
+									 
 									  Model model) {
 		
 
@@ -224,7 +228,6 @@ public class QnaController {
 		
 		if(qna != null) {
 			model.addAttribute("qna", qna);
-			model.addAttribute("currentPage", currentPage);
 			
 			return "qna/qnaUpdate";
 		}else {
@@ -236,7 +239,6 @@ public class QnaController {
 	
 	@RequestMapping(value = "qoriginup.do", method = RequestMethod.POST)
 	public String qnaUpdateMethod(Qna qna, Model model, HttpServletRequest request,
-			@RequestParam("page") int page,
 			@RequestParam(name = "delflag", required = false) String delFlag,
 			@RequestParam(name = "upfile", required = false) MultipartFile mfile) {
 
@@ -305,7 +307,6 @@ public class QnaController {
 
 		if (qnaService.updateQna(qna) > 0) {
 			// 게시원글 수정 성공시 상세보기 페이지로 이동
-			model.addAttribute("page", page);
 			model.addAttribute("qna_no", qna.getQna_no());
 			
 			return "redirect:qdetail.do";
