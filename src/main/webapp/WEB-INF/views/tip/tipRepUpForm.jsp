@@ -20,14 +20,55 @@ body{
 }
 
 #title {
-	text-decoration: none;
-	background-color: white;
-	text-align: center;
-	color: #01CD88;
-	font-weight: bold;
-	text-shadow: 1px 1px 2px #D1D1D1;
-	font-size: 20pt;
-	border: 1px solid;
+   position: static;
+   top: 50%;
+   left: 50%;
+   width: 300px;
+   transform: translate(100%, 0%);
+   text-decoration: none;
+   background-color: white;
+   text-align: center;
+   color: #01CD88;
+   font-weight: bold;
+   text-shadow: 1px 1px 2px #D1D1D1;
+   font-size: 20pt;
+   border: 1px solid;
+}
+
+table {
+  margin-bottom: 50px;
+  margin: auto;
+  padding: 30px;
+  width: 1000px;
+  -moz-border-radius: 5px !important;
+  border-collapse: collapse !important;
+  border: none !important;
+  border-style: hidden;
+  background-color: #DCFFDC;
+  border-radius: 20px;
+}
+table th,
+table td {
+  border: none !important
+}
+table th:first-child {
+  -moz-border-radius: 5px 0 0 0 !important;
+}
+table th:last-child {
+  -moz-border-radius: 0 5px 0 0 !important;
+}
+table tr:last-child td:first-child {
+  -moz-border-radius: 0 0 0 5px !important;
+}
+table tr:last-child td:last-child {
+  -moz-border-radius: 0 0 5px 0 !important;
+}
+
+textarea{
+	width: 850px;
+	height: 100px;
+	border: none;
+    resize: none !important;
 }
 </style>
 <script type="text/javascript"
@@ -44,11 +85,11 @@ body{
 		<p id="title">댓글 수정</p>
 	</div>
 	<div>
-		<form action="freerepupdate.do" method="post"
+		<form action="tiprepupdate.do" method="post"
 			enctype="multipart/form-data" name="boardform">
-			<input type="hidden" name="free_no" value="${ free.free_no }">
-			<input type="hidden" name="free_ref" value="${ free.free_ref }">
-			<input type="hidden" name="free_name" value="${ free.free_name }">
+			<input type="hidden" name="tip_no" value="${ tip.tip_no }">
+			<input type="hidden" name="tip_ref" value="${ tip.tip_ref }">
+			<input type="hidden" name="tip_name" value="${ tip.tip_name }">
 			<table width="100%" border="1px solid" cellpadding="0"
 				cellspacing="0">
 				<tr height="40">
@@ -58,13 +99,13 @@ body{
 				</tr>
 				<tr height="40">
 					<th>내용</th>
-					<td align="left"><textarea name="free_value" style="width: 90%;">${ free.free_value }</textarea>
+					<td align="left"><textarea name="tip_value">${ tip.tip_value }</textarea>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="right"><input type="submit" value="등록">
 						<input type="button" value="뒤로가기"
-						onclick="javascript:history.go(-1)"></td>
+						onclick="javascript:history.go(-1)"> &nbsp;&nbsp;</td>
 				</tr>
 			</table>
 		</form>

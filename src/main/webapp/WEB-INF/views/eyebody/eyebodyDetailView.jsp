@@ -60,7 +60,6 @@ table {
   border-collapse: collapse !important;
   border: none !important;
   border-style: hidden;
-  border: 1px solid #D1D1D1;
   background-color: #DCFFDC;
   border-radius: 20px;
 }
