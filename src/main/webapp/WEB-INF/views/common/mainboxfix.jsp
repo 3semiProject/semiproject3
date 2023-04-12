@@ -444,19 +444,19 @@ $(function () {
 		<input type="radio" name="slide" id="slide04">
 		<input type="radio" name="slide" id="slide05">
 		<ul class="slidelist">
-			<li class="slideitem"><a><img
+			<li class="slideitem"><a href="https://namu.wiki/w/피카츄"><img
 					src="${ pageContext.servletContext.contextPath }/resources/images/slide01.png"></a>
 			</li>
-			<li class="slideitem"><a><img
+			<li class="slideitem"><a href="https://namu.wiki/w/파이리"><img
 					src="${ pageContext.servletContext.contextPath }/resources/images/slide02.png"></a>
 			</li>
-			<li class="slideitem"><a><img
+			<li class="slideitem"><a href="https://namu.wiki/w/꼬북이"><img
 					src="${ pageContext.servletContext.contextPath }/resources/images/slide03.png"></a>
 			</li>
-			<li class="slideitem"><a><img
+			<li class="slideitem"><a href="https://namu.wiki/w/병아리"><img
 					src="${ pageContext.servletContext.contextPath }/resources/images/slide04.png"></a>
 			</li>
-			<li class="slideitem"><a><img
+			<li class="slideitem"><a href="https://namu.wiki/w/보노보노"><img
 					src="${ pageContext.servletContext.contextPath }/resources/images/slide05.png"></a>
 			</li>
 
