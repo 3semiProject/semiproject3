@@ -194,11 +194,42 @@ border: 1px solid #D1D1D1;
 
 #todayVisitors, #monthVisitors, #avgVisitors, #postCount,
 	#blackPostCount {
-	width: 300px;
 	font-size: xx-large;
 	margin: auto;
 	justify-content: center;
 	color: black;
+	text-align: center;
+}
+
+#today > div:first-child, #month > div:first-child, #year > div:first-child, #total_post > div:first-child,
+#total_coment > div:first-child {
+width: 35%;
+text-align: center;
+justify-content: center;
+font-size: x-large;
+color: white;
+background: rgba(64, 217, 166, 0.8);
+}
+
+#today > div:last-child, #month > div:last-child, #year > div:last-child,  #total_post > div:last-child,
+#total_coment > div:last-child{
+width: 60%;
+}
+
+.term {
+	display: flex;
+	width: 100%;
+}
+
+.term > div {
+	display: flex;
+	width: 50%;
+}
+.term > div > div, .term > div > input{
+	margin: auto;
+}
+.term > div > div:first-child {
+	width: 95%;
 }
 
 
@@ -233,7 +264,7 @@ input[type=month]::-webkit-datetime-edit-year-field {
 <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.5/index.global.min.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.5/index.global.min.js'></script>
 <script>
-$(function () {
+ $(function () {
 	$.ajax({
         url: 'calendar.do', // Replace with your server URL that returns the JSON object
         type: 'post',
@@ -269,7 +300,7 @@ $(function () {
            console.error('Error loading events: '+ JSON.stringify(jqXHR) +"["+ JSON.stringify(err) + "], " + errorThrown);
         }
      });
-});
+}); 
 </script>
 
 
@@ -287,8 +318,8 @@ $(function () {
  
 	
    //adminBox에서 접속자수, 게시물수 get
-   $(function (){
-            if ( "${loginMember.admin_ck}" === 'Y' )  {
+  $(function (){
+if ( "${ loginMember.admin_ck }" == "Y" )  {
   setInterval(function() {
 		 
   $.ajax({
@@ -316,6 +347,40 @@ $(function () {
 
 	}//관리자일때만
    });//function close;
+
+   
+   
+ //-------------------------------------------------------
+ 
+	    //myActivity_box에서 user 게시글, user reple 갯수 get
+	  $(function (){
+	
+	 if ("${sessionScope.loginMember}" !== "" && "${loginMember.admin_ck}" === 'N') {
+	  	 
+	  $.ajax({
+		  url: "myActivity_box.do",
+		  type: "post",
+		  dataType: "json",
+		  success: function(jsonData) {
+			  alert("jsonData sending ");
+			
+			$('#myPost').html('내가 쓴 게시글 ' + jsonData.postCount + ' 개');
+			$('#myReply').html('내가 쓴 댓글 ' + jsonData.replyCount + ' 개');
+		
+	
+		},
+		error: function(request, status, errorData){
+			console.log("error code : " + request.status
+					+ "\nMessage : " + request.responseText
+					+ "\nError : " + errorData);
+				} 
+	  		});//adminBox ajax close;
+	  
+		}//if close => user
+	 
+	
+	   });//function close;
+ 
 </script>
 </head>
 <body>
@@ -327,7 +392,7 @@ $(function () {
             <div id="userBox_intro">Introduce</div>
             <div id="userBox_loginBox" align="center">
                <div id="loginbtn">
-                  <img alt="loginbtn" onclick="moveLoginPage()"
+                  <img alt="loginbtn" onclick="moveLoginPage();"
                      src="${ pageContext.servletContext.contextPath }/resources/images/mainLogo.jpg" />
                   <div>Login</div>
                </div>
@@ -362,8 +427,8 @@ $(function () {
             </div>
             <div id="myActivity_box">
                <div><a href="${ pageContext.servletContext.contextPath }/diary.do">오늘의 다이어리</a></div>
-               <div>내가 쓴 게시글 ${ loginMember.user_id } 개</div> <!-- 유저의 게시글 쿼리문 물어보기 -->
-               <div>내가 쓴 댓글 ${ loginMember.user_id } 개</div>
+               <div id="myPost">${ postCount }</div> <!-- 유저의 게시글 쿼리문 물어보기 -->
+               <div id="myReply">${ replyCount }</div>
             </div>
             <div id="userBox_info">
             <form class="pofile" action="myinfo.do" method="post">
@@ -395,15 +460,6 @@ $(function () {
          test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
          <div id="adminBox">
             <div id="user_visit">
-           <form action="visitSearch.do">
-               <div>접속자 분류</div>
-               <div style="display: flex;">
-               <div style="width: 30%;">기간</div>
-              	<c:set var="now" value="<%=new java.util.Date()%>" />
-				<c:set var="sys"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
-               <input style="width: 60%; text-align: center;" type="month" value="년 / 월"/>
-               </div>
-           </form>
                <div id="visit_count">
                   <div id="today">
                      <div>접속자 수</div>
@@ -420,7 +476,7 @@ $(function () {
                </div>
             </div>
             <div id="border_mgt">
-               <div>게시판 분류</div>
+          <!--      <div>게시판 분류</div> -->
                <div id="board_count">
                   <div id="total_post">
                      <div>총 게시물 수</div>

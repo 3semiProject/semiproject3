@@ -44,28 +44,19 @@ public class MemberDao {
 		return session.selectOne("memberMapper.selectFindPwEmail", member);
 	}
 
-	public Member selectProfile(Member member) {
-		// TODO Auto-generated method stub
-		return null;
+	//my post count
+	public int selectCountMyPost(String user_id) {
+		return session.selectOne("memberMapper.selectCountMyPost", user_id);
 	}
-
-	public Member selectNickname(Member member) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	//my reply count
+	public int selectCountMyReply(String user_id) {
+		return session.selectOne("memberMapper.selectCountMyReply", user_id);
 	}
+	
 
 	public Member selectMember(String user_id) {
 		return session.selectOne("memberMapper.selectMember", user_id);
-	}
-
-	public int updateFindpwE(Member member) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public String SendEmail(Member member) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public int insertMember(Member member) {
@@ -95,10 +86,6 @@ public class MemberDao {
 		return 0;
 	}
 
-	public ArrayList<Member> selectMemberList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	//회원가입시 해당 핸드폰 번호가 존재하는지 확인하는 메소드
 	public int selectPhoneCount(String phone) {
@@ -182,6 +169,7 @@ public class MemberDao {
 		List<Member> list = session.selectList("memberMapper.selectSearchLoginok", searchs);
 		return (ArrayList<Member>)list;
 	}
+	
 
 
 

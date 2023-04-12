@@ -147,26 +147,6 @@ body #loginForm {
  	</div>
   </form>
 
-<div class="social_login">
-<!-- 카카오 로그인 창으로 이동 -->
-<div id="kakao_login" style="text-align: center;">
-	<a href="https://kauth.kakao.com/oauth/authorize?client_id=3205654a3e1700ef0d67201d929a9c56&redirect_uri=http://localhost:8889/semi/kakao_callback.do&response_type=code">
-		<img class="img2"  alt="카카오 로그인" src="${ pageContext.servletContext.contextPath }/resources/images/kakao_login.png" onclick="kakaoLogin();"/>
-	</a>
-</div>
-<!-- 네이버 로그인 창으로 이동 -->
-<div id="naver_login" style="text-align: center;">
-	<a href="<c:url value="${ requestScope.kakaourl }"/>" class="cp" >
-		<img class="img2" alt="네이버 로그인" src="${ pageContext.servletContext.contextPath }/resources/images/kakao_login.png" />
-	</a>
-</div>
-<!-- 구글 로그인 창으로 이동 -->
-<div id="google_login" style="text-align: center;">
-	<a href="<c:url value="${ requestScope.kakaourl }"/>" class="cp" >
-		<img class="img2"  alt="구글 로그인" src="${ pageContext.servletContext.contextPath }/resources/images/kakao_login.png" />
-	</a>
-</div>
-</div>
 <hr>
 	<div class="login_other">
 		<div id="login_find">

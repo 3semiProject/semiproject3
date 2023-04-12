@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.collections.map.HashedMap;
+import org.json.simple.JSONObject;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.common.Searchs;
@@ -153,123 +154,6 @@ public class MemberController {
 		return "member/findPwPage";
 	}
 
-
-//	// 소셜로그인이 포함된 로그인 페이지 내보내기용 메소드
-//	@RequestMapping(value = "loginPage.do", method = { RequestMethod.GET, RequestMethod.POST })
-//	public String moveLoginPage(Model model, HttpSession session) {
-//		// 카카오 로그인 접속을 위한 인증 url 정보 생성
-//		String kakaoAuthURL = KakaoController.getAuthorizationUrl(session);
-//
-//		// 네이버 로그인 접속을 위한 인증 url 정보 생성
-//		String naverAuthURL = KakaoController.getAuthorizationUrl(session);
-//
-//		// 구글 로그인 접속을 위한 인증 url 정보 생성
-//		String googleAuthURL = KakaoController.getAuthorizationUrl(session);
-//
-//		// 모델에 각각의 url 정보 저장
-//		model.addAttribute("kakaourl", kakaoAuthURL);
-//		model.addAttribute("googleourl", googleAuthURL);
-//		model.addAttribute("naverurl", naverAuthURL);
-//
-//		return "member/loginPage";
-//	}
-//
-//	// 카카오 로그인 요청 처리용
-//	// (카카오 로그인 클릭시 전달된 kakaourl 에 의해 실행됨)
-//	@RequestMapping(value = "kcallback.do", produces = "application/json", method = { RequestMethod.GET,
-//			RequestMethod.POST })
-//	public String kakaoLogin(@RequestParam String code,
-//			Model model, HttpSession session) {
-//		logger.info("0. kcallback.do : " + code);
-//
-//		//로그인 결과값을 node에 담아줌
-//		JsonNode node = KakaoController.getAccessToken(code);
-//		logger.info("1. kcallback.do : " + node);
-//		// accessToken에 사용자의 로그인한 모든 정보가 들어있음
-//		JsonNode accessToken = node.get("access_token");
-//		logger.info("2. kcallback.do : " + accessToken);
-//		// 사용자 정보 추출
-//		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken);
-//		logger.info("3. kcallback.do : " + userInfo);
-//
-//		// db table 에 기록할 회원정보 추출함 : 카카오 회원가입시
-//		//userInfo 에서 properties 정보 추출
-//		JsonNode properties = node.get("properties");
-//		logger.info("4. kcallback.do : " + properties);
-//
-//		JsonNode kakao_account = userInfo.path("kakao_account");
-//		String kid = userInfo.path("id").asText();
-//		logger.info("5. kcallback.do : " + kakao_account);
-//
-//		//등록된 카카오 회원 테이블에서 회원 정보 조회해 옴
-//		Kakao kmember =
-//				kakaoService.selectKakaoLogin(kid);
-//
-//		Member loginMember = null;
-//
-//		//처음 로그인 요청시 카카오 회원 테이블에 회원 정보 저장
-//		if(kmember == null) {
-//			Kakao kakao = new Kakao();
-//			//properties 에서 하나씩 꺼내서 member 에 저장 처리
-//			kakao.setKakao_id(kid);
-//			kakao.setKakao_name((String)properties.get("kakao_name").asText());
-//			kakao.setEmail((String)kakao_account.get("email").asText());
-//
-//			logger.info("6. kcallback.do : " + kakao);
-//
-//			kakaoService.insertKakaoMember(kakao);
-//			loginMember = kakao;
-//		}else {
-//			loginMember = kmember;
-//		}
-//
-//		if (loginMember != null) {
-//			// 카카오 로그인 성공시
-//			session.setAttribute("loginMember", loginMember);
-//			return "redirect:main.do";
-//		} else {
-//			model.addAttribute("message", "카카오 로그인 실패!");
-//			return "common/error";
-//		}
-//	}
-//
-//	// 네이버 로그인 요청 처리용
-//	// (네이버 로그인 클릭시 전달된 naverurl 에 의해 실행됨)
-//	@RequestMapping(value = "ncallback.do",
-//			method = { RequestMethod.GET, 	RequestMethod.POST })
-//	public String naverLogin(Model model, HttpSession session) {
-//
-//		Member loginMember = null;
-//
-//		if (loginMember != null) {
-//			// 카카오 로그인 성공시
-//			session.setAttribute("loginMember", loginMember);
-//			return "redirect:main.do";
-//		} else {
-//			model.addAttribute("message", "카카오 로그인 실패!");
-//			return "common/error";
-//		}
-//	}
-//
-//	// 구글 로그인 요청 처리용
-//	// (구글 로그인 클릭시 전달된 googleurl 에 의해 실행됨)
-//	@RequestMapping(value = "gcallback.do",
-//			method = { RequestMethod.GET, 	RequestMethod.POST })
-//	public String googleLogin(
-//			Model model, HttpSession session) {
-//
-//		Member loginMember = null;
-//
-//		if (loginMember != null) {
-//			// 카카오 로그인 성공시
-//			session.setAttribute("loginMember", loginMember);
-//			return "redirect:main.do";
-//		} else {
-//			model.addAttribute("message", "카카오 로그인 실패!");
-//			return "common/error";
-//		}
-//	}
-
 	// 회원가입 페이지 내보내기용 메소드
 	@RequestMapping(value = "enrollPage.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String moveEnrollPage() {
@@ -302,7 +186,39 @@ public class MemberController {
 
 		return mv;
 	}
-
+	
+	//--------------------------------------------------
+	//login member post & reply count
+	@RequestMapping(value = "myActivity_box.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String myActivityViewMethod(HttpServletResponse response, HttpSession session) {
+		
+		//세션 객체에서 해당 로긴 멤버 정보 가져오기
+		Member member= (Member)session.getAttribute("loginMember");
+		
+		String user_id = member.getUser_id();
+		
+		//해당 아이디의 post 갯수 가져오기
+		int postCount = memberService.selectCountMyPost(user_id);
+		//reply
+		int replyCount = memberService.selectCountMyReply(user_id);
+		
+		response.setContentType("application/json; charset=utf-8");
+		
+		JSONObject job = new JSONObject();	
+		
+		job.put("postCount", postCount);
+		job.put("replyCount", replyCount);
+		
+		
+		return job.toJSONString();
+	}
+	
+	
+	
+	
+	
+	
 	// ------------------------------------------------------------------------------------------
 
 	// 회원정보 수정 페이지 요청 전, 비밀번호 체크 팝업창 내보내기용 메소드
@@ -557,8 +473,6 @@ public class MemberController {
 }
 
 
-
-
 	//랜덤 비밀번호 생성기
 	public static String tempPassword(int leng) {
 		int index = 0;
@@ -621,7 +535,7 @@ public class MemberController {
 
 
 	// 회원정보 비밀번호 수정
-//		@RequestMapping(value = "updatePw.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "updatePw.do", method = { RequestMethod.GET, RequestMethod.POST })
 		public String memberUpdateMethod(Member member, String new_pw) {
 			logger.info("updatePw.do : " + member);
 			// 새로운 비밀번호 입력시,
@@ -647,29 +561,6 @@ public class MemberController {
 				return "2";
 			}
 		}
-
-
-
-
-
-
-
-
-
-	@RequestMapping("sendEmail.do")
-	public String sendEmailMethod(HttpServletResponse response, @RequestParam("email") String email) {
-		return null;
-	}
-
-	@RequestMapping("ShowPfofile.do")
-	public String showProfileMethod(Member member, Model model) {
-		return null;
-	}
-
-	@RequestMapping("showNickname.do")
-	public String showNicknameMethod(Member member, Model model) {
-		return null;
-	}
 
 	// 회원정보 수정 전 비밀번호 확인
 	@RequestMapping(value = "selectPw.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -720,22 +611,9 @@ public class MemberController {
 
 		return mv;
 	}
-//
-//	// 회원정보 수정 처리용 : 수정 성공시 myinfoPage.jsp 로 이동함
-//	@RequestMapping(value = "updateMember.do", method = { RequestMethod.GET, RequestMethod.POST })
-//	public String updateMemberMethod(Member member, Model model) {
-//
-//		if (memberService.updateMember(member) > 0) {
-//			// 수정이 성공했다면, 컨트롤러의 메소드를 직접 호출함
-//			// 필요시, 값을 전달할 수도 있음 : 쿼리스트링 사용함
-//			// ?이름=값&이름=값
-//			return "redirect:myinfo.do?user_id=" + member.getUser_id();
-//		} else {
-//			model.addAttribute("message", member.getUser_id() + " : 회원 정보 수정 실패😞");
-//			return "common/error";
-//		}
-//	}
 
+	
+	
 	// 회원정보 수정 처리용 : 수정 성공시 myinfoPage.jsp 로 이동
 	@RequestMapping(value = "mupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView memberUpdateMethod(@RequestParam("user_id") String user_id,
@@ -936,89 +814,6 @@ public class MemberController {
 
 		return num;
 
-	}
-
-
-	//서치 시작 ---------------------------------------------------------------
-	//검색용
-	@RequestMapping(value="membersearch.do", method={ RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView memberSearchoneMethod(
-			@RequestParam(name = "page", required = false, defaultValue = "1") String page,
-			@RequestParam("searchtype") String searchtype, HttpServletRequest request,
-			@RequestParam("keyword") String keyword, ModelAndView mv) {
-		String beginDate = null, endDate = null, bdate = null;
-		CountSearch countSearch = new CountSearch(searchtype, keyword);
-
-		int currentPage = 1;
-		if(page != null) {
-			currentPage = Integer.parseInt(page);
-		}
-
-		if (searchtype.equals("enroll")) { // enroll만 name이 keyword가 아님 begin, end로 옴
-			beginDate = request.getParameter("begin");
-			endDate = request.getParameter("end");
-		}else if(searchtype.equals("birth")){
-			beginDate = request.getParameter("begin");
-			endDate = request.getParameter("end");
-		}else {
-			keyword = request.getParameter("keyword");
-		}
-
-		int limit = 10;
-		int listCount = memberService.selectSearchListCount(countSearch);
-		Searchs searchs = new Searchs(listCount, currentPage, limit);
-		searchs.calculator();
-
-		searchs.setSearchtype(searchtype);
-		searchs.setKeyword(keyword);
-
-		ArrayList<Member> list;
-
-		if(searchtype.equals("uid")) {
-			list = memberService.selectSearchId(searchs);
-			if(list != null && list.size() > 0) {
-				mv.addObject("list", list);
-				mv.addObject("searchs", searchs);
-
-				mv.setViewName("admin/memberAllList2");
-			}
-		}else if(searchtype.equals("uname")) {
-			list = memberService.selectSearchName(searchs);
-			if(list != null && list.size() > 0) {
-				mv.addObject("list", list);
-				mv.addObject("searchs", searchs);
-
-				mv.setViewName("admin/memberAllList2");
-			}
-		}else if(searchtype.equals("unick")) {
-			list = memberService.selectSearchNick(searchs);
-			if(list != null && list.size() > 0) {
-				mv.addObject("list", list);
-				mv.addObject("searchs", searchs);
-
-				mv.setViewName("admin/memberAllList2");
-			}
-		}else if(searchtype.equals("uphone")) {
-			list = memberService.selectSearchPhone(searchs);
-			if(list != null && list.size() > 0) {
-				mv.addObject("list", list);
-				mv.addObject("searchs", searchs);
-
-				mv.setViewName("admin/memberAllList2");
-			}
-		}else if(searchtype.equals("uemail")) {
-			list = memberService.selectSearchEmail(searchs);
-			if(list != null && list.size() > 0) {
-				mv.addObject("list", list);
-				mv.addObject("searchs", searchs);
-
-				mv.setViewName("admin/memberAllList2");
-			}
-		}else {
-			mv.addObject("message", currentPage + "로 검색된 정보가 없습니다.");
-			mv.setViewName("common/error");
-		}
-		return mv;
 	}
 
 

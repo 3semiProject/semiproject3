@@ -38,31 +38,25 @@ public class MemberServiceImpl implements MemberService{
 	public Member selectFindPwEmail(Member member) {
 		return memberDao.selectFindPwEmail(member);
 	}
-
+	
+	//my post count
 	@Override
-	public Member selectProfile(Member member) {
-		return memberDao.selectProfile(member);
+	public int selectCountMyPost(String user_id) {
+		return memberDao.selectCountMyPost(user_id);
 	}
-
+	
+	//my reply count
 	@Override
-	public Member selectNickname(Member member) {
-		return memberDao.selectNickname(member);
+	public int selectCountMyReply(String user_id) {
+		return memberDao.selectCountMyReply(user_id);
 	}
+	
 
 	@Override
 	public Member selectMember(String user_id) {
 		return memberDao.selectMember(user_id);
 	}
 
-	@Override
-	public int updateFindpwE(Member member) {
-		return memberDao.updateFindpwE(member);
-	}
-
-	@Override
-	public String SendEmail(Member member) {
-		return memberDao.SendEmail(member);
-	}
 
 	@Override
 	public int insertMember(Member member) {
@@ -97,11 +91,6 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int selectDupCheckPhone(String phone) {
 		return memberDao.selectDupCheckPhone(phone);
-	}
-
-	@Override  //수정필요
-	public ArrayList<Member> selectMemberList() {
-		return memberDao.selectMemberList();
 	}
 
 	
@@ -204,6 +193,24 @@ public class MemberServiceImpl implements MemberService{
 	public ArrayList<Member> selectSearchLoginok(Searchs searchs) {
 		return memberDao.selectSearchLoginok(searchs);
 	}
+	@Override
+	public ArrayList<Member> selectMemberList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public int updateFindpwE(Member member) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public String SendEmail(Member member) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
 
 
 
