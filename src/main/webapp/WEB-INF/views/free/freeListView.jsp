@@ -38,9 +38,11 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
         line-height:30px;
 }
 
-    #ulTable {margin-top:10px;}
+    #ulTable {
+    	margin-top:10px;
+    	width: auto;
+    }
     
-
     #ulTable > li:first-child > ul > li {
         background-color:#01CD88;
         font-weight:bold;
@@ -53,6 +55,7 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
         position:relative;
         min-width:40px;
 }
+
     #ulTable > li > ul > li { 
         float:left;
         font-size:10pt;
@@ -67,7 +70,7 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
     #ulTable > li > ul > li:first-child +li+li+li+li  {width:15%;} /*작성자 열 크기*/
 	#ulTable > li > ul > li:first-child +li+li+li+li  {width:10%;} /*조회수 열 크기*/
     #divPaging {
-          clear:both; 
+        clear:both; 
         margin:0 auto; 
         width:220px; 
         height:50px;
@@ -122,7 +125,6 @@ Simple Css --> /* 	html, body{ margin:0; padding:0}
 	#wri{
 		align: center;
 	}
-
 </style>
 <script type="text/javascript"
             src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
