@@ -16,12 +16,12 @@
         margin:0;
 }
 
-    #nocietWrapper{
+    #bannerWrapper{
         width: 1130px;
         height: 1200px;
     }
 
-    #nocietWrapper > ul > li:first-child {
+    #bannerWrapper > ul > li:first-child {
         text-align: center;
         font-size:14pt;
         height:40px;
@@ -51,12 +51,11 @@
         vertical-align:baseline;
 }    
 
-    #ulTable > li > ul > li:first-child               {width:10%;} /*No 열 크기*/
-    #ulTable > li > ul > li:first-child +li           {width:35%;} /*제목 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li        {width:10%;} /*첨부파일 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li+li     {width:20%;} /*작성일 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li+li+li  {width:15%;} /*작성자 열 크기*/
-	#ulTable > li > ul > li:first-child +li+li+li+li+li  {width:10%;} /*조회수 열 크기*/
+    #ulTable > li > ul > li:first-child               {width:9%;} /*No 열 크기*/
+    #ulTable > li > ul > li:first-child +li           {width:48%;} /*제목 열 크기*/
+    #ulTable > li > ul > li:first-child +li+li        {width:17%;} /*작성자 열 크기*/
+    #ulTable > li > ul > li:first-child +li+li+li     {width:17%;} /*등록일 열 크기*/
+    #ulTable > li > ul > li:first-child +li+li+li+li  {width:9%;} /*배너항목 열 크기*/
     #divPaging {
           clear:both; 
         margin:0 auto; 
@@ -113,90 +112,77 @@
 	}
 
 </style>
-    <title>공지사항</title>
+    <title>유튜브&기사 관리</title>
 
     <script type="text/javascript"
             src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
     <script type="text/javascript">
-	function elist() {
-		//버튼 클릭시, 로그인 페이지로 이동하는 controller 요청
-		location.href = "nlist.do";
-	}
     </script>
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/menubar.jsp" />
-	
-	<c:import url="/WEB-INF/views/common/csbar.jsp" />
 <hr>
-<div id="nocietWrapper">
+<div id="bannerWrapper">
 
         <ul>
             <!-- 게시판 제목 -->
-            <li id="title" onclick="nlist()">공지사항</li>
+            <li id="title">유튜브&기사 관리</li>
 
             <!-- 게시판 목록  -->
             <li>
                 <ul id ="ulTable">
                     <li>
                         <ul>
-                            <li>No</li>
-                            <li class="center">제목</li>
-                            <li>첨부파일</li>
-                            <li>작성일</li>
-                            <li>작성자</li>
-                            <li>조회수</li>
+                        	<li>No</li>
+                            <li>제목</li>
+                            <li class="center">작성자</li>
+                            <li>등록일</li>
+                            <li>배너항목</li>
                         </ul>
                     </li>
                     <!-- 게시물이 출력될 영역 -->
-                <c:forEach items="${ list }" var="n">
+                <c:forEach items="${ list }" var="ba">
                 	<li>
                 		<ul>
-                			<li>${ n.notice_no }</li>
-                			<c:url var="ndt" value="/ndetail.do?page=1">
-								<c:param name="notice_no" value="${ n.notice_no }" />
+                			<li>${ ba.banner_no }</li>
+                			<c:url var="badt" value="/badetail.do?page=1">
+								<c:param name="banner_no" value="${ ba.banner_no }" />
 								<c:param name="page" value="${ currentPage }" />
 							</c:url>
                             <li class="center">
                             <c:if test="${ !empty sessionScope.loginMember }">
-								<a class="yy" href="${ ndt }">${ n.notice_title }</a>
+								<a class="yy" href="${ badt }">${ ba.banner_title }</a>
 							</c:if>
 							<c:if test="${ empty sessionScope.loginMember }">
-								${ n.notice_title }
+								${ ba.banner_title }
 							</c:if>
                             </li>
-                            <li>
-                            	<c:if test="${ !empty n.notice_originfile }">◎</c:if>
-								<c:if test="${ empty n.notice_originfile }">Empty</c:if>
-                            </li>
-                            <li>${n.write_notice_date}</li>
-                            <li>${n.user_id}</li>
-                            <li class="center"> &nbsp; ${n.notice_views}</li>
+                            <li>${ ba.user_id }</li>
+                            <li>${ ba.banner_post_date }</li>
+                            <li>${ ba.banner_item }</li>
                 		</ul>
                 	</li>
                 </c:forEach>                       
                 </ul>
             </li>
-            <br>
-            <br>
             <c:if test="${sessionScope.loginMember.admin_ck eq 'Y'}">
-            	<form action="nmovewrite.do" method="post">
+             	<form action="bawform.do" method="post">
             		<div align="left">
             			<c:if test="${ !empty sessionScope.loginMember }">
-             				<input id="nri" type=submit value="글쓰기">
+             				<input id="bari" type=submit value="글쓰기">
              			</c:if>
             		</div>
             	</form>
             </c:if>
+            
 <%--검색 항목--%>
 <center>
             <li id='liSearchOption'>
-            	<form action="nsearch.do?page=1" method="post">
+            	<form action="basearch.do?page=1" method="post">
                 <div>
                     <select name="searchtype" >
-                        <option value="nname">제목</option>
-                        <option value="ncontent">내용</option>
-                        <option value="nid">작성자</option>                        
+                        <option value="baname">제목</option>
+                        <option value="baid">작성자</option>                        
                     </select>
                     <input type="search" name="keyword">
                     <input type="submit" value="검색">
@@ -205,7 +191,7 @@
              </li>
 
         </ul>
-	<c:import url="/WEB-INF/views/notice/noticesearchpaging.jsp" />
+	<c:import url="/WEB-INF/views/banner/bannersearchpaging.jsp" />
    </div>
    <br>
 </center>

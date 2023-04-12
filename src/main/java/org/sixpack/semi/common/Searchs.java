@@ -34,5 +34,7 @@ public class Searchs extends Paging implements java.io.Serializable {
 	public String toString() {
 		return "Searchs [searchtype=" + searchtype + ", keyword=" + keyword + "]";
 	}
+
+	
 	
 }

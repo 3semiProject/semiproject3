@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.banner.model.vo.Banner;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -32,19 +34,37 @@ public class BannerDao {
 		return session.update("bannerMapper.updateBanner", banner);
 	}
 
-	public int deleteBanner(Banner banner) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteBanner(int banner_no) {
+		return session.delete("bannerMapper.deleteBanner", banner_no);
 	}
 
 	public int selectListCount() {
 		return session.selectOne("bannerMapper.selectListCount");
 	}
 
-	public ArrayList<String> selectlink() {
-		List<String> list = session.selectList("bannerMapper.selectlink");
+	public ArrayList<String> selectyoutubelink() {
+		List<String> list = session.selectList("bannerMapper.selectyoutubelink");
 		return (ArrayList<String>)list;
 
+	}
+
+	public ArrayList<Banner> selectarticlelink() {
+		List<Banner> list = session.selectList("bannerMapper.selectarticlelink");
+		return (ArrayList<Banner>)list;
+	}
+
+	public int selectSearchListCount(CountSearch countSearch) {
+		return session.selectOne("bannerMapper.selectSearchListCount", countSearch);
+	}
+
+	public ArrayList<Banner> selectSearchTitle(Searchs searchs) {
+		List<Banner> list = session.selectList("bannerMapper.selectSearchTitle", searchs);
+		return (ArrayList<Banner>)list;
+	}
+
+	public ArrayList<Banner> selectSearchWriter(Searchs searchs) {
+		List<Banner> list = session.selectList("bannerMapper.selectSearchWriter", searchs);
+		return (ArrayList<Banner>)list;
 	}
 
 

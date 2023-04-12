@@ -468,7 +468,7 @@ public class AdminController {
 
     // hot list view
     @RequestMapping("adHotlist.do")
-    public ModelAndView hotListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+    public ModelAndView hotListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
         int currentPage = 1;
         if (page != null) {
             currentPage = Integer.parseInt(page);
@@ -491,7 +491,8 @@ public class AdminController {
         }
         return mv;
     }
-
+    
+    //검색
     @RequestMapping(value = "adHotsearch.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView hotSearchMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page,
                                         HttpServletRequest request, ModelAndView mv) {
@@ -546,7 +547,8 @@ public class AdminController {
             return mv;
         }
     }
-
+    
+    //검색
     @RequestMapping(value = "adNewsearch.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView newSearchMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page,
                                         HttpServletRequest request, ModelAndView mv) {
@@ -601,9 +603,10 @@ public class AdminController {
             return mv;
         }
     }
-
+    
+    //리스트
     @RequestMapping("adNewlist.do")
-    public ModelAndView newListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+    public ModelAndView newListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
         int currentPage = 1;
         if (page != null) {
             currentPage = Integer.parseInt(page);
@@ -632,7 +635,7 @@ public class AdminController {
     // 리스트
     @RequestMapping(value = "adFreelist.do", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public ModelAndView freeListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+    public ModelAndView freeListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
         int currentPage = 1;
         if (page != null) {
             currentPage = Integer.parseInt(page);
@@ -1348,9 +1351,9 @@ public class AdminController {
 
 
     //리스트 출력
-    @RequestMapping("memberlist.do")
+    @RequestMapping(value = "memberlist.do", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
-    public ModelAndView showMemberListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+    public ModelAndView showMemberListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
 
         int currentPage = 1;
         if (page != null) {

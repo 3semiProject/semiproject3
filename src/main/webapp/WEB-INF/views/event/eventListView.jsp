@@ -57,7 +57,7 @@
     #ulTable > li > ul > li:first-child +li+li        {width:10%;} /*첨부파일 열 크기*/
     #ulTable > li > ul > li:first-child +li+li+li     {width:20%;} /*작성일 열 크기*/
     #ulTable > li > ul > li:first-child +li+li+li+li  {width:15%;} /*작성자 열 크기*/
-	#ulTable > li > ul > li:first-child +li+li+li+li  {width:10%;} /*조회수 열 크기*/
+	#ulTable > li > ul > li:first-child +li+li+li+li+li  {width:10%;} /*조회수 열 크기*/
     #divPaging {
           clear:both; 
         margin:0 auto; 
@@ -180,6 +180,16 @@
                 </c:forEach>                       
                 </ul>
             </li>
+            <br>
+            <c:if test="${sessionScope.loginMember.admin_ck eq 'Y'}">
+            	<form action="evtwform.do" method="post">
+            		<div align="left">
+            			<c:if test="${ !empty sessionScope.loginMember }">
+             				<input id="eri" type=submit value="글쓰기">
+             			</c:if>
+            		</div>
+            	</form>
+            </c:if>
             
 <%--검색 항목--%>
 <center>
@@ -202,12 +212,7 @@
    </div>
    <br>
 </center>
-<%--관리자 접속시--%>
-<center>
-    <c:if test="${sessionScope.loginMember.admin_ck eq 'Y'}">
-        <button onclick="location.href='emovewrite.do'">새 이벤트 글등록</button>
-    </c:if>
-</center>
+
 <hr>
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>

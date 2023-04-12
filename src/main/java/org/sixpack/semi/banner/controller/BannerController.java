@@ -7,8 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.sixpack.semi.banner.model.service.BannerService;
 import org.sixpack.semi.banner.model.vo.Banner;
+import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.common.Paging;
+import org.sixpack.semi.common.Searchs;
+import org.sixpack.semi.free.model.vo.Free;
 import org.sixpack.semi.qna.model.vo.Qna;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -141,8 +144,67 @@ public class BannerController {
 				}
 	}
 	@RequestMapping("bannerDelete.do")
-	public String BannerDeleteMethod(int banner_no, Model model) {
-		return null;
+	public String BannerDeleteMethod(@RequestParam("banner_no") int banner_no, 
+			Model model, HttpServletRequest request) {
+		
+		if(bannerService.deleteBanner(banner_no) > 0) {
+
+			return "redirect:bannerlist.do";
+		}else {
+			model.addAttribute("message", 
+					banner_no + "번 배너 삭제 실패!");
+			return "common/error";
+		}
+	}
+	
+	@RequestMapping(value="basearch.do", method={ RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView bannerSearchMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page,
+			HttpServletRequest request, ModelAndView mv) {
+	
+		String searchtype = request.getParameter("searchtype");
+		String keyword = request.getParameter("keyword");
+
+		CountSearch countSearch = new CountSearch(searchtype, keyword);
+
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+
+		int limit = 10;
+		int listCount = bannerService.selectSearchListCount(countSearch);
+		Searchs searchs = new Searchs(listCount, currentPage, limit);
+
+		searchs.setSearchtype(searchtype);
+		searchs.setKeyword(keyword);
+
+		ArrayList<Banner> list;
+		if (searchtype.equals("baname")) {
+			list = bannerService.selectSearchTitle(searchs);
+			if (list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+
+				mv.setViewName("banner/bannerListView2");
+			}
+		} else if (searchtype.equals("baid")) {
+			list = bannerService.selectSearchWriter(searchs);
+			if (list != null && list.size() > 0) {
+				mv.addObject("list", list);
+				mv.addObject("searchs", searchs);
+
+				mv.setViewName("banner/bannerListView2");
+			}
+		}
+
+		if (mv.isEmpty()) {
+			mv.addObject("searchs", searchs);
+			mv.setViewName("banner/bannerListView2");
+			return mv;
+		} else {
+			return mv;
+		}
+		
 	}
 //
 //	 @RequestMapping("yootubelink.do")

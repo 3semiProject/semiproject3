@@ -183,10 +183,6 @@ function changeLogin(element) {
                 	<li>
                 		<ul>
                 			<li>${ m.user_id }</li>
-                			<c:url var="mdt" value="/ndetail.do?page=1">
-								<c:param name="user_id" value="${ m.user_id }" />
-								<c:param name="page" value="${ currentPage }" />
-							</c:url>
                             <li class="center">${ m.user_name } </li>
                             <li>${m.user_nickname}</li>
                             <li>${m.phone}</li>

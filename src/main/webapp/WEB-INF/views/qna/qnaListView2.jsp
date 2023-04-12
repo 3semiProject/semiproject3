@@ -208,17 +208,17 @@
                 </c:forEach>                       
                 </ul>
             </li>
-            
-<%--검색 항목--%>
-<center>
-            <li id='liSearchOption'>
             <form action="qwform.do" method="post">
-            	<div>
-            	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck ne 'Y'}">
+            	<div align="left">
+            	<c:if test="${ !empty sessionScope.loginMember }">
              		<input id="qri" type=submit value="글쓰기">
              	</c:if>
             	</div>
             </form>
+            
+<%--검색 항목--%>
+<center>
+            <li id='liSearchOption'>
             	<form action="qnasearch.do?page=1" method="post">
                 <div>
                     <select name="searchtype" >
@@ -236,12 +236,6 @@
 	<c:import url="/WEB-INF/views/qna/qnasearchpaging.jsp" />
    </div>
    <br>
-</center>
-<%--관리자 접속시--%>
-<center>
-    <c:if test="${sessionScope.loginMember.admin_ck eq 'Y'}">
-        <button onclick="location.href='qmovewrite.do'">새 이벤트 글등록</button>
-    </c:if>
 </center>
 <hr>
 	<c:import url="/WEB-INF/views/common/footer.jsp" />

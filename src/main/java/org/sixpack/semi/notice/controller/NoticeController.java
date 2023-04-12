@@ -32,8 +32,8 @@ public class NoticeController {
 	private NoticeService noticeService;
 	
 	//공지사항 전체 목록보기 요청 처리용
-	@RequestMapping("nlist.do")
-	public ModelAndView noticeListMethod(@RequestParam(name = "page", required = false) String page, ModelAndView mv) {
+	@RequestMapping(value = "nlist.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView noticeListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
 		
 		int currentPage = 1;
 		if(page != null) {
@@ -66,11 +66,9 @@ public class NoticeController {
 	@RequestMapping(value="nsearch.do", method={ RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView noitceSearchMethod(
 			@RequestParam(name = "page", required = false, defaultValue = "1") String page,
-			@RequestParam("searchtype") String searchtype,
-			@RequestParam("keyword") String keyword,
-			/* HttpServletRequest request, */ ModelAndView mv) {
-//		String searchtype = request.getParameter("searchtype");
-//		String keyword = request.getParameter("keyword");
+			HttpServletRequest request, ModelAndView mv) {
+		String searchtype = request.getParameter("searchtype");
+		String keyword = request.getParameter("keyword");
 		
 		CountSearch countSearch = new CountSearch(searchtype, keyword);
 		
@@ -113,11 +111,14 @@ public class NoticeController {
 				
 				mv.setViewName("notice/noticeListView2");
 			}
-		}else {
-			mv.addObject("message", currentPage + "로 검색된 공지글 정보가 없습니다.");
-			mv.setViewName("common/error");
 		}
-		return mv;
+		if (mv.isEmpty()) {
+			mv.addObject("searchs", searchs);
+			mv.setViewName("notice/noticeListView2");
+			return mv;
+		} else {
+			return mv;
+		}
 	}
 	
 	//공지글 상세보기 요청 처리용
@@ -133,18 +134,14 @@ public class NoticeController {
 			
 			Member loginMember = (Member)session.getAttribute("loginMember");
 			
-			if(loginMember != null && loginMember.getAdmin_ck().equals("Y")) {
-				//로그인한 관리자가 요청했다면
-				return "notice/noticeAdminDetailView";
-			}else {
-				//관리자가 아닌 | 로그인 안 한 상태에서의 요청이라면
+
 				return "notice/noticeDetailView";
-			}
 			
 		}else {
 			model.addAttribute("message", notice_no + "번 공지글 상세보기 조회 실패!");
 			return "common/error";
 		}
+		
 		
 	}
 	
@@ -171,16 +168,16 @@ public class NoticeController {
 	}
 	
 	//공지글 수정페이지로 이동 요청 처리용
-	@RequestMapping("nmoveup.do")
-	public String moveUpdatePage(@RequestParam("noticeno") int noticeno, Model model) {
+	@RequestMapping("nupview.do")
+	public String moveUpdatePage(@RequestParam("notice_no") int notice_no, Model model) {
 		//수정페이지에 출력할 해당 공지글 다시 조회함
-		Notice notice = noticeService.selectNotice(noticeno);
+		Notice notice = noticeService.selectNotice(notice_no);
 		
 		if(notice != null) {
 			model.addAttribute("notice", notice);
 			return "notice/noticeUpdateForm";
 		}else {
-			model.addAttribute("message", noticeno + "번 공지글 수정페이지로 이동 실패!");
+			model.addAttribute("message", notice_no + "번 공지글 수정페이지로 이동 실패!");
 			return "common/error";
 		}
 		

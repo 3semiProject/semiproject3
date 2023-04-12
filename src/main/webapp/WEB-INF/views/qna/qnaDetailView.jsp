@@ -54,7 +54,6 @@ body {
 							<c:param name="qna_no" value="${ qna.qna_no }" />
 						</c:url> <a href="${ qqup }">[글수정]</a> &nbsp; &nbsp;
 				</c:if>
-				<button onclick="javascript:location.href='qnalist.do?page=${ currentPage }';">목 록</button>
 					&nbsp;
 				<c:if test="${ sessionScope.loginMember.admin_ck eq 'Y' }">
 					<c:url var="qrf" value="/qreplyform.do">
@@ -71,7 +70,8 @@ body {
 					</c:url>
 					<a href="${ qqde }">[글삭제]</a> &nbsp; &nbsp;
             </c:if>
-				</td>
+				<button onclick="javascript:location.href='qnalist.do?page=${ currentPage }';">목 록</button>
+				
 			</tr>
 			<tr height="40">
 				<th>제목</th>

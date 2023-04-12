@@ -43,25 +43,25 @@ body {
 	<c:import url="/WEB-INF/views/common/csbar.jsp" />
 	<hr>
 	<div>
-		<p id="title">공지사항 상세보기</p>
+		<p id="title">EVENT 상세보기</p>
 	</div>
 	<div>
 		<table width="100%" border="1px solid" cellpadding="0" cellspacing="0">
 			<tr>
 				<c:if
-					test="${ requestScope.event.user_id eq sessionScope.loginMember.user_id }">
-					<th>공지사항 게시물 관리</th>
-					<td align="center"><c:url var="eup" value="/eupview.do">
+					test="${ sessionScope.loginMember.admin_ck eq 'Y' }">
+					<th>EVENT 게시물 관리</th>
+					<td align="center"><c:url var="eup" value="/evtupview.do">
 							<c:param name="event_no" value="${ event.event_no }" />
 						</c:url> <a href="${ eup }">[글수정]</a> &nbsp; &nbsp;
 				</c:if>
 
 				<c:if
-					test="${ requestScope.event.user_id eq sessionScope.loginMember.user_id }">
+					test="${ sessionScope.loginMember.admin_ck eq 'Y' }">
 					<c:url var="ede" value="/edel.do">
 						<c:param name="event_no" value="${ event.event_no }" />
 					</c:url>
-					<a href="${ nde }">[글삭제]</a> &nbsp; &nbsp;
+					<a href="${ ede }">[글삭제]</a> &nbsp; &nbsp;
             </c:if>
 				</td>
 			</tr>

@@ -58,7 +58,7 @@
 	margin: 0;
 	width: 49.5%;
 	height: 800px;
-	border: 1px blue solid;
+	border: 1px black solid;
 	background-color: white;
 }
 
@@ -68,7 +68,7 @@
 	float: right;
 	width: 49.5%;
 	height: 800px;
-	border: 1px blue solid;
+	border: 1px black solid;
 	background-color: white;
 }
 
@@ -288,21 +288,16 @@ span{
 
 		<div id="mainTextBox_banner">
 			<div id="banner_article">
-
-				<a href="https://newsis.com/view/?id=NISX20230407_0002257899&cID=10201&pID=10200">
-				<img width="273.2" height="146.9" src="https://image.newsis.com/2022/04/11/NISI20220411_0000972072_web.jpg?rnd=20220411161920">
-				<span>기사제목입니당.</span>
+			<c:forEach var="list" items="${bannerarticlelink}">
+				<a href="${ list.banner_link_adrress }">
+				<img width="273.2" height="136.9" src="${ list.banner_img }">
+				<span>${ list.banner_title }</span>
 				</a>
-
-				
-				<div name="article">article2</div>
-				<div name="article">article3</div>
-				<div name="article">article4</div>
-
+			</c:forEach>
 
 			</div>
 			<div id="banner_youtube">
-			<c:forEach var="list" items="${bannerlink}">
+			<c:forEach var="list" items="${banneryoutubelink}">
 				<iframe width="273.2" height="196.9" src="${list}" 
 					title="YouTube video player" frameborder="0" 
 					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 

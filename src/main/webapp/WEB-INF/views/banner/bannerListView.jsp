@@ -52,10 +52,10 @@
 }    
 
     #ulTable > li > ul > li:first-child               {width:9%;} /*No 열 크기*/
-    #ulTable > li > ul > li:first-child +li           {width:28%;} /*제목 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li        {width:27%;} /*첨부파일 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li+li     {width:27%;} /*첨부파일 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li+li+li  {width:9%;} /*첨부파일 열 크기*/
+    #ulTable > li > ul > li:first-child +li           {width:48%;} /*제목 열 크기*/
+    #ulTable > li > ul > li:first-child +li+li        {width:17%;} /*작성자 열 크기*/
+    #ulTable > li > ul > li:first-child +li+li+li     {width:17%;} /*등록일 열 크기*/
+    #ulTable > li > ul > li:first-child +li+li+li+li  {width:9%;} /*배너항목 열 크기*/
     #divPaging {
           clear:both; 
         margin:0 auto; 
@@ -165,13 +165,16 @@
                 </c:forEach>                       
                 </ul>
             </li>
-             <form action="bawform.do" method="post">
-            	<div>
-            	<c:if test="${ !empty sessionScope.loginMember }">
-             		<input id="bari" type=submit value="글쓰기">
-             	</c:if>
-            	</div>
-            </form>
+            <c:if test="${sessionScope.loginMember.admin_ck eq 'Y'}">
+             	<form action="bawform.do" method="post">
+            		<div align="left">
+            			<c:if test="${ !empty sessionScope.loginMember }">
+             				<input id="bari" type=submit value="글쓰기">
+             			</c:if>
+            		</div>
+            	</form>
+            </c:if>
+             	
             
 <%--검색 항목--%>
 <center>
@@ -180,7 +183,6 @@
                 <div>
                     <select name="searchtype" >
                         <option value="baname">제목</option>
-                        <option value="bacontent">내용</option>
                         <option value="baid">작성자</option>                        
                     </select>
                     <input type="search" name="keyword">

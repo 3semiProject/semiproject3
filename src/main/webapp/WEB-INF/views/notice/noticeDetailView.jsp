@@ -49,7 +49,7 @@ body {
 		<table width="100%" border="1px solid" cellpadding="0" cellspacing="0">
 			<tr>
 				<c:if
-					test="${ requestScope.notice.user_id eq sessionScope.loginMember.user_id }">
+					test="${ sessionScope.loginMember.admin_ck eq 'Y' }">
 					<th>공지사항 게시물 관리</th>
 					<td align="center"><c:url var="nup" value="/nupview.do">
 							<c:param name="notice_no" value="${ notice.notice_no }" />
@@ -57,13 +57,13 @@ body {
 				</c:if>
 
 				<c:if
-					test="${ requestScope.notice.user_id eq sessionScope.loginMember.user_id }">
+					test="${ sessionScope.loginMember.admin_ck eq 'Y' }">
 					<c:url var="nde" value="/ndel.do">
 						<c:param name="notice_no" value="${ notice.notice_no }" />
 					</c:url>
 					<a href="${ nde }">[글삭제]</a> &nbsp; &nbsp;
             </c:if>
-				</td>
+				<button onclick="history.go(-1);">목록</button>
 			</tr>
 			<tr height="40">
 				<th>제목</th>
@@ -96,7 +96,7 @@ body {
 							<c:param name="ofile" value="${ notice.notice_originfile }" />
 							<c:param name="rfile" value="${ notice.notice_renamefile }" />
 						</c:url>
-                  &nbsp; &nbsp; [&nbsp; <a href="${ qfd }">${ notice.notice_originfile }</a> &nbsp;]
+                  &nbsp; &nbsp; [&nbsp; <a href="${ nfd }">${ notice.notice_originfile }</a> &nbsp;]
                </c:if> <!-- 첨부파일이 없다면, 공백 처리 --> <c:if
 						test="${ empty notice.notice_originfile }">
                    &nbsp; &nbsp; Empty

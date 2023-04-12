@@ -7,9 +7,6 @@ import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -17,18 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.collections.map.HashedMap;
+import org.sixpack.semi.banner.model.service.BannerService;
+import org.sixpack.semi.banner.model.vo.Banner;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.common.Searchs;
-import org.sixpack.semi.common.SearchDate;
 import org.sixpack.semi.kakao.model.service.KakaoService;
 import org.sixpack.semi.log.controller.LogController;
 import org.sixpack.semi.log.model.service.LogService;
 import org.sixpack.semi.log.model.vo.Log;
 import org.sixpack.semi.member.model.service.MemberService;
 import org.sixpack.semi.member.model.vo.Member;
-import org.sixpack.semi.qna.model.vo.Qna;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +33,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,7 +44,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class MemberController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
-
+	
+	@Autowired
+	BannerService bannerService;
+	
 	@Autowired
 	private MemberService memberService;
 
@@ -104,6 +102,11 @@ public class MemberController {
 			log.setUser_id(loginMember.getUser_id());
 			log.setVisit_ip(visit_ip);
 			log.setVisit_time(visit_time);
+			ArrayList<String> banneryoutubelink = bannerService.selectyoutubelink();
+			ArrayList<Banner> bannerarticlelink = bannerService.selectarticlelink();
+
+			model.addAttribute("banneryoutubelink", banneryoutubelink);
+			model.addAttribute("bannerarticlelink", bannerarticlelink);
 
 			if (logService.insertLog(log) > 0) {
 				return "common/main";
@@ -127,6 +130,11 @@ public class MemberController {
 		logger.info("logout.do" + session);
 		if (session != null) {
 			session.invalidate();
+			ArrayList<String> banneryoutubelink = bannerService.selectyoutubelink();
+			ArrayList<Banner> bannerarticlelink = bannerService.selectarticlelink();
+
+			model.addAttribute("banneryoutubelink", banneryoutubelink);
+			model.addAttribute("bannerarticlelink", bannerarticlelink);
 			return "common/main";
 		} else {
 			model.addAttribute("message", "로그인 세션이 존재하지 않습니다.");
@@ -377,6 +385,22 @@ public class MemberController {
 			if (memberService.selectPhoneCount(phone) > 0) {
 			String code = memberService.sendRandomMsg(phone);
 			return code;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "0";
+	}
+	
+	// ajax 통신으로 핸드폰 인증번호 요청 처리용 메소드(naver cloud)
+	@RequestMapping(value = "authNumberenroll.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String phoneAuthEnroll(@RequestParam("phone") String phone, HttpSession session) {
+		
+		try { // 이미 가입된 전화번호가 있으면
+			if (memberService.selectPhoneCount(phone) == 0) {
+				String code = memberService.sendRandomMsg(phone);
+				return code;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -944,9 +968,10 @@ public class MemberController {
 	@RequestMapping(value="membersearch.do", method={ RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView memberSearchoneMethod(
 			@RequestParam(name = "page", required = false, defaultValue = "1") String page,
-			@RequestParam("searchtype") String searchtype, HttpServletRequest request,
-			@RequestParam("keyword") String keyword, ModelAndView mv) {
-		String beginDate = null, endDate = null, bdate = null;
+			HttpServletRequest request, ModelAndView mv) {
+		String searchtype = request.getParameter("searchtype");
+		String keyword = request.getParameter("keyword");
+		
 		CountSearch countSearch = new CountSearch(searchtype, keyword);
 
 		int currentPage = 1;
@@ -954,15 +979,6 @@ public class MemberController {
 			currentPage = Integer.parseInt(page);
 		}
 
-		if (searchtype.equals("enroll")) { // enroll만 name이 keyword가 아님 begin, end로 옴
-			beginDate = request.getParameter("begin");
-			endDate = request.getParameter("end");
-		}else if(searchtype.equals("birth")){
-			beginDate = request.getParameter("begin");
-			endDate = request.getParameter("end");
-		}else {
-			keyword = request.getParameter("keyword");
-		}
 
 		int limit = 10;
 		int listCount = memberService.selectSearchListCount(countSearch);
@@ -1014,13 +1030,15 @@ public class MemberController {
 
 				mv.setViewName("admin/memberAllList2");
 			}
-		}else {
-			mv.addObject("message", currentPage + "로 검색된 정보가 없습니다.");
-			mv.setViewName("common/error");
 		}
-		return mv;
+		if (mv.isEmpty()) {
+			mv.addObject("searchs", searchs);
+			mv.setViewName("admin/memberAllList2");
+			return mv;
+		} else {
+			return mv;
+		}
+
 	}
-
-
 
 }

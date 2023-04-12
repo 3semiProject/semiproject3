@@ -26,10 +26,10 @@
 		<a href="${ p1 }">[맨처음]</a> &nbsp;
 	</c:if>
 	<!-- 이전 페이지그룹으로 이동하는 버튼 -->
-	<c:if test="${ !((currentPage - 10) < startPage and (currentPage - 10) > 1) }">
+	<c:if test="${ !((currentPage - 9.9) < startPage and (currentPage - 9.9) > 1) }">
 		[이전그룹] &nbsp;
 	</c:if>
-	<c:if test="${ (currentPage - 10) < startPage and (currentPage - 10) > 1 }">
+	<c:if test="${ (currentPage - 9.9) < startPage and (currentPage - 9.9) > 1 }">
 		<c:url var="pbefore" value="/adBFlist.do">
 			<c:param name="page" value="${ startPage - 10 }" />
 		</c:url>
@@ -50,12 +50,12 @@
 	</c:forEach>
 	
 	<!-- 다음 페이지그룹으로 이동하는 버튼 -->
-	<c:if test="${ !((currentPage + 10) > endPage and (currentPage + 10) < maxPage) }">
+	<c:if test="${ !((currentPage + 10) > endPage && maxPage - (endPage + 1) >= 0) }">
 		[다음그룹] &nbsp;
 	</c:if>
-	<c:if test="${ (currentPage + 10) > endPage and (currentPage + 10) < maxPage }">
+	<c:if test="${ (currentPage + 10) > endPage && maxPage - (endPage + 1) >= 0 }">
 		<c:url var="pafter" value="/adBFlist.do">
-			<c:param name="page" value="${ endPage + 10 }" />
+			<c:param name="page" value="${ endPage + 1 }" />
 		</c:url>
 		<a href="${ pafter }">[다음그룹]</a> &nbsp;
 	</c:if>
