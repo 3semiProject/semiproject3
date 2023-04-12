@@ -11,6 +11,8 @@ import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.member.model.vo.Member;
 
 public interface MemberService {
+
+
     //회원 id find for phone
     String selectFindIdPhone(Member member);
     //회원 id find for email
@@ -19,8 +21,12 @@ public interface MemberService {
     Member selectFindPwPhone(Member member);
     //회원 pw find for email
     Member selectFindPwEmail(Member member);
-    Member selectProfile(Member member);
-    Member selectNickname(Member member);
+
+	//my postCount
+	int selectCountMyPost(String user_id);
+	//my replyCount
+	int selectCountMyReply(String user_id);
+
     Member selectMember(String user_id);
     int selectDupCheckId(String user_id);
     int selectDupCheckNick(String user_nickname);

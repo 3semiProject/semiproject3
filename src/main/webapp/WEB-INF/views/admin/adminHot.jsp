@@ -57,14 +57,13 @@ body{
         vertical-align:baseline;
 }    
 
-   #ulTable > li > ul > li:first-child               			  {width:5%;} /*체크박스 열 크기*/
-    #ulTable > li > ul > li:first-child +li           			  {width:5%;}  /*No 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li        			  {width:35%;} /*제목 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li+li    			  {width:10%;} /*첨부파일 열 크기*/
-    #ulTable > li > ul > li:first-child +li+li+li+li  			  {width:15%;} /*작성자 열 크기*/
-	#ulTable > li > ul > li:first-child +li+li+li+li+li  		  {width:10%;} /*작성일 열 크기*/
-	#ulTable > li > ul > li:first-child +li+li+li+li+li+li  	  {width:10%;} /*조회수 열 크기*/
-	#ulTable > li > ul > li:first-child +li+li+li+li+li +li+li 	  {width:5%;} /*삭제버튼 열 크기*/
+  #ulTable > li > ul > li:first-child               			  {width:5%;} /*No 열 크기*/
+    #ulTable > li > ul > li:first-child +li           			  {width:35%;} /*제목 열 크기*/
+    #ulTable > li > ul > li:first-child +li+li        			  {width:15%;} /*첨부파일 열 크기*/
+    #ulTable > li > ul > li:first-child +li+li+li    			  {width:15%;} /*작성자 열 크기*/
+    #ulTable > li > ul > li:first-child +li+li+li+li  			  {width:10%;} /*작성일 열 크기*/
+	#ulTable > li > ul > li:first-child +li+li+li+li+li  		  {width:10%;} /*조회수 열 크기*/
+	#ulTable > li > ul > li:first-child +li+li+li+li+li+li  	  {width:10%;} /*삭제*/
     #divPaging {
           clear:both; 
         margin:0 auto; 
@@ -126,7 +125,9 @@ body{
 <script type="text/javascript"
             src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
-	
+function delBoard(input) {
+	location.href="adAllBoardDelete.do?board_no="+input+"&category=1";
+}
 </script>
 <title></title>
 </head>
@@ -142,7 +143,6 @@ body{
 	<div style="width: 30%; border: 1px solid #D1D1D1;">게시판별 보기</div>
 	<div style="width: 60%;">
 		<select id="optionLink" name="searchtype" onchange="if(this.value) location.href=(this.value);">
-			<option value="boardMgt.do?page=1">유해게시글관리</option>
 			<option value="adHotlist.do?page=1" selected="selected">HOT</option>
 			<option value="adNewlist.do?page=1">NEW</option>
 			<option value="adFreelist.do?page=1">FREE</option>
