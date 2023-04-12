@@ -67,7 +67,7 @@ public class BfafController {
 	@RequestMapping(value = "bfafrepupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String bfafRepUpdateMethod(Bfaf bfaf, Model model) {
 		if (bfafService.updateReple(bfaf) > 0) {
-			return "redirect:bfafdetail.do?bfaf_no=" + bfaf.getBfaf_ref();
+			return "redirect:bfafdetail.do?bfaf_no=" + bfaf.getBfaf_ref() + "&user_id=" + bfaf.getUser_id();
 		} else {
 			model.addAttribute("message", "댓글 수정 실패!");
 			return "common/error";
@@ -85,7 +85,7 @@ public class BfafController {
 	@RequestMapping(value = "bfafrepinsert2.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String bfafRepInsert2Method(Bfaf bfaf, Model model) {
 		if (bfafService.insertReple2(bfaf) > 0) {
-			return "redirect:bfafdetail.do?bfaf_no=" + bfaf.getBfaf_ref();
+			return "redirect:bfafdetail.do?bfaf_no=" + bfaf.getBfaf_ref() + "&user_id=" + bfaf.getUser_id();
 		} else {
 			model.addAttribute("message", "대댓글 등록 실패!");
 			return "common/error";
@@ -103,7 +103,7 @@ public class BfafController {
 	@RequestMapping(value = "bfafrepinsert.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String bfafRepInsertMethod(Bfaf bfaf, Model model) {
 		if (bfafService.insertReple(bfaf) > 0) {
-			return "redirect:bfafdetail.do?bfaf_no=" + bfaf.getBfaf_ref();
+			return "redirect:bfafdetail.do?bfaf_no=" + bfaf.getBfaf_ref() + "&user_id=" + bfaf.getUser_id();
 		} else {
 			model.addAttribute("message", "댓글 등록 실패!");
 			return "common/error";
@@ -114,7 +114,7 @@ public class BfafController {
 	@RequestMapping(value = "bfafrepdelete.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String bfafRepDeleteMethod(@RequestParam("bfafno") int bfafno, Bfaf bfaf, Model model) {
 		if (bfafService.deleteReple(bfaf) > 0) {
-			return "redirect:bfafdetail.do?bfaf_no=" + bfafno;
+			return "redirect:bfafdetail.do?bfaf_no=" + bfafno + "&user_id=" + bfaf.getUser_id();
 		} else {
 			model.addAttribute("message", "게시글 삭제 실패!");
 			return "common/error";

@@ -68,7 +68,7 @@ public class TipController {
 	@RequestMapping(value = "tiprepupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String tipRepUpdateMethod(Tip tip, Model model) {
 		if (tipService.updateReple(tip) > 0) {
-			return "redirect:tipdetail.do?tip_no=" + tip.getTip_ref();
+			return "redirect:tipdetail.do?tip_no=" + tip.getTip_ref() + "&user_id=" + tip.getUser_id();
 		} else {
 			model.addAttribute("message", "댓글 수정 실패!");
 			return "common/error";
@@ -86,7 +86,7 @@ public class TipController {
 	@RequestMapping(value = "tiprepinsert2.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String tipRepInsert2Method(Tip tip, Model model) {
 		if (tipService.insertReple2(tip) > 0) {
-			return "redirect:tipdetail.do?tip_no=" + tip.getTip_ref();
+			return "redirect:tipdetail.do?tip_no=" + tip.getTip_ref() + "&user_id=" + tip.getUser_id();
 		} else {
 			model.addAttribute("message", "대댓글 등록 실패!");
 			return "common/error";
@@ -104,7 +104,7 @@ public class TipController {
 	@RequestMapping(value = "tiprepinsert.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String tipRepInsertMethod(Tip tip, Model model) {
 		if (tipService.insertReple(tip) > 0) {
-			return "redirect:tipdetail.do?tip_no=" + tip.getTip_ref();
+			return "redirect:tipdetail.do?tip_no=" + tip.getTip_ref() + "&user_id=" + tip.getUser_id();
 		} else {
 			model.addAttribute("message", "댓글 등록 실패!");
 			return "common/error";
@@ -115,7 +115,7 @@ public class TipController {
 	@RequestMapping(value = "tiprepdelete.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String tipRepDeleteMethod(@RequestParam("tipno") int tipno, Tip tip, Model model) {
 		if (tipService.deleteReple(tip) > 0) {
-			return "redirect:tipdetail.do?tip_no=" + tipno;
+			return "redirect:tipdetail.do?tip_no=" + tipno + "&user_id=" + tip.getUser_id();
 		} else {
 			model.addAttribute("message", "게시글 삭제 실패!");
 			return "common/error";
