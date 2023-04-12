@@ -115,6 +115,35 @@ span{
 	text-decoration-line: underline; 
 	text-decoration-thickness: 2px;
 }
+.topname{
+	text-align: left;
+}
+.commu {
+  -moz-border-radius: 5px !important;
+  border-collapse: collapse !important;
+  border: none !important;
+  border-style: hidden;
+  background-color: #DCFFDC;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.commu th,
+.commu td {
+  border: none !important
+}
+.commu th:first-child {
+  -moz-border-radius: 5px 0 0 0 !important;
+}
+.commu th:last-child {
+  -moz-border-radius: 0 5px 0 0 !important;
+}
+.commu tr:last-child td:first-child {
+  -moz-border-radius: 0 0 0 5px !important;
+}
+.commu tr:last-child td:last-child {
+  -moz-border-radius: 0 0 5px 0 !important;
+}
 
 
 </style>
@@ -122,7 +151,7 @@ span{
 	src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
 	$(function() {
-		var values = $('#new_topN').html();
+		var values = $('#free_topN').html();
 		console.log("values : " + values);
 		$.ajax({
 			url : "ftop5.do",
@@ -135,7 +164,7 @@ span{
 				var json = JSON.parse(jsonStr);
 
 				for ( var i in json.list) {
-					values += "<tr><td>"
+					values += "<tr style='height: 45px;'><td class='topname'>&nbsp;&nbsp;"
 							+ "<a class='cona' href='freedetail.do?free_no="
 							+ json.list[i].free_no
 							+ "'>"
@@ -145,7 +174,7 @@ span{
 							+ json.list[i].write_free_date + "</td><td>"
 							+ json.list[i].click_free_no + "</td></tr>";
 				}
-				$('#new_topN').html(values);
+				$('#free_topN').html(values);
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				console.log("ftop5.do error : " + jqXHR + ", " + textStatus
@@ -169,7 +198,8 @@ span{
 				var json = JSON.parse(jsonStr);
 
 				for ( var i in json.list) {
-					values += "<tr><td><a class='cona' href='hotnewdetail.do?hotnew_no="
+					values += "<tr style='height: 45px;'><td class='topname'>&nbsp;&nbsp;"
+							+ "<a class='cona' href='hotnewdetail.do?hotnew_no="
 							+ json.list[i].hotnew_no
 							+ "&hotnew_name="
 							+ json.list[i].hotnew_name
@@ -259,7 +289,7 @@ span{
 		<div id="mainTextBox_topN">
 			<div id="tab1" style="height: 50%; border: 1px solid black;">
 				<h1 style="text-align: center">조회수 TOP 게시글</h1>
-				<table id="hot_topN" align="center" border="1"
+				<table id="hot_topN" align="center" border="1" class="commu"
 					style="width: 95%; margin-top: 50px;">
 					<tr>
 						<th style="width: 45%">제목</th>
@@ -272,7 +302,7 @@ span{
 			</div>
 			<div id="tab1" style="height: 50%; border: 1px solid black;">
 				<h1 style="text-align: center">최신 Free 게시글</h1>
-				<table id="new_topN" align="center" border="1"
+				<table id="free_topN" align="center" border="1" class="commu"
 					style="width: 95%; margin-top: 50px;">
 					<tr>
 						<th style="width: 45%">제목</th>

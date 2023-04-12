@@ -9,7 +9,7 @@
 	
         #tab2{
             width: 1200px;
-            height: 100px;
+            height: 50px;
             margin:0;
             padding: 0;
             list-style: none;
@@ -21,7 +21,7 @@
         #tab2 div {
             float: left;
             width: 200px;
-            height: 100px;
+            height: 50px;
             margin: 0px;
             padding: 0;
         }
@@ -31,11 +31,11 @@
         #tab2 div a {
             text-decoration: none;
             width: 200px;
-            height: 100px;
+            height: 50px;
             display: block;
             background-color: white;
             text-align: center;
-            line-height: 100px;
+            line-height: 50px;
             color: #01CD88;
             font-weight: bold;
             margin: 0;
@@ -48,8 +48,8 @@
         #tab2 div a:hover {
             text-decoration: none;
             width: 200px;
-            height: 100px;
-            line-height: 100px;
+            height: 50px;
+            line-height: 50px;
             display: block;
             background-color: #01CD88;
             font-size: 25pt;
@@ -73,7 +73,6 @@
 	<div><a href="${ pageContext.servletContext.contextPath }/tiplist.do?page=1">TIP</a></div>
 	<div><a href="${ pageContext.servletContext.contextPath }/eyebodylist.do?page=1">EYEBODY</a></div>
 	<div class="round"><a style="border-bottom-right-radius: 35px; border-top-right-radius: 35px;" href="${ pageContext.servletContext.contextPath }/bfaflist.do?page=1">BF & AF</a></div>
-   </ul>
 </div>
 </body>
 </html>
