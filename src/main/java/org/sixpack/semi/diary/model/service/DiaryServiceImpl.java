@@ -101,6 +101,10 @@ public class DiaryServiceImpl implements DiaryService {
 	public ArrayList<Diary> selectDiary(String user_id) {
 		return diaryDao.selectDiary(user_id);
 	}
+    @Override
+    public ArrayList<Diary> selectDiaryCalendar(String user_id) {
+        return diaryDao.selectDiaryCalendar(user_id);
+    }
 
 
 }

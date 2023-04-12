@@ -32,14 +32,14 @@
             font-size: 30pt;
         }
 
-        #enroll_form {
+        .enroll_form {
             text-align: center;
             font-size: 15pt;
             font-style: inherit;
             color: #5f5f5f;
         }
 
-        #join_box {
+        .join_box {
             align-items: center;
             border: 3px solid #D1D1D1;
             width: 600px;
@@ -47,11 +47,6 @@
             border-radius: 30px;
             display: inline-block;
             margin: 0;
-        }
-
-        #enroll_form #text {
-            display: flex;
-            color: #D96969;
         }
 
         .join_e {
@@ -137,7 +132,7 @@
             font-size: 15pt;
             font-weight: bold;
             font-family: Copperplate, Papyrus, fantasy;
-            width: 140px;
+            width: 160px;
             border-radius: 8px;
         }
 
@@ -172,6 +167,15 @@
                 $(this).prop('checked', true);
             }
         }); //each
+
+        var now_utc = Date.now() // 지금 날짜를 밀리초로
+// getTimezoneOffset()은 현재 시간과의 차이를 분 단위로 반환
+        var timeOff = new Date().getTimezoneOffset() * 60000; // 분단위를 밀리초로 변환
+// new Date(now_utc-timeOff).toISOString()은 '2023-04-11T15:09:38.134Z'를 반환
+        var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
+        $('input[name=goal_date]').attr("min", today);
+
+
     });//document.ready
 </script>
 <c:import url="/WEB-INF/views/common/menubar.jsp"/> <!--메인 메뉴바-->
@@ -180,12 +184,12 @@
 <hr>
 
 <form action='<c:url value="/diary_GoalModify.do"/>' method="post">
-    <div id="enroll_form">
+    <div class="enroll_form">
         <br>
         <div align="left"
              style="color: #D96969; font-size: x-large; margin-bottom: 20px; margin-left: 320px;">목표 수정
         </div>
-        <div id="join_box" align="center">
+        <div class="join_box" align="center">
             <div class="join_e">
                 <div class="join_item">키</div>
                 <div class="join_item2">
@@ -201,11 +205,12 @@
             </div>
             <div class="join_e">
                 <div class="join_item">활동량</div>
-                <div id="energy_demand" style="font-size: 10pt; text-align: left;">
+                <div class="energy_demand" style="font-size: 10pt; text-align: left;">
                     <br>
                     <label> <input type="radio" name="energy_demand" value="25"> 활동이 적거나 운동을 하지 않는다.</label> <br>
                     <label> <input type="radio" name="energy_demand" value="30"> 가벼운 활동 및 운동(주 1~3회)을 한다. </label><br>
-                    <label> <input type="radio" name="energy_demand" value="35"> 보통의 활동 및 운동(주 3~5회)을 한다. </label><br>
+                    <label> <input type="radio" name="energy_demand" value="35" checked> 보통의 활동 및 운동(주 3~5회)을 한다.
+                    </label><br>
                     <label> <input type="radio" name="energy_demand" value="40"> 적극적인 활동 및 운동(주 6~7회)을 한다.</label> <br>
                     <label> <input type="radio" name="energy_demand" value="45"> 아주 적극적인 활동 또는 운동선수 (하루 2번, 고중량 운동
                         등)</label>
@@ -214,7 +219,7 @@
             <div class="join_e">
                 <div class="join_item">목표 체중</div>
                 <div class="join_item2">
-                    <label><input type="text" name="target_weight" value="${goal.target_weight}"> kg</label>
+                    <label><input type="number" name="target_weight" value="${goal.target_weight}"> kg</label>
                 </div>
             </div>
             <div class="join_e2">
@@ -228,14 +233,93 @@
     <br>
 
     <div style="text-align: center">
-        <input type="submit" value="수정하기"/>
+        <input type="submit" value="목표저장"/>
     </div>
 
 </form>
 </c:if>
 
 <c:if test="${isExist ne 'Y'}">
-    없어
+
+
+    <form action='<c:url value="/diary_GoalModify.do"/>' method="post">
+        <div class="enroll_form">
+            <br>
+            <div align="left"
+                 style="color: #D96969; font-size: x-large; margin-bottom: 20px; margin-left: 320px;">목표 수정
+            </div>
+            <div class="join_box" align="center">
+                <div class="join_e">
+                    <div class="join_item">키</div>
+                    <div class="join_item2">
+                        <c:if test="${isExist eq 'D'}">
+                            <label><input type="number" name="height" value="${goal.height}" maxlength="6"> cm</label>
+                        </c:if>
+                        <c:if test="${isExist eq 'N'}">
+                            <label><input type="number" name="height" placeholder="${goal.height}" maxlength="6">
+                                cm</label>
+                        </c:if>
+                    </div>
+                </div>
+                <div class="join_e">
+                    <div class="join_item">몸무게</div>
+                    <div class="join_item2">
+
+                        <c:if test="${isExist eq 'D'}">
+                            <label><input type="number" name="current_weight" value="${goal.current_weight}"
+                                          maxlength="6"> kg</label>
+                        </c:if>
+                        <c:if test="${isExist eq 'N'}">
+                            <label><input type="number" name="current_weight" placeholder="${goal.current_weight}"
+                                          maxlength="6"> kg</label>
+                        </c:if>
+
+                    </div>
+                </div>
+                <div class="join_e">
+                    <div class="join_item">활동량</div>
+                    <div class="energy_demand" style="font-size: 10pt; text-align: left;">
+                        <br>
+                        <label> <input type="radio" name="energy_demand" value="25"> 활동이 적거나 운동을 하지 않는다.</label> <br>
+                        <label> <input type="radio" name="energy_demand" value="30"> 가벼운 활동 및 운동(주 1~3회)을 한다.
+                        </label><br>
+                        <label> <input type="radio" name="energy_demand" value="35"> 보통의 활동 및 운동(주 3~5회)을 한다.
+                        </label><br>
+                        <label> <input type="radio" name="energy_demand" value="40"> 적극적인 활동 및 운동(주 6~7회)을 한다.</label>
+                        <br>
+                        <label> <input type="radio" name="energy_demand" value="45"> 아주 적극적인 활동 또는 운동선수 (하루 2번, 고중량 운동
+                            등)</label>
+                    </div>
+                </div>
+                <div class="join_e">
+                    <div class="join_item">목표 체중</div>
+                    <div class="join_item2">
+                        <c:if test="${isExist eq 'D'}">
+                            <label><input type="number" name="target_weight" value="${goal.target_weight}"
+                                          maxlength="6"> kg</label>
+                        </c:if>
+                        <c:if test="${isExist eq 'N'}">
+                            <label><input type="number" name="target_weight" placeholder="${goal.target_weight}"
+                                          maxlength="6"> kg</label>
+                        </c:if>
+
+                    </div>
+                </div>
+                <div class="join_e2">
+                    <div class="join_item">목표 기간</div>
+                    <div class="join_item2">
+                        <label><input type="date" name="goal_date" value="${goal.goal_date}"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div style="text-align: center">
+            <input type="submit" value="등록하기"/>
+        </div>
+
+    </form>
 </c:if>
 
 

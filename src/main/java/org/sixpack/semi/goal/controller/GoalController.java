@@ -50,13 +50,12 @@ public class GoalController {
     public ModelAndView showGoalModifyView(ModelAndView mv,
                                            HttpSession session,
                                            Goal goal,
-                                           @RequestParam("isExist") String isExist
-    ) {
+                                           @RequestParam("isExist") String isExist) {
+
 
         Member member = (Member) session.getAttribute("loginMember");
         String user_id = member.getUser_id();
         String gender = member.getGender();
-
         if (isExist.equals("Y")) {
             goal = goalService.selectRecentGoal(user_id);
         } else if (isExist.equals("D")) {
@@ -85,8 +84,8 @@ public class GoalController {
         Member member = (Member) session.getAttribute("loginMember");
         try {
             goal.setStandard_weight(
-                    (int)(goal.getHeight() * goal.getHeight() *
-                    (member.getGender().equals("M") ? 22 : 21)/100)/100.0);
+                    (int) (goal.getHeight() * goal.getHeight() *
+                            (member.getGender().equals("M") ? 22 : 21) / 100) / 100.0);
             goal.setUser_id(member.getUser_id());
 
         } catch (Exception e) {
@@ -96,15 +95,12 @@ public class GoalController {
         }
 
 
-        if (goalService.updateGoalInfo(goal) > 0) {
-            mv.addObject("goal", goal);
-            mv.addObject("isExist", "Y");
-
-        } else {
-            mv.addObject("message", "목표관리 수정 실패");
-            mv.setViewName("common/error");
-            return mv;
+        if (!(goalService.updateGoalInfo(goal) > 0)) {  // 오늘날짜 목표관리 수정,
+                                                        // 오늘 날짜 없을시(= 목표관리 설정이 안됐을 시) if 문 실행
+            goalService.insertGoalInfo(goal); // 목표등록
         }
+        mv.addObject("goal", goal);
+        mv.addObject("isExist", "Y");
 
         mv.setViewName("diary/goal/goalView");
 

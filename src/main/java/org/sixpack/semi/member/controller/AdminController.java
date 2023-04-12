@@ -1,35 +1,27 @@
 package org.sixpack.semi.member.controller;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionBindingEvent;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.banner.model.service.BannerService;
 import org.sixpack.semi.bfaf.model.service.BfafService;
 import org.sixpack.semi.bfaf.model.vo.Bfaf;
 import org.sixpack.semi.bfaf.model.vo.LikeBfaf;
 import org.sixpack.semi.common.CountSearch;
-import org.sixpack.semi.common.FileNameChange2;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.event.model.service.EventService;
-import org.sixpack.semi.event.model.vo.Event;
 import org.sixpack.semi.eyebody.model.service.EyebodyService;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.sixpack.semi.eyebody.model.vo.LikeEyebody;
@@ -43,7 +35,6 @@ import org.sixpack.semi.log.model.service.LogService;
 import org.sixpack.semi.member.model.service.MemberService;
 import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.notice.model.service.NoticeService;
-import org.sixpack.semi.notice.model.vo.Notice;
 import org.sixpack.semi.qna.model.service.QnaService;
 import org.sixpack.semi.tip.model.service.TipService;
 import org.sixpack.semi.tip.model.vo.LikeTip;
@@ -57,7 +48,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller("adminController")

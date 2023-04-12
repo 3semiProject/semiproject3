@@ -38,50 +38,50 @@ import java.sql.Date;
 
 @Controller("diaryController")
 public class DiaryController {
-	
-	@Autowired
-	private DiaryService diaryService;
 
-	@Autowired
-	private GoalService goalService;
+    @Autowired
+    private DiaryService diaryService;
 
-	private static final Logger logger = LoggerFactory.getLogger(DiaryController.class);
-	
-	//ajax mainbox 캘린더
-	@RequestMapping(value = "calendar.do", method = { RequestMethod.GET, RequestMethod.POST })
-	@ResponseBody
-	public String diaryCalendarMethod(@RequestParam("user_id") String user_id) throws UnsupportedEncodingException {
-		ArrayList<Diary> list = diaryService.selectDiary(user_id);
-		logger.info("calendar.do : " + list.size());
+    @Autowired
+    private GoalService goalService;
 
-		JSONObject sendJson = new JSONObject();
-		JSONArray jarr = new JSONArray();
+    private static final Logger logger = LoggerFactory.getLogger(DiaryController.class);
 
-		for (Diary diary : list) {
-			JSONObject job = new JSONObject();
+    //ajax mainbox 캘린더
+    @RequestMapping(value = "calendar.do", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public String diaryCalendarMethod(@RequestParam("user_id") String user_id) throws UnsupportedEncodingException {
+        ArrayList<Diary> list = diaryService.selectDiaryCalendar(user_id);
+        logger.info("calendar.do : " + list.size());
 
-			job.put("diary_no", diary.getDiary_no());
-			job.put("diary_post_date", diary.getDiary_post_date().toString());
-			jarr.add(job);
-		}
-		sendJson.put("list", jarr);
-		return sendJson.toJSONString();
-	}
-	
-	
-	//main에서 다이어리화면 띄울때 목표정보 확인용
-	@RequestMapping(value="diary.do", method={ RequestMethod.GET, RequestMethod.POST })
-	public String showFirstDiary( RedirectAttributes redirect,
-			HttpSession session) {
-		if(session==null) {
-			//비로그인 상태면 로그인 페이지로 이동
-			return "redirect:loginPage.do";	
-		}
-		//다이어리에 회원정보담기
-		String user_id = ((Member)session.getAttribute("loginMember")).getUser_id();
-		Date today = new Date(new java.util.Date().getTime());
-		Diary diary= new Diary(user_id, today, 0, "eat", null, null );
-		
+        JSONObject sendJson = new JSONObject();
+        JSONArray jarr = new JSONArray();
+
+        for (Diary diary : list) {
+            JSONObject job = new JSONObject();
+            job.put("diary_no", diary.getDiary_no());
+            job.put("diary_category", diary.getDiary_category());
+            job.put("diary_post_date", diary.getDiary_post_date().toString());
+            jarr.add(job);
+        }
+        sendJson.put("list", jarr);
+        return sendJson.toJSONString();
+    }
+
+
+    //main에서 다이어리화면 띄울때 목표정보 확인용
+    @RequestMapping(value = "diary.do", method = {RequestMethod.GET, RequestMethod.POST})
+    public String showFirstDiary(RedirectAttributes redirect,
+                                 HttpSession session) {
+        if (session == null) {
+            //비로그인 상태면 로그인 페이지로 이동
+            return "redirect:loginPage.do";
+        }
+        //다이어리에 회원정보담기
+        String user_id = ((Member) session.getAttribute("loginMember")).getUser_id();
+        Date today = new Date(new java.util.Date().getTime());
+        Diary diary = new Diary(user_id, today, 0, "eat", null, null);
+
 
         //다이어리 전환 전, 목표정보 있는지 확인
         Goal goal = diaryService.selectTodayGoal(diary); // 오늘 날짜 goal 조회
@@ -89,19 +89,19 @@ public class DiaryController {
 
         if (goal == null) { //조회값이 없거나, 목표일이 끝났을때
             goal = diaryService.selectCurrentGoal(diary);
-			System.out.println("goal1 : " + goal);
+            System.out.println("goal1 : " + goal);
 
             if (goal != null) { // 기한 내 목표 있을 경우
-				goalService.insertGoalInfo(goal);  // 목표 생성
-				System.out.println("goal2 : " + goal);
+                goalService.insertGoalInfo(goal);  // 목표 생성
+                System.out.println("goal2 : " + goal);
 
             } else {
                 goal = diaryService.selectlastGoal(diary);
-				System.out.println("goal3 : " + goal);
+                System.out.println("goal3 : " + goal);
 
                 if (goal != null) {
                     redirect.addAttribute("isExist", "D"); // 기간 내 목표가 없을 시
-                    redirect.addAttribute("goal", goal);
+                    redirect.addAttribute("goal", goal);  // 가장 최근 데이터에 목표기간만 한달 후인 데이터 넘김
                     return "redirect:diary_showGoal.do"; //목표작성화면으로 이동
                 } else {
                     redirect.addAttribute("isExist", "N"); // 처음 가입시(목표 데이터 없을 시)
@@ -180,79 +180,80 @@ public class DiaryController {
             @RequestParam(name = "upfile", required = false) MultipartFile mfile,
             Model model, HttpServletRequest request) throws ParseException {
 
-		//날짜포맷팅
-		// 입력받은 시간 문자열
-		//String timeStr = "13:45";
-		// 시간과 분을 추출하여 배열로 저장
-		String[] timeParts = time.split(":");
-		// 추출한 시간과 분을 각각 int 타입으로 변환
-		int hour = Integer.parseInt(timeParts[0]);
-		int minute = Integer.parseInt(timeParts[1]);
-		// 현재 날짜를 java.sql.Date 형식으로 생성
-		java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-		// 시간과 분을 java.sql.Time 형식으로 생성
-		java.sql.Time newtime = new java.sql.Time(hour, minute, 0);
-		// java.sql.Date와 java.sql.Time을 합쳐서 java.util.Date 객체를 생성
-		java.util.Date dateTime = new java.util.Date(currentDate.getTime() + newtime.getTime());
-		// java.util.Date를 java.sql.Date로 변환
-		java.sql.Date resultDate = new java.sql.Date(dateTime.getTime());
-	    
-		diary.setDiary_post_date(resultDate);
-		
-		
-			// 첨부파일 저장 폴더 경로 지정
-			String savePath = request.getSession().getServletContext().getRealPath("resources/diary_upfile");
+        //날짜포맷팅
+        // 입력받은 시간 문자열
+        //String timeStr = "13:45";
+        // 시간과 분을 추출하여 배열로 저장
+        String[] timeParts = time.split(":");
+        // 추출한 시간과 분을 각각 int 타입으로 변환
+        int hour = Integer.parseInt(timeParts[0]);
+        int minute = Integer.parseInt(timeParts[1]);
+        // 현재 날짜를 java.sql.Date 형식으로 생성
+        java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+        // 시간과 분을 java.sql.Time 형식으로 생성
+        java.sql.Time newtime = new java.sql.Time(hour, minute, 0);
+        // java.sql.Date와 java.sql.Time을 합쳐서 java.util.Date 객체를 생성
+        java.util.Date dateTime = new java.util.Date(currentDate.getTime() + newtime.getTime());
+        // java.util.Date를 java.sql.Date로 변환
+        java.sql.Date resultDate = new java.sql.Date(dateTime.getTime());
 
-			// 첨부파일이 있을때
-			if (mfile != null && !mfile.isEmpty()) {
-				// 전송온 파일이름 추출함
-				String fileName = mfile.getOriginalFilename();
-				System.out.println(diary.getDiary_post_date());
-				// 다른 공지글의 첨부파일과 파일명이 중복되어서
-				// 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
-				// 폴더에 저장하는 방식을 사용할 수 있음
-				// 변경 파일명 : 년월일시분초.확장자
-				if (fileName != null && fileName.length() > 0) {
-					// 바꿀 파일명에 대한 문자열 만들기
-					String renameFileName = FileNameChange.diaryChange(
-							diary.getDiary_no(), fileName);
+        diary.setDiary_post_date(resultDate);
 
-					logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
 
-					// 폴더에 저장 처리
-					try {
-						mfile.transferTo(new File(savePath + "\\" + renameFileName));
-					} catch (Exception e) {
-						e.printStackTrace();
-						
-					}
+        // 첨부파일 저장 폴더 경로 지정
+        String savePath = request.getSession().getServletContext().getRealPath("resources/diary_upfile");
 
-					//저장 성공하면 diary 객체에 첨부파일 정보 기록 저장
-					diary.setDiary_image(renameFileName);
-				} // 이름바꾸기
-			} // 새로운 첨부파일이 있을 때
-			
-			//다이어리 생성
-				diaryService.insertDiary(diary);
-		}
-	//ajax 다이어리 작성 중복체크 : id, date, category
-	@RequestMapping(value="diary_checkDuplicateDiary.do" , method= {RequestMethod.GET, RequestMethod.POST})
-	@ResponseBody //뷰리졸버 통하지 않고string반환
-	public String checkDuplicateDiary(Model model, Diary diary){
-		System.out.println("Controller 1");
-		Diary searchD = diaryService.selectDiaryOne(diary);
-		System.out.println("Controller 2");
+        // 첨부파일이 있을때
+        if (mfile != null && !mfile.isEmpty()) {
+            // 전송온 파일이름 추출함
+            String fileName = mfile.getOriginalFilename();
+            System.out.println(diary.getDiary_post_date());
+            // 다른 공지글의 첨부파일과 파일명이 중복되어서
+            // 덮어쓰기 되는것을 막기 위해, 파일명을 변경해서
+            // 폴더에 저장하는 방식을 사용할 수 있음
+            // 변경 파일명 : 년월일시분초.확장자
+            if (fileName != null && fileName.length() > 0) {
+                // 바꿀 파일명에 대한 문자열 만들기
+                String renameFileName = FileNameChange.diaryChange(
+                        diary.getDiary_no(), fileName);
 
-		if(searchD !=null) { //다이어리 존재하면 다이어리번호 전달
-			System.out.println("Controller 3");
-			String no = String.valueOf(searchD.getDiary_no());
+                logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
 
-			return no;
-		}else {
-			System.out.println("Controller nope");
-			return "ok";
-		}
-	}
+                // 폴더에 저장 처리
+                try {
+                    mfile.transferTo(new File(savePath + "\\" + renameFileName));
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
+                //저장 성공하면 diary 객체에 첨부파일 정보 기록 저장
+                diary.setDiary_image(renameFileName);
+            } // 이름바꾸기
+        } // 새로운 첨부파일이 있을 때
+
+        //다이어리 생성
+        diaryService.insertDiary(diary);
+    }
+
+    //ajax 다이어리 작성 중복체크 : id, date, category
+    @RequestMapping(value = "diary_checkDuplicateDiary.do", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody //뷰리졸버 통하지 않고 string반환
+    public String checkDuplicateDiary(Model model, Diary diary) {
+        System.out.println("Controller 1");
+        Diary searchD = diaryService.selectDiaryOne(diary);
+        System.out.println("Controller 2");
+
+        if (searchD != null) { //다이어리 존재하면 다이어리번호 전달
+            System.out.println("Controller 3");
+            String no = String.valueOf(searchD.getDiary_no());
+
+            return no;
+        } else {
+            System.out.println("Controller nope");
+            return "ok";
+        }
+    }
 
 //	//캘린더 출력용
 //	@RequestMapping(value = "diary_showCalendar.do", method = RequestMethod.GET)

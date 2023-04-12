@@ -84,4 +84,9 @@ public class DiaryDao {
 	}
 
 
+    public ArrayList<Diary> selectDiaryCalendar(String user_id) {
+        List<Diary> list = session.selectList("diaryMapper.selectDiaryCalendar", user_id);
+        return (ArrayList<Diary>) list;
+
+    }
 }

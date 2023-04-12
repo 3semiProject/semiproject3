@@ -153,7 +153,6 @@ body {
 	width: 500px;
 	padding-bottom: 20px;
 	font-size: xx-large;
-	 
 }
 
 .api_join_item2 {
