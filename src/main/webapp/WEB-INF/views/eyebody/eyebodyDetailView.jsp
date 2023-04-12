@@ -98,7 +98,7 @@ table tr:last-child td:last-child {
 
 .allarea {
    line-height: 22px;
-   margin-boeyeom: 50px;
+   margin-bottom: 50px;
    margin: auto;
    padding: 30px;
    width: 900px;
@@ -131,21 +131,21 @@ a:hover {
    <c:import url="/WEB-INF/views/common/commubar.jsp" />
    <hr>
 	<div>
-		<p id="title">FREE 게시글 상세보기</p>
+		<p id="title">EYEBODY 게시글 상세보기</p>
 	</div>
    <div class="allarea">
          <div class="fixdel" align="right">
             <c:if test="${ requestScope.eyebody.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
-               <c:url var="eyeup" value="/eyebodyupmove.do">
+               <c:url var="ebup" value="/eyebodyupmove.do">
                      <c:param name="eyebody_no" value="${ eyebody.eyebody_no }" />
-                  </c:url> <a href="${ eyeup }">[글수정] </a> &nbsp; &nbsp;
+                  </c:url> <a href="${ ebup }">[글수정] </a> &nbsp; &nbsp;
             </c:if>
 
             <c:if test="${ requestScope.eyebody.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
-               <c:url var="eyede" value="/eyebodydelete.do">
+               <c:url var="ebde" value="/eyebodydelete.do">
                   <c:param name="eyebody_no" value="${ eyebody.eyebody_no }" />
                </c:url>
-               <a href="${ eyede }"> [글삭제]</a> &nbsp; &nbsp;
+               <a href="${ ebde }"> [글삭제]</a> &nbsp; &nbsp;
             </c:if>
          </div>
 
@@ -154,15 +154,15 @@ a:hover {
          <div class="topinfo" style="">
             <div class="topareatitle" style="">
                <h3 class="titlename">
-                  <span class="eyename"> &nbsp; ${ eyebody.eyebody_name }</span>
+                  <span class="ebname"> &nbsp; ${ eyebody.eyebody_name }</span>
                </h3>
                <hr>
             </div>
             <div class="userezinfo">
                <div class="side">
                   <span class="userinfoimg">작성자: ${ eyebody.user_id }</span> <span
-                     class="datetime" style="text-align: right"> &nbsp; 작성일: 
-                     <fmt:formatDate value="${eyebody.write_eyebody_date}" pattern="yyyy-MM-dd a HH:mm:ss" />
+                     class="datetime" style="text-align: right"> &nbsp; 작성일: <fmt:formatDate
+                        value="${eyebody.write_eyebody_date}" pattern="yyyy-MM-dd a HH:mm:ss" />
                   </span>
                </div>
                <div class="side fr">
@@ -181,15 +181,30 @@ a:hover {
                					${eyebody.eyebody_like_no} &nbsp;
                </c:if> 
                <c:if test="${ !empty sessionScope.loginMember }">
-                           <c:url var="eyelikein" value="/eyebodylike.do">
+                           <c:url var="eblikein" value="/eyebodylike.do">
                               <c:param name="user_id"
                                  value="${sessionScope.loginMember.user_id }" />
                               <c:param name="eyebody_no" value="${eyebody.eyebody_no }" />
                               <c:param name="eyebody_like_no" value="${eyebody.eyebody_like_no }" />
                            </c:url>
-                           <a href="${ eyelikein }">[추천하기]</a>
+                           <a href="${ eblikein }">[추천하기]</a>
                         </c:if>&nbsp; </b>
                   </span>
+                  <span class="cbfile">첨부 파일 : </span>
+            <!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 -->
+            <c:forEach items="${ ofile }" var="of" varStatus="status">
+               <c:if test="${ !empty of and !empty sessionScope.loginMember}">
+                  <c:url var="ebd" value="/eyebodydown.do">
+                     <c:param name="ofile" value="${ of }" />
+                     <c:param name="rfile" value="${ rfile[status.index] }" />
+                  </c:url>
+                   &nbsp;<a href="${ ebd }">${ of }</a>
+               </c:if>
+            </c:forEach>
+            <!-- 첨부파일이 없다면, Empty 처리 -->
+            <c:if test="${ empty eyebody.originfile_eyebody}">
+                   &nbsp; * 첨부파일이 없습니다 *
+               </c:if>
                   <hr>
                </div>
             </div>
@@ -210,73 +225,48 @@ a:hover {
             &nbsp; &nbsp; ${eyebody.eyebody_value}<br>
             <br>
             <br>
-            <br>
-            <br>
-            <br>
-
-         </div>
-         <hr>
-         <div class="cbfile">
-            <span style="text-align: left;">첨부 파일 : </span>
-            <!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 -->
-            <c:forEach items="${ ofile }" var="of" varStatus="status">
-               <c:if test="${ !empty of and !empty sessionScope.loginMember}">
-                  <c:url var="eyed" value="/eyebodydown.do">
-                     <c:param name="ofile" value="${ of }" />
-                     <c:param name="rfile" value="${ rfile[status.index] }" />
-                  </c:url>
-                   &nbsp; <a href="${ eyed }">${ of }</a> &nbsp;
-               </c:if>
-            </c:forEach>
-            <!-- 첨부파일이 없다면, Empty 처리 -->
-            <c:if test="${ empty eyebody.originfile_eyebody}">
-                   &nbsp; * 첨부파일이 없습니다 *
-               </c:if>
          </div>
          
          <table style="margin-left: auto; margin-right: auto;" width="900px"
          border="1px solid" cellpadding="0" cellspacing="0">
-         <div>
             <th>댓글 작성자</th>
-         <td align="center">댓글내용 &nbsp; &nbsp; 
+         <td align="center"><b>댓글내용 &nbsp; &nbsp; </b>
          <c:if test="${ !empty sessionScope.loginMember.user_id }">
-               <c:url var="eyerein" value="/moveeyebodyrepin.do">
+               <c:url var="ebrein" value="/moveeyebodyrepin.do">
                   <c:param name="eyebody_no" value="${eyebody.eyebody_no }" />
                </c:url>
-               <a href="${ eyerein }">[댓글등록]</a>
+               <a href="${ ebrein }">[댓글등록]</a>
             </c:if>
          </td>
-         <hr>
+         
 
-
-         <br>
          <c:forEach items="${ list }" var="eb">
             <tr>
                <c:if test="${ eb.eyebody_reply_lev eq 2 }">
                   <th>${eb.user_id}</th>
                   <td>&nbsp; &nbsp; ${eb.eyebody_value} &nbsp; 
                   <c:if test="${ eb.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
-                        <c:url var="eyereup" value="/moveeyebodyrepup.do">
+                        <c:url var="ebreup" value="/moveeyebodyrepup.do">
                            <c:param name="eyebody_no" value="${eb.eyebody_no }" />
                         </c:url>
-                        <a href="${ eyereup }">[댓글 수정하기]</a> &nbsp;
+                        <a href="${ ebreup }">[댓글 수정하기]</a> &nbsp;
                </c:if> 
                <c:if test="${ eb.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
-                        <c:url var="eyerede" value="/eyebodyrepdelete.do">
+                        <c:url var="ebrede" value="/eyebodyrepdelete.do">
                            <c:param name="eyebody_no" value="${ eb.eyebody_no }" />
                            <c:param name="eyebody_ref" value="${ eb.eyebody_ref }" />
                            <c:param name="eyebody_reply_ref" value="${ eb.eyebody_reply_ref }" />
                            <c:param name="eyebody_reply_lev" value="${ eb.eyebody_reply_lev }" />
                            <c:param name="eyebodyno" value="${ eyebody.eyebody_no }" />
                         </c:url>
-                        <a href="${ eyerede }">[댓글 삭제하기]</a> &nbsp;
+                        <a href="${ ebrede }">[댓글 삭제하기]</a> &nbsp;
                </c:if> <c:if test="${!empty sessionScope.loginMember}">
-                        <c:url var="eyerereup" value="/moveeyebodyrepin2.do">
+                        <c:url var="ebrereup" value="/moveeyebodyrepin2.do">
                            <c:param name="eyebody_ref" value="${eb.eyebody_ref }" />
                            <c:param name="eyebody_reply_ref" value="${eb.eyebody_reply_ref }" />
                            <c:param name="eyebody_reply_lev" value="${eb.eyebody_reply_lev }" />
                         </c:url>
-                        <a href="${ eyerereup }">[대댓글등록]</a>
+                        <a href="${ ebrereup }">[대댓글등록]</a>
                      </c:if>
                   </td>
                </c:if>
@@ -284,20 +274,20 @@ a:hover {
                   <th>${eb.user_id}</th>
                   <td>&nbsp; &nbsp; &nbsp; &nbsp; ▶ ${eb.eyebody_value} 
                   <c:if test="${ eb.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
-                        <c:url var="eyereup2" value="/moveeyebodyrepup.do">
+                        <c:url var="ebreup2" value="/moveeyebodyrepup.do">
                            <c:param name="eyebody_no" value="${eb.eyebody_no }" />
                         </c:url>
-                        <a href="${ eyereup2 }">[댓글 수정하기]</a> &nbsp;
+                        <a href="${ ebreup2 }">[댓글 수정하기]</a> &nbsp;
                </c:if> 
                <c:if test="${ eb.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
-                        <c:url var="eyerede2" value="/eyebodyrepdelete.do">
+                        <c:url var="ebrede2" value="/eyebodyrepdelete.do">
                            <c:param name="eyebody_no" value="${ eb.eyebody_no }" />
                            <c:param name="eyebody_ref" value="${ eb.eyebody_ref }" />
                            <c:param name="eyebody_reply_ref" value="${ eb.eyebody_reply_ref }" />
                            <c:param name="eyebody_reply_lev" value="${ eb.eyebody_reply_lev }" />
                            <c:param name="eyebodyno" value="${ eyebody.eyebody_no }" />
                         </c:url>
-                        <a href="${ eyerede2 }">[댓글 삭제하기]</a> &nbsp;
+                        <a href="${ ebrede2 }">[댓글 삭제하기]</a> &nbsp;
                </c:if>
                   </td>
                </c:if>

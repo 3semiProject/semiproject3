@@ -81,7 +81,6 @@ table tr:last-child td:last-child {
   -moz-border-radius: 0 0 5px 0 !important;
 }
 
-
 .cbfile {
    font-size: 14px bold;
 }
@@ -131,21 +130,18 @@ a:hover {
    <c:import url="/WEB-INF/views/common/menubar.jsp" />
    <c:import url="/WEB-INF/views/common/commubar.jsp" />
    <hr>
-   <div>
-      <p id="title">BF & AF 게시글 상세보기</p>
-   </div>
+	<div>
+		<p id="title">BF & AF 게시글 상세보기</p>
+	</div>
    <div class="allarea">
          <div class="fixdel" align="right">
-            <c:if
-               test="${ requestScope.bfaf.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
-         
+            <c:if test="${ requestScope.bfaf.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
                <c:url var="baup" value="/bfafupmove.do">
                      <c:param name="bfaf_no" value="${ bfaf.bfaf_no }" />
                   </c:url> <a href="${ baup }">[글수정] </a> &nbsp; &nbsp;
             </c:if>
 
-            <c:if
-               test="${ requestScope.bfaf.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
+            <c:if test="${ requestScope.bfaf.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
                <c:url var="bade" value="/bfafdelete.do">
                   <c:param name="bfaf_no" value="${ bfaf.bfaf_no }" />
                </c:url>
@@ -158,7 +154,7 @@ a:hover {
          <div class="topinfo" style="">
             <div class="topareatitle" style="">
                <h3 class="titlename">
-                  <span class="ttname"> &nbsp; ${ bfaf.bfaf_name }</span>
+                  <span class="baname"> &nbsp; ${ bfaf.bfaf_name }</span>
                </h3>
                <hr>
             </div>
@@ -176,14 +172,15 @@ a:hover {
                            <img
                               src="${ pageContext.servletContext.contextPath }/resources/images/fullheart.png"
                               width="15" height="15" alt="fullheart">
-               ${bfaf.bfaf_like_no} &nbsp;
-               </c:if> <c:if
-                           test="${empty likeBfaf.user_id or likeBfaf.user_id ne sessionScope.loginMember.user_id}">
+               					${bfaf.bfaf_like_no} &nbsp;
+               </c:if> 
+               <c:if test="${empty likeBfaf.user_id or likeBfaf.user_id ne sessionScope.loginMember.user_id}">
                            <img
                               src="${ pageContext.servletContext.contextPath }/resources/images/heart.png"
                               width="15" height="15" alt="heart">
-               ${bfaf.bfaf_like_no} &nbsp;
-               </c:if> <c:if test="${ !empty sessionScope.loginMember }">
+               					${bfaf.bfaf_like_no} &nbsp;
+               </c:if> 
+               <c:if test="${ !empty sessionScope.loginMember }">
                            <c:url var="balikein" value="/bfaflike.do">
                               <c:param name="user_id"
                                  value="${sessionScope.loginMember.user_id }" />
@@ -193,6 +190,21 @@ a:hover {
                            <a href="${ balikein }">[추천하기]</a>
                         </c:if>&nbsp; </b>
                   </span>
+                  <span class="cbfile">첨부 파일 : </span>
+            <!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 -->
+            <c:forEach items="${ ofile }" var="of" varStatus="status">
+               <c:if test="${ !empty of and !empty sessionScope.loginMember}">
+                  <c:url var="bad" value="/bfafdown.do">
+                     <c:param name="ofile" value="${ of }" />
+                     <c:param name="rfile" value="${ rfile[status.index] }" />
+                  </c:url>
+                   &nbsp;<a href="${ bad }">${ of }</a>
+               </c:if>
+            </c:forEach>
+            <!-- 첨부파일이 없다면, Empty 처리 -->
+            <c:if test="${ empty bfaf.originfile_bfaf}">
+                   &nbsp; * 첨부파일이 없습니다 *
+               </c:if>
                   <hr>
                </div>
             </div>
@@ -213,58 +225,33 @@ a:hover {
             &nbsp; &nbsp; ${bfaf.bfaf_value}<br>
             <br>
             <br>
-            <br>
-            <br>
-            <br>
-
-         </div>
-         <hr>
-         <div class="cbfile">
-            <span style="text-align: left;">첨부 파일 : </span>
-            <!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 -->
-            <c:forEach items="${ ofile }" var="of" varStatus="status">
-               <c:if test="${ !empty of and !empty sessionScope.loginMember}">
-                  <c:url var="babd" value="/bfafdown.do">
-                     <c:param name="ofile" value="${ of }" />
-                     <c:param name="rfile" value="${ rfile[status.index] }" />
-                  </c:url>
-                   &nbsp; <a href="${ babd }">${ of }</a> &nbsp;
-               </c:if>
-            </c:forEach>
-            <!-- 첨부파일이 없다면, Empty 처리 -->
-            <c:if test="${ empty bfaf.originfile_bfaf}">
-                   &nbsp; * 첨부파일이 없습니다 *
-               </c:if>
          </div>
          
          <table style="margin-left: auto; margin-right: auto;" width="900px"
          border="1px solid" cellpadding="0" cellspacing="0">
-         <div>
             <th>댓글 작성자</th>
-         <td align="center">댓글내용 &nbsp; &nbsp; <c:if
-               test="${ !empty sessionScope.loginMember.user_id }">
+         <td align="center"><b>댓글내용 &nbsp; &nbsp; </b>
+         <c:if test="${ !empty sessionScope.loginMember.user_id }">
                <c:url var="barein" value="/movebfafrepin.do">
                   <c:param name="bfaf_no" value="${bfaf.bfaf_no }" />
                </c:url>
-               <a href="${ barein }" style="text-align:right;">[댓글등록]</a>
+               <a href="${ barein }">[댓글등록]</a>
             </c:if>
          </td>
-         <hr>
+         
 
-
-         <br>
          <c:forEach items="${ list }" var="ba">
             <tr>
                <c:if test="${ ba.bfaf_reply_lev eq 2 }">
                   <th>${ba.user_id}</th>
-                  <td>&nbsp; &nbsp; ${ba.bfaf_value} &nbsp; <c:if
-                        test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
+                  <td>&nbsp; &nbsp; ${ba.bfaf_value} &nbsp; 
+                  <c:if test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
                         <c:url var="bareup" value="/movebfafrepup.do">
                            <c:param name="bfaf_no" value="${ba.bfaf_no }" />
                         </c:url>
                         <a href="${ bareup }">[댓글 수정하기]</a> &nbsp;
-               </c:if> <c:if
-                        test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
+               </c:if> 
+               <c:if test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
                         <c:url var="barede" value="/bfafrepdelete.do">
                            <c:param name="bfaf_no" value="${ ba.bfaf_no }" />
                            <c:param name="bfaf_ref" value="${ ba.bfaf_ref }" />
@@ -285,14 +272,14 @@ a:hover {
                </c:if>
                <c:if test="${ ba.bfaf_reply_lev eq 3 }">
                   <th>${ba.user_id}</th>
-                  <td>&nbsp; &nbsp; &nbsp; &nbsp; ▶ ${ba.bfaf_value} <c:if
-                        test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
+                  <td>&nbsp; &nbsp; &nbsp; &nbsp; ▶ ${ba.bfaf_value} 
+                  <c:if test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
                         <c:url var="bareup2" value="/movebfafrepup.do">
                            <c:param name="bfaf_no" value="${ba.bfaf_no }" />
                         </c:url>
                         <a href="${ bareup2 }">[댓글 수정하기]</a> &nbsp;
-               </c:if> <c:if
-                        test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
+               </c:if> 
+               <c:if test="${ ba.user_id eq sessionScope.loginMember.user_id and !empty sessionScope.loginMember}">
                         <c:url var="barede2" value="/bfafrepdelete.do">
                            <c:param name="bfaf_no" value="${ ba.bfaf_no }" />
                            <c:param name="bfaf_ref" value="${ ba.bfaf_ref }" />
@@ -305,8 +292,7 @@ a:hover {
                   </td>
                </c:if>
             </tr>
-         </div>
-         </c:forEach>
+            </c:forEach>
       </table>
       <br>
       <hr>
@@ -321,8 +307,8 @@ a:hover {
       </div>
    </div>
    <br>
-   <hr>
+<hr>
 
-   <c:import url="/WEB-INF/views/common/footer.jsp" />
+<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>
