@@ -190,6 +190,21 @@ a:hover {
                            <a href="${ fflikein }">[추천하기]</a>
                         </c:if>&nbsp; </b>
                   </span>
+                  <span class="cbfile">첨부 파일 : </span>
+            <!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 -->
+            <c:forEach items="${ ofile }" var="of" varStatus="status">
+               <c:if test="${ !empty of and !empty sessionScope.loginMember}">
+                  <c:url var="ffd" value="/freedown.do">
+                     <c:param name="ofile" value="${ of }" />
+                     <c:param name="rfile" value="${ rfile[status.index] }" />
+                  </c:url>
+                   &nbsp;<a href="${ ffd }">${ of }</a>
+               </c:if>
+            </c:forEach>
+            <!-- 첨부파일이 없다면, Empty 처리 -->
+            <c:if test="${ empty free.originfile_free}">
+                   &nbsp; * 첨부파일이 없습니다 *
+               </c:if>
                   <hr>
                </div>
             </div>
@@ -210,35 +225,12 @@ a:hover {
             &nbsp; &nbsp; ${free.free_value}<br>
             <br>
             <br>
-            <br>
-            <br>
-            <br>
-
-         </div>
-         <hr>
-         <div class="cbfile">
-            <span style="text-align: left;">첨부 파일 : </span>
-            <!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 -->
-            <c:forEach items="${ ofile }" var="of" varStatus="status">
-               <c:if test="${ !empty of and !empty sessionScope.loginMember}">
-                  <c:url var="ffd" value="/freedown.do">
-                     <c:param name="ofile" value="${ of }" />
-                     <c:param name="rfile" value="${ rfile[status.index] }" />
-                  </c:url>
-                   &nbsp; <a href="${ ffd }">${ of }</a> &nbsp;
-               </c:if>
-            </c:forEach>
-            <!-- 첨부파일이 없다면, Empty 처리 -->
-            <c:if test="${ empty free.originfile_free}">
-                   &nbsp; * 첨부파일이 없습니다 *
-               </c:if>
          </div>
          
          <table style="margin-left: auto; margin-right: auto;" width="900px"
          border="1px solid" cellpadding="0" cellspacing="0">
-         <div>
             <th>댓글 작성자</th>
-         <td align="center">댓글내용 &nbsp; &nbsp; 
+         <td align="center"><b>댓글내용 &nbsp; &nbsp; </b>
          <c:if test="${ !empty sessionScope.loginMember.user_id }">
                <c:url var="ffrein" value="/movefreerepin.do">
                   <c:param name="free_no" value="${free.free_no }" />
@@ -246,10 +238,8 @@ a:hover {
                <a href="${ ffrein }">[댓글등록]</a>
             </c:if>
          </td>
-         <hr>
+         
 
-
-         <br>
          <c:forEach items="${ list }" var="f">
             <tr>
                <c:if test="${ f.free_reply_lev eq 2 }">

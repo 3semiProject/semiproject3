@@ -160,9 +160,9 @@ a:hover {
             </div>
             <div class="userezinfo">
                <div class="side">
-                  <span class="userinfoimg">작성자: ${ tip.user_id }</span> 
-                  <span class="datetime" style="text-align: right"> &nbsp; 작성일: 
-                     <fmt:formatDate value="${tip.write_tip_date}" pattern="yyyy-MM-dd a HH:mm:ss" />
+                  <span class="userinfoimg">작성자: ${ tip.user_id }</span> <span
+                     class="datetime" style="text-align: right"> &nbsp; 작성일: <fmt:formatDate
+                        value="${tip.write_tip_date}" pattern="yyyy-MM-dd a HH:mm:ss" />
                   </span>
                </div>
                <div class="side fr">
@@ -190,6 +190,21 @@ a:hover {
                            <a href="${ ttlikein }">[추천하기]</a>
                         </c:if>&nbsp; </b>
                   </span>
+                  <span class="cbfile">첨부 파일 : </span>
+            <!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 -->
+            <c:forEach items="${ ofile }" var="of" varStatus="status">
+               <c:if test="${ !empty of and !empty sessionScope.loginMember}">
+                  <c:url var="ttd" value="/tipdown.do">
+                     <c:param name="ofile" value="${ of }" />
+                     <c:param name="rfile" value="${ rfile[status.index] }" />
+                  </c:url>
+                   &nbsp;<a href="${ ttd }">${ of }</a>
+               </c:if>
+            </c:forEach>
+            <!-- 첨부파일이 없다면, Empty 처리 -->
+            <c:if test="${ empty tip.originfile_tip}">
+                   &nbsp; * 첨부파일이 없습니다 *
+               </c:if>
                   <hr>
                </div>
             </div>
@@ -210,35 +225,12 @@ a:hover {
             &nbsp; &nbsp; ${tip.tip_value}<br>
             <br>
             <br>
-            <br>
-            <br>
-            <br>
-
-         </div>
-         <hr>
-         <div class="cbfile">
-            <span style="text-align: left;">첨부 파일 : </span>
-            <!-- 첨부파일이 있다면, 파일명 클릭시 다운로드 실행 처리 -->
-            <c:forEach items="${ ofile }" var="of" varStatus="status">
-               <c:if test="${ !empty of and !empty sessionScope.loginMember}">
-                  <c:url var="ttd" value="/tipdown.do">
-                     <c:param name="ofile" value="${ of }" />
-                     <c:param name="rfile" value="${ rfile[status.index] }" />
-                  </c:url>
-                   &nbsp; <a href="${ ttd }">${ of }</a> &nbsp;
-               </c:if>
-            </c:forEach>
-            <!-- 첨부파일이 없다면, Empty 처리 -->
-            <c:if test="${ empty tip.originfile_tip}">
-                   &nbsp; * 첨부파일이 없습니다 *
-               </c:if>
          </div>
          
          <table style="margin-left: auto; margin-right: auto;" width="900px"
          border="1px solid" cellpadding="0" cellspacing="0">
-         <div>
             <th>댓글 작성자</th>
-         <td align="center">댓글내용 &nbsp; &nbsp; 
+         <td align="center"><b>댓글내용 &nbsp; &nbsp; </b>
          <c:if test="${ !empty sessionScope.loginMember.user_id }">
                <c:url var="ttrein" value="/movetiprepin.do">
                   <c:param name="tip_no" value="${tip.tip_no }" />
@@ -246,10 +238,8 @@ a:hover {
                <a href="${ ttrein }">[댓글등록]</a>
             </c:if>
          </td>
-         <hr>
+         
 
-
-         <br>
          <c:forEach items="${ list }" var="t">
             <tr>
                <c:if test="${ t.tip_reply_lev eq 2 }">
