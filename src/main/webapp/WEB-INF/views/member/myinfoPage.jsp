@@ -113,8 +113,9 @@ function form_submit() {
 </script>
 </head>
 <body>
-	<c:import url="/WEB-INF/views/common/menubar.jsp" />
+	<div style="align-items: left"><c:import url="/WEB-INF/views/common/menubar.jsp" /></div>
 	<c:import url="/WEB-INF/views/member/memberbar.jsp"/>
+	
 	<hr>
 	<div id="enroll_form">
 		<h1 align="center" id="title">회원정보 보기</h1>

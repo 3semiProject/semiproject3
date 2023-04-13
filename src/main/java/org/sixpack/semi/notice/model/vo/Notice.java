@@ -13,14 +13,13 @@ public class Notice implements java.io.Serializable {
 	private String notice_content;		//공지사항 글내용
 	private String notice_originfile;	//공지사항 원본파일
 	private String notice_renamefile;	//공지사항 수정파일
-	private String notice_initlink;		//공지사항 링크
 	
 	public Notice() {
 		super();
 	}
 
 	public Notice(int notice_no, String notice_title, String user_id, Date write_notice_date, int notice_views,
-			String notice_content, String notice_originfile, String notice_renamefile, String notice_initlink) {
+			String notice_content, String notice_originfile, String notice_renamefile) {
 		super();
 		this.notice_no = notice_no;
 		this.notice_title = notice_title;
@@ -30,7 +29,6 @@ public class Notice implements java.io.Serializable {
 		this.notice_content = notice_content;
 		this.notice_originfile = notice_originfile;
 		this.notice_renamefile = notice_renamefile;
-		this.notice_initlink = notice_initlink;
 	}
 
 	public int getNotice_no() {
@@ -97,12 +95,8 @@ public class Notice implements java.io.Serializable {
 		this.notice_renamefile = notice_renamefile;
 	}
 
-	public String getNotice_initlink() {
-		return notice_initlink;
-	}
-
-	public void setNotice_initlink(String notice_initlink) {
-		this.notice_initlink = notice_initlink;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	@Override
@@ -110,7 +104,8 @@ public class Notice implements java.io.Serializable {
 		return "Notice [notice_no=" + notice_no + ", notice_title=" + notice_title + ", user_id=" + user_id
 				+ ", write_notice_date=" + write_notice_date + ", notice_views=" + notice_views + ", notice_content="
 				+ notice_content + ", notice_originfile=" + notice_originfile + ", notice_renamefile="
-				+ notice_renamefile + ", notice_initlink=" + notice_initlink + "]";
+				+ notice_renamefile + "]";
 	}
 
+	
 }

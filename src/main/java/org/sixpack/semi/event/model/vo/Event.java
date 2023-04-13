@@ -12,14 +12,13 @@ public class Event implements java.io.Serializable{
 	private String event_content;		//이벤트 글내용
 	private String event_originfile;	//이벤트 원본파일
 	private String event_renamefile;	//이벤트 수정파일
-	private String event_initlink;		//이벤트 링크
 	
 	public Event() {
 		super();
 	}
 
 	public Event(int event_no, String event_title, String user_id, Date write_event_date, int event_views,
-			String event_content, String event_originfile, String event_renamefile, String event_initlink) {
+			String event_content, String event_originfile, String event_renamefile) {
 		super();
 		this.event_no = event_no;
 		this.event_title = event_title;
@@ -29,7 +28,6 @@ public class Event implements java.io.Serializable{
 		this.event_content = event_content;
 		this.event_originfile = event_originfile;
 		this.event_renamefile = event_renamefile;
-		this.event_initlink = event_initlink;
 	}
 
 	public int getEvent_no() {
@@ -96,19 +94,13 @@ public class Event implements java.io.Serializable{
 		this.event_renamefile = event_renamefile;
 	}
 
-	public String getEvent_initlink() {
-		return event_initlink;
-	}
-
-	public void setEvent_initlink(String event_initlink) {
-		this.event_initlink = event_initlink;
-	}
-
 	@Override
 	public String toString() {
 		return "Event [event_no=" + event_no + ", event_title=" + event_title + ", user_id=" + user_id
 				+ ", write_event_date=" + write_event_date + ", event_views=" + event_views + ", event_content="
 				+ event_content + ", event_originfile=" + event_originfile + ", event_renamefile=" + event_renamefile
-				+ ", event_initlink=" + event_initlink + "]";
+				+ "]";
 	}
+
+	
 }
