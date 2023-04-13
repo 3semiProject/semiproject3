@@ -344,9 +344,6 @@ border: 1px solid #D1D1D1;
                   <a style="color: white;" 
                   href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
                </div>
-               <div>
-                  asdf
-               </div>
             </div>
 
          </div>

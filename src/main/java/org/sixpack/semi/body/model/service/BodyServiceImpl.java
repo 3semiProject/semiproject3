@@ -35,5 +35,7 @@ public class BodyServiceImpl implements BodyService {
 	public int updateBody(Body body) {
 		return bodyDao.updateBody(body);
 	}
-
+	public int deleteBody(Body body) {
+		return bodyDao.deleteBody(body);
+	}
 }

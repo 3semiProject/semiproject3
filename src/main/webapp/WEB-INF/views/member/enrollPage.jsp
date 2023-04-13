@@ -365,7 +365,7 @@ body {
 					<div class="join_item">이메일</div>
 					<div class="mail_api">
 						<div class="mail_input_box">
-							<input class="mail_input" name="memberMail"> &nbsp; &nbsp;
+							<input class="mail_input" name="email"> &nbsp; &nbsp;
 							<input class="mail_check_button" type="button" value="인증번호전송">
 						</div>
 						<div class="mail_check_wrop">

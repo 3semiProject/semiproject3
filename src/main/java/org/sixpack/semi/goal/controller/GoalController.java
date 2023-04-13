@@ -52,7 +52,6 @@ public class GoalController {
                                            Goal goal,
                                            @RequestParam("isExist") String isExist) {
 
-
         Member member = (Member) session.getAttribute("loginMember");
         String user_id = member.getUser_id();
         String gender = member.getGender();
@@ -96,7 +95,7 @@ public class GoalController {
 
 
         if (!(goalService.updateGoalInfo(goal) > 0)) {  // 오늘날짜 목표관리 수정,
-                                                        // 오늘 날짜 없을시(= 목표관리 설정이 안됐을 시) if 문 실행
+            // 오늘 날짜 없을시(= 목표관리 설정이 안됐을 시) if 문 실행
             goalService.insertGoalInfo(goal); // 목표등록
         }
         mv.addObject("goal", goal);

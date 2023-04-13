@@ -21,13 +21,20 @@ public class BodyDao {
     }
 
     public int insertBody(Body body) {
+        session.update("bodyMapper.updateGoalWeight", body);
         return session.insert("bodyMapper.insertBody", body);
     }
 
     public Body selectBody(int diaryNo) {
         return session.selectOne("bodyMapper.selectBody", diaryNo);
     }
+
     public int updateBody(Body body) {
+        session.update("bodyMapper.updateGoalWeight", body);
         return session.update("bodyMapper.updateBody", body);
+    }
+    public int deleteBody(Body body) {
+        session.update("bodyMapper.deleteBody", body);
+        return session.update("bodyMapper.deleteDiary", body);
     }
 }

@@ -193,14 +193,13 @@
             <div class="join_e">
                 <div class="join_item">키</div>
                 <div class="join_item2">
-                    <label><input type="number" name="height" value="${goal.height}" maxlength="6"> cm</label>
+                    <label><input type="number" name="height" step=0.01 min=0 value="${goal.height}" maxlength="6"> cm</label>
                 </div>
             </div>
             <div class="join_e">
                 <div class="join_item">몸무게</div>
                 <div class="join_item2">
-
-                    <label><input type="number" name="current_weight" value="${goal.current_weight}"> kg</label>
+                    <label><input type="number" name="current_weight" step=0.01 min=0 value="${goal.current_weight}"> kg</label>
                 </div>
             </div>
             <div class="join_e">
@@ -219,7 +218,7 @@
             <div class="join_e">
                 <div class="join_item">목표 체중</div>
                 <div class="join_item2">
-                    <label><input type="number" name="target_weight" value="${goal.target_weight}"> kg</label>
+                    <label><input type="number" name="target_weight" step=0.01 min=0 value="${goal.target_weight}"> kg</label>
                 </div>
             </div>
             <div class="join_e2">
@@ -256,10 +255,10 @@
                     <div class="join_item">키</div>
                     <div class="join_item2">
                         <c:if test="${isExist eq 'D'}">
-                            <label><input type="number" name="height" value="${goal.height}" maxlength="6"> cm</label>
+                            <label><input type="number" name="height" step=0.01 min=0 value="${goal.height}" maxlength="6"> cm</label>
                         </c:if>
                         <c:if test="${isExist eq 'N'}">
-                            <label><input type="number" name="height" placeholder="${goal.height}" maxlength="6">
+                            <label><input type="number" name="height" step=0.01 min=0 placeholder="${goal.height}" maxlength="6">
                                 cm</label>
                         </c:if>
                     </div>
@@ -269,11 +268,11 @@
                     <div class="join_item2">
 
                         <c:if test="${isExist eq 'D'}">
-                            <label><input type="number" name="current_weight" value="${goal.current_weight}"
+                            <label><input type="number" step=0.01 min=0 name="current_weight" value="${goal.current_weight}"
                                           maxlength="6"> kg</label>
                         </c:if>
                         <c:if test="${isExist eq 'N'}">
-                            <label><input type="number" name="current_weight" placeholder="${goal.current_weight}"
+                            <label><input type="number" step=0.01 min=0 name="current_weight" placeholder="${goal.current_weight}"
                                           maxlength="6"> kg</label>
                         </c:if>
 
@@ -286,7 +285,7 @@
                         <label> <input type="radio" name="energy_demand" value="25"> 활동이 적거나 운동을 하지 않는다.</label> <br>
                         <label> <input type="radio" name="energy_demand" value="30"> 가벼운 활동 및 운동(주 1~3회)을 한다.
                         </label><br>
-                        <label> <input type="radio" name="energy_demand" value="35"> 보통의 활동 및 운동(주 3~5회)을 한다.
+                        <label> <input type="radio" name="energy_demand" value="35" checked> 보통의 활동 및 운동(주 3~5회)을 한다.
                         </label><br>
                         <label> <input type="radio" name="energy_demand" value="40"> 적극적인 활동 및 운동(주 6~7회)을 한다.</label>
                         <br>
@@ -298,11 +297,11 @@
                     <div class="join_item">목표 체중</div>
                     <div class="join_item2">
                         <c:if test="${isExist eq 'D'}">
-                            <label><input type="number" name="target_weight" value="${goal.target_weight}"
+                            <label><input type="number" step=0.01 min=0 name="target_weight" value="${goal.target_weight}"
                                           maxlength="6"> kg</label>
                         </c:if>
                         <c:if test="${isExist eq 'N'}">
-                            <label><input type="number" name="target_weight" placeholder="${goal.target_weight}"
+                            <label><input type="number" step=0.01 min=0 name="target_weight" placeholder="${goal.target_weight}"
                                           maxlength="6"> kg</label>
                         </c:if>
 

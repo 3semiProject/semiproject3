@@ -21,6 +21,7 @@ var today = new Date();
 		 	<input type="hidden" name="diary_category" value="eat">	
 		 	<input class="tabs" id="left" type="submit" value="식단" />
 		</form>
+
 		<form class="tabs" method="get" name="diary" action="diary_moveDiary.do">
 			<input type="hidden" name="user_id" value="${sessionScope.loginMember.user_id}">
 		 	<input type="hidden" name="diary_post_date" value="${diary.diary_post_date}">	

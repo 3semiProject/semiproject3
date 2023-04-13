@@ -59,7 +59,6 @@ public class BodyController {
             } else {
                 String id = ((Member) session.getAttribute("loginMember")).getUser_id();
                 diary.setUser_id(id);
-                diary.setUser_id("dd"); //test용
             }
             //date 없을때 현재날짜로
             if (diary.getDiary_post_date() == null) {
@@ -108,12 +107,13 @@ public class BodyController {
         //diary_no로 회원정보 조회
         if (diary.getDiary_no() > 0) {
             diary = diaryService.selectDiaryNo(diary.getDiary_no());
-        } else {
+        }
+
+        else {
             //id 없을때
             if (session == null) {
                 //비로그인 상태면 로그인 페이지로 이동
-                //return "redirect:loginPage.do";
-                diary.setUser_id("dd"); //test용
+                return "redirect:loginPage.do";
             } else {
                 String id = ((Member) session.getAttribute("loginMember")).getUser_id();
                 diary.setUser_id(id);
@@ -126,7 +126,7 @@ public class BodyController {
             }
             //category 없을때
             if (diary.getDiary_category() == null) {
-                diary.setDiary_category("eat");
+                diary.setDiary_category("body");
             }
             //id, date, category 일치하는 diary 있는지 조회
             if (!(diary.getUser_id() == null && diary.getDiary_post_date() == null && diary.getDiary_category() == null)) {
@@ -134,8 +134,7 @@ public class BodyController {
             }
             //이전다이어리 존재하면 수정화면으로 이동(act, body)
             if (before != null) {
-                model.addAttribute("diary", before);
-
+                redirect.addAttribute("diary_no", before.getDiary_no());
 
                 return "redirect:diary_showBodyModify.do";
             }
@@ -219,7 +218,7 @@ public class BodyController {
             } // 이름바꾸기
         } // 새로운 첨부파일이 있을 때
         logger.info(diary.toString());
-
+        System.out.println("fkfkfkfk");
         //다이어리 작성실패 시
         if (diaryService.insertDiary(diary) == 0) {
             model.addAttribute("message", "다이어리 작성 실패");
@@ -308,6 +307,20 @@ public class BodyController {
 
         redirect.addAttribute("diary_no", diary.getDiary_no());
         return "redirect:diary_showBodyDiary.do";
+    }
+
+    @RequestMapping(value = "diary_deleteBody.do")
+    public String deleteBodyMethod(RedirectAttributes redirect,
+                                   Body body,
+                                   Model model) throws ParseException {
+
+
+        if (bodyService.deleteBody(body) > 0) {
+            return "redirect:diary_showBodyDiary.do";
+        } else {
+            model.addAttribute("message", "다이어리 작성 실패");
+            return "common/error";
+        }
     }
 
 }

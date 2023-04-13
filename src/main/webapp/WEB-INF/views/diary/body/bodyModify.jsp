@@ -20,7 +20,7 @@
         /* 바디다이어리 출력용 */
         div#diaryPart {
             height: 80%;
-            min-height: 100%;
+             min-height: 100%;
             align-items: center;
             display: flex;
             justify-content: center;
@@ -99,6 +99,21 @@
             margin: 0;
         }
 
+
+        input[type=submit], button.delete {
+            height: 40px;
+            padding: 10px 16px;
+            border: none;
+            background: #f3f3f4;
+            color: #0d0c22;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            box-sizing: border-box;
+        }
+
     </style>
     <style type="text/css">
         /* bar들 중앙정렬 */
@@ -109,7 +124,7 @@
         }
     </style>
     <script type="text/javascript"
-            src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
+            src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3 .min.js"></script>
 </head>
 <body>
 
@@ -131,27 +146,27 @@
             <div class="bodyBox">
                 <div>
                     <h4>BMI</h4>
-                    <input type="number" name="body_bmi" value="${body.body_bmi}"><br>
+                    <input type="number" step=0.01  min=0 required name="body_bmi" value="${body.body_bmi}"><br>
                 </div>
                 <div>
                     <h4>Bmr</h4>
-                    <input type="number" name="body_bmr" value="${body.body_bmr}"><br>
+                    <input type="number" step=0.01  min=0 required name="body_bmr" value="${body.body_bmr}"><br>
                 </div>
                 <div>
                     <h4>체중</h4>
-                    <input type="number" name="body_weight" value="${body.body_weight}">kg <br>
+                    <input type="number" step=0.01  min=0 required name="body_weight" value="${body.body_weight}">kg <br>
                 </div>
                 <div>
                     <h4>체지방량</h4>
-                    <input type="number" name="body_fat" value="${body.body_fat}">g <br>
+                    <input type="number" step=0.01  min=0 required name="body_fat" value="${body.body_fat}">g <br>
                 </div>
                 <div>
                     <h4>골격근량</h4>
-                    <input type="number" name="body_muscle" value="${body.body_muscle}">g<br>
+                    <input type="number" step=0.01  min=0 required name="body_muscle" value="${body.body_muscle}">g<br>
                 </div>
                 <div>
                     <h4>허리둘레</h4>
-                    <input type="number" name="body_waistline" value="${body.body_waistline}">cm <br>
+                    <input type="number" step=0.01  min=0 required name="body_waistline" value="${body.body_waistline}">cm <br>
                 </div>
             </div>
             <br>
@@ -162,17 +177,22 @@
                 <!-- 이미지입력되면 event인식해서 changeImage() function 실행됨 -->
 
                 <c:if test="${ empty diary.diary_image }">
-                    <img id="showimg_body"
-                         src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage2.jpg"/>
+                    <label> <input style="display: none" type="file" name="upfile" onchange="changeImg(this);">
+                        <img id="showimg_body"
+                             src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage2.jpg"/>
+                    </label>
+
                 </c:if>
 
                 <c:if test="${ !empty diary.diary_image }">
-                    <img id="showimg_body"
-                         src="${ pageContext.servletContext.contextPath }/resources/diary_upfile/${ diary.diary_image }">
+                    <label> <input style="display: none" type="file" name="upfile" onchange="changeImg(this);">
+                        <img id="showimg_body"
+                             src="${ pageContext.servletContext.contextPath }/resources/diary_upfile/${ diary.diary_image }">
+                    </label>
+
                 </c:if>
-                <div>
-                    <input style="width: 70px;" type="file" name="upfile" onchange="changeImg(this);"/>
-                </div>
+
+
             </div>
             <!-- 등록된 메모 출력 -->
             <!-- Memo Box -->
@@ -184,7 +204,11 @@
             <!-- 다이어리에 : 시간, 메모, 이미지파일 -->
             <input type="submit" value="저장">
         </form>
-
+        <br>
+        <button class="delete"
+                onclick="location.href='diary_deleteBody.do?user_id=${diary.user_id}&diary_no=${diary.diary_no}'"
+                style="background: rgba(139,69,19,0.31)">다이어리 삭제
+        </button>
         <script type="text/javascript">
             $("form").submit(function (e) {
                 //체중이 0이상이어야 전송가능

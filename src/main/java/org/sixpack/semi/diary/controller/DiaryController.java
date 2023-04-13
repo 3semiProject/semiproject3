@@ -49,7 +49,7 @@ public class DiaryController {
     @RequestMapping(value = "calendar.do", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String diaryCalendarMethod(@RequestParam("user_id") String user_id) throws UnsupportedEncodingException {
-        ArrayList<Diary> list = diaryService.selectDiary(user_id);
+        ArrayList<Diary> list = diaryService.selectDiaryCalendar(user_id);
         logger.info("calendar.do : " + list.size());
 
         JSONObject sendJson = new JSONObject();
@@ -139,12 +139,17 @@ public class DiaryController {
 
             if (isExist.equals("D")) {
                 Goal goal = diaryService.selectlastGoal(diary);
-                redirect.addAttribute("isExist", "D"); // 기간 내 목표가 없을 시
-                redirect.addAttribute("goal", goal);  // 가장 최근 데이터에 목표기간만 한달 후인 데이터 넘김
+
+                redirect.addFlashAttribute("isExist", "D"); // 기간 내 목표가 없을 시
+                System.out.println("나나나");
+
+                redirect.addFlashAttribute("goal", goal);  // 가장 최근 데이터에 목표기간만 한달 후인 데이터 넘김
+                System.out.println("다다다");
+
                 return "redirect:diary_showGoalModify.do"; //목표작성화면으로 이동
 
             } else {
-                redirect.addAttribute("isExist", "N"); // 처음 가입시(목표 데이터 없을 시)
+                redirect.addFlashAttribute("isExist", "N"); // 처음 가입시(목표 데이터 없을 시)
                 return "redirect:diary_showGoalModify.do"; //목표작성화면으로 이동
             }
         }

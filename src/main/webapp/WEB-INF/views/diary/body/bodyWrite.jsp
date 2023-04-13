@@ -105,6 +105,21 @@
             margin: 0;
         }
 
+
+        input[type=submit] {
+            height: 40px;
+            padding: 10px 16px;
+            border: none;
+            background: #f3f3f4;
+            color: #0d0c22;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            box-sizing: border-box;
+        }
+
     </style>
     <script type="text/javascript"
             src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
@@ -124,27 +139,27 @@
         <div class="bodyBox">
             <div>
                 <h4>BMI</h4>
-                <input type="number" name="body_bmi" placeholder="0.0"><br>
+                <input type="number" step=0.01 min=0 name="body_bmi" placeholder="0.0" required><br>
             </div>
             <div>
                 <h4>Bmr</h4>
-                <input type="number" name="body_bmr" placeholder="0.0"><br>
+                <input type="number" step=0.01 min=0 name="body_bmr" placeholder="0.0" required<br>
             </div>
             <div>
                 <h4>체중</h4>
-                <input type="number" name="body_weight" placeholder="0.0">kg <br>
+                <input type="number" step=0.01 min=0  name="body_weight" placeholder="0.0" required>kg <br>
             </div>
             <div>
                 <h4>체지방량</h4>
-                <input type="number" name="body_fat" placeholder="0.0">g <br>
+                <input type="number" step=0.01 min=0 name="body_fat" placeholder="0.0" required>g <br>
             </div>
             <div>
                 <h4>골격근량</h4>
-                <input type="number" name="body_muscle" placeholder="0.0">g<br>
+                <input type="number" step=0.01 min=0 name="body_muscle" placeholder="0.0" required>g<br>
             </div>
             <div>
                 <h4>허리둘레</h4>
-                <input type="number" name="body_waistline" placeholder="0.0">cm <br>
+                <input type="number" step=0.01 min=0 name="body_waistline" placeholder="0.0" required>cm <br>
             </div>
         </div>
         <br>
