@@ -28,8 +28,8 @@
             border-radius: 35px;
         }
 
-        #adminBox #user_visit, #border_mgt {
-            width: 500px;
+        #adminBox #user_visit {
+            width: 80%;
             height: 400px;
             text-align: center;
             border: 1px solid #D1D1D1;
@@ -55,13 +55,22 @@
         }
 
         #adminBox #user_visit #visit_count, #adminBox #user_visit #visit_count {
-            width: 500px;
+            width: 100%;
             height: 400px;
+            
         }
+        
+         #adminBox #user_visit #visit_count {
+            position: relative;
+            top: 30px;
+            border: none;
+            
+         }
 
         #adminBox #user_visit #visit_count div {
             display: flex;
             height: 80px;
+            
         }
 
         #adminBox #border_mgt #board_count div {
@@ -70,23 +79,25 @@
         }
 
         #login_Box {
-            width: 120px;
+            width: 20%;
             height: 400px;
             border: 1px solid #D1D1D1;
-            border-radius: 35px;
+            border-radius: 30px;
             margin: 0;
         }
 
         #login_Box > div {
             align-items: center;
             margin-top: 30px;
+            background-color: #fcfaa7;
+          /*   background-color: white; */
         }
 
 
         #login_Box #login_join {
-            width: 100px;
-            height: 100px;
-            line-height: 100px;
+            width: 150px;
+            height: 150px;
+            line-height: 150px;
             background-color: #01CD88;
         }
 
@@ -409,7 +420,7 @@
                     type: "post",
                     dataType: "json",
                     success: function (jsonData) {
-                        alert("jsonData sending ");
+                      //  alert("jsonData sending ");
 
                         $('#myPost').html('내가 쓴 게시글 ' + jsonData.postCount + ' 개');
                         $('#myReply').html('내가 쓴 댓글 ' + jsonData.replyCount + ' 개');
@@ -515,22 +526,23 @@
                      <div>월 평균 접속자 수</div>
                      <div id="avgVisitors"></div>
                   </div>
-               </div>
-            </div>
-            <div id="border_mgt">
-          <!--      <div>게시판 분류</div> -->
-               <div id="board_count">
-                  <div id="total_post">
+                    <div id="total_post">
                      <div>총 게시물 수</div>
                      <div id="postCount"></div>
                   </div>
+               </div>
+            </div>
+ <!--            <div id="border_mgt">
+               <div>게시판 분류</div>
+               <div id="board_count">
+
                   <div id="total_coment">
                      <div>총 유해게시물 수</div>
                      <div id="blackPostCount"></div>
                   </div>
 
 
-             <!--        <div>
+                     <div>
                         음식 데이터 삽입용
                         <form action="insertFoodData.do" method="POST" enctype="multipart/form-data">
                             <input type="file" name="mfile" accept=".xls,.xlsx"/>
@@ -546,10 +558,10 @@
                             <input type="submit" value="운동 데이터 삽입(xlsx)"/>
                         </form>
                     </div>
- -->
+ 
 
                 </div>
-            </div>
+            </div> -->
             <div id="login_Box" align="center">
                 <div style="padding: 10px 0; height: 40px;">
                     관리자<br>${ loginMember.user_nickname } 님

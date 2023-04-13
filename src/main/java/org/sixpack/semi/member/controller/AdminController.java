@@ -365,6 +365,7 @@ public class AdminController {
 
                 default:
                     model.addAttribute("message", "예상하지 못한 오류");
+                    return "common/error";
             }
         } else {
             model.addAttribute("message", "게시글 삭제 실패!");

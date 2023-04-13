@@ -14,21 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.json.simple.JSONObject;
 import org.sixpack.semi.banner.model.service.BannerService;
 import org.sixpack.semi.banner.model.vo.Banner;
-import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.FileNameChange;
-import org.sixpack.semi.common.Searchs;
-import org.sixpack.semi.common.SearchDate;
-import org.sixpack.semi.kakao.model.service.KakaoService;
 import org.sixpack.semi.log.controller.LogController;
 import org.sixpack.semi.log.model.service.LogService;
 import org.sixpack.semi.log.model.vo.Log;
 import org.sixpack.semi.member.model.service.MemberService;
 import org.sixpack.semi.member.model.vo.Member;
-import org.sixpack.semi.qna.model.vo.Qna;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,26 +31,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.UnknownHostException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Random;
 
 @Controller
 public class MemberController {
@@ -83,9 +63,7 @@ public class MemberController {
     @Autowired
     private JavaMailSender mailSender;
 
-    // 소셜로그인 카카오 api
-    @Autowired
-    private KakaoService kakaoService;
+
 
 
     // login 처리용 메소드
@@ -776,22 +754,25 @@ public class MemberController {
         Member member = memberService.selectMember(user_id);
 
         if (member != null) { // 해당 유저 존재시,
-            if (memberService.deleteMember(user_id) > 0) { // 해당 멤버 삭제
                 if (memberService.insertQuitMember(member) > 0) { // 해당 멤버의 정보를 삭제테이블로 이동
                     logger.info(user_id + "님 삭제 테이블로 이동 성공!");
+                    if (memberService.deleteMember(user_id) > 0) { // 해당 멤버 삭제=> null처리
+                    	// 회원 탈퇴 성공시 , 자동 로그아웃 처리해야 함
+                    	// 컨트롤러 메소드에서 다른 [컨트롤러] 메소드 호출할 수 있음
+                    	mv.addObject("message", user_id + "님 안녕히 가세요😞");
+                    	mv.setViewName("redirect:logout.do");
+                    } else {
+                    	logger.info(user_id + "님 삭제 테이블로 이동 실패!");
+                    }
                 } else {
-                    logger.info(user_id + "님 삭제 테이블로 이동 실패!");
-                }
-                // 회원 탈퇴 성공시 , 자동 로그아웃 처리해야 함
-                // 컨트롤러 메소드에서 다른 [컨트롤러] 메소드 호출할 수 있음
-                mv.addObject("message", user_id + "님 안녕히 가세요😞");
-                mv.setViewName("redirect:logout.do");
-            } else {
-                mv.addObject("message", user_id + " : 회원 삭제 실패😞");
-                mv.setViewName("common/error");
-            }
-        }
-        return mv;
+                	mv.addObject("message", user_id + " : 회원 삭제 실패😞");
+                	mv.setViewName("common/error");
+                		}
+        }else {	//존재하지 않을시?
+        	mv.addObject("message", "존재하지 않습니다. 다시 시도해주세요.");
+        	mv.setViewName("common/error");
+        	}
+        	return mv;
 
     }
 

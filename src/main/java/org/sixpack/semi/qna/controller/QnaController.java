@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.sixpack.semi.board.controller.BoardController;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.common.Paging;
@@ -29,7 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class QnaController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	private static final Logger logger = LoggerFactory.getLogger(QnaController.class);
 
 	
 	@Autowired
