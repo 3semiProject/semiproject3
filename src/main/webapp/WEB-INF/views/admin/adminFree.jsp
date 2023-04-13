@@ -143,8 +143,6 @@ function delBoard(input) {
 	<div style="width: 30%; border: 1px solid #D1D1D1;">게시판별 보기</div>
 	<div style="width: 60%;">
 		<select id="optionLink" name="searchtype" onchange="if(this.value) location.href=(this.value);">
-			<option value="adHotlist.do?page=1">HOT</option>
-			<option value="adNewlist.do?page=1">NEW</option>
 			<option value="adFreelist.do?page=1" selected="selected">FREE</option>
 			<option value="adTiplist.do?page=1">TIP</option>
 			<option value="adEyelist.do?page=1">EYEBODY</option>

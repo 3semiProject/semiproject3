@@ -8,16 +8,8 @@
 <meta charset="UTF-8">
 <title>DAMUNITY</title>
 <style type="text/css">
-/*    h1 {
-      font-size: 36pt;
-      color: #01CD88;
-      
-   } */
-   
-   a{
-   text-decoration: none;
-   
-   }
+
+
 body {
 	height: 1200px;
 	width: 1200px;
@@ -85,19 +77,6 @@ body #loginForm {
 }
 
 
-.social_login{
-	display: flex;
-	justify-content: center;
-	margin: 20px 0;
-	
-}
-
-
-.social_login div a .img2 {
-	width: 65px;
-	height: 55px;
-	padding: 0 10px;
-}
 
 #loginForm.login_other{
 	width: 300px;
@@ -105,31 +84,56 @@ body #loginForm {
 	align-items: center;
 }
 
-/* 
 
-
-
-#loginForm form input[type=text] {
-	width: 270px;
-	height: 25px;
-	left: 120px;
-	border: 2px solid #01CD88;
-	font-size: 14pt;
-	margin: auto;
+.login_other > div > div {
+	height: 50px;
+	border: 1px solid black;
+	border-radius: 10px;
+	line-height: 50px;
 }
 
-#loginForm form input[type=password] {
-	width: 270px;
-	height: 25px;
-	left: 120px;
-	border: 2px solid #01CD88;
-	font-size: 14pt;
-	margin: auto;
-} */
+.login_other > #login_find {
+	display: flex;
+}
+
+.login_other > #login_find > div {
+	width: 120px;
+	position: relative;
+	left: 210px;
+	margin: 10px;
+
+}
+
+.login_other > #login_join > div {
+	width: 250px;
+	position: relative;
+	left: 225px;
+}
+
 </style>
 <!-- 카카오 로그인 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type="text/javascript">
+
+function submitBtn() {
+	document.getElementById('login_submit').style.color = 'white';
+	document.getElementById('login_submit').style.backgroundColor = '#BEE9C6';
+}
+
+function findId() {
+	document.getElementById('findId').style.backgroundColor = '#BEE9C6';
+	location.href="${ pageContext.servletContext.contextPath }/findId.do"
+}
+
+function findPw() {
+	document.getElementById('findPw').style.backgroundColor = '#BEE9C6';
+	location.href="${ pageContext.servletContext.contextPath }/findPw.do"
+}
+
+function joinBtn() {
+	document.getElementById('joinBtn').style.backgroundColor = '#BEE9C6';
+	location.href="${ pageContext.servletContext.contextPath }/enrollPage.do"
+}
 
 </script>
 </head>
@@ -142,19 +146,19 @@ body #loginForm {
       <input type="text" name="user_id" class="pos" placeholder="아이디" />
       <input type="password" name="user_pw" class="pos" placeholder="비밀번호" />
  	</div>
- 	<div class="login_submit">
-      <input type="submit" value="로그인">
+ 	<div>
+      <input id="login_submit" onclick="submitBtn();" type="submit" value="로그인">
  	</div>
   </form>
 
 <hr>
 	<div class="login_other">
 		<div id="login_find">
-			<a href="${ pageContext.servletContext.contextPath }/findId.do">ID찾기</a>
-			<a href="${ pageContext.servletContext.contextPath }/findPw.do">PW찾기</a>
+			<div id="findId" onclick="findId();">ID찾기</div>
+			<div id="findPw" onclick="findPw();">PW찾기</div>
 		</div>
 		<div id="login_join">
-			<a href="${ pageContext.servletContext.contextPath }/enrollPage.do">회원가입</a>
+			<div id="joinBtn" onclick="joinBtn();">회원가입</div>
 		</div>
 	</div>
 </div>

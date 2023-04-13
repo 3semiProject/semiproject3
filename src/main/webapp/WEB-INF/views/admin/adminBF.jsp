@@ -12,10 +12,10 @@
 body{
         width:1200px;
     	height:1200px;
-        line-height:2em;        
+        line-height:2em;
         font-family:"맑은 고딕";
 }
-    ul, li{ 
+    ul, li{
         list-style:none;
         text-align:center;
         padding:0;
@@ -23,7 +23,7 @@ body{
 }
 
     #bfafWrapper{
-        width: 1130px;
+        width: 1200px;
         height: 1200px;
     }
 
@@ -36,7 +36,7 @@ body{
 }
 
     #ulTable {margin-top:10px;}
-    
+
 
     #ulTable > li:first-child > ul > li {
         background-color:#01CD88;
@@ -50,12 +50,12 @@ body{
         position:relative;
         min-width:40px;
 }
-    #ulTable > li > ul > li { 
+    #ulTable > li > ul > li {
         float:left;
         font-size:10pt;
         border-bottom:1px solid silver;
         vertical-align:baseline;
-}    
+}
 
     #ulTable > li > ul > li:first-child               			  {width:5%;} /*No 열 크기*/
     #ulTable > li > ul > li:first-child +li           			  {width:35%;} /*제목 열 크기*/
@@ -65,9 +65,9 @@ body{
 	#ulTable > li > ul > li:first-child +li+li+li+li+li  		  {width:10%;} /*조회수 열 크기*/
 	#ulTable > li > ul > li:first-child +li+li+li+li+li+li  	  {width:10%;} /*삭제*/
     #divPaging {
-          clear:both; 
-        margin:0 auto; 
-        width:220px; 
+          clear:both;
+        margin:0 auto;
+        width:220px;
         height:50px;
 }
 
@@ -80,9 +80,9 @@ body{
 
     #liSearchOption {clear:both;}
     #liSearchOption > div {
-        margin:0 auto; 
-        margin-top: 30px; 
-        width:auto; 
+        margin:0 auto;
+        margin-top: 30px;
+        width:auto;
         height:100px;
 
 }
@@ -97,21 +97,21 @@ body{
             display: block;
             background-color: white;
             text-align: left;
-            
+
             color: #01CD88;
             font-weight: bold;
-            
+
             text-shadow: 1px 1px 2px #D1D1D1;
             font-size: 20pt;
             border: 1px solid;
-        
+
 	}
-	
+
 	.bfafa {
 		text-decoration: none;
 		color: black;
 	}
-	
+
 	.bfafa:hover {
 		text-decoration: none;
 		color: black;
@@ -143,8 +143,6 @@ body{
 	<div style="width: 30%; border: 1px solid #D1D1D1;">게시판별 보기</div>
 	<div style="width: 60%;">
 		<select id="optionLink" name="searchtype" onchange="if(this.value) location.href=(this.value);">
-			<option value="adHotlist.do?page=1">HOT</option>
-			<option value="adNewlist.do?page=1">NEW</option>
 			<option value="adFreelist.do?page=1">FREE</option>
 			<option value="adTiplist.do?page=1">TIP</option>
 			<option value="adEyelist.do?page=1">EYEBODY</option>
@@ -179,15 +177,14 @@ body{
 
         <ul>
             <!-- 게시판 제목 -->
-
             <li id="title">BF & AF 게시판</li>
-
 
             <!-- 게시판 목록  -->
             <li>
                 <ul id ="ulTable">
                     <li>
                         <ul>
+                        	<li><input type="checkbox"/></li>
                            	<li>No</li>
                             <li class="center">제목</li>
                             <li>첨부파일</li>
@@ -201,6 +198,7 @@ body{
                 <c:forEach items="${ list }" var="ba">
                 	<li>
                 		<ul>
+                			<li><input type="checkbox"/></li>
                 			<li>${ ba.bfaf_no }</li>
                 			<c:url var="badt" value="/adBfafdetail.do">
 								<c:param name="bfaf_no" value="${ ba.bfaf_no }" />
@@ -222,13 +220,13 @@ body{
                             <li>${ba.user_id}</li>
                             <li>${ba.write_bfaf_date}</li>
                             <li> &nbsp; &nbsp;${ba.click_bfaf_no}&nbsp; &nbsp; </li>
-                           <li><button type="button" onclick="delBoard('${ ba.bfaf_no }');">삭제</button></li> 
+                           <li><button type="button" onclick="delBoard('${ ba.bfaf_no }');">삭제</button></li>
                 		</ul>
                 	</li>
-                </c:forEach>                       
+                </c:forEach>
                 </ul>
             </li>
-        </ul> 
+        </ul>
            <br>
         <br>
         <!-- 페이징 처리 -->

@@ -127,15 +127,8 @@
             border-radius: 35px;
             height: 400px;
             justify-content: space-around;
-            /*    border: 1px solid #D1D1D1;
-               position: relative;
-               float: right;
-               margin-top: 5px;
-               margin-right: 0.5%;
-               width: 28%;
-               height: 300px;
-               background-color: white;
-               border-radius: 35px; */
+
+
         }
 
         #userBox_memberBox > div {
@@ -143,7 +136,7 @@
             position: relative;
             float: right;
             margin-right: 0.5%;
-            width: 28%;
+            width: 25%;
             height: 400px;
             background-color: white;
             border-radius: 35px;
@@ -169,10 +162,21 @@
         #myActivity_box {
             position: relative;
             left: 80px;
+            color: white;
+        }
+
+        #myActivity_box > div > a {
+            color: white;
+        }
+
+
+        #myActivity_box div {
+            background: #01CD88;
+            color: white;
         }
 
         #userBox_memberBox #myActivity_box div {
-
+            line-height: 50px;
             height: 50px;
             width: 80%;
             margin: 30px 30px;
@@ -203,42 +207,45 @@
 
         #todayVisitors, #monthVisitors, #avgVisitors, #postCount,
         #blackPostCount {
+            width: 300px;
             font-size: xx-large;
             margin: auto;
             justify-content: center;
             color: black;
-	text-align: center;
-}
+            text-align: center;
+        }
 
-#today > div:first-child, #month > div:first-child, #year > div:first-child, #total_post > div:first-child,
-#total_coment > div:first-child {
-width: 35%;
-text-align: center;
-justify-content: center;
-font-size: x-large;
-color: white;
-background: rgba(64, 217, 166, 0.8);
-}
+        #today > div:first-child, #month > div:first-child, #year > div:first-child, #total_post > div:first-child,
+        #total_coment > div:first-child {
+            width: 35%;
+            text-align: center;
+            justify-content: center;
+            font-size: x-large;
+            color: white;
+            background: rgba(64, 217, 166, 0.8);
+        }
 
-#today > div:last-child, #month > div:last-child, #year > div:last-child,  #total_post > div:last-child,
-#total_coment > div:last-child{
-width: 60%;
-}
+        #today > div:last-child, #month > div:last-child, #year > div:last-child, #total_post > div:last-child,
+        #total_coment > div:last-child {
+            width: 60%;
+        }
 
-.term {
-	display: flex;
-	width: 100%;
-}
+        .term {
+            display: flex;
+            width: 100%;
+        }
 
-.term > div {
-	display: flex;
-	width: 50%;
-}
-.term > div > div, .term > div > input{
-	margin: auto;
-}
-.term > div > div:first-child {
-	width: 95%;
+        .term > div {
+            display: flex;
+            width: 50%;
+        }
+
+        .term > div > div, .term > div > input {
+            margin: auto;
+        }
+
+        .term > div > div:first-child {
+            width: 95%;
         }
 
         #calendar div {
@@ -360,7 +367,7 @@ width: 60%;
 
         //adminBox에서 접속자수, 게시물수 get
         $(function () {
-if ( "${ loginMember.admin_ck }" == "Y" )  {
+            if ("${loginMember.admin_ck}" === 'Y') {
                 setInterval(function () {
 
                     $.ajax({
@@ -390,38 +397,36 @@ if ( "${ loginMember.admin_ck }" == "Y" )  {
         });//function close;
 
 
+        //-------------------------------------------------------
 
- //-------------------------------------------------------
+        //myActivity_box에서 user 게시글, user reple 갯수 get
+        $(function () {
 
-	    //myActivity_box에서 user 게시글, user reple 갯수 get
-	  $(function (){
+            if ("${sessionScope.loginMember}" !== "" && "${loginMember.admin_ck}" === 'N') {
 
-	 if ("${sessionScope.loginMember}" !== "" && "${loginMember.admin_ck}" === 'N') {
+                $.ajax({
+                    url: "myActivity_box.do",
+                    type: "post",
+                    dataType: "json",
+                    success: function (jsonData) {
+                        alert("jsonData sending ");
 
-	  $.ajax({
-		  url: "myActivity_box.do",
-		  type: "post",
-		  dataType: "json",
-		  success: function(jsonData) {
-			  alert("jsonData sending ");
-
-			$('#myPost').html('내가 쓴 게시글 ' + jsonData.postCount + ' 개');
-			$('#myReply').html('내가 쓴 댓글 ' + jsonData.replyCount + ' 개');
-
-
-		},
-		error: function(request, status, errorData){
-			console.log("error code : " + request.status
-					+ "\nMessage : " + request.responseText
-					+ "\nError : " + errorData);
-				}
-	  		});//adminBox ajax close;
-
-		}//if close => user
+                        $('#myPost').html('내가 쓴 게시글 ' + jsonData.postCount + ' 개');
+                        $('#myReply').html('내가 쓴 댓글 ' + jsonData.replyCount + ' 개');
 
 
-	   });//function close;
+                    },
+                    error: function (request, status, errorData) {
+                        console.log("error code : " + request.status
+                            + "\nMessage : " + request.responseText
+                            + "\nError : " + errorData);
+                    }
+                });//adminBox ajax close;
 
+            }//if close => user
+
+
+        });//function close;
     </script>
 </head>
 <body>
@@ -430,10 +435,10 @@ if ( "${ loginMember.admin_ck }" == "Y" )  {
     <c:if test="${ empty sessionScope.loginMember }">
         <%-- intro / login / find / join --%>
         <div id="userBox">
-            <div id="userBox_intro">Introduce</div>
+            <div id="userBox_intro"><iframe width="840px" height="400px" src="https://www.youtube.com/embed/H0PtMz_tydA?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
             <div id="userBox_loginBox" align="center">
                 <div id="loginbtn">
-                  <img alt="loginbtn" onclick="moveLoginPage();"
+                    <img alt="loginbtn" onclick="moveLoginPage();"
                          src="${ pageContext.servletContext.contextPath }/resources/images/mainLogo.jpg"/>
                     <div>Login</div>
                 </div>
@@ -465,7 +470,7 @@ if ( "${ loginMember.admin_ck }" == "Y" )  {
             </div>
             <div id="myActivity_box">
                 <div><a href="${ pageContext.servletContext.contextPath }/diary.do">오늘의 다이어리</a></div>
-               <div id="myPost">${ postCount }</div> <!-- 유저의 게시글 쿼리문 물어보기 -->
+                <div id="myPost">${ postCount }</div> <!-- 유저의 게시글 쿼리문 물어보기 -->
                <div id="myReply">${ replyCount }</div>
             </div>
             <div id="userBox_info">
@@ -494,38 +499,38 @@ if ( "${ loginMember.admin_ck }" == "Y" )  {
 
     <!-- 로그인 했을 때 : 관리자인 경우 -->
     <c:if
-            test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
-        <div id="adminBox">
+         test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
+         <div id="adminBox">
             <div id="user_visit">
-                <div id="visit_count">
-                    <div id="today">
-                        <div>접속자 수</div>
-                        <div id="todayVisitors"></div>
-                    </div>
-                    <div id="month">
-                        <div>월 접속자 수</div>
-                        <div id="monthVisitors"></div>
-                    </div>
-                    <div id="year">
-                        <div>월 평균 접속자 수</div>
-                        <div id="avgVisitors"></div>
-                    </div>
-                </div>
+               <div id="visit_count">
+                  <div id="today">
+                     <div>접속자 수</div>
+                     <div id="todayVisitors"></div>
+                  </div>
+                  <div id="month">
+                     <div>월 접속자 수</div>
+                     <div id="monthVisitors"></div>
+                  </div>
+                  <div id="year">
+                     <div>월 평균 접속자 수</div>
+                     <div id="avgVisitors"></div>
+                  </div>
+               </div>
             </div>
             <div id="border_mgt">
           <!--      <div>게시판 분류</div> -->
-                <div id="board_count">
-                    <div id="total_post">
-                        <div>총 게시물 수</div>
-                        <div id="postCount"></div>
-                    </div>
-                    <div id="total_coment">
-                        <div>총 유해게시물 수</div>
-                        <div id="blackPostCount"></div>
-                    </div>
+               <div id="board_count">
+                  <div id="total_post">
+                     <div>총 게시물 수</div>
+                     <div id="postCount"></div>
+                  </div>
+                  <div id="total_coment">
+                     <div>총 유해게시물 수</div>
+                     <div id="blackPostCount"></div>
+                  </div>
 
 
-                    <div>
+             <!--        <div>
                         음식 데이터 삽입용
                         <form action="insertFoodData.do" method="POST" enctype="multipart/form-data">
                             <input type="file" name="mfile" accept=".xls,.xlsx"/>
@@ -541,7 +546,7 @@ if ( "${ loginMember.admin_ck }" == "Y" )  {
                             <input type="submit" value="운동 데이터 삽입(xlsx)"/>
                         </form>
                     </div>
-
+ -->
 
                 </div>
             </div>

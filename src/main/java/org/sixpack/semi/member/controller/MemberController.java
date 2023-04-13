@@ -97,7 +97,8 @@ public class MemberController {
         // 로그인 요청한 회원의 아이디 존재유무 체크 및 변수에 저장
         Member loginMember = memberService.selectMember(user_id);
         logger.info(loginMember.getProfile_renamefile());
-        if ((loginMember != null && this.bcryptPasswordEncder.matches(user_pw, loginMember.getUser_pw())) && (loginMember.getLogin_ok().equals("Y"))) {
+        if ((loginMember != null && this.bcryptPasswordEncder.matches(user_pw, loginMember.getUser_pw())) 
+        		&& (loginMember.getLogin_ok().equals("Y"))) {
             session.setAttribute("loginMember", loginMember);
 
             // 해당 멤버의 정보 변수명에 저장
@@ -105,12 +106,6 @@ public class MemberController {
 
             SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String visit_time = time.format(session.getCreationTime());
-            // SimpleDateFormat time = new SimpleDateFormat();
-            // Date time = new Date(session.getCreationTime());
-            // SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-//			Date date = new Date();
-            // Date visit_time = sdf.parse(session.getCreationTime());
-            // logger.info(sdf.format(session.getCreationTime()));
 
             // check
             logger.info(loginMember.getUser_id());
@@ -125,21 +120,25 @@ public class MemberController {
 
             model.addAttribute("banneryoutubelink", banneryoutubelink);
             model.addAttribute("bannerarticlelink", bannerarticlelink);
-
-            if (logService.insertLog(log) > 0) {
+            
+            //log 기록을 위한 if문
+            if (logService.insertLog(log) > 0 && loginMember != null) {
                 return "common/main";
             } else {
-                logger.info("접속자 로그 테이블 저장 실패. 확입바랍니다.");
-//				model.addAttribute("message", "로그 저장 실패 : 재로그인 부<br>" + "또는 로그인 제한된 회원인지 관리자에게 문의하세요.");
-                return "common/error";
+            	model.addAttribute("message", "로그 저장 실패 : 재로그인<br>" + "또는 로그인 제한된 회원인지 관리자에게 문의하세요.");
+                return "common/loginError";
             }
-
         } else {
             model.addAttribute("message", "로그인 실패 : 아이디나 암호 확인하세요.<br>" + "또는 로그인 제한된 회원인지 관리자에게 문의하세요.");
-            return "common/error";
+            return "common/loginError";
         }
-
+ 
+        //loginMember is null == > error
     }
+    
+    
+   
+ 
 
     // logout 처리용 메소드
     @RequestMapping("logout.do")
@@ -211,6 +210,9 @@ public class MemberController {
 
         return mv;
     }
+    
+    
+    
 
 	//--------------------------------------------------
 	//login member post & reply count
@@ -600,20 +602,6 @@ public class MemberController {
     }
 
 
-    @RequestMapping("sendEmail.do")
-    public String sendEmailMethod(HttpServletResponse response, @RequestParam("email") String email) {
-        return null;
-    }
-
-    @RequestMapping("ShowPfofile.do")
-    public String showProfileMethod(Member member, Model model) {
-        return null;
-    }
-
-    @RequestMapping("showNickname.do")
-    public String showNicknameMethod(Member member, Model model) {
-        return null;
-    }
 
     // 회원정보 수정 전 비밀번호 확인
     @RequestMapping(value = "selectPw.do", method = {RequestMethod.GET, RequestMethod.POST})

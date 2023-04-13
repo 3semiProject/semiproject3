@@ -143,15 +143,13 @@ function delBoard(input) {
 	<div style="width: 30%; border: 1px solid #D1D1D1;">게시판별 보기</div>
 	<div style="width: 60%;">
 		<select id="optionLink" name="searchtype" onchange="if(this.value) location.href=(this.value);">
-			<option value="adHotlist.do?page=1">HOT</option>
-			<option value="adNewlist.do?page=1">NEW</option>
 			<option value="adFreelist.do?page=1">FREE</option>
 			<option value="adTiplist.do?page=1">TIP</option>
 			<option value="adEyelist.do?page=1" selected="selected">EYEBODY</option>
 			<option value="adBFlist.do?page=1">BF&AF</option>
 			<option value="nlist.do?page=1">공지사항</option>
 			<option value="elist.do?page=1">이벤트</option>
-			<option value="aqlist.do?page=1">FAQ</option>
+			<option value="faqlist.do?page=1">FAQ</option>
 			<option value="qnalist.do?page=1">QNA</option>
 		</select>
 	</div>
@@ -173,6 +171,7 @@ function delBoard(input) {
   </div>	
      </form>
      </div>
+     <br>
 </center>
 <div id="eyebodyWrapper">
 
