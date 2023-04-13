@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.sixpack.semi.act.model.vo.Act;
 import org.sixpack.semi.diary.model.service.DiaryService;
 import org.sixpack.semi.diary.model.vo.Diary;
 import org.sixpack.semi.eat.model.service.EatService;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller("eatCon")
 public class EatController {
@@ -62,7 +64,7 @@ public class EatController {
 			}else {
 				String id =((Member)session.getAttribute("loginMember")).getUser_id();
 				diary.setUser_id(id);
-				diary.setUser_id("dd"); //test용
+				diary.setUser_id("USER01"); //test용
 			}					
 		//date 없을때 현재날짜로
 			if(diary.getDiary_post_date()==null) {
@@ -117,27 +119,20 @@ public class EatController {
 	}	
 	
 	//3. 식단다이어리 수정 화면출력용 : diary_no로 이동
-	@RequestMapping("diary_showEatModify.do")
-	public String showEatModify(Model model, Diary diary) {
+	@RequestMapping(value="diary_showEatModify.do", method= {RequestMethod.POST, RequestMethod.GET} )
+	public String showEatModify( Model model, @RequestParam("diary_no") int diary_no) {
+		if(diary_no ==0) {
+			return "redirect:diary_showEatWrite.do";
+		}
+		
 	    //다이어리 번호가 있을 경우에만 조회
-	    if(diary.getDiary_no() > 0) {
-	        Diary move = diaryService.selectDiaryNo(diary.getDiary_no());
-	        if(move != null) {
-	            //수정화면에 띄울값 조회
-	            ArrayList<Eat> eats = eatService.selectDayEats(move);
+	        Diary move = diaryService.selectDiaryNo(diary_no);
+	        ArrayList<Eat> eats = eatService.selectDayEats(move);
 	            if(eats != null && !eats.isEmpty()) {
 	                model.addAttribute("diary", move);
 	                model.addAttribute("eats", eats);
-	                return "diary/eat/eatModify";
 	            }
-	        }
-	    }
-		
-	    //수정할 다이어리가 없으면 작성화면으로 이동
-	    Diary newDiary = new Diary();
-	    newDiary.setUser_id(diary.getUser_id());
-	    model.addAttribute("diary", newDiary);
-	    return "redirect:diary_showEatWrite.do";
+         return "diary/eat/eatModify";
 	}
 	
 	//4. 식단다이어리 음식이름 검색
@@ -168,27 +163,61 @@ public class EatController {
 		return sendJson.toJSONString();
 	}
 	
-	//5. 식단다이어리 작성처리용
+	//5. 식단다이어리 작성처리용 + 기존seq 뒤에 추가
 	@RequestMapping(value="diary_insertEatWrite.do", method= RequestMethod.POST)
 	@ResponseBody
 	public void insertEatWrite(HttpServletResponse response,
 			@RequestBody List<Eat> eats) throws IOException{
-		for(int i=0; i<eats.size(); i++) {
-			eats.get(i).setEat_seq(i+1);
-		}
-		System.out.println("시작"+
-				eats.get(0).getEat_seq()		);
+		//이전 정보값이 있으면 시퀀스 뒤쪽으로 입력
+		//다이어리번호 추출
+		int diary_no = eats.get(0).getDiary_no();
+		//해당일의 기존 음식갯수 조회
+		int beforeSize = eatService.selectEatCount(diary_no);
 		
-				int result = eatService.insertAllEat(eats);
-				if(result <= 0) {
-					response.getWriter().append("fail").flush();				
-				}				
-				response.getWriter().append("ok").flush();	
+		//이후 번호부터 seq입력.
+		int insertSeq = beforeSize+1;
+		for (int i = 0; i < eats.size(); i++) {
+			eats.get(i).setEat_seq(insertSeq++);
+		}
+		
+		System.out.println("시작" + insertSeq);
+
+		int result = eatService.insertAllEat(eats);
+		if (result <= 0) {
+			response.getWriter().append("fail").flush();
+		}
+		response.getWriter().append("ok").flush();
 	}
- 
-	//6. 날짜 이동용 :현재no, 이동할date입력
+
+	//6.기존 식단 다이어리 1개 eat 삭제처리용
+	@RequestMapping("diary_deleteOneEat.do")
+	@ResponseBody
+	public void deleteOneEat(HttpServletResponse response,
+			 RedirectAttributes redirect,
+			 Eat deleteEat) throws IOException{
+		//diary_no와 seq일치하는 Eat 삭제
+		if( eatService.deleteEatOverSeq(deleteEat)>0) {
+			response.getWriter().append("ok").flush();
+		}
+		response.getWriter().append("fail").flush();		
+	}
+	
+	//7.식단 다이어리 전체삭제처리용
+	@RequestMapping(value="diary_deleteEatDiary.do", method= {RequestMethod.GET,RequestMethod.POST})
+	public String deleteAllEat( RedirectAttributes redirect, 
+			int diary_no) {
+		Diary move = diaryService.selectDiaryNo(diary_no);
+		if(move!=null) {			
+			diaryService.deleteDiary(diary_no);
+			eatService.deleteAllEat(diary_no);			
+		}
+		    redirect.addFlashAttribute("diary", move);
+		    return "redirect:diary_showEatDiary.do";    
+	}
+	 
+	//8. 날짜 이동용 :현재no, 이동할date입력
 	@RequestMapping(value="diary_eatCalendar.do", method= {RequestMethod.GET,RequestMethod.POST})
-	public String moveCalendarEat(Model model, 
+	public String moveCalendarEat( RedirectAttributes redirect, 
 			@RequestParam int no,			
 			@RequestParam Date movedate) {
 		
@@ -197,22 +226,21 @@ public class EatController {
 	    //이동할 날짜 설정
 	    move.setDiary_post_date(movedate);
 
-	    model.addAttribute("diary", move);
+	    redirect.addFlashAttribute("diary", move);
 	    return "redirect:diary_showEatDiary.do";
 	}
+		
 	
-	//7.식단 다이어리 수정
-	@RequestMapping("diary_updateEatModify.do")
-	public String update(Model model,
-			int diary_no) {
-		return "";
-	}
-	
-	//8.식단 다이어리 삭제
-	@RequestMapping("diary_deleteEatDiary.do")
-	public String delete(Model model,
-			int diary_no) {
-		return "";
-	}
+	/*
+	 * //9.식단다이어리 1개 삭제처리용
+	 * 
+	 * @RequestMapping(value="diary_deleteOneEat.do", method=
+	 * {RequestMethod.GET,RequestMethod.POST}) public void
+	 * deleteOneEat(HttpServletResponse response, Eat deleteEat) {
+	 * 
+	 * if(eatService.deleteOneEat(deleteEat)>0) { response.add }
+	 * 
+	 * }
+	 */
 	
 }

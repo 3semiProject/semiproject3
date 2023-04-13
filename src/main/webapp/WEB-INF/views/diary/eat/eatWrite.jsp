@@ -319,15 +319,20 @@ form.tabs {
 	padding: 0px;
 	margin: 0px;
 }
+a.tabs.left{
+	background : #c0e488;
+}
+
 
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 
 <!--1. 전역변수 선언, 버튼 이벤트 -->
-<script type="text/javascript">
+<script type="text/javascript"> 
 $(function(){
 	var dn = ${diary_no};
 	var sessionUserId = "${sessionScope.loginMember.user_id}";
+	//var sessionUserId = "USER01";
 	console.log(sessionUserId);
 	if(sessionUserId==null){
 		window.location.href="login.do?";
@@ -375,24 +380,23 @@ $(function(){
 	  var datetimeString = year + "-" + month + "-" + day + "T" + hour + ":" + minute;
 	  var calendarString = year + "-" + month + "-" + day;
   	//요소에 시간적용
-	  $("#nowdate").val(datetimeString);
+	  //$("#nowdate").val(datetimeString);
 	  $("#calendarDate").val(calendarString);
-	  $("#postDate").val(calendarString);
-	  $("#dateD").val(calendarString);
 	  
 //form전달용 시간 00:00:00 포맷
 	    // nowdate의 값을 가져와서 Date 객체 생성
-	    var nowdate = new Date($('#nowdate').val());				    
+/* 	    var nowdate = new Date($('#nowdate').val());				    
 	    // 년, 월, 일, 시간, 분, 초 값을 가져옴
-		var year = ('0' + nowdate.getFullYear().toString().slice(-2)).slice(-2); // 뒤의 두 자리만 가져오도록 수정
+		var year = ('0' + nowdate.getFullYear().toString().slice(-2)).slice(-2);;
 	    var month = ('0' + (nowdate.getMonth() + 1)).slice(-2);
 	    var day = ('0' + nowdate.getDate()).slice(-2);
 	    var hours = ('0' + nowdate.getHours()).slice(-2);
 	    var minutes = ('0' + nowdate.getMinutes()).slice(-2);
-	    var seconds = ('0' + nowdate.getSeconds()).slice(-2);				    
-	    // dateTime에 값을 설정
-	    $('#Time').val(year + '-' + month + '/' + day + ' ' + hours + ':' + minutes + ':' + seconds);		
-
+	    var seconds = ('0' + nowdate.getSeconds()).slice(-2);	 */			    
+	    // dateTime에 값을 설정 mm/dd/yyyy hh24:mi:ss
+	   // $('#Time').val(month + '/' + day + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds);		
+		//$("#postDate").val(month + '/' + day + '/' + year);
+		//  $("#dateD").val(month + '/' + day + '/' + year);
 });//document.ready
 </script>
 <!-- 4.음식검색  -->
@@ -590,15 +594,17 @@ function insertDiary(){
 		  data: formData, // FormData 객체를 전송
 		  success: function(response){
 		    console.log(response);
-		
+			submitActs();		
 		  },
 		  error: function(xhr, status, error){
 		    console.log(xhr +", "+status+ ", " + error);
-		    alert("다이어리 작성에 실패했습니다.");
+		    alert("다이어리 작성에 실패했습니다. 다이어리화면으로 이동합니다.");
+		    window.location.href = 'diary_showEatDiary.do?diary_no='+ ${diary_no};
 		  }
 		}); //ajax
 		
-	submitActs();
+    
+
 } //submit
 
 function submitActs(){
@@ -617,6 +623,8 @@ function submitActs(){
 		  },
 		  error: function(xhr, status, error){
 		    console.log(xhr +", "+status+ ", " + error);
+		    alert("식단다이어리 작성에 실패했습니다. 다이어리화면으로 이동합니다.");
+		    window.location.href = 'diary_showEatDiary.do?diary_no='+ ${diary_no};
 		  }
 		}); //ajax
 		
@@ -679,14 +687,16 @@ function calSum(){
 				<tr class="dbtn">
 					<td colspan="3">
 						<button type="button" class="saveBtn" onclick="insertDiary();">저장</button>
-						<input type="hidden" name="user_id" value="${sessionScope.loginMember.user_id}"/>
-						<input type="hidden" name="diary_category" value="eat"/>
-						<input type="hidden" name="diary_no" value="${diary_no}"/>
+						<input type="hidden" name="user_id" value="${sessionScope.loginMember.user_id}" required/>
+						<input type="hidden" name="diary_category" value="eat" required/>
+						<input type="hidden" name="diary_no" value="${diary_no}" required/>
 					</td>
 				</tr>			
 				<tr class="dimg">
 					<td rowspan="3">
+					
 						<img id="showimg" alt="$이미지파일 미리보기" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg">
+						
 						<div class="upload">
 							<label class="upload">
 								<input style="width: 70px;" type="file" name="upfile" onchange="changeImg(this);" />
@@ -694,9 +704,8 @@ function calSum(){
 						</div>				
 					</td>
 					<th id="dtime">
-						<h3> 🍴 식사시간 &nbsp;<input id="nowdate" name=""  value="" type="datetime-local"/></h3>
-						<input id="Time" name="dateTime" value="" type="hidden"/>
-						<input id="dateD" name="diary_post_date" value="" type="hidden"/>
+						<h3> 🍴 식사시간 &nbsp;<input id="nowdate" name="diary_post_date"  value="" type="date" required/>
+						<input id="Time" name="dateTime" value="" type="time" required/></h3>
 					</th>
 				</tr>
 				<tr>

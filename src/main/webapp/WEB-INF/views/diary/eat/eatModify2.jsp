@@ -330,7 +330,7 @@ a.tabs.left{
 <!--1. 전역변수 선언, 버튼 이벤트 -->
 <script type="text/javascript"> 
 $(function(){
-	var dn = ${diary.diary_no};
+	var dn = ${diary_no};
 	var sessionUserId = "${sessionScope.loginMember.user_id}";
 	//var sessionUserId = "USER01";
 	console.log(sessionUserId);
@@ -341,13 +341,10 @@ $(function(){
 
 $(function(){
 	$('#eatList').on('click', '.removeBtn', removeEat);
-	$('#eatList').on('click', '.deleteBtn', deleteEat);
-	$('#eatList').on('click', '.delAllBtn', deleteDiary);
-
 	
 	$('#calendarDate').on('change', function(event){
 		var movedate = $(this).val();
-		window.location.href = 'diary_eatCalendar.do?no'+${diary.diary_no} +'&movedate='+movedate;
+		window.location.href = 'diary_eatCalendar.do?no'+${diary_no} +'&movedate='+movedate;
 	});//calendarDate
 	
 });//document.ready
@@ -383,23 +380,7 @@ $(function(){
 	  var datetimeString = year + "-" + month + "-" + day + "T" + hour + ":" + minute;
 	  var calendarString = year + "-" + month + "-" + day;
   	//요소에 시간적용
-	  //$("#nowdate").val(datetimeString);
 	  $("#calendarDate").val(calendarString);
-	  
-//form전달용 시간 00:00:00 포맷
-	    // nowdate의 값을 가져와서 Date 객체 생성
-/* 	    var nowdate = new Date($('#nowdate').val());				    
-	    // 년, 월, 일, 시간, 분, 초 값을 가져옴
-		var year = ('0' + nowdate.getFullYear().toString().slice(-2)).slice(-2);;
-	    var month = ('0' + (nowdate.getMonth() + 1)).slice(-2);
-	    var day = ('0' + nowdate.getDate()).slice(-2);
-	    var hours = ('0' + nowdate.getHours()).slice(-2);
-	    var minutes = ('0' + nowdate.getMinutes()).slice(-2);
-	    var seconds = ('0' + nowdate.getSeconds()).slice(-2);	 */			    
-	    // dateTime에 값을 설정 mm/dd/yyyy hh24:mi:ss
-	   // $('#Time').val(month + '/' + day + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds);		
-		//$("#postDate").val(month + '/' + day + '/' + year);
-		//  $("#dateD").val(month + '/' + day + '/' + year);
 });//document.ready
 </script>
 <!-- 4.음식검색  -->
@@ -514,7 +495,6 @@ function addEatlist(){
 		  }
 	 }	 	 
 	 //배열생성 값 입력
-	 	var dn = ${diary.diary_no};
 	 	var eat = new Object;
 	 	eat.diary_no =dn;
 	 	//eat.eat_seq = ;
@@ -580,7 +560,7 @@ function removeEat(event) {
 }
 
 //7. form -> ajax전송
-function insertDiary(){
+function updateDiary(){
 	   alert("diary start");
 	var form = $('#eatWriteForm')[0];
 	var formData = new FormData(form);
@@ -601,33 +581,30 @@ function insertDiary(){
 		  },
 		  error: function(xhr, status, error){
 		    console.log(xhr +", "+status+ ", " + error);
-		    alert("다이어리 작성에 실패했습니다. 다이어리화면으로 이동합니다.");
-		    window.location.href = 'diary_showEatDiary.do?diary_no='+ ${diary.diary_no};
+		    alert("다이어리 수정에 실패했습니다. 다이어리화면으로 이동합니다.");
+		    window.location.href = 'diary_showEatDiary.do?diary_no='+ ${diary_no};
 		  }
 		}); //ajax
-		
-    
-
 } //submit
 
-function submitActs(){
+function updateEats(){
 	console.log('select[0] : ' + selectedEat[0]);
 	//전송
 	$.ajax({
 		  type: "post",
-		  url: "diary_insertEatWrite.do",
+		  url: "diary_updateEatModify.do",
 		  data: JSON.stringify(selectedEat),
 		  processData: false,
 		  contentType: "application/json; charset=utf-8",
 		  success: function(response){
 		    console.log(response);
-		    alert("다이어리 작성 성공! 다이어리화면으로 이동합니다.");
-		    window.location.href = 'diary_showEatDiary.do?diary_no='+ ${diary.diary_no};
+		    alert("다이어리 수정 성공! 다이어리화면으로 이동합니다.");
+		    window.location.href = 'diary_showEatDiary.do?diary_no='+ ${diary_no};
 		  },
 		  error: function(xhr, status, error){
 		    console.log(xhr +", "+status+ ", " + error);
-		    alert("식단다이어리 작성에 실패했습니다. 다이어리화면으로 이동합니다.");
-		    window.location.href = 'diary_showEatDiary.do?diary_no='+ ${diary.diary_no};
+		    alert("식단다이어리 수정에 실패했습니다. 다이어리화면으로 이동합니다.");
+		    window.location.href = 'diary_showEatDiary.do?diary_no='+ ${diary_no};
 		  }
 		}); //ajax
 		
@@ -654,49 +631,9 @@ function calSum(){
 	$('#kcal').html(sum.eat_kcal +"Kcal");
 	console.log($('#nowdate').val());
 }
-//7. 기존 식단목록에서 지우기, DB에서 지우기
-function deleteEat(event){	
-//화면에서 지우기
-	  console.log("deleteEat");
-	    var rowToDelete = event.target.closest('tr');
-	    var rowIndex = rowToDelete.rowIndex;
-	    var prevRowIndex = rowIndex - 1;
-	  // 선택한 <tr>과 이전행 삭제: HTML DOM요소 사용해야함, jquery로 수정금지, 함수밖 선언 금지
-		var tableBody = document.getElementById("eatList"); 
-	    tableBody.deleteRow(rowIndex);
-	    tableBody.deleteRow(prevRowIndex);
-	  calSum();
-
-	console.log('deleteEatRow : ' + rowIndex);
-//전송용 객체생성
-	var tr = event.target.closest('tr');	
-	var td = radio.parent().parent().children();	
-	var eat = new Object;
-	 eat.diary_no = ${diary.diary_no};
-	 eat.food_code = td.eq(1).text();
-	 console.log("delete Eat : " + eat);
-	 
-//기존음식 1개 삭제요청
-	$.ajax({
-		  type: "post",
-		  url: "diary_deleteOneEat.do",
-		  data: eat,
-		  processData: false,
-		  contentType: false,
-		  success: function(response){
-		    console.log(response + "삭제성공");
-		  },
-		  error: function(xhr, status, error){
-		    console.log(xhr +", "+status+ ", " + error);
-		    console.log("삭제 실패");
-		  }
-		}); //ajax
-}
-//다이어리 모두삭제
-function deleteDiary(){}
-
-
 </script>
+
+
 </head>
 <body>
 
@@ -731,17 +668,20 @@ function deleteDiary(){}
 			<table class="D">
 				<tr class="dbtn">
 					<td colspan="3">
-						<button type="button" class="saveBtn" onclick="insertDiary();">저장</button>
-						<input type="hidden" name="user_id" value="${sessionScope.loginMember.user_id}" required/>
-						<input type="hidden" name="diary_category" value="eat" required/>
-						<input type="hidden" name="diary_no" value="${diary.diary_no}" required/>
+						<button type="button" class="saveBtn" onclick="updateDiary();">저장</button>
+						<input type="hidden" name="user_id" value="${diary.user_id }"/>
+						<input type="hidden" name="diary_category" value="eat"/>
+						<input type="hidden" name="diary_no" value="${diary_no}"/>
 					</td>
 				</tr>			
 				<tr class="dimg">
 					<td rowspan="3">
-					
-						<img id="showimg" alt="$이미지파일 미리보기" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg">
-						
+						<c:if test="${empty diary.diary_image}">
+							<img id="showimg" alt="${diary.diary_no}의 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg">
+						</c:if>
+						<c:if test="${!empty diary.diary_image}">
+							<img id="showimg" alt="${diary.diary_no}의 이미지" src="${ pageContext.servletContext.contextPath }/resources/diary_upfile/${diary.diary_image}">
+						</c:if>
 						<div class="upload">
 							<label class="upload">
 								<input style="width: 70px;" type="file" name="upfile" onchange="changeImg(this);" />
@@ -756,24 +696,8 @@ function deleteDiary(){}
 				<tr>
 					<td>
 						<table id="eatList" class="E">
-						<c:forEach var="eat" items="${eats}">									
-								<tr>
-								<td class="hide">${eat.eat_seq}</td>
-								<td class="foodname">${eat.food_code}</td>
-								<td class="">${eat.food_code}g</td>
-								<td class="">⇒ ${eat.eat_kcal} kcal</td>
-								</tr>
-								<tr class="even-row">
-								<td class="guide">↳ 탄수화물 ${eat.eat_carbohydrate}g</td>
-								<td class="guide">, 단백질 ${eat.eat_protein}g</td>
-								<td class="guide">, 지방 ${eat.eat_fat}g</td>								
-								<td><button type='button' class='deleteBtn'>➖</button></td>
-					
-								</tr>
-								
-						</c:forEach>
+				
 						</table>
-
 					</td>
 				</tr>
 				<tr class="etotal">

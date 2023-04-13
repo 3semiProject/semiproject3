@@ -78,12 +78,12 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public int updateDiary(Diary diary) {
-        return 0;
+        return diaryDao.updateDiary(diary);
     }
 
     @Override
-    public int deleteDiary(Diary diary) {
-        return 0;
+    public int deleteDiary(int diary_no) {
+        return diaryDao.deleteDiary(diary_no);
     }
 
 

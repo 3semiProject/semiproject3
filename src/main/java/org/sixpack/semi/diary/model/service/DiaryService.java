@@ -46,7 +46,7 @@ public interface DiaryService {
     int updateDiary(Diary diary);
 
     // 다이어리 삭제
-    int deleteDiary(Diary diary);
+    int deleteDiary(int diary_no);
 
 
     int insertFoodData(List<Food> datalist);

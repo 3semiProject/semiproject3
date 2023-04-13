@@ -34,4 +34,21 @@ public class EatDao {
 	public int insertAllEat(List<Eat> eats) {
 		return session.insert("eatMapper.insertAllEat", eats);
 	}
+
+	public int deleteAllEat(int diary_no) {
+		return session.delete("eatMapper.deleteAllEat", diary_no);
+	}
+
+	public int deleteEatOverSeq(Eat eat) {
+		return session.delete("eatMapper.deleteSeqEat", eat);
+	}
+
+	public int updateOneEat(Eat eat) {
+		return session.update("eatMapper.updateOneEat", eat);
+	}
+
+	public int selectEatCount(int diary_no) {
+		return session.selectOne("eatMapper.selectEatCount", diary_no);
+	}
+
 }

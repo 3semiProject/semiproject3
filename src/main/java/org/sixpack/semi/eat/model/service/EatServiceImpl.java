@@ -34,18 +34,6 @@ public class EatServiceImpl implements EatService {
 		public int insertAllEat(List<Eat> eats) {
 			return eatDao.insertAllEat(eats);
 		}
-		
-		
-
-		@Override
-		public int insertOneEat(Eat eat) {
-			return 0;
-		}
-
-		@Override
-		public Eat deleteOneEat(String food_name) {
-			return null;
-		}
 
 		@Override
 		public int updateAllEat(ArrayList<Eat> eats) {
@@ -53,9 +41,27 @@ public class EatServiceImpl implements EatService {
 		}
 
 		@Override
-		public int deleteAllEat(Diary diary) {
-			return 0;
+		public int deleteAllEat(int diary_no) {
+			return eatDao.deleteAllEat(diary_no);
 		}
 
+		@Override
+		public int deleteEatOverSeq(Eat eat) {
+			return eatDao.deleteEatOverSeq(eat);
+		}
 
+		@Override
+		public int updateOneEat(Eat eat) {
+			return eatDao.updateOneEat(eat);
+		}
+
+		@Override
+		public int selectEatCount(int diary_no) {
+			return eatDao.selectEatCount(diary_no);
+		}
+
+		@Override
+		public int insertOneEat(Eat eat) {
+			return 0;
+		}
 }

@@ -339,7 +339,7 @@ $(function getCurrentDateTime() {
 		</div>
 	</c:if>
 	<br> 
-<c:if test="${diary.diary_no eq 0}">
+<c:if test="${diary.diary_no ne 0}">
 ${diarys }
 ${diary }
 ${eats }
@@ -352,7 +352,7 @@ ${eats }
 			<table class="D">
 				<tr class="dbtn">
 					<td colspan="3">
-						<button type="button" class="modifyBtn" id="${D.diary_no}">${D.diary_no}수정</button>
+						<button type="button" class="modifyBtn" id="${D.diary_no}">수정</button>
 						<button type="button" class="deleteBtn" id="${D.diary_no}">${D.diary_no}삭제</button>
 					</td>
 				</tr>			

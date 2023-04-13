@@ -87,5 +87,13 @@ public class DiaryDao {
         return (ArrayList<Diary>) list;
 	}
 
+	public int deleteDiary(int diary_no) {
+		return session.delete("diaryMapper.deleteDiary", diary_no);
+	}
+
+	public int updateDiary(Diary diary) {
+		return session.update("diaryMapper.updateDiary", diary);
+	}
+
 
 }

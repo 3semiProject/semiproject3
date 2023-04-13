@@ -45,7 +45,7 @@ public class DiaryController {
 	//ajax mainbox 캘린더
 	@RequestMapping(value = "calendar.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public String diaryCalendarMethod(@RequestParam("user_id") String user_id) throws UnsupportedEncodingException {
+	public String diaryCalendarMethiod(@RequestParam("user_id") String user_id) throws UnsupportedEncodingException {
 		ArrayList<Diary> list = diaryService.selectDiary(user_id);
 		logger.info("calendar.do : " + list.size());
 
@@ -161,16 +161,13 @@ public class DiaryController {
 
   //다이어리 작성용new (이미지처리) : 날짜 셋팅
   	@RequestMapping(value="diary_insertDiary.do", method= {RequestMethod.POST, RequestMethod.GET} )
-  	public void insertEats ( HttpServletRequest request,
+  	public void insertDiaryAjax ( HttpServletRequest request,
   			HttpServletResponse response,
   			Diary diary,
   			@RequestParam String dateTime,
   			@RequestParam(name = "upfile", required = false) MultipartFile mfile
   		) throws ParseException, IOException {
   		System.out.println("diary 저장시작");
-  		//sql날짜 설정 yyyy-MM-dd 형식
-  		//String sqldate = dateTime.substring(0, 10);		
-  		//diary.setDiary_post_date(Date.valueOf(sqldate));
   		System.out.println(dateTime);
   		System.out.println(diary.getDiary_post_date());
 
@@ -194,13 +191,19 @@ public class DiaryController {
   					} // 이름바꾸기
   				} // 새로운 첨부파일이 있을 때
   				logger.info(diary.toString());
+  				String trr[] = diary.getDiary_post_date().toString().split("-");
+  				String date = trr[1] + "/" + trr[2] + "/" + trr[0];
   				
+  				String datetime2 = date+" "+ dateTime +":00";
+  				logger.info(datetime2);
+  				System.out.println(datetime2);				
   				
+  	
   	    //2. 다이어리 저장, 날짜+시간 update
   			if(diaryService.insertDiary(diary) >0){				
   				Diary timeDiary = new Diary();
   				timeDiary.setDiary_no(diary.getDiary_no());				
-  				timeDiary.setDiary_memo(dateTime);
+  				timeDiary.setDiary_memo(datetime2);
   				diaryService.updateDiaryTime(timeDiary);
   				
   				response.getWriter().append("ok").flush();
@@ -222,6 +225,69 @@ public class DiaryController {
 			return "ok";
 		}
 	}
+	
+	//다이어리 수정용 (이미지처리) : 날짜 셋팅
+  	@RequestMapping(value="diary_updateDiary.do", method= {RequestMethod.POST, RequestMethod.GET} )
+  	public void updateDiaryAjax ( HttpServletRequest request,
+  			HttpServletResponse response, Diary diary,
+  			@RequestParam String dateTime,
+  			@RequestParam(name = "upfile", required = false) MultipartFile mfile
+  		) throws ParseException, IOException {
+  		System.out.println("diary 저장시작");
+  		System.out.println(dateTime);
+  		System.out.println(diary.getDiary_post_date());
+  		
+  		//기존다이어리 정보조회
+  		Diary before = diaryService.selectDiaryNo(diary.getDiary_no());
+
+  		//1.이미지파일 저장처리
+  				String savePath = request.getSession().getServletContext().getRealPath("resources/diary_upfile");
+  				if (mfile != null && !mfile.isEmpty()) {
+  					String fileName = mfile.getOriginalFilename();
+  					System.out.println(diary.getDiary_post_date());
+  					
+  					if (fileName != null && fileName.length() > 0) {
+  						String renameFileName = FileNameChange.diaryChange(
+  								diary.getDiary_no(), fileName);
+  						logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
+
+  						try {
+  							mfile.transferTo(new File(savePath + "\\" + renameFileName));
+  						} catch (Exception e) {
+  							e.printStackTrace();							
+  						}
+  						diary.setDiary_image(renameFileName);
+  					} // 이름바꾸기
+  				} // 새로운 첨부파일이 있을 때
+  				
+  				
+  		//기존이미지 삭제
+  				
+  				
+  				
+  	
+  	    //2. 다이어리 저장, 날짜+시간 update
+			if(diaryService.updateDiary(diary) >0){				
+  				logger.info(diary.toString());
+  				String trr[] = diary.getDiary_post_date().toString().split("-");
+  				String date = trr[1] + "/" + trr[2] + "/" + trr[0];
+  				
+  				String datetime2 = date+" "+ dateTime +":00";
+  				logger.info(datetime2);
+  				System.out.println(datetime2);				
+  				Diary timeDiary = new Diary();
+  				timeDiary.setDiary_no(diary.getDiary_no());				
+  				timeDiary.setDiary_memo(datetime2);
+  				diaryService.updateDiaryTime(timeDiary);
+  				
+  				response.getWriter().append("ok").flush();
+  			}else {				
+  				response.getWriter().append("fail").flush();
+  			}
+  	}
+	
+	
+	
 
 //	//캘린더 출력용
 //	@RequestMapping(value = "diary_showCalendar.do", method = RequestMethod.GET)

@@ -20,15 +20,20 @@ public interface EatService {
 	ArrayList<Food> selectSearchFoodlist(String food_name);
 	//식단에 음식모두 추가
 	int insertAllEat(List<Eat> eats);
-	//다이어리번호, 음식이름으로 검색해서 eat 하나 삭제
-	Eat deleteOneEat(String food_name);
-
+	
+	//식단 업데이트갯수 초과하는 eat_seq 삭제
+	int deleteEatOverSeq(Eat eat);
+	
 	/*다이어리 수정화면*/
 	//식단에 음식하나 추가
 	int insertOneEat(Eat eat);
 	//식단에 음식모두 수정
 	int updateAllEat(ArrayList<Eat> eats);
 	//식단에 음식모두 삭제
-	int deleteAllEat(Diary diary);
+	int deleteAllEat(int diary_no);
+	//식단에 음식하나 수정
+	int updateOneEat(Eat e);
+	//음식갯수 확인
+	int selectEatCount(int diary_no);
 	
 }
