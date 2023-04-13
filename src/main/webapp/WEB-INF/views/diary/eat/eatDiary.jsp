@@ -126,7 +126,7 @@ tr.etotal {
 tr.etotal td{
 	padding: 0px 35px;
 }
-span#sum{
+span#kcal{
 	font-size: 17pt;
 	font-weight: bold;
 	
@@ -189,6 +189,7 @@ form.tabs {
 }
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
+<!--1. 버튼 이벤트 -->
 <script type="text/javascript">
 $(function(){
 	$('.writebtn').on('click', function (){
@@ -200,14 +201,43 @@ $(function(){
 		 var dn = $(this).attr('id');
 		window.location.href = 'diary_showEatModify.do?diary_no='+dn;
 		
-	});//writebtn
+	});//modifyBtn
+	
+	$('#eatPart').on('click', '.deleteBtn',function (){
+		 var dn = $(this).attr('id');
+		window.location.href = 'diary_deleteEatDiary.do?diary_no='+dn;
+		
+	});//deleteBtn
 	
 	$('#calendarDate').on('change', function(event){
-		$("#moveCalendar").submit();
+		var movedate = $(this).val();
+		window.location.href = 'diary_eatCalendar.do?no='+dn +'&movedate='+movedate;
 	});//calendarDate
 	
 });//document.ready
 </script>
+
+<!--3.현재시간 -->
+<script type="text/javascript">
+//3. 현재 날짜와 시간입력 : 
+//yyyy-MM-ddTHH:mm 형식
+//yyyy-MM-dd 형식
+
+$(function getCurrentDateTime() {
+	var now = new Date();
+  var year = now.getFullYear();
+  var month = (now.getMonth() + 1).toString().padStart(2, "0");
+  var day = now.getDate().toString().padStart(2, "0");
+  var hour = now.getHours().toString().padStart(2, "0");
+  var minute = now.getMinutes().toString().padStart(2, "0");
+  var datetimeString = year + "-" + month + "-" + day + "T" + hour + ":" + minute;
+  var calendarString = year + "-" + month + "-" + day;
+//  요소에 시간적용
+  $("#calendarDate").val(calendarString);
+});
+
+</script>
+
 </head>
 <body>
 
@@ -220,27 +250,6 @@ $(function(){
 <div class="vars">
 <div class="calendar">
 	<input type="date" id="calendarDate" name="diary_post_date" value="${diary.diary_post_date}">
-	<button id="moveBtn" onclick="moveCal();">이동</button>
-	
-	<script type="text/javascript">
-	var eat_no = ${diary.diary_no};
-	var previousDate = '${diary.diary_post_date}'; //현재페이지 날짜 저장 : 날짜는 문자열로 저장
-    var xhr;
-	
-		function moveCal() { //전송이 안됨 : 수정예정
-		    var selectedDate = $('#calendarDate').val(); // 새로 선택된 날짜 저장
-		        console.log("calendar Move!!" + selectedDate + previousDate);
-		    if (selectedDate !== previousDate) { // 선택된 날짜와 다이어리 날짜값이 다른 경우에만 폼 전송
-		    	
-		    	var href ='diary_eatCalendar.do'
-		    	+"?diary_no=" +  eat_no + "&diary_post_date="+ selectedDate;
-		    // 새로 선택된 날짜 사용
-		       
-		        location.href = href;
-		        previousDate = selectedDate; // 이전 날짜 변수 값 업데이트
-		      }
-		  }
-	</script>
     <br>
 </div>
 <div class="navigation">
@@ -303,105 +312,132 @@ $(function(){
  		<a class="tabs right" href="${moveURL}body">체형</a>
 	</div>
 </div>
-<%--  <pre>보낼값----
-메뉴바 : ${diary}
-네비게이터 : ${week}
-목표바 : ${goal}
-받을값----
-이미지,메모 : ${diarys}
-음식정보 : ${eats}
-식단별 소계 및 총합계 : ${sums}
- </pre> --%>
+
 <div id="diaryPart">
-<c:if test="${diary.diary_no ne 0}">
-<c:set var="recommandKcal" value="${(goal.standard_weight * goal.energy_demand)+(goal.current_weight - goal.standard_weight)*7000/goal.dday * 3/5}"/>
-<c:forEach var="sum" items="${sums}" varStatus="status">
-<c:if test="${status.last}"><c:set var="currentKcal" value="${sum.eat_kcal}"/>
-</c:if></c:forEach>
-<br><br>
-<table class="dtotal"><tr>
-			<td>일일 권장 칼로리 <fmt:formatNumber value="${recommandKcal}" pattern="0"/>kcal &nbsp;</td> 
-			<td>현재 섭취 칼로리 <fmt:formatNumber value="${currentKcal}" pattern="0"/>kcal &nbsp;</td>
-			<td>&nbsp; ⇒ &nbsp; 잔여 <fmt:formatNumber value="${recommandKcal-currentKcal}" pattern="0.#"/>kcal</td>
-</tr></table>
-</c:if>
-<br>
-<c:if test="${diary.diary_no eq 0}">
-	<div class="noneD">
-		<h3>다이어리가 없네요, 작성하시겠습니까?</h3>
-		<div>
-			<button class="writebtn">글쓰기</button>
-		</div>
-		
-	</div>
-</c:if>
-<br> 
-<c:if test="${diary.diary_no ne 0}">
-<div  style="align:right;" >
-<button class="writebtn">글쓰기</button>
-</div>
-<div id="eatPart">
-		<c:forEach var="D" items="${diarys}" varStatus="status">
-		<div class="D">
-			<table class="D">
-			<tr class="dbtn"><td colspan="3"><button type="button" class="modifyBtn" id="${D.diary_no}">${D.diary_no}수정</button></td></tr>			
-			<tr class="dimg"><td rowspan="3">
-				<c:if test="${empty D.diary_image}">
-				<img alt="${D.diary_no}의 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg">
+	<c:if test="${diary.diary_no ne 0}">
+		<c:set var="recommandKcal" value="${(goal.standard_weight * goal.energy_demand)+(goal.current_weight - goal.standard_weight)*7000/goal.dday * 3/5}"/>
+			<c:forEach var="sum" items="${sums}" varStatus="status">
+				<c:if test="${status.last}"><c:set var="currentKcal" value="${sum.eat_kcal}"/>
 				</c:if>
-				<c:if test="${!empty D.diary_image}">
-				<img alt="${D.diary_no}의 이미지" src="${ pageContext.servletContext.contextPath }/resources/diary_upfile/${D.diary_image}">
-				</c:if>
-				</td>
-			<th id="dtime"><h3> 🍴 &nbsp;<fmt:formatDate value="${D.diary_post_date}" type="date" pattern="a HH:mm" /></h3>
-			</th></tr>
-				<tr><td><table class="E">
-						<c:forEach var="eat" items="${eats}"><c:if test="${eat.diary_no eq D.diary_no}">
-					<tr><td><b>${eat.food_code}</b> &nbsp; ${eat.eat_g}g &nbsp; &nbsp; &nbsp; &nbsp;</td>
-						<td>⇒ ${eat.eat_kcal} kcal </td></tr>
-					<tr><td colspan="2" class="even-row">↳ 탄수화물 ${eat.eat_carbohydrate}g &nbsp; 단백질 ${eat.eat_protein}g &nbsp; 지방 ${eat.eat_fat}g &nbsp;&nbsp;</td></tr>
-						</c:if></c:forEach>
-					</table>
-				</td>
-			</tr>
-			<tr class="etotal"><c:forEach var="sum" items="${sums}"><c:if test="${sum.diary_no eq D.diary_no}">
-										<td>총 탄수화물 ${sum.eat_carbohydrate}g &nbsp; 총 단백질
-											${sum.eat_protein}g &nbsp; 총 지방 ${sum.eat_fat}g &nbsp; &nbsp;
-										<span id="sum"> &nbsp; &nbsp; ⇒ ${sum.eat_kcal}kcal</span></td>
-								</c:if></c:forEach>
-			</tr>
-			<tr class="dmemo"><td colspan="2"><textarea rows="5" cols="100">${D.diary_memo}</textarea>
-				</td>
+			</c:forEach>
+		<br><br>
+		<table class="dtotal">
+			<tr>
+				<td>일일 권장 칼로리 <fmt:formatNumber value="${recommandKcal}" pattern="0"/>kcal &nbsp;</td> 
+				<td>현재 섭취 칼로리 <fmt:formatNumber value="${currentKcal}" pattern="0"/>kcal &nbsp;</td>
+				<td>&nbsp; ⇒ &nbsp; 잔여 <fmt:formatNumber value="${recommandKcal-currentKcal}" pattern="0.#"/>kcal</td>
 			</tr>
 		</table>
-		</div><br><br>
-	</c:forEach>
-</div>		
-			<br>
-			<c:forEach var="sum" items="${sums}" varStatus="status">
-				<c:if test="${status.last}">
-					<table class="dtotal"><tr>
-					<td>총 섭취량 / 권장 섭취칼로리 &nbsp;</td> 
-					<td> &nbsp;  &nbsp; ⇒ &nbsp; ${sum.eat_kcal} / <fmt:formatNumber value="${recommandKcal}" pattern="0"/> kcal</td></tr></table>
-					<br>
-				<table class="T">
-				<tr>
-					<th>탄수화물 &nbsp; &nbsp;  ${sum.eat_carbohydrate} / 324g</th>
-					<th>단백질 &nbsp; &nbsp; ${sum.eat_protein} / 55g</th>
-					<th>지방 &nbsp; &nbsp; ${sum.eat_fat} / 54g</th>
+	</c:if>
+	<br>
+	<c:if test="${diary.diary_no eq 0}">
+		<div class="noneD">
+			<h3>다이어리가 없네요, 작성하시겠습니까?</h3>
+			<div>
+				<button class="writebtn">글쓰기</button>
+			</div>		
+		</div>
+	</c:if>
+	<br> 
+<c:if test="${diary.diary_no eq 0}">
+${diarys }
+${diary }
+${eats }
+	<div class="dbtn">
+		<button class="writebtn">글쓰기</button>
+	</div>
+<div id="eatPart">
+	<c:forEach var="D" items="${diarys}" varStatus="status">
+		<div class="D">
+			<table class="D">
+				<tr class="dbtn">
+					<td colspan="3">
+						<button type="button" class="modifyBtn" id="${D.diary_no}">${D.diary_no}수정</button>
+						<button type="button" class="deleteBtn" id="${D.diary_no}">${D.diary_no}삭제</button>
+					</td>
+				</tr>			
+				<tr class="dimg">
+					<td rowspan="3">
+						<c:if test="${empty D.diary_image}">
+							<img alt="${D.diary_no}의 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg">
+						</c:if>
+						<c:if test="${!empty D.diary_image}">
+							<img alt="${D.diary_no}의 이미지" src="${ pageContext.servletContext.contextPath }/resources/diary_upfile/${D.diary_image}">
+						</c:if>
+					</td>
+					<th id="dtime">
+						<h3> 🍴 &nbsp;<fmt:formatDate value="${D.diary_post_date}" type="date" pattern="a HH:mm" /></h3>
+					</th>
 				</tr>
 				<tr>
-					<td><img alt="탄수화물관련 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg"></td>
-					<td><img alt="단백질관련 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg"></td>
-					<td><img alt="단백질관련 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg"></td>
-				</tr>			
-				</table>
-				</c:if>
-			
-			</c:forEach>
-			</c:if>
-</div>
-</div>
+					<td>
+						<table class="E">
+							<c:forEach var="eat" items="${eats}">
+								<c:if test="${eat.diary_no eq D.diary_no}">
+									<tr>
+										<td>
+											<b>${eat.food_code}</b> &nbsp; ${eat.eat_g}g &nbsp; &nbsp; &nbsp; &nbsp;
+										</td>
+										<td>
+											⇒ ${eat.eat_kcal} kcal 
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2" class="even-row">
+											↳ 탄수화물 ${eat.eat_carbohydrate}g &nbsp; 단백질 ${eat.eat_protein}g &nbsp; 지방 ${eat.eat_fat}g &nbsp;&nbsp;
+										</td>
+									</tr>
+								</c:if>
+							</c:forEach>
+						</table>
+					</td>
+				</tr>
+				<tr class="etotal">			
+					<td>
+						<label>
+							총 탄수화물 <span id="car">${sum.eat_carbohydrate}</span>g &nbsp; 
+							총 단백질<span id="pro">${sum.eat_protein}</span>g &nbsp; 
+							총 지방 <span id="fat" >${sum.eat_fat}</span>g &nbsp; &nbsp;
+							 &nbsp; &nbsp; ⇒ <span id="kcal">${sum.eat_kcal}</span>
+						</label>
+					</td>
+				</tr>
+				<tr class="dmemo">
+					<td colspan="2">
+						<textarea rows="5" cols="100">${D.diary_memo}</textarea>
+					</td>
+				</tr>
+			</table>
+		</div><!-- class="D" -->
+		<br>
+		<br>
+	</c:forEach>
+</div>	<!-- id="eatPart" -->	
+		<br>
+		<c:forEach var="sum" items="${sums}" varStatus="status">
+			<c:if test="${status.last}">
+				<table class="dtotal"><tr>
+				<td>총 섭취량 / 권장 섭취칼로리 &nbsp;</td> 
+				<td> &nbsp;  &nbsp; ⇒ &nbsp; ${sum.eat_kcal} / <fmt:formatNumber value="${recommandKcal}" pattern="0"/> kcal</td></tr></table>
+				<br>
+			<table class="T">
+			<tr>
+				<th>탄수화물 &nbsp; &nbsp;  ${sum.eat_carbohydrate} / 324g</th>
+				<th>단백질 &nbsp; &nbsp; ${sum.eat_protein} / 55g</th>
+				<th>지방 &nbsp; &nbsp; ${sum.eat_fat} / 54g</th>
+			</tr>
+			<tr>
+				<td><img alt="탄수화물관련 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg"></td>
+				<td><img alt="단백질관련 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg"></td>
+				<td><img alt="단백질관련 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg"></td>
+			</tr>			
+			</table>
+			</c:if>		
+		</c:forEach>
+</c:if> <!-- diary yes -->
+</div><!--  diaryPart-->
+</div><!--  mainContain-->
+
 <div id="footer">
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </div>

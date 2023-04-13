@@ -68,6 +68,10 @@ public class DiaryDao {
         List<Diary> list = session.selectList("diaryMapper.selectWeekDiary", diary);
         return (ArrayList<Diary>) list;
     }
+    
+    public int updateDiaryTime(Diary timeDiary) {
+		return session.update("diaryMapper.updateDiaryTime", timeDiary);
+	}
 
 
     public int insertFoodData(List<Food> datalist) {

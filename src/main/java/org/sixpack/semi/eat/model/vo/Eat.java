@@ -1,5 +1,6 @@
 package org.sixpack.semi.eat.model.vo;
 //4.9수정 :  다이어리번호,eat_seq int로 수정 -> sql문 수정
+//4.12 : 음식이름 추가
 public class Eat implements java.io.Serializable{
 	private static final long serialVersionUID = -8752520660149781460L;
 	private int diary_no; 		//다이어리번호
@@ -11,12 +12,13 @@ public class Eat implements java.io.Serializable{
 	private int eat_protein; 		//섭취한 단백질(g)
 	private int eat_fat; 			//섭취한지방(g)
 	
+	private String food_name; //음식이름
 	public Eat() {
 		super();
 	}
 
 	public Eat(int diary_no, int eat_seq, String food_code, int eat_g, int eat_kcal, int eat_carbohydrate,
-			int eat_protein, int eat_fat) {
+			int eat_protein, int eat_fat, String food_name) {
 		super();
 		this.diary_no = diary_no;
 		this.eat_seq = eat_seq;
@@ -26,6 +28,22 @@ public class Eat implements java.io.Serializable{
 		this.eat_carbohydrate = eat_carbohydrate;
 		this.eat_protein = eat_protein;
 		this.eat_fat = eat_fat;
+		this.food_name = food_name;
+	}
+
+	@Override
+	public String toString() {
+		return "Eat [diary_no=" + diary_no + ", eat_seq=" + eat_seq + ", food_code=" + food_code + ", eat_g=" + eat_g
+				+ ", eat_kcal=" + eat_kcal + ", eat_carbohydrate=" + eat_carbohydrate + ", eat_protein=" + eat_protein
+				+ ", eat_fat=" + eat_fat + ", food_name=" + food_name + "]";
+	}
+
+	public String getFood_name() {
+		return food_name;
+	}
+
+	public void setFood_name(String food_name) {
+		this.food_name = food_name;
 	}
 
 	public int getDiary_no() {
