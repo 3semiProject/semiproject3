@@ -4,14 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import org.sixpack.semi.board.controller.BoardController;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
-import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.qna.model.service.QnaService;
 import org.sixpack.semi.qna.model.vo.Qna;
 import org.slf4j.Logger;
@@ -29,7 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class QnaController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	private static final Logger logger = LoggerFactory.getLogger(QnaController.class);
 
 	
 	@Autowired

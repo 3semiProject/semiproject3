@@ -4,22 +4,20 @@ import java.sql.Date;
 
 public class Faq {
 
-	private int faq_no;
-	private String faq_title;
-	private String user_id;
-	private Date faq_post_date;
-	private int faq_views;
-	private String faq_content;
-	private String faq_originfile;
-	private String faq_renamefile;
-	private String faq_cat;
+	private int faq_no;				//FAQ 글번호
+	private String faq_title;		//FAQ 제목
+	private String user_id;			//FAQ 작성자
+	private Date faq_post_date;		//FAQ 작성일
+	private int faq_views;			//FAQ 조회수
+	private String faq_content;		//FAQ 글내용
+	private String faq_cat;			//FAQ 카테고리
 	
 	public Faq() {
 		super();
 	}
 
 	public Faq(int faq_no, String faq_title, String user_id, Date faq_post_date, int faq_views, String faq_content,
-			String faq_originfile, String faq_renamefile, String faq_cat) {
+			String faq_cat) {
 		super();
 		this.faq_no = faq_no;
 		this.faq_title = faq_title;
@@ -27,8 +25,6 @@ public class Faq {
 		this.faq_post_date = faq_post_date;
 		this.faq_views = faq_views;
 		this.faq_content = faq_content;
-		this.faq_originfile = faq_originfile;
-		this.faq_renamefile = faq_renamefile;
 		this.faq_cat = faq_cat;
 	}
 
@@ -80,22 +76,6 @@ public class Faq {
 		this.faq_content = faq_content;
 	}
 
-	public String getFaq_originfile() {
-		return faq_originfile;
-	}
-
-	public void setFaq_originfile(String faq_originfile) {
-		this.faq_originfile = faq_originfile;
-	}
-
-	public String getFaq_renamefile() {
-		return faq_renamefile;
-	}
-
-	public void setFaq_renamefile(String faq_renamefile) {
-		this.faq_renamefile = faq_renamefile;
-	}
-
 	public String getFaq_cat() {
 		return faq_cat;
 	}
@@ -107,9 +87,10 @@ public class Faq {
 	@Override
 	public String toString() {
 		return "Faq [faq_no=" + faq_no + ", faq_title=" + faq_title + ", user_id=" + user_id + ", faq_post_date="
-				+ faq_post_date + ", faq_views=" + faq_views + ", faq_content=" + faq_content + ", faq_originfile="
-				+ faq_originfile + ", faq_renamefile=" + faq_renamefile + ", faq_cat=" + faq_cat + "]";
+				+ faq_post_date + ", faq_views=" + faq_views + ", faq_content=" + faq_content + ", faq_cat=" + faq_cat
+				+ "]";
 	}
+
 
 	
 	
