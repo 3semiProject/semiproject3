@@ -32,7 +32,9 @@ import org.sixpack.semi.free.model.vo.LikeFree;
 import org.sixpack.semi.hotnew.model.service.HotNewService;
 import org.sixpack.semi.hotnew.model.vo.HotNew;
 import org.sixpack.semi.log.model.service.LogService;
+import org.sixpack.semi.member.model.service.AdminService;
 import org.sixpack.semi.member.model.service.MemberService;
+import org.sixpack.semi.member.model.vo.AllBoardList;
 import org.sixpack.semi.member.model.vo.Member;
 import org.sixpack.semi.notice.model.service.NoticeService;
 import org.sixpack.semi.qna.model.service.QnaService;
@@ -58,6 +60,9 @@ public class AdminController {
     @Autowired
     private MemberService memberService;
 
+ // 관리자 전용 board
+ 	@Autowired
+ 	private AdminService adminService; // admin
 
     //관리자 전용 board
     @Autowired
@@ -94,11 +99,11 @@ public class AdminController {
     private BfafService bfafService;
 
 
-    //페이지 전송용 메소드
-    @RequestMapping(value = "boardMgt.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public String moveBoardMgtPage() {
-        return "admin/boardMgtPage";
-    }
+//    //페이지 전송용 메소드
+//    @RequestMapping(value = "adFreelist.do", method = {RequestMethod.GET, RequestMethod.POST})
+//    public String moveBoardMgtPage() {
+//        return "admin/adminFree";
+//    }
 
 
     //------------------------------------------------------------
@@ -180,23 +185,6 @@ public class AdminController {
         job.put("postCount", postCount);
 
 
-//		map이든 list든 받아서 넘겨주고 프론트단에서 출력하기
-//		Map<String, String> countBox = new HashedMap ();
-//		countBox.put("visitorsT", visitorsT);
-//		countBox.put("visitorsM", visitorsM);
-        //countBox.put("visitorsAvg", visitorsAvg);
-//		
-//		model.addAttribute("countBox", countBox);
-//		
-//		model.addAttribute("visitorsT", "100");
-//		model.addAttribute("visitorsM", visitorsM);
-        //model.addAttribute("visitorsAvg", visitorsAvg);
-        //PrintWriter out = response.getWriter();
-//		
-//		out.append(visitorsT);
-//		out.append(visitorsM);
-//		out.flush();
-//		out.close();
         logger.info("adminBox.do 실행");
 
 
@@ -205,421 +193,114 @@ public class AdminController {
     }
 
 
-    //게시글 통합관리에서 각 보드별 전체 목록보기 요청 처리용
-    @RequestMapping("adminBoardList.do")
-    @ResponseBody
-    public ModelAndView adminBoardList(@RequestParam(name = "page", required = false) String page,
-                                       @RequestParam(name = "option", required = false) String option,
-                                       ModelAndView mv) {
 
-        int currentPage = 1;
-        if (page != null) {
-            currentPage = Integer.parseInt(page);
-        }
-
-        int limit = 10;
-        int listCount = 0;
-        Paging paging = null;
-
-//			switch (option) {
-//			case "black": listCount = hotNewService.selectListCount(); 
-//						paging = new Paging(listCount, currentPage, limit);
-//						paging.calculator();
-//						ArrayList<HotNew> list = hotNewService.hotSelectList(paging);
-//						break;
-//			case "hot": listCount = hotNewService.selectListCount(); 
-//						paging = new Paging(listCount, currentPage, limit);
-//						paging.calculator();
-//						list = hotNewService.hotSelectList(paging);
-//						break;
-//			case "new": listCount = hotNewService.selectListCount();
-//						paging = new Paging(listCount, currentPage, limit);
-//						paging.calculator();
-//						list = hotNewService.newSelectList(paging);
-//						break;			
-//			case "free": listCount = freeService.selectListCount();
-//						paging = new Paging(listCount, currentPage, limit);
-//						paging.calculator();
-//						ArrayList<Free> list = hotNewService.newSelectList(paging);
-//						break;	
-//			case "tip": listCount = tipService.selectListCount(); break;
-//			case "eye": listCount = eyebodyService.selectListCount(); break;
-//			case "bf": listCount = bfafService.selectListCount(); break;
-//			case "notice": listCount = noticeService.selectListCount(); break;
-//			case "event": listCount = eventService.selectListCount(); break;
-//
-//			}
-
-        ArrayList list = new ArrayList();
-        if (option == "black") {
-            listCount = hotNewService.selectListCount();
-            paging = new Paging(listCount, currentPage, limit);
-            paging.calculator();
-            list = hotNewService.hotSelectList(paging);
-        }
-        if (option == "hot") {
-            listCount = hotNewService.selectListCount();
-            paging = new Paging(listCount, currentPage, limit);
-            paging.calculator();
-            list = hotNewService.hotSelectList(paging);
-        }
-        if (option == "new") {
-            listCount = hotNewService.selectListCount();
-            paging = new Paging(listCount, currentPage, limit);
-            paging.calculator();
-            list = hotNewService.newSelectList(paging);
-        }
-        if (option == "free") {
-            listCount = freeService.selectListCount();
-            paging = new Paging(listCount, currentPage, limit);
-            paging.calculator();
-            list = freeService.selectList(paging);
-        }
-        if (option == "tip") {
-            listCount = tipService.selectListCount();
-            paging = new Paging(listCount, currentPage, limit);
-            paging.calculator();
-            list = tipService.selectList(paging);
-        }
-        if (option == "eye") {
-            listCount = eyebodyService.selectListCount();
-            paging = new Paging(listCount, currentPage, limit);
-            paging.calculator();
-            list = eyebodyService.selectList(paging);
-        }
-        if (option == "bf") {
-            listCount = bfafService.selectListCount();
-            paging = new Paging(listCount, currentPage, limit);
-            paging.calculator();
-            list = bfafService.selectList(paging);
-        }
-        if (option == "notice") {
-            listCount = noticeService.selectListCount();
-            paging = new Paging(listCount, currentPage, limit);
-            paging.calculator();
-            list = noticeService.selectList(paging);
-        }
-        if (option == "event") {
-            listCount = eventService.selectListCount();
-            paging = new Paging(listCount, currentPage, limit);
-            paging.calculator();
-            list = eventService.selectList(paging);
-        }
-
-        //JSONObject sendJson = new JSONObject();
-        //JSONObject job = new JSONObject();
-
-        if (list != null && list.size() > 0) {
-            //JSONArray jarr = new JSONArray();
-
-            //job.put("list", list);
-            //job.put("paging", paging);
-
-//				jarr.add(job);	
-
-            mv.addObject("list", list);
-            mv.addObject("paging", paging);
-            mv.addObject("option", option);
-
-            mv.setViewName("admin/boardMgtPage");
-        } else {
-            mv.addObject("message", "등록된 공지사항 정보가 없습니다.");
-            mv.setViewName("common/error");
-        }
-        return mv;
-
-        //return sendJson.toJSONString(job);
-    }
-
-
-//	
-//	//게시글 검색용
-//		@RequestMapping(value="adminSearch.do", method={ RequestMethod.GET, RequestMethod.POST })
-//		public ModelAndView noitceSearchMethod(
-//				@RequestParam(name = "page", required = false, defaultValue = "1") String page,
-//				@RequestParam("searchtype") String searchtype,
-//				@RequestParam("keyword") String keyword,
-//				/* HttpServletRequest request, */ ModelAndView mv) {
-////			String searchtype = request.getParameter("searchtype");
-////			String keyword = request.getParameter("keyword");
-//			
-//			CountSearch countSearch = new CountSearch(searchtype, keyword);
-//			
-//			int currentPage = 1;
-//			if(page != null) {
-//				currentPage = Integer.parseInt(page);
-//			}
-//			
-//			int limit = 10;
-//			int listCount = noticeService.selectSearchListCount(countSearch);
-//			Searchs searchs = new Searchs(listCount, currentPage, limit);
-//			searchs.calculator();
-//			
-//			searchs.setSearchtype(searchtype);
-//			searchs.setKeyword(keyword);
-//			
-//			ArrayList<Notice> list;
-//			
-//			if(searchtype.equals("nname")) {
-//				list = noticeService.selectSearchTitle(searchs);
-//				if(list != null && list.size() > 0) {
-//					mv.addObject("list", list);
-//					mv.addObject("searchs", searchs);
-//					
-//					mv.setViewName("notice/noticeListView2");
-//				}
-//			}else if(searchtype.equals("ncontent")) {
-//				list = noticeService.selectSearchContent(searchs);
-//				if(list != null && list.size() > 0) {
-//					mv.addObject("list", list);
-//					mv.addObject("searchs", searchs);
-//					
-//					mv.setViewName("notice/noticeListView2");
-//				}
-//			}else if(searchtype.equals("nid")) {
-//				list = noticeService.selectSearchWriter(searchs);
-//				if(list != null && list.size() > 0) {
-//					mv.addObject("list", list);
-//					mv.addObject("searchs", searchs);
-//					
-//					mv.setViewName("notice/noticeListView2");
-//				}
-//			}else {
-//				mv.addObject("message", currentPage + "로 검색된 공지글 정보가 없습니다.");
-//				mv.setViewName("common/error");
-//			}
-//			return mv;
-//		}
 
 
     //[유해게시물관리]----------------------------------------------------------
 
+	// 전체 보드 리스트 출력
+	@RequestMapping(value = "adAllboardList.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public ModelAndView adAllboardListMethod(
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
 
-//		
-//	public ModelAndView hormFulPost(@RequestParam(name = "page", required = false) String page, ModelAndView mv){
-//		   int currentPage = 1;
-//		      if (page != null) {
-//		         currentPage = Integer.parseInt(page);
-//		      }
-//
-//		      int limit = 10;
-//		      int listCount = freeService.selectListCount();
-//		      Paging paging = new Paging(listCount, currentPage, limit);
-//
-//		      ArrayList<Free> list = freeService.selectList(paging);
-//		      if (list != null && list.size() > 0) {
-//		         mv.addObject("list", list);
-//		         mv.addObject("paging", paging);
-//
-//		         mv.setViewName("admin/adminFree");
-//		      } else {
-//		         mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
-//		         mv.setViewName("common/error");
-//		      }
-//		
-//		
-//		
-//		
-//		
-//		
-//		return mv;
-//	}
+		ArrayList<AllBoardList> list= adminService.selectAllBoard();
 
 
-    //
-    //----------------------------------------------------------
-    // hotnewdetail.do
-    @RequestMapping(value = "adHotnewdetail.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public String selectDetailMethod(@RequestParam("hotnew_no") int hotnew_no, Model model, HttpSession session,
-                                     @RequestParam("hotnew_name") String hotnew_name, @RequestParam("user_id") String user_id) {
-        HotNew hotnew = new HotNew();
-        hotnew.setHotnew_no(hotnew_no);
-        hotnew.setHotnew_name(hotnew_name);
-        hotnew.setUser_id(user_id);
-        System.out.println(hotnew);
-        if (hotNewService.selectFree(hotnew) != null) {
-            return "redirect:freedetail.do?free_no=" + hotnew.getHotnew_no() + "&user_id="
-                    + ((Member) session.getAttribute("loginMember")).getUser_id();
-        } else if (hotNewService.selectTip(hotnew) != null) {
-            return "redirect:tipdetail.do?tip_no=" + hotnew.getHotnew_no() + "&user_id="
-                    + ((Member) session.getAttribute("loginMember")).getUser_id();
-        } else if (hotNewService.selectEyebody(hotnew) != null) {
-            return "redirect:eyebodydetail.do?eyebody_no=" + hotnew.getHotnew_no() + "&user_id="
-                    + ((Member) session.getAttribute("loginMember")).getUser_id();
-        } else if (hotNewService.selectBfaf(hotnew) != null) {
-            return "redirect:bfafdetail.do?bfaf_no=" + hotnew.getHotnew_no() + "&user_id="
-                    + ((Member) session.getAttribute("loginMember")).getUser_id();
-        } else {
-            model.addAttribute("message", hotnew.getHotnew_no() + "번 게시물 조회 실패");
-            return "common/error";
-        }
+		//ArrayList<AllBoardList> list = hw.filtering(all);
 
-    }
+		if (list.size() > 0 && list != null) {
+			mv.addObject("list", list);
+			mv.setViewName("admin/adminHot");
+		} else {
+			mv.addObject("message", "페이지 로딩 오류!");
+			mv.setViewName("common/error");
+		}
+		return mv;
+	}
 
-    // hot list view
-    @RequestMapping("adHotlist.do")
-    public ModelAndView hotListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
-        int currentPage = 1;
-        if (page != null) {
-            currentPage = Integer.parseInt(page);
-        }
+	// detail view
+	@RequestMapping(value = "adAllboardDetail.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String selectAllboardDetailMethod(@RequestParam("board_no") int board_no, Model model,
+			@RequestParam("category") int category, HttpSession session) {
 
-        int limit = 10;
-        int listCount = hotNewService.selectListCount();
-        Paging paging = new Paging(listCount, currentPage, limit);
-        paging.calculator();
+		String result = "";
 
-        ArrayList<HotNew> list = hotNewService.hotSelectList(paging);
-        if (list != null && list.size() > 0) {
-            mv.addObject("list", list);
-            mv.addObject("paging", paging);
+		if ((Member) session.getAttribute("loginMember") != null) {
 
-            mv.setViewName("admin/adminHot");
-        } else {
-            mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
-            mv.setViewName("common/error");
-        }
-        return mv;
-    }
-    
-    //검색
-    @RequestMapping(value = "adHotsearch.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView hotSearchMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page,
-                                        HttpServletRequest request, ModelAndView mv) {
-        String searchtype = request.getParameter("searchtype");
-        String keyword = request.getParameter("keyword");
+			switch (category) {
+			case 1:
+				result = "redirect:freedetail.do?free_no=" + board_no + "&user_id="
+						+ ((Member) session.getAttribute("loginMember")).getUser_id();
+				break;
 
-        CountSearch countSearch = new CountSearch(searchtype, keyword);
+			case 2:
+				result = "redirect:tipdetail.do?tip_no=" + board_no + "&user_id="
+						+ ((Member) session.getAttribute("loginMember")).getUser_id();
+				break;
+			case 3:
+				result = "redirect:eyebodydetail.do?eyebody_no=" + board_no + "&user_id="
+						+ ((Member) session.getAttribute("loginMember")).getUser_id();
+				break;
 
-        int currentPage = 1;
-        if (page != null) {
-            currentPage = Integer.parseInt(page);
-        }
+			case 4:
+				result = "redirect:bfafdetail.do?bfaf_no=" + board_no + "&user_id="
+						+ ((Member) session.getAttribute("loginMember")).getUser_id();
+				break;
 
-        int limit = 10;
-        int listCount = hotNewService.selectSearchListCount(countSearch);
-        Searchs searchs = new Searchs(listCount, currentPage, limit);
+			default:
+				model.addAttribute("message", "예상하지 못한 오류");
+				result = "common/error";
+			}
+		} else {
 
-        searchs.setSearchtype(searchtype);
-        searchs.setKeyword(keyword);
+			model.addAttribute("message", "로그인 세션 만료");
+			result = "common/error";
+		}
+		return result;
 
-        ArrayList<HotNew> list;
-        if (searchtype.equals("hotname")) {
-            list = hotNewService.hotSelectSearchTitle(searchs);
-            if (list != null && list.size() > 0) {
-                mv.addObject("list", list);
-                mv.addObject("searchs", searchs);
+	}
 
-                mv.setViewName("admin/adminHot2");
-            }
-        } else if (searchtype.equals("hotvalue")) {
-            list = hotNewService.hotSelectSearchValue(searchs);
-            if (list != null && list.size() > 0) {
-                mv.addObject("list", list);
-                mv.addObject("searchs", searchs);
+	// 원글 삭제 처리용
+	@RequestMapping(value = "adAllBoardDelete.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String adAllBoardDeleteMethod(@RequestParam("board_no") int board_no, HttpSession session,
+			@RequestParam("category") int category, Model model) {
 
-                mv.setViewName("admin/adminHot2");
-            }
-        } else if (searchtype.equals("hotid")) {
-            list = hotNewService.hotSelectSearchWriter(searchs);
-            if (list != null && list.size() > 0) {
-                mv.addObject("list", list);
-                mv.addObject("searchs", searchs);
+		
+		int result = 0;
+		
+		if ((Member) session.getAttribute("loginMember") != null) {
 
-                mv.setViewName("admin/adminHot2");
-            }
-        }
-        if (mv.isEmpty()) {
-            mv.addObject("searchs", searchs);
-            mv.setViewName("admin/adminHot2");
-            return mv;
-        } else {
-            return mv;
-        }
-    }
-    
-    //검색
-    @RequestMapping(value = "adNewsearch.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView newSearchMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page,
-                                        HttpServletRequest request, ModelAndView mv) {
-        String searchtype = request.getParameter("searchtype");
-        String keyword = request.getParameter("keyword");
+			switch (category) {
+			case 1:
+				result = freeService.deleteFreeBoard(board_no);
+				return "redirect:adFreelist.do?page=1";
+						
 
-        CountSearch countSearch = new CountSearch(searchtype, keyword);
+			case 2:
+				result= tipService.deleteTipBoard(board_no);
+				return "redirect:adTiplist.do?page=1";
+			case 3:
+				result= eyebodyService.deleteEyebodyBoard(board_no);
+				return "redirect:adEyelist.do?page=1";
 
-        int currentPage = 1;
-        if (page != null) {
-            currentPage = Integer.parseInt(page);
-        }
+			case 4:
+				result= bfafService.deleteBfafBoard(board_no);
+				return "redirect:adBFlist.do?page=1";
+				
+			default :
+				model.addAttribute("message", "예상하지 못한 오류");
+				return "common/error";
+			}
+		} else {
+			model.addAttribute("message", "게시글 삭제 실패!");
+			return "common/error";
+		}
+	
 
-        int limit = 10;
-        int listCount = hotNewService.selectSearchListCount(countSearch);
-        Searchs searchs = new Searchs(listCount, currentPage, limit);
+	}
 
-        searchs.setSearchtype(searchtype);
-        searchs.setKeyword(keyword);
-
-        ArrayList<HotNew> list;
-        if (searchtype.equals("newname")) {
-            list = hotNewService.hotSelectSearchTitle(searchs);
-            if (list != null && list.size() > 0) {
-                mv.addObject("list", list);
-                mv.addObject("searchs", searchs);
-
-                mv.setViewName("admin/adminNew2");
-            }
-        } else if (searchtype.equals("newvalue")) {
-            list = hotNewService.hotSelectSearchValue(searchs);
-            if (list != null && list.size() > 0) {
-                mv.addObject("list", list);
-                mv.addObject("searchs", searchs);
-
-                mv.setViewName("admin/adminNew2");
-            }
-        } else if (searchtype.equals("newid")) {
-            list = hotNewService.hotSelectSearchWriter(searchs);
-            if (list != null && list.size() > 0) {
-                mv.addObject("list", list);
-                mv.addObject("searchs", searchs);
-
-                mv.setViewName("admin/adminNew2");
-            }
-        }
-        if (mv.isEmpty()) {
-            mv.addObject("searchs", searchs);
-            mv.setViewName("admin/adminNew2");
-            return mv;
-        } else {
-            return mv;
-        }
-    }
-    
-    //리스트
-    @RequestMapping("adNewlist.do")
-    public ModelAndView newListMethod(@RequestParam(name = "page", required = false, defaultValue = "1") String page, ModelAndView mv) {
-        int currentPage = 1;
-        if (page != null) {
-            currentPage = Integer.parseInt(page);
-        }
-
-        int limit = 10;
-        int listCount = hotNewService.selectListCount();
-        Paging paging = new Paging(listCount, currentPage, limit);
-        paging.calculator();
-
-        ArrayList<HotNew> list = hotNewService.newSelectList(paging);
-        if (list != null && list.size() > 0) {
-            mv.addObject("list", list);
-            mv.addObject("paging", paging);
-
-            mv.setViewName("admin/adminNew");
-        } else {
-            mv.addObject("message", currentPage + "페이지 리스트 조회 실패");
-            mv.setViewName("common/error");
-        }
-        return mv;
-    }
-
+   
 //[free]----------------------------------------------------	
 
     // 리스트

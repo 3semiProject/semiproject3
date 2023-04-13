@@ -127,23 +127,16 @@
             border-radius: 35px;
             height: 400px;
             justify-content: space-around;
-            /*    border: 1px solid #D1D1D1;
-               position: relative;
-               float: right;
-               margin-top: 5px;
-               margin-right: 0.5%;
-               width: 28%;
-               height: 300px;
-               background-color: white;
-               border-radius: 35px; */
-        }
+            
+            
+          }
 
         #userBox_memberBox > div {
             border: 1px solid #D1D1D1;
             position: relative;
             float: right;
             margin-right: 0.5%;
-            width: 28%;
+            width: 25%;
             height: 400px;
             background-color: white;
             border-radius: 35px;
@@ -169,10 +162,20 @@
         #myActivity_box {
             position: relative;
             left: 80px;
+            color: white;
+        }
+        #myActivity_box > div > a {
+        color: white;
+        }
+       
+        
+        #myActivity_box div {
+        	background: #01CD88;
+        	color: white;
         }
 
         #userBox_memberBox #myActivity_box div {
-
+            line-height: 50px;
             height: 50px;
             width: 80%;
             margin: 30px 30px;
@@ -186,7 +189,7 @@
             margin: 10px;
             border-radius: 20px;
         }
-
+	
         #userBox_loginBox #loginbtn {
             border: 1px solid #D1D1D1;
             border-radius: 35px;
@@ -357,6 +360,38 @@
 
             }//관리자일때만
         });//function close;
+        
+        
+      //-------------------------------------------------------
+        
+	    //myActivity_box에서 user 게시글, user reple 갯수 get
+	  $(function (){
+	
+	 if ("${sessionScope.loginMember}" !== "" && "${loginMember.admin_ck}" === 'N') {
+	  	 
+	  $.ajax({
+		  url: "myActivity_box.do",
+		  type: "post",
+		  dataType: "json",
+		  success: function(jsonData) {
+			  alert("jsonData sending ");
+			
+			$('#myPost').html('내가 쓴 게시글 ' + jsonData.postCount + ' 개');
+			$('#myReply').html('내가 쓴 댓글 ' + jsonData.replyCount + ' 개');
+		
+	
+		},
+		error: function(request, status, errorData){
+			console.log("error code : " + request.status
+					+ "\nMessage : " + request.responseText
+					+ "\nError : " + errorData);
+				} 
+	  		});//adminBox ajax close;
+	  
+		}//if close => user
+	 
+	
+	   });//function close;
     </script>
 </head>
 <body>
@@ -365,7 +400,7 @@
     <c:if test="${ empty sessionScope.loginMember }">
         <%-- intro / login / find / join --%>
         <div id="userBox">
-            <div id="userBox_intro">Introduce</div>
+            <div id="userBox_intro"><iframe width="840px" height="400px" src="https://www.youtube.com/embed/H0PtMz_tydA?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
             <div id="userBox_loginBox" align="center">
                 <div id="loginbtn">
                     <img alt="loginbtn" onclick="moveLoginPage()"
@@ -400,8 +435,8 @@
             </div>
             <div id="myActivity_box">
                 <div><a href="${ pageContext.servletContext.contextPath }/diary.do">오늘의 다이어리</a></div>
-                <div>내가 쓴 게시글 ${ loginMember.user_id } 개</div> <!-- 유저의 게시글 쿼리문 물어보기 -->
-                <div>내가 쓴 댓글 ${ loginMember.user_id } 개</div>
+                <div id="myPost">${ postCount }</div> <!-- 유저의 게시글 쿼리문 물어보기 -->
+               <div id="myReply">${ replyCount }</div>
             </div>
             <div id="userBox_info">
                 <form class="pofile" action="myinfo.do" method="post">
@@ -429,47 +464,38 @@
 
     <!-- 로그인 했을 때 : 관리자인 경우 -->
     <c:if
-            test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
-        <div id="adminBox">
+         test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
+         <div id="adminBox">
             <div id="user_visit">
-                <form action="visitSearch.do">
-                    <div>접속자 분류</div>
-                    <div style="display: flex;">
-                        <div style="width: 30%;">기간</div>
-                        <c:set var="now" value="<%=new java.util.Date()%>"/>
-                        <c:set var="sys"><fmt:formatDate value="${now}" pattern="yyyy"/></c:set>
-                        <input style="width: 60%; text-align: center;" type="month" value="년 / 월"/>
-                    </div>
-                </form>
-                <div id="visit_count">
-                    <div id="today">
-                        <div>접속자 수</div>
-                        <div id="todayVisitors"></div>
-                    </div>
-                    <div id="month">
-                        <div>월 접속자 수</div>
-                        <div id="monthVisitors"></div>
-                    </div>
-                    <div id="year">
-                        <div>월 평균 접속자 수</div>
-                        <div id="avgVisitors"></div>
-                    </div>
-                </div>
+               <div id="visit_count">
+                  <div id="today">
+                     <div>접속자 수</div>
+                     <div id="todayVisitors"></div>
+                  </div>
+                  <div id="month">
+                     <div>월 접속자 수</div>
+                     <div id="monthVisitors"></div>
+                  </div>
+                  <div id="year">
+                     <div>월 평균 접속자 수</div>
+                     <div id="avgVisitors"></div>
+                  </div>
+               </div>
             </div>
             <div id="border_mgt">
-                <div>게시판 분류</div>
-                <div id="board_count">
-                    <div id="total_post">
-                        <div>총 게시물 수</div>
-                        <div id="postCount"></div>
-                    </div>
-                    <div id="total_coment">
-                        <div>총 유해게시물 수</div>
-                        <div id="blackPostCount"></div>
-                    </div>
+          <!--      <div>게시판 분류</div> -->
+               <div id="board_count">
+                  <div id="total_post">
+                     <div>총 게시물 수</div>
+                     <div id="postCount"></div>
+                  </div>
+                  <div id="total_coment">
+                     <div>총 유해게시물 수</div>
+                     <div id="blackPostCount"></div>
+                  </div>
 
 
-                    <div>
+             <!--        <div>
                         음식 데이터 삽입용
                         <form action="insertFoodData.do" method="POST" enctype="multipart/form-data">
                             <input type="file" name="mfile" accept=".xls,.xlsx"/>
@@ -485,7 +511,7 @@
                             <input type="submit" value="운동 데이터 삽입(xlsx)"/>
                         </form>
                     </div>
-
+ -->
 
                 </div>
             </div>
