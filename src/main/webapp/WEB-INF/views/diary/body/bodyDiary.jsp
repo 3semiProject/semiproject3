@@ -94,8 +94,9 @@ $(function(){
 		
 	});//writebtn
 	$('#bodyPart').on('click', '.modifyBtn',function (){
-		var dn = $(this).attr('id');
-		window.location.href = 'diary_showBodyModify.do?diary_no='+dn;
+
+		var dn = ${diary.diary_no};
+		location.href = 'diary_showBodyModify.do?diary_no='+dn;
 	});//modifyBtn
 });//document.ready
 </script>
@@ -249,9 +250,9 @@ $(function(){
 		<!-- 등록된 메모 출력 -->
 		<!-- Memo Box -->
 		<div class="memobox">
-			<textarea>${ diary.diary_memo }</textarea>
+			<textarea readonly>${ diary.diary_memo }</textarea>
 		</div>
-		<div class="button"><button class="modifyBtn" id="${diary.diary_no}">수정</button></div>
+		<div class="button"><button class="modifyBtn">수정</button></div>
 	</c:if>	
 	</div>
 	<br>

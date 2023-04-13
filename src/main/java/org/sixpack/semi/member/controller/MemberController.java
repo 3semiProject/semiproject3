@@ -16,6 +16,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.json.simple.JSONObject;
+import org.sixpack.semi.banner.model.service.BannerService;
+import org.sixpack.semi.banner.model.vo.Banner;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.FileNameChange;
 import org.sixpack.semi.common.Searchs;
@@ -62,7 +64,7 @@ public class MemberController {
     private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
     @Autowired
-    BannerService bannerService;
+    private BannerService bannerService;
 
     @Autowired
     private MemberService memberService;
@@ -863,83 +865,8 @@ public class MemberController {
 
     }
 
-
     //서치 시작 ---------------------------------------------------------------
     //검색용
-    @RequestMapping(value = "membersearch.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView memberSearchoneMethod(
-            @RequestParam(name = "page", required = false, defaultValue = "1") String page,
-            HttpServletRequest request, ModelAndView mv) {
-        String searchtype = request.getParameter("searchtype");
-        String keyword = request.getParameter("keyword");
 
-        CountSearch countSearch = new CountSearch(searchtype, keyword);
-
-        int currentPage = 1;
-        if (page != null) {
-            currentPage = Integer.parseInt(page);
-        }
-
-
-        int limit = 10;
-        int listCount = memberService.selectSearchListCount(countSearch);
-        Searchs searchs = new Searchs(listCount, currentPage, limit);
-        searchs.calculator();
-
-        searchs.setSearchtype(searchtype);
-        searchs.setKeyword(keyword);
-
-        ArrayList<Member> list;
-
-        if (searchtype.equals("uid")) {
-            list = memberService.selectSearchId(searchs);
-            if (list != null && list.size() > 0) {
-                mv.addObject("list", list);
-                mv.addObject("searchs", searchs);
-
-                mv.setViewName("admin/memberAllList2");
-            }
-        } else if (searchtype.equals("uname")) {
-            list = memberService.selectSearchName(searchs);
-            if (list != null && list.size() > 0) {
-                mv.addObject("list", list);
-                mv.addObject("searchs", searchs);
-
-                mv.setViewName("admin/memberAllList2");
-            }
-        } else if (searchtype.equals("unick")) {
-            list = memberService.selectSearchNick(searchs);
-            if (list != null && list.size() > 0) {
-                mv.addObject("list", list);
-                mv.addObject("searchs", searchs);
-
-                mv.setViewName("admin/memberAllList2");
-            }
-        } else if (searchtype.equals("uphone")) {
-            list = memberService.selectSearchPhone(searchs);
-            if (list != null && list.size() > 0) {
-                mv.addObject("list", list);
-                mv.addObject("searchs", searchs);
-
-                mv.setViewName("admin/memberAllList2");
-            }
-        } else if (searchtype.equals("uemail")) {
-            list = memberService.selectSearchEmail(searchs);
-            if (list != null && list.size() > 0) {
-                mv.addObject("list", list);
-                mv.addObject("searchs", searchs);
-
-                mv.setViewName("admin/memberAllList2");
-            }
-        }
-        if (mv.isEmpty()) {
-            mv.addObject("searchs", searchs);
-            mv.setViewName("admin/memberAllList2");
-            return mv;
-        } else {
-            return mv;
-        }
-
-    }
 
 }

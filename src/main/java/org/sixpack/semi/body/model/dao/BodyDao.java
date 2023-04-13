@@ -8,19 +8,26 @@ import org.springframework.stereotype.Repository;
 
 @Repository("bodyDao")
 public class BodyDao {
-	
-	@Autowired
-	private SqlSessionTemplate session;
 
-	public Body selectOneBody(Diary diary) {
-		return session.selectOne("bodyMapper.selectOneBody", diary);
-	}
+    @Autowired
+    private SqlSessionTemplate session;
 
-	public Body selectCompareBody(Diary diary) {
-		return session.selectOne("bodyMapper.selectCompareBody", diary);
-	}
+    public Body selectOneBody(Diary diary) {
+        return session.selectOne("bodyMapper.selectOneBody", diary);
+    }
 
-	public int insertBody(Body body) {
-		return session.insert("bodyMapper.insertBody", body);
-	}
+    public Body selectCompareBody(Diary diary) {
+        return session.selectOne("bodyMapper.selectCompareBody", diary);
+    }
+
+    public int insertBody(Body body) {
+        return session.insert("bodyMapper.insertBody", body);
+    }
+
+    public Body selectBody(int diaryNo) {
+        return session.selectOne("bodyMapper.selectBody", diaryNo);
+    }
+    public int updateBody(Body body) {
+        return session.update("bodyMapper.updateBody", body);
+    }
 }

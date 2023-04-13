@@ -78,7 +78,7 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public int updateDiary(Diary diary) {
-        return 0;
+        return diaryDao.updateDiary(diary);
     }
 
     @Override
