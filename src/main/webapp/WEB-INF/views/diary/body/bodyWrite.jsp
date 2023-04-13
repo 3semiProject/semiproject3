@@ -175,27 +175,27 @@ $(function() {
 					</label>
 				<div>
 					<h4>BMI</h4>
-					<input name="body_bmi"  value="0.0"><br>
+					<input name="body_bmi"  placeholder="0.0"><br>
 				</div>			
 				<div >
 					<h4>Bmr</h4>
-					<input name="body_bmr"  value="0.0"><br>
+					<input name="body_bmr"  placeholder="0.0"><br>
 				</div>			
 				<div >
 					<h4>체중</h4>
-					<input name="body_weight" value="0.0">kg <br>
+					<input name="body_weight" placeholder="0.0">kg <br>
 				</div>			
 				<div >
 					<h4>체지방량</h4>
-					<input name="body_fat"  value="0.0">g <br>
+					<input name="body_fat"  placeholder="0.0">g <br>
 				</div>			
 				<div >
 					<h4>골격근량</h4>
-					<input name="body_muscle"  value="0.0">g<br>
+					<input name="body_muscle"  placeholder="0.0">g<br>
 				</div>			
 				<div >
 					<h4>허리둘레</h4>
-					<input  name="body_waistline"  value="0.0">cm <br>
+					<input  name="body_waistline"  placeholder="0.0">cm <br>
 				</div>
 		</div>
 		<br>
@@ -213,7 +213,7 @@ $(function() {
 		<!-- 등록된 메모 출력 -->
 		<!-- Memo Box -->
 		<div class="memobox">
-			<textarea>${ diary.diary_memo }</textarea>
+			<textarea name="diary_memo">${ diary.diary_memo }</textarea>
 		</div>
 			<br>
 			<!-- 다이어리에 : 시간, 메모, 이미지파일 -->
@@ -236,5 +236,8 @@ $(function() {
 		</script>
 	<br>
 </div>
+
+<c:import url="/WEB-INF/views/common/footer.jsp" />
+
 </body>
 </html>

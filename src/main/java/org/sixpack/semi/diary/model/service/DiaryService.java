@@ -56,8 +56,6 @@ public interface DiaryService {
     //시퀀스로 생성할 diary_no 받아오기
     int getDiaryNo();
 
-    public ArrayList<Diary> selectDiary(String user_id);
-
     ArrayList<Diary> selectDiaryCalendar(String user_id);
 
     ArrayList<Diary> selectDiary(String user_id);

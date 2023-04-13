@@ -10,4 +10,8 @@ public interface BodyService {
 	Body selectCompareBody(Diary diary); //증감률 비교용 다이어리값.
 	
 	int insertBody(Body body);
+
+    Body selectBody(int diary_no);
+
+	public int updateBody(Body body);
 }

@@ -93,4 +93,8 @@ public class DiaryDao {
         return (ArrayList<Diary>) list;
 
     }
+
+    public int updateDiary(Diary diary) {
+        return session.update("diaryMapper.updateDiary", diary);
+    }
 }
