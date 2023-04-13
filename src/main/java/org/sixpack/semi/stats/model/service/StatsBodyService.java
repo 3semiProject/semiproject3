@@ -1,12 +1,10 @@
 package org.sixpack.semi.stats.model.service;
 
-import java.util.ArrayList;
-
-import org.sixpack.semi.body.model.vo.Body;
-import org.sixpack.semi.diary.model.vo.Period;
 import org.sixpack.semi.stats.model.vo.BodyChart;
 import org.sixpack.semi.stats.model.vo.BodyStats;
 import org.sixpack.semi.stats.model.vo.StatsDate;
+
+import java.util.ArrayList;
 
 public interface StatsBodyService {
 	

@@ -1,7 +1,6 @@
 package org.sixpack.semi.stats.model.service;
 
 import org.sixpack.semi.stats.model.dao.StatsDao;
-import org.sixpack.semi.stats.model.vo.BodyChart;
 import org.sixpack.semi.stats.model.vo.EatStats;
 import org.sixpack.semi.stats.model.vo.StatsDate;
 import org.springframework.beans.factory.annotation.Autowired;

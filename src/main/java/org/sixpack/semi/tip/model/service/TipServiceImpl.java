@@ -1,7 +1,5 @@
 package org.sixpack.semi.tip.model.service;
 
-import java.util.ArrayList;
-
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
@@ -10,6 +8,8 @@ import org.sixpack.semi.tip.model.vo.LikeTip;
 import org.sixpack.semi.tip.model.vo.Tip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service("tipService")
 public class TipServiceImpl implements TipService {

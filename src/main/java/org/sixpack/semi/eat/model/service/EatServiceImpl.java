@@ -1,14 +1,14 @@
 package org.sixpack.semi.eat.model.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.sixpack.semi.diary.model.vo.Diary;
 import org.sixpack.semi.eat.model.dao.EatDao;
 import org.sixpack.semi.eat.model.vo.Eat;
 import org.sixpack.semi.eat.model.vo.Food;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service("eatService")
 public class EatServiceImpl implements EatService {

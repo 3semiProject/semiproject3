@@ -1,11 +1,11 @@
 package org.sixpack.semi.log.model.service;
 
-import java.sql.Date;
-
 import org.sixpack.semi.log.model.dao.LogDao;
 import org.sixpack.semi.log.model.vo.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.Date;
 
 @Service("logService")
 public class LogServiceImpl implements LogService{

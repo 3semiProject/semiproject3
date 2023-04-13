@@ -1,11 +1,11 @@
 package org.sixpack.semi.log.model.dao;
 
-import java.sql.Date;
-
 import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.log.model.vo.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Date;
 
 @Repository("logDao")
 public class LogDao {

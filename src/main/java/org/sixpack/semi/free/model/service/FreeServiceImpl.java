@@ -1,7 +1,5 @@
 package org.sixpack.semi.free.model.service;
 
-import java.util.ArrayList;
-
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
@@ -10,6 +8,8 @@ import org.sixpack.semi.free.model.vo.Free;
 import org.sixpack.semi.free.model.vo.LikeFree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service("freeService")
 public class FreeServiceImpl implements FreeService{

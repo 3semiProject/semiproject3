@@ -1,12 +1,11 @@
 package org.sixpack.semi.banner.model.service;
 
-import java.util.ArrayList;
-
 import org.sixpack.semi.banner.model.vo.Banner;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
-import org.sixpack.semi.qna.model.vo.Qna;
+
+import java.util.ArrayList;
 
 public interface BannerService {
 	

@@ -1,7 +1,5 @@
 package org.sixpack.semi.qna.model.service;
 
-import java.util.ArrayList;
-
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
@@ -9,6 +7,8 @@ import org.sixpack.semi.qna.model.dao.QnaDao;
 import org.sixpack.semi.qna.model.vo.Qna;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service("qnaService")
 public class QnaServiceImpl implements QnaService{

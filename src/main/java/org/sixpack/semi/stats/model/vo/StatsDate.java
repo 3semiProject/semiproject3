@@ -1,7 +1,5 @@
 package org.sixpack.semi.stats.model.vo;
 
-import java.sql.Date;
-
 public class StatsDate {
     private String user_id;        //유저 아이디
     private int date_range;     //1: 7일, 2: 한달, 3: 3개월, 4: 6개월

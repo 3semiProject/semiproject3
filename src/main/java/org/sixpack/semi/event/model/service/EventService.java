@@ -1,11 +1,11 @@
 package org.sixpack.semi.event.model.service;
 
-import java.util.ArrayList;
-
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.event.model.vo.Event;
+
+import java.util.ArrayList;
 
 public interface EventService {
 	int selectListCount();	//총 게시글 갯수 조회용 (페이지 수 계산용)

@@ -1,11 +1,11 @@
 package org.sixpack.semi.qna.model.service;
 
-import java.util.ArrayList;
-
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.qna.model.vo.Qna;
+
+import java.util.ArrayList;
 
 public interface QnaService {
 	int selectListCount();	//총 게시글 갯수 조회용 (페이지 수 계산용)

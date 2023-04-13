@@ -1,8 +1,5 @@
 package org.sixpack.semi.tip.model.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.mybatis.spring.SqlSessionTemplate;
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
@@ -11,6 +8,9 @@ import org.sixpack.semi.tip.model.vo.LikeTip;
 import org.sixpack.semi.tip.model.vo.Tip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository("tipDao")
 

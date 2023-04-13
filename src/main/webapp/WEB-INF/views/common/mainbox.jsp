@@ -60,7 +60,7 @@
 
         }
 
-         #adminBox #user_visit #visit_count {
+        #adminBox #user_visit #visit_count {
             position: relative;
             top: 30px;
             border: none;
@@ -89,7 +89,7 @@
             align-items: center;
             margin-top: 30px;
             background-color: #fcfaa7;
-          /*   background-color: white; */
+            /*   background-color: white; */
         }
 
 
@@ -419,7 +419,7 @@
                     type: "post",
                     dataType: "json",
                     success: function (jsonData) {
-                      //  alert("jsonData sending ");
+                        //  alert("jsonData sending ");
 
                         $('#myPost').html('내가 쓴 게시글 ' + jsonData.postCount + ' 개');
                         $('#myReply').html('내가 쓴 댓글 ' + jsonData.replyCount + ' 개');
@@ -525,45 +525,44 @@
     <!-- 로그인 했을 때 : 관리자인 경우 -->
     <c:if
             test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
-        <div id="adminBox">
-            <div id="user_visit">
-                <div id="visit_count">
-                    <div id="today">
-                        <div>접속자 수</div>
-                        <div id="todayVisitors"></div>
-                    </div>
-                    <div id="month">
-                        <div>월 접속자 수</div>
-                        <div id="monthVisitors"></div>
-                    </div>
-                    <div id="year">
-                        <div>월 평균 접속자 수</div>
-                        <div id="avgVisitors"></div>
-                    </div>
-                    <div id="total_post">
-                     <div>총 게시물 수</div>
-                     <div id="postCount"></div>
-                  </div>
-               </div>
+    <div id="adminBox">
+        <div id="user_visit">
+            <div id="visit_count">
+                <div id="today">
+                    <div>접속자 수</div>
+                    <div id="todayVisitors"></div>
+                </div>
+                <div id="month">
+                    <div>월 접속자 수</div>
+                    <div id="monthVisitors"></div>
+                </div>
+                <div id="year">
+                    <div>월 평균 접속자 수</div>
+                    <div id="avgVisitors"></div>
+                </div>
+                <div id="total_post">
+                    <div>총 게시물 수</div>
+                    <div id="postCount"></div>
+                </div>
             </div>
- <!--            <div id="border_mgt">
-               <div>게시판 분류</div>
-               <div id="board_count">
+        </div>
+        <!--            <div id="border_mgt">
+                      <div>게시판 분류</div>
+                      <div id="board_count">
 
-                  <div id="total_coment">
-                     <div>총 유해게시물 수</div>
-                     <div id="blackPostCount"></div>
-                  </div>
--->
+                         <div id="total_coment">
+                            <div>총 유해게시물 수</div>
+                            <div id="blackPostCount"></div>
+                         </div>
+       -->
 
-                     <div>
-                        음식 데이터 삽입용
-                    <div>
-                        <form action="insertFoodData.do" method="POST" enctype="multipart/form-data">
-                            <input type="file" name="mfile" accept=".xls,.xlsx" style="text-align: center"/>
+        <div style="text-align: center">
+            <div style="display: inline-block">
+                <form action="insertFoodData.do" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="mfile" accept=".xls,.xlsx" style="text-align: center"/>
 
-                            <input type="submit" value="음식 데이터 삽입(xlsx)"
-                                   style="   height: 40px;
+                    <input type="submit" value="음식 데이터 삽입(xlsx)"
+                           style="   height: 40px;
                                               padding: 10px 16px;
                                              border: none;
                                             background: #f3f3f4;
@@ -574,14 +573,13 @@
                                             font-weight: 500;
                                             line-height: 20px;
                                             box-sizing: border-box;">
-                        </form>
-                        <br>
+                </form>
+                <br>
 
 
-
-                        <form action="insertMoveData.do" method="POST" enctype="multipart/form-data">
-                            <input type="file" name="mfile" accept=".xls,.xlsx">
-                            <input type="submit" value="운동 데이터 삽입(xlsx)" style="
+                <form action="insertMoveData.do" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="mfile" accept=".xls,.xlsx">
+                    <input type="submit" value="운동 데이터 삽입(xlsx)" style="
                               height: 40px;
                                 padding: 10px 16px;
                                 border: none;
@@ -593,24 +591,25 @@
                                 font-weight: 500;
                                 line-height: 20px;
                                 box-sizing: border-box;"/>
-                        </form>
-                    </div>
-
-
-                </div>
-            </div>
-            <div id="login_Box" align="center">
-                <div style="padding: 10px 0; height: 40px;">
-                    관리자<br>${ loginMember.user_nickname } 님
-                </div>
-                <div id="login_join" onclick="logout();">
-                    <a style="color: white;"
-                       href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
-                </div>
+                </form>
             </div>
         </div>
 
-    </c:if>
+
+        <div id="login_Box" align="center">
+            <div style="padding: 10px 0; height: 40px;">
+                관리자<br>${ loginMember.user_nickname } 님
+            </div>
+            <div id="login_join" onclick="logout();">
+                <a style="color: white;"
+                   href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</c:if>
 </div>
 </body>
 </html>

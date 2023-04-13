@@ -1,8 +1,8 @@
 package org.sixpack.semi.log.model.service;
 
-import java.sql.Date;
-
 import org.sixpack.semi.log.model.vo.Log;
+
+import java.sql.Date;
 
 public interface LogService {
 	

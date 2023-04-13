@@ -1,7 +1,5 @@
 package org.sixpack.semi.eyebody.model.service;
 
-import java.util.ArrayList;
-
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
@@ -10,6 +8,8 @@ import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.sixpack.semi.eyebody.model.vo.LikeEyebody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service("eyebodyService")
 public class EyebodyServiceImpl implements EyebodyService {

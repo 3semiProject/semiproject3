@@ -1,11 +1,11 @@
 package org.sixpack.semi.eat.model.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.sixpack.semi.diary.model.vo.Diary;
 import org.sixpack.semi.eat.model.vo.Eat;
 import org.sixpack.semi.eat.model.vo.Food;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public interface EatService {	
 	/*다이어리 보기화면*/

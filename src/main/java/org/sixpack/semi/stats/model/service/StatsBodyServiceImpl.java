@@ -1,6 +1,5 @@
 package org.sixpack.semi.stats.model.service;
 
-import org.sixpack.semi.diary.model.vo.Period;
 import org.sixpack.semi.stats.model.dao.StatsDao;
 import org.sixpack.semi.stats.model.vo.BodyChart;
 import org.sixpack.semi.stats.model.vo.BodyStats;

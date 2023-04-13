@@ -1,12 +1,12 @@
 package org.sixpack.semi.eyebody.model.service;
 
-import java.util.ArrayList;
-
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.eyebody.model.vo.Eyebody;
 import org.sixpack.semi.eyebody.model.vo.LikeEyebody;
+
+import java.util.ArrayList;
 
 public interface EyebodyService {
 	int selectListCount();	//총 게시글 갯수 조회용 (페이지 수 계산용)

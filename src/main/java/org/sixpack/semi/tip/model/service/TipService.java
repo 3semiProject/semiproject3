@@ -1,12 +1,12 @@
 package org.sixpack.semi.tip.model.service;
 
-import java.util.ArrayList;
-
 import org.sixpack.semi.common.CountSearch;
 import org.sixpack.semi.common.Paging;
 import org.sixpack.semi.common.Searchs;
 import org.sixpack.semi.tip.model.vo.LikeTip;
 import org.sixpack.semi.tip.model.vo.Tip;
+
+import java.util.ArrayList;
 
 public interface TipService {
 	
