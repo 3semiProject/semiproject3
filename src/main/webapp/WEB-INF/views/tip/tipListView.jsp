@@ -21,7 +21,7 @@ body{
     #tipWrapper{
         width: 1130px;
         height: 1200px;
-        margin: 0px 10%;
+        margin-left:125px;
     }
 
     #tipWrapper > ul > li:first-child {
