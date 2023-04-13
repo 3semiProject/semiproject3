@@ -78,7 +78,7 @@ public class FreeController {
 	@RequestMapping(value = "freerepupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String freeRepUpdateMethod(Free free, Model model) {
 		if (freeService.updateReple(free) > 0) {
-			return "redirect:freedetail.do?free_no=" + free.getFree_ref();
+			return "redirect:freedetail.do?free_no=" + free.getFree_ref() + "&user_id=" + free.getUser_id();
 		} else {
 			model.addAttribute("message", "댓글 수정 실패!");
 			return "common/error";
@@ -96,7 +96,7 @@ public class FreeController {
 	@RequestMapping(value = "freerepinsert2.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String freeRepInsert2Method(Free free, Model model) {
 		if (freeService.insertReple2(free) > 0) {
-			return "redirect:freedetail.do?free_no=" + free.getFree_ref();
+			return "redirect:freedetail.do?free_no=" + free.getFree_ref() + "&user_id=" + free.getUser_id();
 		} else {
 			model.addAttribute("message", "대댓글 등록 실패!");
 			return "common/error";
@@ -114,7 +114,7 @@ public class FreeController {
 	@RequestMapping(value = "freerepinsert.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String freeRepInsertMethod(Free free, Model model) {
 		if (freeService.insertReple(free) > 0) {
-			return "redirect:freedetail.do?free_no=" + free.getFree_ref();
+			return "redirect:freedetail.do?free_no=" + free.getFree_ref() + "&user_id=" + free.getUser_id();
 		} else {
 			model.addAttribute("message", "댓글 등록 실패!");
 			return "common/error";
@@ -125,7 +125,7 @@ public class FreeController {
 	@RequestMapping(value = "freerepdelete.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String freeRepDeleteMethod(@RequestParam("freeno") int freeno, Free free, Model model) {
 		if (freeService.deleteReple(free) > 0) {
-			return "redirect:freedetail.do?free_no=" + freeno;
+			return "redirect:freedetail.do?free_no=" + freeno + "&user_id=" + free.getUser_id();
 		} else {
 			model.addAttribute("message", "게시글 삭제 실패!");
 			return "common/error";
@@ -390,7 +390,7 @@ public class FreeController {
 			// 게시원글 수정 성공시 상세보기 페이지로 이동
 			model.addAttribute("free_no", free.getFree_no());
 
-			return "redirect:freedetail.do";
+			return "redirect:freedetail.do?user_id="+free.getUser_id();
 		} else {
 			model.addAttribute("message", free.getFree_no() + "번 게시글 수정 실패!");
 			return "common/error";

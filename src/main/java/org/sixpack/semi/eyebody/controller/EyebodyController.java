@@ -70,7 +70,8 @@ public class EyebodyController {
 	@RequestMapping(value = "eyebodyrepupdate.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String eyebodyRepUpdateMethod(Eyebody eyebody, Model model) {
 		if (eyebodyService.updateReple(eyebody) > 0) {
-			return "redirect:eyebodydetail.do?eyebody_no=" + eyebody.getEyebody_ref();
+			return "redirect:eyebodydetail.do?eyebody_no=" + eyebody.getEyebody_ref() + "&user_id="
+					+ eyebody.getUser_id();
 		} else {
 			model.addAttribute("message", "댓글 수정 실패!");
 			return "common/error";
@@ -88,7 +89,8 @@ public class EyebodyController {
 	@RequestMapping(value = "eyebodyrepinsert2.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String eyebodyRepInsert2Method(Eyebody eyebody, Model model) {
 		if (eyebodyService.insertReple2(eyebody) > 0) {
-			return "redirect:eyebodydetail.do?eyebody_no=" + eyebody.getEyebody_ref();
+			return "redirect:eyebodydetail.do?eyebody_no=" + eyebody.getEyebody_ref() + "&user_id="
+					+ eyebody.getUser_id();
 		} else {
 			model.addAttribute("message", "대댓글 등록 실패!");
 			return "common/error";
@@ -106,7 +108,8 @@ public class EyebodyController {
 	@RequestMapping(value = "eyebodyrepinsert.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String eyebodyRepInsertMethod(Eyebody eyebody, Model model) {
 		if (eyebodyService.insertReple(eyebody) > 0) {
-			return "redirect:eyebodydetail.do?eyebody_no=" + eyebody.getEyebody_ref();
+			return "redirect:eyebodydetail.do?eyebody_no=" + eyebody.getEyebody_ref() + "&user_id="
+					+ eyebody.getUser_id();
 		} else {
 			model.addAttribute("message", "댓글 등록 실패!");
 			return "common/error";
@@ -117,7 +120,8 @@ public class EyebodyController {
 	@RequestMapping(value = "eyebodyrepdelete.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String eyebodyRepDeleteMethod(@RequestParam("eyebodyno") int eyebodyno, Eyebody eyebody, Model model) {
 		if (eyebodyService.deleteReple(eyebody) > 0) {
-			return "redirect:eyebodydetail.do?eyebody_no=" + eyebodyno;
+			return "redirect:eyebodydetail.do?eyebody_no=" + eyebodyno + "&user_id="
+					+ eyebody.getUser_id();
 		} else {
 			model.addAttribute("message", "게시글 삭제 실패!");
 			return "common/error";
@@ -382,7 +386,7 @@ public class EyebodyController {
 			// 게시원글 수정 성공시 상세보기 페이지로 이동
 			model.addAttribute("eyebody_no", eyebody.getEyebody_no());
 
-			return "redirect:eyebodydetail.do";
+			return "redirect:eyebodydetail.do?user_id="+eyebody.getUser_id();
 		} else {
 			model.addAttribute("message", eyebody.getEyebody_no() + "번 게시글 수정 실패!");
 			return "common/error";
