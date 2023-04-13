@@ -240,7 +240,10 @@
 </c:if>
 
 <c:if test="${isExist ne 'Y'}">
-
+    <c:import url="/WEB-INF/views/common/menubar.jsp"/> <!--메인 메뉴바-->
+    <br>
+    <c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp"/> <!--다이어리 메뉴바-->
+    <hr>
 
     <form action='<c:url value="/diary_GoalModify.do"/>' method="post">
         <div class="enroll_form">

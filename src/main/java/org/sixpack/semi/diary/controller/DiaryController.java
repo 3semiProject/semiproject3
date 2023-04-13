@@ -76,6 +76,7 @@ public class DiaryController {
             return "redirect:loginPage.do";
         }
         //다이어리에 회원정보담기
+
         String user_id = ((Member) session.getAttribute("loginMember")).getUser_id();
         Date today = new Date(new java.util.Date().getTime());
         Diary diary = new Diary(user_id, today, 0, "eat", null, null);
@@ -96,11 +97,10 @@ public class DiaryController {
 
                 if (goal != null) {
                     redirect.addAttribute("isExist", "D"); // 기간 내 목표가 없을 시
-                    redirect.addAttribute("goal", goal);  // 가장 최근 데이터에 목표기간만 한달 후인 데이터 넘김
-                    return "redirect:diary_showGoal.do"; //목표작성화면으로 이동
+                    return "redirect:notExistGoalView.do"; //목표작성확인화면으로 이동
                 } else {
                     redirect.addAttribute("isExist", "N"); // 처음 가입시(목표 데이터 없을 시)
-                    return "redirect:diary_showGoalModify.do"; //목표작성화면으로 이동
+                    return "redirect:notExistGoalView.do"; //목표작성확인화면으로 이동
                 }
             }
         }
@@ -110,27 +110,44 @@ public class DiaryController {
         return "redirect:diary_showEatDiary.do";
     }
 
-    @RequestMapping("notExistGoal")
+
+    @RequestMapping("notExistGoalView.do")
     public String notExistGoalMethod(
-            RedirectAttributes redirect,
+            @RequestParam("isExist") String isExist,
+            Model model,
             HttpSession session
     ) {
+        model.addAttribute("isExist", isExist);
+        return "diary/common/notExistGoal";
+    }
 
+    @RequestMapping("notExistGoal.do")
+    public String notExistGoalMethod(
+            RedirectAttributes redirect,
+            HttpSession session,
+            @RequestParam("isExist") String isExist,
+            @RequestParam("isok") String isok
+    ) {
         String user_id = ((Member) session.getAttribute("loginMember")).getUser_id();
         Date today = new Date(new java.util.Date().getTime());
         Diary diary = new Diary(user_id, today, 0, "eat", null, null);
 
-        Goal goal = diaryService.selectlastGoal(diary);
 
-        if (goal != null) {
-            redirect.addAttribute("isExist", "D"); // 기간 내 목표가 없을 시
-            redirect.addAttribute("goal", goal);  // 가장 최근 데이터에 목표기간만 한달 후인 데이터 넘김
-            return "redirect:diary_showGoal.do"; //목표작성화면으로 이동
+        if (isok.equals("n")) {
+            return "redirect:diary_showEatDiary.do";
         } else {
-            redirect.addAttribute("isExist", "N"); // 처음 가입시(목표 데이터 없을 시)
-            return "redirect:diary_showGoalModify.do"; //목표작성화면으로 이동
-        }
 
+            if (isExist.equals("D")) {
+                Goal goal = diaryService.selectlastGoal(diary);
+                redirect.addAttribute("isExist", "D"); // 기간 내 목표가 없을 시
+                redirect.addAttribute("goal", goal);  // 가장 최근 데이터에 목표기간만 한달 후인 데이터 넘김
+                return "redirect:diary_showGoalModify.do"; //목표작성화면으로 이동
+
+            } else {
+                redirect.addAttribute("isExist", "N"); // 처음 가입시(목표 데이터 없을 시)
+                return "redirect:diary_showGoalModify.do"; //목표작성화면으로 이동
+            }
+        }
     }
 
 
