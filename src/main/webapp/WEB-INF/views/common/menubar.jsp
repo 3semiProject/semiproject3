@@ -23,7 +23,6 @@
             width: 300px;
             height: 100px;
             border-radius: 30px;
-            border: 1px solid #D1D1D1;
         }
         header ul#menubar {
             margin: 0;
@@ -56,7 +55,8 @@
             text-shadow: 1px 1px 2px #D1D1D1;
             font-size: 20pt;
             border-radius: 30px;
-            border: 1px solid #D1D1D1;
+            border: 2px solid #d1e5ef;
+            background: rgba(234, 234, 234, 0.05);
         }
         header ul#menubar li a:hover{
             text-decoration: none;

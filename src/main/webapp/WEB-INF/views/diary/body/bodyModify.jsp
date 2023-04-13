@@ -27,9 +27,6 @@
             font-family: Copperplate, Papyrus, fantasy;
         }
 
-        div.button {
-            float: center;
-        }
 
         #modifybtn {
             width: 55px;
@@ -96,6 +93,12 @@
             padding: 10px;
         }
 
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
     </style>
     <style type="text/css">
         /* bar들 중앙정렬 */
@@ -117,29 +120,7 @@
     <br><c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp" /><!--다이어리 메뉴바-->
     <br>
 
-    <script type="text/javascript">
-        //----- 프로필 이미지 미리보기 관련 function ----------
-        //FileReader() 객체는 비동기적으로 파일의 내용을 읽어들이는 데 사용
-        const reader = new FileReader();
 
-        function changeImg(input) {
-
-            if (input.files && input.files[0]) {
-                reader.onload = e => {
-                    //이미지 src변경
-                    const previewImage = document.getElementById("showimg_body");
-                    previewImage.src = e.target.result;
-                    console.log(previewImage.src);
-                }
-                //이미지 읽기
-                reader.readAsDataURL(input.files[0]);
-            }
-
-        }
-    </script>
-    </head>
-
-    <body>
     <div id="bodyPart">
         <form action="diary_updateBodyModify.do" method="post" enctype="multipart/form-data">
             <input name="userid" type="hidden" value="${ diary.user_id }"><br>
@@ -150,27 +131,27 @@
             <div class="bodyBox">
                 <div>
                     <h4>BMI</h4>
-                    <input name="body_bmi" value="${body.body_bmi}"><br>
+                    <input type="number" name="body_bmi" value="${body.body_bmi}"><br>
                 </div>
                 <div>
                     <h4>Bmr</h4>
-                    <input name="body_bmr" value="${body.body_bmr}"><br>
+                    <input type="number" name="body_bmr" value="${body.body_bmr}"><br>
                 </div>
                 <div>
                     <h4>체중</h4>
-                    <input name="body_weight" value="${body.body_weight}">kg <br>
+                    <input type="number" name="body_weight" value="${body.body_weight}">kg <br>
                 </div>
                 <div>
                     <h4>체지방량</h4>
-                    <input name="body_fat" value="${body.body_fat}">g <br>
+                    <input type="number" name="body_fat" value="${body.body_fat}">g <br>
                 </div>
                 <div>
                     <h4>골격근량</h4>
-                    <input name="body_muscle" value="${body.body_muscle}">g<br>
+                    <input type="number" name="body_muscle" value="${body.body_muscle}">g<br>
                 </div>
                 <div>
                     <h4>허리둘레</h4>
-                    <input name="body_waistline" value="${body.body_waistline}">cm <br>
+                    <input type="number" name="body_waistline" value="${body.body_waistline}">cm <br>
                 </div>
             </div>
             <br>
@@ -197,7 +178,7 @@
             <!-- Memo Box -->
             <div class="memobox">
 
-                <textarea name="diary_memo" va>${ diary.diary_memo }</textarea>
+                <textarea name="diary_memo">${ diary.diary_memo }</textarea>
             </div>
             <br>
             <!-- 다이어리에 : 시간, 메모, 이미지파일 -->
@@ -211,9 +192,9 @@
                 if (body_weight <= 0) {
                     alert("체중은 필수 입력사항입니다. 작성화면으로 돌아갑니다.");
                     e.preventDefault(); // 기본 동작 방지
-                } else {
-                    console.log($(this).serialize());
-                    alert("성공");
+                } else if (body_weight >= 200) {
+                    alert("진짜?");
+                    e.preventDefault(); // 기본 동작 방지
                 }
 
             });
@@ -223,5 +204,26 @@
 </div>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 
+
+<script type="text/javascript">
+    //----- 프로필 이미지 미리보기 관련 function ----------
+    //FileReader() 객체는 비동기적으로 파일의 내용을 읽어들이는 데 사용
+    const reader = new FileReader();
+
+    function changeImg(input) {
+
+        if (input.files && input.files[0]) {
+            reader.onload = e => {
+                //이미지 src변경
+                const previewImage = document.getElementById("showimg_body");
+                previewImage.src = e.target.result;
+                console.log(previewImage.src);
+            }
+            //이미지 읽기
+            reader.readAsDataURL(input.files[0]);
+        }
+
+    }
+</script>
 </body>
 </html>

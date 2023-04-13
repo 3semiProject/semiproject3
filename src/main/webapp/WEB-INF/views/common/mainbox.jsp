@@ -409,8 +409,6 @@
                     type: "post",
                     dataType: "json",
                     success: function (jsonData) {
-                        alert("jsonData sending ");
-
                         $('#myPost').html('내가 쓴 게시글 ' + jsonData.postCount + ' 개');
                         $('#myReply').html('내가 쓴 댓글 ' + jsonData.replyCount + ' 개');
 
@@ -435,10 +433,15 @@
     <c:if test="${ empty sessionScope.loginMember }">
         <%-- intro / login / find / join --%>
         <div id="userBox">
-            <div id="userBox_intro"><iframe width="840px" height="400px" src="https://www.youtube.com/embed/H0PtMz_tydA?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+            <div id="userBox_intro">
+                <iframe width="840px" height="400px" src="https://www.youtube.com/embed/H0PtMz_tydA?autoplay=1&mute=1"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+            </div>
             <div id="userBox_loginBox" align="center">
                 <div id="loginbtn">
-                    <img alt="loginbtn" onclick="moveLoginPage();"
+                    <img alt="loginbtn" onclick="moveLoginPage()"
                          src="${ pageContext.servletContext.contextPath }/resources/images/mainLogo.jpg"/>
                     <div>Login</div>
                 </div>
@@ -462,34 +465,44 @@
 
 
     <!-- 로그인 했을 때 : 일반회원인 경우 -->
-    <c:if
-            test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'N' }">
-        <div id="userBox_memberBox">
+    <c:if test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'N' }">
+        <div id="userBox_memberBox" style="border: none">
             <div id="calendar_box" style="border: none;">
                 <div id="calendar" style="font-size: 6pt;text-align: center; border: none;"></div>
             </div>
-            <div id="myActivity_box">
+            <div id="myActivity_box" style="border: none; ">
                 <div><a href="${ pageContext.servletContext.contextPath }/diary.do">오늘의 다이어리</a></div>
                 <div id="myPost">${ postCount }</div> <!-- 유저의 게시글 쿼리문 물어보기 -->
-               <div id="myReply">${ replyCount }</div>
+                <div id="myReply">${ replyCount }</div>
             </div>
             <div id="userBox_info">
                 <form class="pofile" action="myinfo.do" method="post">
                     <input type="hidden" name="user_id" value="${ loginMember.user_id }"/>
                     <c:if test="${ empty loginMember.profile_renamefile }">
                         <input type="image" alt="memberProfile"
-                               src="${ pageContext.servletContext.contextPath }/resources/profile_upfiles/profile.jpeg"/>
+                               src="${ pageContext.servletContext.contextPath }/resources/profile_upfiles/profile.jpeg"
+                               style="width: 150px; height: 150px"/>
                     </c:if>
                     <c:if test="${ !empty loginMember.profile_renamefile }">
                         <input type="image" alt="memberProfile"
-                               src="${ pageContext.servletContext.contextPath }/resources/profile_upfiles/${ loginMember.profile_renamefile }"/>
+                               src="${ pageContext.servletContext.contextPath }/resources/profile_upfiles/${ loginMember.profile_renamefile }"
+                               style="width: 200px; height: 200px"/>
                     </c:if>
                 </form>
-                <div id="loginA">
-                    <div id="user_nickname">${ loginMember.user_nickname }님</div>
-                    <div id="login_join">
-                        <a href="${ pageContext.servletContext.contextPath }/logout.do">로그아웃</a>
-                    </div>
+                <div id="user_nickname" style="border: none">${ loginMember.user_nickname } 님</div>
+                <br><br><br><br>
+                <div id="login_join" style="border: none">
+
+                    <a href="${ pageContext.servletContext.contextPath }/logout.do" style="height: 40px;
+            padding: 10px 16px;
+            background: #f3f3f4;
+            color: #0d0c22;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            box-sizing: border-box;">로그아웃</a>
                 </div>
             </div>
         </div>
@@ -499,55 +512,69 @@
 
     <!-- 로그인 했을 때 : 관리자인 경우 -->
     <c:if
-         test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
-         <div id="adminBox">
+            test="${ !empty sessionScope.loginMember and loginMember.admin_ck eq 'Y' }">
+        <div id="adminBox">
             <div id="user_visit">
-               <div id="visit_count">
-                  <div id="today">
-                     <div>접속자 수</div>
-                     <div id="todayVisitors"></div>
-                  </div>
-                  <div id="month">
-                     <div>월 접속자 수</div>
-                     <div id="monthVisitors"></div>
-                  </div>
-                  <div id="year">
-                     <div>월 평균 접속자 수</div>
-                     <div id="avgVisitors"></div>
-                  </div>
-               </div>
+                <div id="visit_count">
+                    <div id="today">
+                        <div>접속자 수</div>
+                        <div id="todayVisitors"></div>
+                    </div>
+                    <div id="month">
+                        <div>월 접속자 수</div>
+                        <div id="monthVisitors"></div>
+                    </div>
+                    <div id="year">
+                        <div>월 평균 접속자 수</div>
+                        <div id="avgVisitors"></div>
+                    </div>
+                </div>
             </div>
             <div id="border_mgt">
-          <!--      <div>게시판 분류</div> -->
-               <div id="board_count">
-                  <div id="total_post">
-                     <div>총 게시물 수</div>
-                     <div id="postCount"></div>
-                  </div>
-                  <div id="total_coment">
-                     <div>총 유해게시물 수</div>
-                     <div id="blackPostCount"></div>
-                  </div>
+                <!--      <div>게시판 분류</div> -->
+                <div id="board_count">
+                    <div id="total_post">
+                        <div>총 게시물 수</div>
+                        <div id="postCount"></div>
+                    </div>
 
-
-             <!--        <div>
-                        음식 데이터 삽입용
+                    <div>
                         <form action="insertFoodData.do" method="POST" enctype="multipart/form-data">
-                            <input type="file" name="mfile" accept=".xls,.xlsx"/>
-                            <input type="submit" value="음식 데이터 삽입(xlsx)">
+                            <input type="file" name="mfile" accept=".xls,.xlsx" style="text-align: center"/>
+
+                            <input type="submit" value="음식 데이터 삽입(xlsx)"
+                                   style="   height: 40px;
+                                              padding: 10px 16px;
+                                             border: none;
+                                            background: #f3f3f4;
+                                            color: #0d0c22;
+                                            border-radius: 8px;
+                                            text-align: center;
+                                            font-size: 14px;
+                                            font-weight: 500;
+                                            line-height: 20px;
+                                            box-sizing: border-box;">
                         </form>
                         <br>
 
 
-                        운동 데이터 삽입용
 
                         <form action="insertMoveData.do" method="POST" enctype="multipart/form-data">
                             <input type="file" name="mfile" accept=".xls,.xlsx">
-                            <input type="submit" value="운동 데이터 삽입(xlsx)"/>
+                            <input type="submit" value="운동 데이터 삽입(xlsx)" style="
+                              height: 40px;
+                                padding: 10px 16px;
+                                border: none;
+                                background: #f3f3f4;
+                                color: #0d0c22;
+                                border-radius: 8px;
+                                text-align: center;
+                                font-size: 14px;
+                                font-weight: 500;
+                                line-height: 20px;
+                                box-sizing: border-box;"/>
                         </form>
                     </div>
- -->
-
                 </div>
             </div>
             <div id="login_Box" align="center">

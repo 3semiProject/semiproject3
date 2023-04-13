@@ -59,6 +59,11 @@
         .intensity tr {
             height: 50px
         }
+
+        .tabs a.center{
+            background-color: rgba(130, 201, 18, 0.5);
+            border-bottom: 3px solid rgba(86,140,8,0.5);
+        }
     </style>
     <script type="text/javascript"
             src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
@@ -67,12 +72,12 @@
 </head>
 <body style="width: 1280px">
 <c:import url="/WEB-INF/views/common/menubar.jsp"/> <!--메인 메뉴바-->
-<hr>
+<br><br>
 <c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp"/> <!--다이어리 메뉴바-->
-<hr>
-<hr>
+
+<br><br><br>
 <c:import url="/WEB-INF/views/diary/common/statsTap.jsp"/>            <!--식단/운동/체형 탭-->
-<hr>
+<br><br>
 <c:import url="/WEB-INF/views/diary/common/statsRangeBar.jsp"/>            <!--식단/운동/체형 탭-->
 
 
@@ -153,8 +158,6 @@ My 다이어리 분석
 
 </div>
 <hr class="horizontalBar" style="width: 100%">
-<c:import url="/WEB-INF/views/diary/common/actRec.jsp"/>
-<hr>
 <c:import url="/WEB-INF/views/common/footer.jsp"/>
 
 

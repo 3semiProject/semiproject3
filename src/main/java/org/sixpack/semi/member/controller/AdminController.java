@@ -350,8 +350,6 @@ public class AdminController {
                 case 1:
                     result = freeService.deleteFreeBoard(board_no);
                     return "redirect:adFreelist.do?page=1";
-
-
                 case 2:
                     result = tipService.deleteTipBoard(board_no);
                     return "redirect:adTiplist.do?page=1";
@@ -365,13 +363,12 @@ public class AdminController {
 
                 default:
                     model.addAttribute("message", "예상하지 못한 오류");
+                    return "common/error";
             }
         } else {
             model.addAttribute("message", "게시글 삭제 실패!");
             return "common/error";
         }
-
-
     }
 
 

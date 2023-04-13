@@ -44,7 +44,6 @@ body {
 </head>
 <body onLoad=document.popup_box_form.user_pw.focus()>
 <c:import url="/WEB-INF/views/common/menubar.jsp"/>
-<c:import url="/WEB-INF/views/member/memberbar.jsp"/>
 <hr>
 <br><br><br><br>
 	<div id="popup_Box">
@@ -58,4 +57,6 @@ body {
 	</form>
 	</div>
 </body>
+<c:import url="/WEB-INF/views/common/footer.jsp" />
+
 </html>

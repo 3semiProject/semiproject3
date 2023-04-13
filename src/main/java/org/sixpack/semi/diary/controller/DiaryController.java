@@ -36,50 +36,50 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller("diaryController")
 public class DiaryController {
-	
-	@Autowired
-	private DiaryService diaryService;
 
-	@Autowired
-	private GoalService goalService;
+    @Autowired
+    private DiaryService diaryService;
 
-	private static final Logger logger = LoggerFactory.getLogger(DiaryController.class);
-	
-	//ajax mainbox 캘린더
-	@RequestMapping(value = "calendar.do", method = { RequestMethod.GET, RequestMethod.POST })
-	@ResponseBody
-	public String diaryCalendarMethod(@RequestParam("user_id") String user_id) throws UnsupportedEncodingException {
-		ArrayList<Diary> list = diaryService.selectDiary(user_id);
-		logger.info("calendar.do : " + list.size());
+    @Autowired
+    private GoalService goalService;
 
-		JSONObject sendJson = new JSONObject();
-		JSONArray jarr = new JSONArray();
+    private static final Logger logger = LoggerFactory.getLogger(DiaryController.class);
 
-		for (Diary diary : list) {
-			JSONObject job = new JSONObject();
+    //ajax mainbox 캘린더
+    @RequestMapping(value = "calendar.do", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public String diaryCalendarMethod(@RequestParam("user_id") String user_id) throws UnsupportedEncodingException {
+        ArrayList<Diary> list = diaryService.selectDiary(user_id);
+        logger.info("calendar.do : " + list.size());
+
+        JSONObject sendJson = new JSONObject();
+        JSONArray jarr = new JSONArray();
+
+        for (Diary diary : list) {
+            JSONObject job = new JSONObject();
             job.put("diary_no", diary.getDiary_no());
             job.put("diary_category", diary.getDiary_category());
-			job.put("diary_post_date", diary.getDiary_post_date().toString());
-			jarr.add(job);
-		}
-		sendJson.put("list", jarr);
-		return sendJson.toJSONString();
-	}
-	
-	
-	//main에서 다이어리화면 띄울때 목표정보 확인용
-	@RequestMapping(value="diary.do", method={ RequestMethod.GET, RequestMethod.POST })
-	public String showFirstDiary( RedirectAttributes redirect,
-			HttpSession session) {
-		if(session==null) {
-			//비로그인 상태면 로그인 페이지로 이동
-			return "redirect:loginPage.do";	
-		}
-		//다이어리에 회원정보담기
-		String user_id = ((Member)session.getAttribute("loginMember")).getUser_id();
-		Date today = new Date(new java.util.Date().getTime());
-		Diary diary= new Diary(user_id, today, 0, "eat", null, null );
-		
+            job.put("diary_post_date", diary.getDiary_post_date().toString());
+            jarr.add(job);
+        }
+        sendJson.put("list", jarr);
+        return sendJson.toJSONString();
+    }
+
+
+    //main에서 다이어리화면 띄울때 목표정보 확인용
+    @RequestMapping(value = "diary.do", method = {RequestMethod.GET, RequestMethod.POST})
+    public String showFirstDiary(RedirectAttributes redirect,
+                                 HttpSession session) {
+        if (session == null) {
+            //비로그인 상태면 로그인 페이지로 이동
+            return "redirect:loginPage.do";
+        }
+        //다이어리에 회원정보담기
+        String user_id = ((Member) session.getAttribute("loginMember")).getUser_id();
+        Date today = new Date(new java.util.Date().getTime());
+        Diary diary = new Diary(user_id, today, 0, "eat", null, null);
+
 
         //다이어리 전환 전, 목표정보 있는지 확인
         Goal goal = diaryService.selectTodayGoal(diary); // 오늘 날짜 goal 조회
@@ -87,15 +87,12 @@ public class DiaryController {
 
         if (goal == null) { //조회값이 없거나, 목표일이 끝났을때
             goal = diaryService.selectCurrentGoal(diary);
-            System.out.println("goal1 : " + goal);
 
             if (goal != null) { // 기한 내 목표 있을 경우
                 goalService.insertGoalInfo(goal);  // 목표 생성
-                System.out.println("goal2 : " + goal);
 
             } else {
                 goal = diaryService.selectlastGoal(diary);
-                System.out.println("goal3 : " + goal);
 
                 if (goal != null) {
                     redirect.addAttribute("isExist", "D"); // 기간 내 목표가 없을 시
@@ -112,6 +109,30 @@ public class DiaryController {
         redirect.addFlashAttribute("diary", diary);
         return "redirect:diary_showEatDiary.do";
     }
+
+    @RequestMapping("notExistGoal")
+    public String notExistGoalMethod(
+            RedirectAttributes redirect,
+            HttpSession session
+    ) {
+
+        String user_id = ((Member) session.getAttribute("loginMember")).getUser_id();
+        Date today = new Date(new java.util.Date().getTime());
+        Diary diary = new Diary(user_id, today, 0, "eat", null, null);
+
+        Goal goal = diaryService.selectlastGoal(diary);
+
+        if (goal != null) {
+            redirect.addAttribute("isExist", "D"); // 기간 내 목표가 없을 시
+            redirect.addAttribute("goal", goal);  // 가장 최근 데이터에 목표기간만 한달 후인 데이터 넘김
+            return "redirect:diary_showGoal.do"; //목표작성화면으로 이동
+        } else {
+            redirect.addAttribute("isExist", "N"); // 처음 가입시(목표 데이터 없을 시)
+            return "redirect:diary_showGoalModify.do"; //목표작성화면으로 이동
+        }
+
+    }
+
 
     //다이어리 화면내 id, date, category 정보로 다이어리간 이동
     //수정 : diary_no로 이동
@@ -169,69 +190,69 @@ public class DiaryController {
         }
     }
 
-  //다이어리 작성용new (이미지처리) : 날짜 셋팅
-  	@RequestMapping(value="diary_insertDiary.do", method= {RequestMethod.POST, RequestMethod.GET} )
-  	public void insertEats ( HttpServletRequest request,
-  			HttpServletResponse response,
-  			Diary diary,
-  			@RequestParam String dateTime,
-  			@RequestParam(name = "upfile", required = false) MultipartFile mfile
-  		) throws ParseException, IOException {
-  		System.out.println("diary 저장시작");
-  		//sql날짜 설정 yyyy-MM-dd 형식
-  		//String sqldate = dateTime.substring(0, 10);
-  		//diary.setDiary_post_date(Date.valueOf(sqldate));
-  		System.out.println(dateTime);
-  		System.out.println(diary.getDiary_post_date());
+    //다이어리 작성용new (이미지처리) : 날짜 셋팅
+    @RequestMapping(value = "diary_insertDiary.do", method = {RequestMethod.POST, RequestMethod.GET})
+    public void insertEats(HttpServletRequest request,
+                           HttpServletResponse response,
+                           Diary diary,
+                           @RequestParam String dateTime,
+                           @RequestParam(name = "upfile", required = false) MultipartFile mfile
+    ) throws ParseException, IOException {
+        System.out.println("diary 저장시작");
+        //sql날짜 설정 yyyy-MM-dd 형식
+        //String sqldate = dateTime.substring(0, 10);
+        //diary.setDiary_post_date(Date.valueOf(sqldate));
+        System.out.println(dateTime);
+        System.out.println(diary.getDiary_post_date());
 
-  		//1.이미지파일 저장처리
-  				String savePath = request.getSession().getServletContext().getRealPath("resources/diary_upfile");
-  				if (mfile != null && !mfile.isEmpty()) {
-  					String fileName = mfile.getOriginalFilename();
-  					System.out.println(diary.getDiary_post_date());
+        //1.이미지파일 저장처리
+        String savePath = request.getSession().getServletContext().getRealPath("resources/diary_upfile");
+        if (mfile != null && !mfile.isEmpty()) {
+            String fileName = mfile.getOriginalFilename();
+            System.out.println(diary.getDiary_post_date());
 
-  					if (fileName != null && fileName.length() > 0) {
-  						String renameFileName = FileNameChange.diaryChange(
-  								diary.getDiary_no(), fileName);
-  						logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
+            if (fileName != null && fileName.length() > 0) {
+                String renameFileName = FileNameChange.diaryChange(
+                        diary.getDiary_no(), fileName);
+                logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
 
-  						try {
-  							mfile.transferTo(new File(savePath + "\\" + renameFileName));
-  						} catch (Exception e) {
-  							e.printStackTrace();
-  						}
-  						diary.setDiary_image(renameFileName);
-  					} // 이름바꾸기
-  				} // 새로운 첨부파일이 있을 때
-  				logger.info(diary.toString());
+                try {
+                    mfile.transferTo(new File(savePath + "\\" + renameFileName));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                diary.setDiary_image(renameFileName);
+            } // 이름바꾸기
+        } // 새로운 첨부파일이 있을 때
+        logger.info(diary.toString());
 
 
-  	    //2. 다이어리 저장, 날짜+시간 update
-  			if(diaryService.insertDiary(diary) >0){
-  				Diary timeDiary = new Diary();
-  				timeDiary.setDiary_no(diary.getDiary_no());
-  				timeDiary.setDiary_memo(dateTime);
-  				diaryService.updateDiaryTime(timeDiary);
+        //2. 다이어리 저장, 날짜+시간 update
+        if (diaryService.insertDiary(diary) > 0) {
+            Diary timeDiary = new Diary();
+            timeDiary.setDiary_no(diary.getDiary_no());
+            timeDiary.setDiary_memo(dateTime);
+            diaryService.updateDiaryTime(timeDiary);
 
-  				response.getWriter().append("ok").flush();
-  			}else {
-  				response.getWriter().append("fail").flush();
-  			}
+            response.getWriter().append("ok").flush();
+        } else {
+            response.getWriter().append("fail").flush();
+        }
     }
 
     //ajax 다이어리 작성 중복체크 : id, date, category
     @RequestMapping(value = "diary_checkDuplicateDiary.do", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody //뷰리졸버 통하지 않고 string반환
     public String checkDuplicateDiary(Model model, Diary diary) {
-		Diary searchD = diaryService.selectDiaryOne(diary);
-		if(searchD !=null) { //다이어리 존재하면 다이어리번호 전달
-			String no = String.valueOf(searchD.getDiary_no());
-			return no;
-		}else {
-			System.out.println("Controller nope");
-			return "ok";
-		}
-	}
+        Diary searchD = diaryService.selectDiaryOne(diary);
+        if (searchD != null) { //다이어리 존재하면 다이어리번호 전달
+            String no = String.valueOf(searchD.getDiary_no());
+            return no;
+        } else {
+            System.out.println("Controller nope");
+            return "ok";
+        }
+    }
 
 //	//캘린더 출력용
 //	@RequestMapping(value = "diary_showCalendar.do", method = RequestMethod.GET)
