@@ -5,12 +5,6 @@
 <title>마이페이지</title>
 <style>
 
-.home_a {
-	display: block;
-	text-decoration: none;
-	color: #01CD88;
-	border: 1px solid #01CD88;
-}
 body {
 	width: 1200px;
 	height: 1200px;

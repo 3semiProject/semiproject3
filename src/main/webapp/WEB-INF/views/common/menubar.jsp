@@ -23,6 +23,8 @@
             width: 300px;
             height: 100px;
             border-radius: 30px;
+            border: 1px solid #D1D1D1;
+
         }
         header ul#menubar {
             margin: 0;

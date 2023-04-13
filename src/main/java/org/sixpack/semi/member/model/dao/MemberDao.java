@@ -97,7 +97,7 @@ public class MemberDao {
 		return session.insert("quitMapper.insertQuitMember", member);
 	}
 
-	//회원탈퇴시, 기본테이블 null값으로 변경(delete 대신 null처리 pk라서 삭제가 불가능함)
+	//회원탈퇴시,quit table로 회원 이동 후 기본테이블에 해당 멤버 null처
 	public int deleteMember(String user_id) {
 		return session.update("memberMapper.deleteMember", user_id);
 	}
