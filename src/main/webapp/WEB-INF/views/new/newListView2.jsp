@@ -21,7 +21,7 @@ body{
     #newWrapper{
         width: 1130px;
         height: 1200px;
-        margin: 0px 10%;
+        margin-left:125px;
     }
 
     #newWrapper > ul > li:first-child {

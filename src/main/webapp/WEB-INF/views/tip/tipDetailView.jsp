@@ -99,7 +99,7 @@ table tr:last-child td:last-child {
 .allarea {
    line-height: 22px;
    margin-bottom: 50px;
-   margin: auto;
+   margin-left:125px;
    padding: 30px;
    width: 900px;
    border-radius: 30px;

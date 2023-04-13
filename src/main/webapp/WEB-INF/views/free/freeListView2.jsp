@@ -21,7 +21,7 @@
     #freeWrapper{
         width: 1130px;
         height: 1200px;
-        margin: 0px 10%;
+        margin-left:125px;
     }
 
     #freeWrapper > ul > li:first-child {
