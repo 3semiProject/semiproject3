@@ -23,7 +23,7 @@ body{
    position: static;
    top: 50%;
    left: 50%;
-   width: 300px;
+   width: 400px;
    transform: translate(100%, 0%);
    text-decoration: none;
    background-color: white;
@@ -37,7 +37,7 @@ body{
 
 table {
   margin-bottom: 50px;
-  margin: auto;
+  margin-left:125px;
   padding: 30px;
   width: 1000px;
   -moz-border-radius: 5px !important;
