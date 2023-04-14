@@ -54,16 +54,10 @@ div.A{
 width: 75%; height: 150px;
 }
 
-div#textmove {
-   text-align: left;
+div#textmove{
    width: 300px;
    height: 0px;
-   position: relative;
-   top: 60%;
-   left: 45%;
-   transform: translate(-50%, -50%);
    border-bottom: 0.1em solid grey;
-   
 }
 
 div#totmove {
@@ -143,13 +137,27 @@ button{
 button:hover, button:focus {
     background-color: #e7e7e9;
 }
+
+a.tabs.center{
+	background : #c0e488;
+}
+#calendarDate{
+	height: 30px;
+	width: 200px;
+	text-align: center;
+	font-size: 12pt;
+	text-weight: 200px
+	border: 0px;
+	border-bottom: 2px solid rgba(92, 148, 13, 0.5);
+}
+
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">
 $(function(){
 	$('.writebtn').on('click', function (){
 		var act_date = $(this).attr("name");
-		window.location.href = 'diary_showActWrite.do?diary_post_date='+act_date;
+		window.location.href = 'diary_showActWrite.do?';
 		
 	});//writebtn
 	
@@ -157,7 +165,14 @@ $(function(){
 		 var dn = $(this).attr('id');
 		window.location.href = 'diary_showActModify.do?diary_no='+dn;
 		
+	});//writebtn
+	
+	$('#eatPart').on('click', '.delteBtn',function (){
+		 var dn = $(this).attr('id');
+		window.location.href = 'diary_delAct.do?diary_no='+dn;
+		
 	});//modifyBtn
+	
 });//document.ready
 </script>
 </head>
@@ -180,15 +195,14 @@ $(function(){
 	</div>
 	<!-- 이전 -->
 	<div class="date">
-		<a class="one" href="diary_moveDiary.do?week=${diary.diary_post_date}&ago=-1">
+		<a class="one"  >
 		         &lt; &nbsp;
 	    </a>
     </div>
-    
     <c:forEach var="w" items="${week}" varStatus="status" >
 		<div>
 			<div class="date">
- 				<a href="diary_moveDiary.do?user_id=${w.user_id}&diary_post_date=${w.diary_post_date}&diary_category=${w.diary_category}">
+ 				<a href="diary_moveDiary.do?diary_post_date=${w.diary_post_date}&diary_category=${w.diary_category}">
 					<fmt:formatDate value="${w.diary_post_date}" pattern="d" />
 				</a>
 			</div>
@@ -201,7 +215,7 @@ $(function(){
 		</div>
 	</c:forEach>
 	<div class="date">
-    <a href="diary_moveWeekDiary.do?week=${diary.diary_post_date}&ago=1">
+    <a  class="one" >
         <!-- 이후> --> &nbsp; &gt;
     </a>
 	</div>
@@ -216,7 +230,7 @@ $(function(){
 		<td>목표체중 ${goal.target_weight}kg</td>
  		<td>현재체중 ${goal.current_weight}kg</td>
 		<td>목표까지 <fmt:formatNumber value="${goal.target_weight - goal.current_weight}" pattern="0.0#"/>kg</td>
-		<td rowspan="2" class="dday">d${goal.dday}</td>
+		<td rowspan="2" class="dday">d- ${goal.dday}</td>
 	</tr>
 	<tr>
 	<td></td>
@@ -228,10 +242,10 @@ $(function(){
 <br>
 
 <div class="tabs">
-<c:set var="moveURL" value="diary_moveDiary.do?user_id=${sessionScope.loginMember.user_id}&diary_post_date=${diary.diary_post_date}&diary_category="/>
- 		<a class="tabs left" href="${moveURL}eat">식단</a>
- 		<a class="tabs center" href="${moveURL}act">운동</a>
- 		<a class="tabs right" href="${moveURL}body">체형</a>
+<c:set var="moveURL" value="user_id=${sessionScope.loginMember.user_id}&diary_post_date=${diary.diary_post_date}&diary_category="/>
+ 		<a class="tabs left" href="diary_showEatDiary.do? + ${moveURL} + eat">식단</a>
+ 		<a class="tabs center" href="diary_showActDiary.do? + ${moveURL} + act">운동</a>
+ 		<a class="tabs right" href="diary_showBodyDiary.do? + ${moveURL} +body">체형</a>
 	</div>
 </div>
 </div><!--  -->
@@ -241,7 +255,7 @@ $(function(){
 		<div class="noneD">
 			<h3>다이어리가 없네요, 작성하시겠습니까?</h3>
 			<div>
-				<button class="writebtn" name="${diary.diary_post_date}">글쓰기</button>
+				<button class="writebtn" id="${diary.diary_post_date}">글쓰기</button>
 				
 			</div>
 		</div>
@@ -282,6 +296,7 @@ $(function(){
 			<textarea>${ diary.diary_memo }</textarea>
 		</div>
 		<div class="button"><button class="modifyBtn" id="${diary.diary_no}">수정</button></div>
+		<div class="button"><button class="delteBtn" id="${diary.diary_no}">삭제</button></div>
 	</c:if>
 </div>   
 <hr>

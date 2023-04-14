@@ -56,12 +56,12 @@ public class EatServiceImpl implements EatService {
 		}
 
 		@Override
-		public int selectEatCount(int diary_no) {
-			return eatDao.selectEatCount(diary_no);
+		public int selectEatCount(Eat eat) {
+			return eatDao.selectEatCount(eat);
 		}
 
 		@Override
 		public int insertOneEat(Eat eat) {
-			return 0;
+			return eatDao.insertOneEat(eat);
 		}
 }

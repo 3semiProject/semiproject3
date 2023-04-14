@@ -59,7 +59,7 @@ public class BodyController {
 			}else {
 				String id =((Member)session.getAttribute("loginMember")).getUser_id();
 				diary.setUser_id(id);
-				diary.setUser_id("dd"); //test용
+				diary.setUser_id("USER01"); //test용
 			}					
 		//date 없을때 현재날짜로
 			if(diary.getDiary_post_date()==null) {
@@ -72,25 +72,25 @@ public class BodyController {
 			//id, date, category 일치하는 diary 있는지 조회
 	        move = diaryService.selectDiaryOne(diary);
 
-			//조회된 move 없으면 이전 다이이어리 정보 담기
-			if(move ==null) {
-				logger.info("빈 운동화면 띄우기"+ diary.toString());
-				move=diary;
+			//조회된 move 없으면 그냥 빈 식단화면 띄우기
+			if(move !=null) {
+				logger.info("빈 식단화면 띄우기"+ diary.toString());
+				diary=move;
 			}
 		}
 
-		model.addAttribute("diary", move);	
+		model.addAttribute("diary", diary);	
 			//목표정보, 날짜정보 조회
-			Goal goal = diaryService.selectlastGoal(move);//가장 최신 목표정보
-			ArrayList<Diary> week = diaryService.selectWeekDiary(move); // 일주일날짜에 대한 다이어리 정보
+			Goal goal = diaryService.selectlastGoal(diary);//가장 최신 목표정보
+			ArrayList<Diary> week = diaryService.selectWeekDiary(diary); // 일주일날짜에 대한 다이어리 정보
 			if(goal!=null&& week!=null) {
 				model.addAttribute("goal", goal);
 				model.addAttribute("week", week);
 			}
 			
 			//체형정보 조회 있을때만 내보냄
-			Body body = bodyService.selectOneBody(move);
-			Body compare = bodyService.selectCompareBody(move);
+			Body body = bodyService.selectOneBody(diary);
+			Body compare = bodyService.selectCompareBody(diary);
 			if(body!=null && compare!=null) {
 				model.addAttribute("body", body);			
 				model.addAttribute("compare", compare);							

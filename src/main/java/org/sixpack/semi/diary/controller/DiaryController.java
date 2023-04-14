@@ -102,69 +102,31 @@ public class DiaryController {
         redirect.addFlashAttribute("diary", diary);
         return "redirect:diary_showEatDiary.do";
     }
-
-    //다이어리 화면내 id, date, category 정보로 다이어리간 이동
+	//다이어리 화면내 id, date, category 정보로 다이어리간 이동
     //수정 : diary_no로 이동
     //수정 : 날짜로 이동
     @RequestMapping(value = "diary_moveDiary.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public String showMoveDiary(RedirectAttributes redirect, Diary diary,
-                                HttpSession session) {
+    public String showMoveDiary(RedirectAttributes redirect, Diary diary) {
 
-        //diary_no 있을때 바로이동
-        Diary move = null;
-        if (diary.getDiary_no() > 0) {
-            move = diaryService.selectDiaryNo(diary.getDiary_no());
-        } else {
-            //date 없을때 현재날짜로
-            if (diary.getDiary_post_date() == null) {
-                diary.setDiary_post_date(new Date(new java.util.Date().getTime()));
-            }
-
-            //id 없을때
-            if (session == null) {
-                //비로그인 상태면 로그인 페이지로 이동
-                return "redirect:loginPage.do";
-            } else {
-                if (diary.getUser_id() == null) {
-                    diary.setUser_id(((Member) session.getAttribute("loginMember")).getUser_id());
-                }
-            }
-
-            //category 없을때 식단우선
-            if (diary.getDiary_category() == null) {
-                diary.setDiary_category("eat");
-            }
-            //입력정보와 일치하는 diary 있는지 조회
-            if (!(diary.getUser_id() == null && diary.getDiary_post_date() == null && diary.getDiary_category() == null)) {
-                move = diaryService.selectDiaryOne(diary);
-            }
-            //조회된 move 없으면 그냥 빈 식단화면 띄우기
-            if (move == null) {
-                logger.info("빈 식단화면 띄우기" + diary.toString());
-                //diary.setDiary_post_date(java.sql.Date.valueOf("2023-03-01"));
-                //diary.setUser_id("dd");
-                //diary.setDiary_category("eat");
-                move = diary;
-            }
-        }
-        redirect.addFlashAttribute("diary", move);
+        redirect.addFlashAttribute("diary", diary);
         //카테고리별 컨트롤러 호출
-        if (move.getDiary_category() == null ||
-                move.getDiary_category().equals("eat")) {
+        if (diary.getDiary_category() == null ||
+        		diary.getDiary_category().equals("eat")) {
             return "redirect:diary_showEatDiary.do";
-        } else if (move.getDiary_category().equals("act")) {
+        } else if (diary.getDiary_category().equals("act")) {
             return "redirect:diary_showActDiary.do";
         } else {
             return "redirect:diary_showBodyDiary.do";
         }
     }
 
+
   //다이어리 작성용new (이미지처리) : 날짜 셋팅
   	@RequestMapping(value="diary_insertDiary.do", method= {RequestMethod.POST, RequestMethod.GET} )
   	public void insertDiaryAjax ( HttpServletRequest request,
   			HttpServletResponse response,
   			Diary diary,
-  			@RequestParam String dateTime,
+  			@RequestParam(name = "dateTime", required = false) String dateTime,
   			@RequestParam(name = "upfile", required = false) MultipartFile mfile
   		) throws ParseException, IOException {
   		System.out.println("diary 저장시작");
@@ -190,21 +152,22 @@ public class DiaryController {
   						diary.setDiary_image(renameFileName);
   					} // 이름바꾸기
   				} // 새로운 첨부파일이 있을 때
-  				logger.info(diary.toString());
-  				String trr[] = diary.getDiary_post_date().toString().split("-");
-  				String date = trr[1] + "/" + trr[2] + "/" + trr[0];
-  				
+
+  	    //2. 다이어리 저장, 날짜+시간 update
+  			if(diaryService.insertDiary(diary) >0){
+  		  		//식사시간 입력값 있을때
+  				if(dateTime !=null) {  					
+				logger.info(diary.toString());
+				String trr[] = diary.getDiary_post_date().toString().split("-");
+				String date = trr[1] + "/" + trr[2] + "/" + trr[0];
   				String datetime2 = date+" "+ dateTime +":00";
   				logger.info(datetime2);
   				System.out.println(datetime2);				
-  				
-  	
-  	    //2. 다이어리 저장, 날짜+시간 update
-  			if(diaryService.insertDiary(diary) >0){				
   				Diary timeDiary = new Diary();
   				timeDiary.setDiary_no(diary.getDiary_no());				
   				timeDiary.setDiary_memo(datetime2);
   				diaryService.updateDiaryTime(timeDiary);
+  				}
   				
   				response.getWriter().append("ok").flush();
   			}else {				
@@ -226,14 +189,13 @@ public class DiaryController {
 		}
 	}
 	
-	//다이어리 수정용 (이미지처리) : 날짜 셋팅
+	//다이어리 수정용 (이미지처리) : 날짜 셋팅, 기존이미지삭
   	@RequestMapping(value="diary_updateDiary.do", method= {RequestMethod.POST, RequestMethod.GET} )
   	public void updateDiaryAjax ( HttpServletRequest request,
   			HttpServletResponse response, Diary diary,
-  			@RequestParam String dateTime,
+  			@RequestParam(name = "dateTime", required = false) String dateTime,
   			@RequestParam(name = "upfile", required = false) MultipartFile mfile
   		) throws ParseException, IOException {
-  		System.out.println("diary 저장시작");
   		System.out.println(dateTime);
   		System.out.println(diary.getDiary_post_date());
   		
@@ -241,13 +203,14 @@ public class DiaryController {
   		Diary before = diaryService.selectDiaryNo(diary.getDiary_no());
 
   		//1.이미지파일 저장처리
+  		String renameFileName = null;
   				String savePath = request.getSession().getServletContext().getRealPath("resources/diary_upfile");
   				if (mfile != null && !mfile.isEmpty()) {
   					String fileName = mfile.getOriginalFilename();
   					System.out.println(diary.getDiary_post_date());
   					
   					if (fileName != null && fileName.length() > 0) {
-  						String renameFileName = FileNameChange.diaryChange(
+  						renameFileName = FileNameChange.diaryChange(
   								diary.getDiary_no(), fileName);
   						logger.info("첨부 파일명 확인 : " + fileName + ", " + renameFileName);
 
@@ -256,29 +219,35 @@ public class DiaryController {
   						} catch (Exception e) {
   							e.printStackTrace();							
   						}
+
+  						
+  						// 기존이미지가 존재하면 삭제
+  						if (before.getDiary_image() != null) {
+  							// 저장 폴더에 있는 파일을 삭제함
+  							new File(savePath + "/" + before.getDiary_image()).delete();
+  						}
+  						// diary 객체에 새 이름 저장
   						diary.setDiary_image(renameFileName);
   					} // 이름바꾸기
   				} // 새로운 첨부파일이 있을 때
-  				
-  				
-  		//기존이미지 삭제
-  				
-  				
+	
   				
   	
   	    //2. 다이어리 저장, 날짜+시간 update
-			if(diaryService.updateDiary(diary) >0){				
-  				logger.info(diary.toString());
-  				String trr[] = diary.getDiary_post_date().toString().split("-");
-  				String date = trr[1] + "/" + trr[2] + "/" + trr[0];
-  				
-  				String datetime2 = date+" "+ dateTime +":00";
-  				logger.info(datetime2);
-  				System.out.println(datetime2);				
-  				Diary timeDiary = new Diary();
-  				timeDiary.setDiary_no(diary.getDiary_no());				
-  				timeDiary.setDiary_memo(datetime2);
-  				diaryService.updateDiaryTime(timeDiary);
+  			if(diaryService.updateDiary(diary) >0){
+  				if(dateTime !=null) {
+  					//시간정보 있을때만,
+  					logger.info(diary.toString());
+  	  				String trr[] = diary.getDiary_post_date().toString().split("-");
+  	  				String date = trr[1] + "/" + trr[2] + "/" + trr[0];  	  				
+  	  				String datetime2 = date+" "+ dateTime +":00";
+  	  				logger.info(datetime2);
+  	  				System.out.println(datetime2);	
+	  				Diary timeDiary = new Diary();
+	  				timeDiary.setDiary_no(diary.getDiary_no());				
+	  				timeDiary.setDiary_memo(datetime2);
+	  				diaryService.updateDiaryTime(timeDiary);
+  				}
   				
   				response.getWriter().append("ok").flush();
   			}else {				

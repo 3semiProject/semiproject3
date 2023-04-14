@@ -187,6 +187,18 @@ form.tabs {
 	padding: 0px;
 	margin: 0px;
 }
+a.tabs.left{
+	background : #c0e488;
+}
+#calendarDate{
+	height: 30px;
+	width: 200px;
+	text-align: center;
+	font-size: 12pt;
+	text-weight: 200px
+	border: 0px;
+	border-bottom: 2px solid rgba(92, 148, 13, 0.5);
+}
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <!--1. 버튼 이벤트 -->
@@ -198,20 +210,18 @@ $(function(){
 	});//writebtn
 	
 	$('#eatPart').on('click', '.modifyBtn',function (){
-		 var dn = $(this).attr('id');
-		window.location.href = 'diary_showEatModify.do?diary_no='+dn;
+		window.location.href = 'diary_showEatModify.do?diary_no='+${diary.diary_no};
 		
 	});//modifyBtn
 	
 	$('#eatPart').on('click', '.deleteBtn',function (){
-		 var dn = $(this).attr('id');
-		window.location.href = 'diary_deleteEatDiary.do?diary_no='+dn;
+		window.location.href = 'diary_deleteEatDiary.do?diary_no='+ ${diary.diary_no};
 		
 	});//deleteBtn
 	
 	$('#calendarDate').on('change', function(event){
 		var movedate = $(this).val();
-		window.location.href = 'diary_eatCalendar.do?no='+dn +'&movedate='+movedate;
+		window.location.href = 'diary_showEatDiary.do?diary_post_date='+${diary.diary_post_date};
 	});//calendarDate
 	
 });//document.ready
@@ -220,9 +230,6 @@ $(function(){
 <!--3.현재시간 -->
 <script type="text/javascript">
 //3. 현재 날짜와 시간입력 : 
-//yyyy-MM-ddTHH:mm 형식
-//yyyy-MM-dd 형식
-
 $(function getCurrentDateTime() {
 	var now = new Date();
   var year = now.getFullYear();
@@ -258,15 +265,15 @@ $(function getCurrentDateTime() {
 	</div>
 	<!-- 이전 -->
 	<div class="date">
-		<a class="one" href="diary_moveDiary.do?week=${diary.diary_post_date}&ago=-1">
+		<span>
 		         &lt; &nbsp;
-	    </a>
+		</span>
     </div>
     
     <c:forEach var="w" items="${week}" varStatus="status" >
 		<div>
 			<div class="date">
- 				<a href="diary_moveDiary.do?user_id=${w.user_id}&diary_post_date=${w.diary_post_date}&diary_category=${w.diary_category}">
+ 				<a href="diary_moveDiary.do?diary_post_date=${w.diary_post_date}&diary_category=${w.diary_category}">
 					<fmt:formatDate value="${w.diary_post_date}" pattern="d" />
 				</a>
 			</div>
@@ -279,9 +286,9 @@ $(function getCurrentDateTime() {
 		</div>
 	</c:forEach>
 	<div class="date">
-    <a href="diary_moveWeekDiary.do?week=${diary.diary_post_date}&ago=1">
+    <span>
         <!-- 이후> --> &nbsp; &gt;
-    </a>
+    </span>
 	</div>
     
 </div><br>
@@ -294,7 +301,7 @@ $(function getCurrentDateTime() {
 		<td>목표체중 ${goal.target_weight}kg</td>
  		<td>현재체중 ${goal.current_weight}kg</td>
 		<td>목표까지 <fmt:formatNumber value="${goal.target_weight - goal.current_weight}" pattern="0.0#"/>kg</td>
-		<td rowspan="2" class="dday">d${goal.dday}</td>
+		<td rowspan="2" class="dday">d- ${goal.dday}</td>
 	</tr>
 	<tr>
 	<td></td>
@@ -305,11 +312,11 @@ $(function getCurrentDateTime() {
 </div>
 <br>
 
-<div class="tabs">
-<c:set var="moveURL" value="diary_moveDiary.do?user_id=${sessionScope.loginMember.user_id}&diary_post_date=${diary.diary_post_date}&diary_category="/>
- 		<a class="tabs left" href="${moveURL}eat">식단</a>
- 		<a class="tabs center" href="${moveURL}act">운동</a>
- 		<a class="tabs right" href="${moveURL}body">체형</a>
+	<div class="tabs">
+		<c:set var="moveURL" value="diary_post_date=${diary.diary_post_date}&diary_category="/>
+ 			<a class="tabs left" href="diary_showEatDiary.do?${moveURL}eat">식단</a>
+ 			<a class="tabs center" href="diary_showActDiary.do?${moveURL}act">운동</a>
+ 			<a class="tabs right" href="diary_showBodyDiary.do?${moveURL}body">체형</a>
 	</div>
 </div>
 
@@ -340,9 +347,6 @@ $(function getCurrentDateTime() {
 	</c:if>
 	<br> 
 <c:if test="${diary.diary_no ne 0}">
-${diarys }
-${diary }
-${eats }
 	<div class="dbtn">
 		<button class="writebtn">글쓰기</button>
 	</div>
@@ -352,9 +356,10 @@ ${eats }
 			<table class="D">
 				<tr class="dbtn">
 					<td colspan="3">
-						<button type="button" class="modifyBtn" id="${D.diary_no}">수정</button>
-						<button type="button" class="deleteBtn" id="${D.diary_no}">${D.diary_no}삭제</button>
+						<button type="button" class="modifyBtn">수정</button>
+						<button type="button" class="deleteBtn">삭제</button>
 					</td>
+					
 				</tr>			
 				<tr class="dimg">
 					<td rowspan="3">

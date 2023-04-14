@@ -34,6 +34,6 @@ public interface EatService {
 	//식단에 음식하나 수정
 	int updateOneEat(Eat e);
 	//음식갯수 확인
-	int selectEatCount(int diary_no);
+	int selectEatCount(Eat eat);
 	
 }

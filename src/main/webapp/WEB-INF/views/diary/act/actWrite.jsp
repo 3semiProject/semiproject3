@@ -15,6 +15,19 @@
 <link rel="stylesheet" type="text/css"
  href="${ pageContext.servletContext.contextPath }/resources/css/button_div.css" >
 <style type="text/css">
+#mainContain{
+	margin: auto;
+	width: 1200px;
+	height: 80%;
+	min-height: 100%;
+	position: relative;
+	padding-bottom: 60px;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-size: 16px;
+}
 div#diaryPart{
 	height: 80%;
 	min-height: 100%;
@@ -43,10 +56,6 @@ div .#actPart {
 	box-sizing: border-box;
 }
 
-div {
-	border: 1px solid green;
-}
-
 textarea{
 	height: 150px;
 	border: 1.2px solid black;
@@ -72,6 +81,54 @@ button{
 button:hover, button:focus {
     background-color: #e7e7e9;
 }
+
+a.tabs.center{
+	background : #c0e488;
+}
+table.S {
+	border-collapse: collapse;
+	text-align: center;
+	width: 900px;
+	padding: 10px 10px;
+}
+/* 검색테이블 밑줄, input제거 */
+table.S tr {
+	border-bottom: 1px solid rgba(92, 148, 13, 0.5);
+	text-align: center;
+	height: 40px;
+}
+table.S th,td {
+	text-align: center;
+	width: 80px;
+}
+
+.searchD tr td:eq(0) {
+	width:40px;
+}
+table.S th#movename {
+	text-align: center;
+	width: 130px;
+}
+td.foodname{
+      font-weight: bold;
+      font-size: larger;
+	width: 130px;
+	color: #18210a;
+}
+
+div.scroll {
+ height: 400px;
+ overflow-x: hidden;
+}
+#calendarDate{
+	height: 30px;
+	width: 200px;
+	text-align: center;
+	font-size: 12pt;
+	text-weight: 200px
+	border: 0px;
+	border-bottom: 2px solid rgba(92, 148, 13, 0.5);
+}
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 </head>
@@ -85,8 +142,8 @@ $(function(){
 	//kcal 합계 구하기 : 추가예정
 $('#act_total').val(100);
 //작성일, 식사시간에 현재시간 띄우기
-var now = new Date();
-document.getElementById('actTime').value = now.toISOString().slice(11, 16);
+/* var now = new Date();
+document.getElementById('actTime').value = now.toISOString().slice(11, 16); */
 //작성일에 이미 다이어리가 존재하면 수정화면으로 이동 안내창띄우기
 // diary_post_date 값 변경 시 중복 체크
   $('input[name="diary_post_date"]').on('change', function() {
@@ -96,7 +153,7 @@ document.getElementById('actTime').value = now.toISOString().slice(11, 16);
       url: 'diary_checkDuplicateDiary.do',
       method: 'POST',
       data: {
-    	diary_category = "act";
+    	diary_category : "act",
         diary_post_date: diary_post_date,
         user_id: user_id,
         diary_no: diary_no
@@ -146,7 +203,7 @@ document.getElementById('actTime').value = now.toISOString().slice(11, 16);
 					outtable += "<tr><td>"
 					+'<input type="radio" name="user_CheckBox"></td><td>'
 					+decodeURIComponent(jsonObj.movelist[i].move_name).replace(/\+/gi,' ') + "</td><td>"
-					+'<input type="number" value=""/></td><td>'
+					+'<input type="number" name="movename" value=""/></td><td>'
 					+decodeURIComponent(jsonObj.movelist[i].move_intensity).replace(/\+/gi,' ') + "</td><td>"
 					+jsonObj.movelist[i].move_met + "</td><td>"
 					+decodeURIComponent(jsonObj.movelist[i].move_code).replace(/\+/gi,' ') + "</td><td>";
@@ -157,8 +214,8 @@ document.getElementById('actTime').value = now.toISOString().slice(11, 16);
 				}else{
 					outtable += "<tr><th>검색결과가 없습니다. 다시 조회해 주세요</th></tr>";
 				} */
-				//++테이블 보이게 설정하는 코드추가 : $('#moveList>table') visable
-				$('#moveList>table').html(outtable);
+				//++테이블 보이게 설정하는 코드추가 : $('#moveList>table').view
+				$('#moveList').html(outtable);
 			},
 			error : function(request, status, errorData) {
 				//jqXHR:request, textStatus: status, errorThrown :errorData
@@ -183,7 +240,7 @@ $(function(){
 	        }		
 		//list 리셋
 		var outtable = "<tr><th>저장</th><th>운동이름</th><th>운동량 입력</th><th>운동강도</th><th>Met계수</th><th>운동코드</th></tr>";
-		$('#moveList>table').html(outtable);
+		$('#moveList').html(outtable);
 		
  		var tdArr = new Array();
 		var tr = radio.parent().parent();
@@ -226,7 +283,7 @@ function addActs(){
 	var acts = new Array();
 	$('.A').each(function(index) {
 		var a = new Object;
-		a.diary_no = diary_no;
+		a.diary_no = ${diary.diary_no};
 		a.act_seq = index +1 ;
 		a.move_code = $(this).find('input[name="move_code"]').val();
 		a.act_mm = parseInt($(this).find('input[name="act_mm"]').val());
@@ -245,7 +302,7 @@ function addActs(){
 		      success: function() {
 		        console.log("succest : acts");
 		        alert("다이어리가 작성되었습니다. 다이어리 보기 페이지로 이동합니다.");
-		        window.location.href = 'diary_showActDiary.do?diary_no='+diary_no;
+		        window.location.href = 'diary_showActDiary.do?diary_no='+${diary.diary_no};
 		      },
 		      error: function(request, status, errorData){
 					console.log("error code : " + request.status
@@ -261,6 +318,7 @@ $(function() {
 		  console.log($('input[name="move_code"]').val());
 	event.preventDefault();
 	var formData = new FormData($('#diaryM')[0]);
+	
 	    $.ajax({
 	      url: 'diary_insertWrite.do',
 	      type: 'POST',
@@ -274,7 +332,7 @@ $(function() {
 	      error: function(error) {
 	        console.log(error);
 	        alert("다이어리 작성에 실패했습니다.다이어리 보기 화면으로 이동합니다.");
-	        window.location.href = 'diary.do;
+	        window.location.href = 'diary_showActDiary.do?diary_no=' + ${diary.diary_no};
 	      }
 	    });
 	  });
@@ -299,10 +357,28 @@ function changeImg(input) {
 
 }
 </script>
+
+<div id="mainContain">
+	<br>
+		<c:import url="/WEB-INF/views/common/menubar.jsp" /> <!--메인 메뉴바-->
+	<br>
+		<c:import url="/WEB-INF/views/diary/common/diarymenubar.jsp"/> <!--다이어리 메뉴바-->
+	<br>
+<div class="vars">
+	<div class="calendar">
+		<input type="date" id="calendarDate" value="">
+		<br>
+	</div>
+	<br>
+	<div class="tabs">
+ 			<a class="tabs left" href="diary_showActWrite.do?">식단</a>
+ 			<a class="tabs center" href="diary_showActWrite.do?">운동</a>
+ 			<a class="tabs right" href="diary_showBodyWrite.do?">체형</a>
+	</div>
+</div>
+
+
 <div id="actPart">
-	<p>
-	${diary}
-	</p>
 	<br><div id="left">
 				<div id="actBox">
 				<!-- search에서 운동이름 클릭하면 addActDiv : ajax 구동 				
@@ -319,25 +395,21 @@ function changeImg(input) {
 			<div class="searchBox">
 				<!-- 운동이름 검색하면 하단에 목록보여짐
 					운동이름에 addActDiv ajax 링크걸기 -->
-				<input id="search_move" type="search" value=""
-					placeholder="운동 이름을 검색하세요" />
+				<input id="search_move" type="search" value="" placeholder="운동 이름을 검색하세요" />
 				<button id="searchM">검색</button>
 				
-				<div id="moveList">
+				<div id="movebt">
 					* 운동량이 0이면 kcal는 0으로 계산됩니다.
 					* 운동량을 입력한 뒤 추가버튼을 눌러주세요. &nbsp; &nbsp; &nbsp; 
 							<button type="button" id="selectBtn">➕</button>
-					<table id="movelist">
-						<tr><th>저장</th><th>운동이름</th><th>운동량 입력</th><th>운동강도</th><th>Met계수</th><th>운동코드</th></tr>
-						<tr>
-							<td><input type="radio" name="user_CheckBox"></td>
-							<td>검도</td>
-							<td><input type="number" value="3"/></td>							
-							<td>고</td>
-							<td>6</td>
-							<td>M000007</td>
-						</tr>
+				<div class="scroll">
+					<table class="S" id="moveList">
+						<tr></tr>
+						<tr></tr>
+						<tr></tr>
+						<tr></tr>
 					</table>
+				</div>
 				</div>
 			</div>
 		<form id="diaryM" action="diary_insertWrite.do" method="POST" enctype="multipart/form-data">
@@ -346,9 +418,9 @@ function changeImg(input) {
 			<input type="hidden" name="diary_category" value="${diary.diary_category}">
 			<div class="timeBox">
 			<input type="hidden" name="" value="">
-				<label>날짜 : <input name="diary_post_date" type="date" value="${diary.diary_post_date}" pattern="yyyy-MM-dd"/></label>
-				<label>운동시간 : <input name="time" type="time" id="actTime" value="" pattern ="hh:mm a"/></label>
-			</div>
+				<label>날짜 : <input name="diary_post_date" type="date" value="${diary.diary_post_date}"/></label>
+<!-- 				<label>운동시간 : <input name="time" type="time" id="actTime" value="" pattern ="hh:mm a"/></label>
+ -->			</div>
 			<div class="right" align="center" style="margin: 0; padding: 0; display: flex;">
 				<!-- 이미지입력되면 event인식해서 changeImage() function 실행됨 -->
 				<div>
@@ -366,6 +438,8 @@ function changeImg(input) {
 			<!-- 다이어리에 : 시간, 메모, 이미지파일 -->
 			<input type="submit" value="저장">
 		</form>
+		
 	</div>
+</div>
 </body>
 </html>

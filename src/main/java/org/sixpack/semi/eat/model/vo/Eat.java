@@ -12,7 +12,7 @@ public class Eat implements java.io.Serializable{
 	private int eat_protein; 		//섭취한 단백질(g)
 	private int eat_fat; 			//섭취한지방(g)
 	
-	private String food_name; //음식이름
+	private String food_name; 		//음식이름
 	public Eat() {
 		super();
 	}

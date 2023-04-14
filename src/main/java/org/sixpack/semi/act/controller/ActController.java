@@ -63,39 +63,37 @@ public class ActController {
 			}else {
 				String id =((Member)session.getAttribute("loginMember")).getUser_id();
 				diary.setUser_id(id);
-				diary.setUser_id("dd"); //test용
 			}					
 		//date 없을때 현재날짜로
 			if(diary.getDiary_post_date()==null) {
 	            diary.setDiary_post_date(new Date(new java.util.Date().getTime()));
 			}					
-			//category 없을때 식단우선
-			if(diary.getDiary_category()==null) {
-				diary.setDiary_category("eat");
-			}			
+			//category
+				diary.setDiary_category("act");
+						
 			//id, date, category 일치하는 diary 있는지 조회
 	        move = diaryService.selectDiaryOne(diary);
 
 			//조회된 move 없으면 그냥 빈 식단화면 띄우기
-			if(move ==null) {
-				logger.info("빈 운동화면 띄우기"+ diary.toString());
-				move=diary;
+			if(move !=null) {
+				logger.info("빈 식단화면 띄우기"+ diary.toString());
+				diary=move;
 			}
 		}
 
-		model.addAttribute("diary", move);		
+		model.addAttribute("diary", diary);		
 		
 		
 		//목표정보, 날짜정보 조회 
-		Goal goal = diaryService.selectlastGoal(move);//가장 최신 목표정보
-		ArrayList<Diary> week = diaryService.selectWeekDiary(move); // 일주일날짜에 대한 다이어리 정보
+		Goal goal = diaryService.selectlastGoal(diary);//가장 최신 목표정보
+		ArrayList<Diary> week = diaryService.selectWeekDiary(diary); // 일주일날짜에 대한 다이어리 정보
 		if(goal!=null&& week!=null) {
 		model.addAttribute("goal", goal);
 		model.addAttribute("week", week);
 		}
 		
 		//운동정보 조회 있을때만 내보냄
-		ArrayList<Act> acts = actService.selectDayAct(move);
+		ArrayList<Act> acts = actService.selectDayAct(diary);
 		if(acts.size()>0) {
 			model.addAttribute("acts", acts);	 // 하루치 운동정보 목록
 		}
@@ -109,8 +107,7 @@ public class ActController {
 			HttpSession session) {
 		// 세션 객체가 null인 경우
 		if (session == null) {
-			// return "redirect:loginPage.do";
-			diary.setUser_id("dd"); // test용
+			return "redirect:loginPage.do";
 		}else {	
 		// 사용자 ID가 없는 경우: 비회원은 로그인페이지, 회원은 id추출
 		if (diary.getUser_id() == null) {			
@@ -209,18 +206,20 @@ return new ResponseEntity<String>("success", HttpStatus.OK);
 }
 	
 	//운동다이어리 삭제용
-	@RequestMapping(value="diary_delAct.do", method=RequestMethod.POST)
+	@RequestMapping(value="diary_deleteAct.do", method=RequestMethod.POST)
 	public String deleteActMethod(ModelAndView mv,
-			@RequestParam("diary")Diary diary) {
-		//삭제할 다이어리 정보를 받아와서 
-		//다이어리 번호에 해당하는 act 먼저 삭제하고
-		//diary도 삭제하고 결과값 받고
-		//해당일의 다이어리 화면으로 돌아감
+			@RequestParam("diary_no") int diary_no
+			) {
+		Diary delete = new Diary();
+		delete.setDiary_no(diary_no);
 		
-		int result = actService.deleteAllAct(diary);
+		Diary move = new Diary();
+		move = diaryService.selectDiaryNo(diary_no);
 		
-		if(result > 0 && diaryService.deleteDiary(diary) > 0) {
-			mv.addObject("diary",diary);
+		int result = actService.deleteAllAct(delete);
+		
+		if(result > 0 && diaryService.deleteDiary(diary_no) >0) {
+			mv.addObject("diary",move);
 			return "redirect:diary_showActDiary.do";
 		}else {
 			mv.addObject("message","해당 다이어리 삭제 실패");
@@ -233,12 +232,6 @@ return new ResponseEntity<String>("success", HttpStatus.OK);
 	public String modifyActMethod(ModelAndView mv,
 			@RequestParam("diary")Diary diary,
 			@RequestParam("acts")ArrayList<Act> acts) {
-		//수정할 다이어리 정보를 받아와서
-		//기존 운동 갯수가 많았다면 삭제하고
-		//acts 수정하고
-		//diary의 내용도 수정하고 결과값 받고
-		//해당일의 다이어리 화면으로 돌아감
-		
 		//해당일의 기존 운동을 조회
 		//입력된 acts.size보다 많으면 뒤쪽 순번운동은 삭제
 		ArrayList<Act> beforeActs = actService.selectDayAct(diary);
@@ -262,16 +255,17 @@ return new ResponseEntity<String>("success", HttpStatus.OK);
 			updateCount += actService.updateOneAct(a);
 		}
 		
-		if(updateSize == updateCount && diaryService.deleteDiary(diary) > 0) {
+		if(updateSize == updateCount && diaryService.deleteDiary(diary.getDiary_no()) > 0) {
 			mv.addObject("diary",diary);
 			return "redirect:diary_showActDiary.do";
 		}else {
-			mv.addObject("message","해당 다이어리 삭제 실패");
+			mv.addObject("message","해당 다이어리 수정 실패");
 			return "common/error";			
 		}
 		
 	}
-
+	
+	//운동달력 이동용
 	@RequestMapping(value = "diary_actCalendar.do", method = RequestMethod.POST)
 	public String moveCalendarAct(Model model, Diary diary) {
 		// diary_no로 회원정보 조회 : id, category
@@ -302,5 +296,5 @@ return new ResponseEntity<String>("success", HttpStatus.OK);
 		}
 		return "diary/act/actDiary";
 	}
-		
+	
 }

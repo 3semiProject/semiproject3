@@ -382,21 +382,7 @@ $(function(){
   	//요소에 시간적용
 	  //$("#nowdate").val(datetimeString);
 	  $("#calendarDate").val(calendarString);
-	  
-//form전달용 시간 00:00:00 포맷
-	    // nowdate의 값을 가져와서 Date 객체 생성
-/* 	    var nowdate = new Date($('#nowdate').val());				    
-	    // 년, 월, 일, 시간, 분, 초 값을 가져옴
-		var year = ('0' + nowdate.getFullYear().toString().slice(-2)).slice(-2);;
-	    var month = ('0' + (nowdate.getMonth() + 1)).slice(-2);
-	    var day = ('0' + nowdate.getDate()).slice(-2);
-	    var hours = ('0' + nowdate.getHours()).slice(-2);
-	    var minutes = ('0' + nowdate.getMinutes()).slice(-2);
-	    var seconds = ('0' + nowdate.getSeconds()).slice(-2);	 */			    
-	    // dateTime에 값을 설정 mm/dd/yyyy hh24:mi:ss
-	   // $('#Time').val(month + '/' + day + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds);		
-		//$("#postDate").val(month + '/' + day + '/' + year);
-		//  $("#dateD").val(month + '/' + day + '/' + year);
+
 });//document.ready
 </script>
 <!-- 4.음식검색  -->
@@ -578,12 +564,10 @@ function removeEat(event) {
 
 //7. form -> ajax전송
 function insertDiary(){
-	   alert("diary start");
 	var form = $('#eatWriteForm')[0];
 	var formData = new FormData(form);
-	console.log($('#nowdate').val());
-	console.log($('#Time').val());
-	console.log($('#dateD').val());
+	console.log("diary save" +$('#dateD').val());
+
 	//전송
 	var successfleg =null;
 	$.ajax({
@@ -668,10 +652,9 @@ function calSum(){
 	</div>
 	<br>
 	<div class="tabs">
-		<c:set var="moveURL" value="diary_moveDiary.do?user_id=${sessionScope.loginMember.user_id}&diary_post_date=${'#calendarDate'} &diary_category="/>
- 			<a class="tabs left" href="${moveURL}eat">식단</a>
- 			<a class="tabs center" href="${moveURL}act">운동</a>
- 			<a class="tabs right" href="${moveURL}body">체형</a>
+ 			<a class="tabs left" href="diary_showEatWrite.do?">식단</a>
+ 			<a class="tabs center" href="diary_showActWrite.do?">운동</a>
+ 			<a class="tabs right" href="diary_showBodyWrite.do?">체형</a>
 	</div>
 </div>
 

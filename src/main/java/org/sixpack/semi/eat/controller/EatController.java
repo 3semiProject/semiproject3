@@ -64,41 +64,39 @@ public class EatController {
 			}else {
 				String id =((Member)session.getAttribute("loginMember")).getUser_id();
 				diary.setUser_id(id);
-				diary.setUser_id("USER01"); //test용
 			}					
 		//date 없을때 현재날짜로
 			if(diary.getDiary_post_date()==null) {
 	            diary.setDiary_post_date(new Date(new java.util.Date().getTime()));
 			}					
-			//category 없을때 식단우선
-			if(diary.getDiary_category()==null) {
-				diary.setDiary_category("eat");
-			}			
+			//category
+			diary.setDiary_category("eat");
+					
 			//id, date, category 일치하는 diary 있는지 조회
 	        move = diaryService.selectDiaryOne(diary);
 
 			//조회된 move 없으면 그냥 빈 식단화면 띄우기
-			if(move ==null) {
+			if(move !=null) {
 				logger.info("빈 식단화면 띄우기"+ diary.toString());
-				move=diary;
+				diary=move;
 			}
 		}
 
-		model.addAttribute("diary", move);			
+		model.addAttribute("diary", diary);			
 		
 		//목표정보, 날짜정보 조회 
-		Goal goal = diaryService.selectlastGoal(move);//가장 최신 목표정보
-		ArrayList<Diary> week = diaryService.selectWeekDiary(move); // 일주일날짜에 대한 다이어리 정보
+		Goal goal = diaryService.selectlastGoal(diary);//가장 최신 목표정보
+		ArrayList<Diary> week = diaryService.selectWeekDiary(diary); // 일주일날짜에 대한 다이어리 정보
 		if(goal!=null&& week!=null) {
 		model.addAttribute("goal", goal);
 		model.addAttribute("week", week);
 		}
 		
 		//식단정보 조회
-		Goal cal = diaryService.selectCurrentGoal(move);//diary날짜기준 계산용
-		ArrayList<Diary> diarys = diaryService.selectDayDiary(move); // 화면출력을 위한 memo,image
-		ArrayList<Eat> eats = eatService.selectDayEats(move); //하루치 식단다이어리 모두
-		ArrayList<Eat> sums = eatService.selectSumAllEats(move); //각 식단별 합계 
+		Goal cal = diaryService.selectCurrentGoal(diary);//diary날짜기준 계산용
+		ArrayList<Diary> diarys = diaryService.selectDayDiary(diary); // 화면출력을 위한 memo,image
+		ArrayList<Eat> eats = eatService.selectDayEats(diary); //하루치 식단다이어리 모두
+		ArrayList<Eat> sums = eatService.selectSumAllEats(diary); //각 식단별 합계 
 		
 		if(cal!=null && diarys!=null && eats!=null && sums!=null) {			
 			model.addAttribute("cal", cal);
@@ -111,7 +109,17 @@ public class EatController {
 	
 	//2. 식단다이어리 작성 화면출력용
 	@RequestMapping(value="diary_showEatWrite.do", method= {RequestMethod.POST, RequestMethod.GET} )
-	public String showEatWriteView(Model model) {
+	public String showEatWriteView(Model model, HttpSession session) {
+		//식단다이어리 작성 화면출력용 :diary번호 없어도 됨.
+			//작성할 새 다이어리번호 전달
+			//diary_no 있을때 바로이동
+			Diary diary = new Diary();
+
+			//id 없을때 비로그인 상태면 로그인 페이지로 이동
+				if(session==null|| session.getAttribute("loginMember") == null) {				
+					return "redirect:loginPage.do";	
+				}				
+
 		//작성할 새 다이어리번호 전달
 		int number = diaryService.getDiaryNo();
 		model.addAttribute("diary_no", number);
@@ -163,25 +171,17 @@ public class EatController {
 		return sendJson.toJSONString();
 	}
 	
-	//5. 식단다이어리 작성처리용 + 기존seq 뒤에 추가
+	//5. 식단다이어리 작성처리용
 	@RequestMapping(value="diary_insertEatWrite.do", method= RequestMethod.POST)
 	@ResponseBody
 	public void insertEatWrite(HttpServletResponse response,
 			@RequestBody List<Eat> eats) throws IOException{
-		//이전 정보값이 있으면 시퀀스 뒤쪽으로 입력
-		//다이어리번호 추출
-		int diary_no = eats.get(0).getDiary_no();
-		//해당일의 기존 음식갯수 조회
-		int beforeSize = eatService.selectEatCount(diary_no);
-		
-		//이후 번호부터 seq입력.
-		int insertSeq = beforeSize+1;
+	//시퀀스 설정
 		for (int i = 0; i < eats.size(); i++) {
-			eats.get(i).setEat_seq(insertSeq++);
+			eats.get(i).setEat_seq(i);
 		}
 		
-		System.out.println("시작" + insertSeq);
-
+	//insert 후 결과값 전달
 		int result = eatService.insertAllEat(eats);
 		if (result <= 0) {
 			response.getWriter().append("fail").flush();
@@ -229,7 +229,7 @@ public class EatController {
 	    redirect.addFlashAttribute("diary", move);
 	    return "redirect:diary_showEatDiary.do";
 	}
-		
+
 	
 	/*
 	 * //9.식단다이어리 1개 삭제처리용

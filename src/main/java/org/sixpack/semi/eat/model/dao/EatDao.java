@@ -47,8 +47,12 @@ public class EatDao {
 		return session.update("eatMapper.updateOneEat", eat);
 	}
 
-	public int selectEatCount(int diary_no) {
-		return session.selectOne("eatMapper.selectEatCount", diary_no);
+	public int selectEatCount(Eat eat) {
+		return session.selectOne("eatMapper.selectEatCount", eat);
+	}
+
+	public int insertOneEat(Eat eat) {
+		return session.insert("eatMapper.insertOneEat", eat);
 	}
 
 }

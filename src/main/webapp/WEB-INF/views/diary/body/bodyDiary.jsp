@@ -85,6 +85,10 @@ div.memobox>textarea{
    		flex-direction: column;
    		justify-content: center;
    }
+   
+a.tabs.right{
+	background : #c0e488;
+}
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
 <script type="text/javascript">

@@ -322,7 +322,15 @@ form.tabs {
 a.tabs.left{
 	background : #c0e488;
 }
-
+#calendarDate{
+	height: 30px;
+	width: 200px;
+	text-align: center;
+	font-size: 12pt;
+	text-weight: 200px
+	border: 0px;
+	border-bottom: 2px solid rgba(92, 148, 13, 0.5);
+}
 
 </style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
@@ -331,10 +339,11 @@ a.tabs.left{
 <script type="text/javascript"> 
 $(function(){
 	var dn = ${diary.diary_no};
-	var sessionUserId = "${sessionScope.loginMember.user_id}";
+	var diary_category = 'eat';
+	var user_id = "${sessionScope.loginMember.user_id}";
 	//var sessionUserId = "USER01";
-	console.log(sessionUserId);
-	if(sessionUserId==null){
+	console.log(user_id);
+	if(user_id==null){
 		window.location.href="login.do?";
 	}
 });
@@ -383,7 +392,6 @@ $(function(){
 	  var datetimeString = year + "-" + month + "-" + day + "T" + hour + ":" + minute;
 	  var calendarString = year + "-" + month + "-" + day;
   	//요소에 시간적용
-	  //$("#nowdate").val(datetimeString);
 	  $("#calendarDate").val(calendarString);
 	  
 //form전달용 시간 00:00:00 포맷
@@ -597,7 +605,8 @@ function insertDiary(){
 		  data: formData, // FormData 객체를 전송
 		  success: function(response){
 		    console.log(response);
-			submitActs();		
+			if(selectedEat!==null){
+			submitActs();	}	
 		  },
 		  error: function(xhr, status, error){
 		    console.log(xhr +", "+status+ ", " + error);
@@ -613,6 +622,7 @@ function insertDiary(){
 function submitActs(){
 	console.log('select[0] : ' + selectedEat[0]);
 	//전송
+
 	$.ajax({
 		  type: "post",
 		  url: "diary_insertEatWrite.do",
@@ -672,15 +682,20 @@ function deleteEat(event){
 	var tr = event.target.closest('tr');	
 	var td = radio.parent().parent().children();	
 	var eat = new Object;
-	 eat.diary_no = ${diary.diary_no};
-	 eat.food_code = td.eq(1).text();
+	eat.diary_no = ${diary.diary_no};
+	eat.food_code = td.eq(1).text();
+	 
+/* 	 var eatform = new FormData();
+	 eatform.append("diary_no",dn);
+	 eatform.append("food_code",td.eq(1).text()); */
+	 
 	 console.log("delete Eat : " + eat);
 	 
 //기존음식 1개 삭제요청
 	$.ajax({
 		  type: "post",
 		  url: "diary_deleteOneEat.do",
-		  data: eat,
+		  data: form,
 		  processData: false,
 		  contentType: false,
 		  success: function(response){
@@ -713,10 +728,10 @@ function deleteDiary(){}
 	</div>
 	<br>
 	<div class="tabs">
-		<c:set var="moveURL" value="diary_moveDiary.do?user_id=${sessionScope.loginMember.user_id}&diary_post_date=${'#calendarDate'} &diary_category="/>
- 			<a class="tabs left" href="${moveURL}eat">식단</a>
- 			<a class="tabs center" href="${moveURL}act">운동</a>
- 			<a class="tabs right" href="${moveURL}body">체형</a>
+		<c:set var="moveURL" value="diary_no=${diary.diary_no}&diary_category="/>
+ 			<a class="tabs left" href="diary_showEatDiary.do? + ${moveURL} + eat">식단</a>
+ 			<a class="tabs center" href="diary_showActDiary.do? + ${moveURL} + act">운동</a>
+ 			<a class="tabs right" href="diary_showBodyDiary.do? + ${moveURL} +body">체형</a>
 	</div>
 </div>
 
@@ -739,14 +754,17 @@ function deleteDiary(){}
 				</tr>			
 				<tr class="dimg">
 					<td rowspan="3">
-					
-						<img id="showimg" alt="$이미지파일 미리보기" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg">
-						
-						<div class="upload">
+						<c:if test="${empty diary.diary_image}">
+							<img id="showimg" alt="${diary.diary_no}의 이미지" src="${ pageContext.servletContext.contextPath }/resources/images/diary/noimage.jpg">
+						</c:if>
+						<c:if test="${!empty diary.diary_image}">
+							<img id="showimg" alt="${diary.diary_no}의 이미지" src="${ pageContext.servletContext.contextPath }/resources/diary_upfile/${diary.diary_image}">
+						</c:if>
+												<div class="upload">
 							<label class="upload">
 								<input style="width: 70px;" type="file" name="upfile" onchange="changeImg(this);" />
 							</label>
-						</div>				
+						</div>	
 					</td>
 					<th id="dtime">
 						<h3> 🍴 식사시간 &nbsp;<input id="nowdate" name="diary_post_date"  value="${diary.diary_post_date}" type="date" required/>
