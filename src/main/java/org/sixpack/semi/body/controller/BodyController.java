@@ -233,6 +233,7 @@ public class BodyController {
             }
         }
 
+
         redirect.addAttribute("diary_no", diary.getDiary_no());
         return "redirect:diary_showBodyDiary.do";
     }
@@ -256,7 +257,6 @@ public class BodyController {
         diary.setDiary_no(diary_no);
         body.setUser_id(user_id);
         body.setDiary_no(diary_no);
-
         // 첨부파일이 있을때
         if (mfile != null && !mfile.isEmpty()) {
             // 전송온 파일이름 추출함
@@ -296,6 +296,8 @@ public class BodyController {
             model.addAttribute("message", "다이어리 작성 실패");
             return "common/error";
         }
+
+        body.setBody_post_date(diary.getDiary_post_date());
 
         //체중입력값 있을때만 저장 :diary는 존재하되, 체중0인 body는 존재하지 않게
         if (body.getBody_weight() > 0) {
