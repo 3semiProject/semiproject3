@@ -297,6 +297,8 @@ public class BodyController {
             return "common/error";
         }
 
+        body.setBody_post_date(diary.getDiary_post_date());
+
         //체중입력값 있을때만 저장 :diary는 존재하되, 체중0인 body는 존재하지 않게
         if (body.getBody_weight() > 0) {
             if (bodyService.updateBody(body) == 0) {

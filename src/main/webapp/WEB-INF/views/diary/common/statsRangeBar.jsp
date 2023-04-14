@@ -98,16 +98,6 @@
     <br>
     <br>
     <br>
-    <form action="insertFoodData.do" method="POST" enctype="multipart/form-data">
-        <input type="file" name="mfile" accept=".xls,.xlsx"/>
-        <input type="submit" value="음식 데이터 삽입(xlsx)">
-    </form>
-    <br>
-    <form action="insertMoveData.do" method="POST" enctype="multipart/form-data">
-        <input type="file" name="mfile" accept=".xls,.xlsx">
-        <input type="submit" value="운동 데이터 삽입(xlsx)"/>
-    </form>
-
 </div>
 </body>
 </html>

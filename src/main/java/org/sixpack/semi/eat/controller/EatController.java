@@ -62,7 +62,6 @@ public class EatController {
 			}else {
 				String id =((Member)session.getAttribute("loginMember")).getUser_id();
 				diary.setUser_id(id);
-				diary.setUser_id("dd"); //test용
 			}					
 		//date 없을때 현재날짜로
 			if(diary.getDiary_post_date()==null) {
