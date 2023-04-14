@@ -1,8 +1,3 @@
-
-
-
-
-
 /* MEMBER(회원정보 기본사항테이블) */
 CREATE TABLE MEMBER
 (

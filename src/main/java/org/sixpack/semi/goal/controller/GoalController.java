@@ -2,7 +2,9 @@ package org.sixpack.semi.goal.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.sixpack.semi.diary.model.service.DiaryServiceImpl;
 import org.sixpack.semi.goal.model.service.GoalService;
+import org.sixpack.semi.goal.model.service.GoalServiceImpl;
 import org.sixpack.semi.goal.model.vo.Goal;
 import org.sixpack.semi.member.model.vo.Member;
 import org.slf4j.Logger;

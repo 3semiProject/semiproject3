@@ -261,6 +261,7 @@ My 다이어리 분석
                                 label: '권장 칼로리 섭쉬량',
                                 backgroundColor: "pink",
                                 borderColor: "rgba(244,174,75,0.7)",
+                                yAxisID: 'y-axis-left',
                                 data: r_e
 
                             },
@@ -269,10 +270,19 @@ My 다이어리 분석
                                 type: 'bar',
                                 label: '칼로리 섭취량',
                                 backgroundColor: 'rgba(86, 180, 50, 0.7)',
+                                yAxisID: 'y-axis-right',
                                 data: a_e
                             },
                           ]
                     },
+                    option: {
+                        scale: {
+                            y: {
+                                id: 'y-axis-right',
+                                position: 'right'
+                            }
+                        }
+                    }
                 });
 
 

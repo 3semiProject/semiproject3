@@ -106,7 +106,6 @@ public class DiaryController {
         }
 
         //목표정보 있으면 식단 다이어리화면으로 이동
-        System.out.println("123");
         redirect.addFlashAttribute("diary", diary);
         return "redirect:diary_showEatDiary.do";
     }
@@ -150,7 +149,7 @@ public class DiaryController {
                 return "redirect:diary_showGoalModify.do"; //목표작성화면으로 이동
 
             } else {
-                redirect.addAttribute("isExist", "N"); // 처음 가입시(목표 데이터 없을 시)
+                redirect.addFlashAttribute("isExist", "N"); // 처음 가입시(목표 데이터 없을 시)
                 return "redirect:diary_showGoalModify.do"; //목표작성화면으로 이동
             }
         }
