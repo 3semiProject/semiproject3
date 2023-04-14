@@ -24,9 +24,9 @@ public class PhoneSns {
 		// 요청 URL Type
 		String requestUrlType = "/messages";
 		// 개인 인증키
-		String accessKey = [네이버 api 엑세스키];
+		String accessKey = "zBMF9kUKx3jZa8g1ZZaP";
 		// 2차 인증을 위해 서비스마다 할당되는 service secret
-		String secretKey = [네이버 api 시크릿 키];
+		String secretKey = "7YRBKiRWGeOxpWDOLtx74VIkzVQyXL0CzSdSzAAw";
 		// 프로젝트에 할당된 SMS 서비스 ID
 		String serviceId = "ncp:sms:kr:305480229474:damunity";
 		// 요청 method

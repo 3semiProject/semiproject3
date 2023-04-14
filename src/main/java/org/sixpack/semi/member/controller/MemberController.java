@@ -526,7 +526,7 @@ public class MemberController {
         logger.info("이메일 : " + email);
         logger.info("새로운 패스워드 : " + newPw);
         /* 이메일 보내기 */
-        String setFrom = [이메일 입력];
+        String setFrom = "hjm8686@naver.com";
         String toMail = email;
         String title = "[다뮤니티] 임시 비밀번호 발급 안내";
         String content = "[" + user_name + "님]\n임시 비밀번호가 아래와 같이 발급되었으니, "
@@ -807,7 +807,7 @@ public class MemberController {
         logger.info("인증번호 : " + checkNum);
 
         /* 이메일 보내기 */
-        String setFrom = [이메일 입력];
+        String setFrom = "hjm8686@naver.com";
         String toMail = email;
         String title = "다뮤니티 인증 이메일 입니다.";
         String content = "다뮤니티를 방문해주셔서 감사합니다." + "<br><br>" + "인증 번호는 " + checkNum + "입니다." + "<br>"
